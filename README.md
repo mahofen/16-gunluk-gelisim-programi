@@ -3,7 +3,7 @@
 > **"Bugün küçük adımlar, yarın büyük başarılar getirir! 💡"**  
 > *29 Ağustos – 13 Eylül 2026 • Planla • Çalış • Üret • Hareket Et • Geliş*
 
-Bu proje; 16 günlük bütüncül öğrenci gelişim planının görsel analizi yapılarak hazırlanmış, **Kullanıcı Girişi & Çoklu Profil Destekli**, oyunlaştırılmış modern **Web Uygulaması (`index.html`)**, **Mobil Uygulaması (`mobile_app.html`)** ve **Google AI Studio** koçluk entegrasyonunu içeren kapsamlı bir dijital takip sistemidir.
+Bu proje; 16 günlük bütüncül öğrenci gelişim planının görsel analizi yapılarak hazırlanmış, **Kullanıcı Girişi**, **Yönetici / Öğretmen Kontrol Paneli**, oyunlaştırılmış modern **Web Uygulaması (`index.html`)** ve **Mobil Uygulaması (`mobile_app.html`)** içeren kapsamlı bir dijital takip ve raporlama sistemidir.
 
 ---
 
@@ -14,6 +14,8 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 ```
 +-----------------------------------------------------------------------------------------------+
 |                        BENİM 16 GÜNLÜK GELİŞİM PROGRAMIM (29 Ağu - 13 Eyl)                    |
++-----------------------------------------------------------------------------------------------+
+|  📊 YÖNETİCİ & ÖĞRETMEN PANELİ: Sınıf Başarı Raporu, Öğrenci Karneleri, Günlük Not Akışı      |
 +-----------------------------------------------------------------------------------------------+
 |  👤 Çoklu Kullanıcı & Profil: Ahmet (🚀), Zeynep (🌟), Mehmet (🦁) - Kişiye Özel Veri Kaydı   |
 +-----------------------------------------------------------------------------------------------+
@@ -33,35 +35,29 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 
 ## ✨ Temel Özellikler
 
-### 👤 1. Çoklu Kullanıcı & Profil Yönetimi (YENİ!)
-- **İsimle Giriş Yapma:** Aynı cihaz veya tarayıcıda birden fazla öğrenci/kullanıcı (kardeşler, sınıf arkadaşları) kendi adıyla giriş yapabilir.
+### 📊 1. Yönetici & Öğretmen Kontrol Paneli (YENİ!)
+- **Sınıf Genel Başarı Raporu:** Toplam kayıtlı öğrenci mevcudu, sınıf tamamlama oranı (%), yapılan toplam görevler ve tamamlanan K/S dersleri tek ekranda.
+- **Öğrenci Performans Listesi:** Her öğrencinin seviyesi, XP puanı, görev ve ders tamamlama yüzdeleri, aktif gün serisi (streak) ve ortalama yıldız puanı.
+- **Günlük Yansıma Notları Akışı:** Öğrencilerin *"Yarın neyi daha iyi yapabilirim? Bugün neler öğrendim?"* kutusuna yazdıkları notların öğretmen ve veli tarafından tarih sırasıyla incelenebilmesi.
+- **Toplu Sınıf Yedeği (JSON):** Tüm sınıfın verilerini tek tıkla bilgisayara indirme veya geri yükleme.
+- **Rapor Yazdırma:** Sınıf karnesini tek tıkla yazdırma veya PDF olarak kaydetme.
+
+### 👤 2. Çoklu Kullanıcı & Profil Yönetimi
+- **İsimle Giriş Yapma:** Aynı cihazda birden fazla öğrenci (kardeşler, sınıf arkadaşları) kendi adıyla giriş yapabilir.
 - **Kişiye Özel Avatar:** 15 farklı eğlenceli avatar emojisi (🚀, 🌟, 🦁, 🐯, 🦅, 📚, 🎨, 🏃, 💡, ⚡ vb.).
 - **İzole Veri Saklama:** Her öğrencinin görevleri, ders matrisi, XP puanı, rozetleri ve notları `localStorage` üzerinde sadece o kullanıcı adına özel saklanır.
-- **Tek Tıkla Profil Değiştirme:** Listeden istediğiniz profile tek tıkla geçiş yapabilirsiniz.
 
-### 💻 2. Web Uygulaması (`index.html`)
+### 💻 3. Web Uygulaması (`index.html`)
 - **Dinamik 16 Gün Çizelgesi:** 29 Ağustos'tan 13 Eylül'e kadar gün seçimi ve aşama göstergeleri.
 - **5 Vakit Görev Takibi:** Tek tıkla `⚪ Yapmadım` ➔ `🟢 Yaptım (+10 XP)` ➔ `🟡 Kısmen (+5 XP)` durum döngüsü.
 - **16 Günlük 48 Ders Matrisi:** Konu (K) ve Soru (S) derslerinin doğrudan tablo üzerinden yönetimi.
 - **Oyunlaştırma (Gamification):** XP puanları, seviye sistemi (*Çırak ➔ Şampiyon*), başarı rozetleri ve konfeti kutlamaları.
 - **Gelişim Analitiği (Chart.js):** 4 gelişim alanının polar/radar grafiği ve 16 günlük tamamlama grafiği.
-- **Kalıcı Hafıza & Yedekleme:** Kullanıcı bazlı otomatik kayıt, JSON formatında içe/dışa aktarma ve yazdırma (print/PDF) modu.
 
-### 📱 3. Mobil Uygulama (`mobile_app.html`)
+### 📱 4. Mobil Uygulama (`mobile_app.html`)
 - **Native Mobil Deneyim:** Instagram Story tarzı gün çizelgesi, alt navigasyon menüsü (*Bottom Navigation*), ses efektleri (*Web Audio API*).
-- **Google AI Studio Entegrasyonu:** Tek tıkla stüdyoyu açma, hazır sistem promptu ve canlı Gemini 2.0 / 1.5 REST API bağlantı desteği.
-- **Mobil Profil Değiştirici:** Üst bardan veya ayarlar sekmesinden tek dokunuşla kullanıcı değiştirme.
-
----
-
-## 🤖 Google AI Studio Entegrasyonu
-
-Proje, Google AI Studio ile entegre çalışacak şekilde tasarlanmıştır:
-- 🚀 **[Google AI Studio Ana Portal](https://aistudio.google.com/)**
-- 💬 **[Yeni AI Sohbet Başlat](https://aistudio.google.com/prompts/new_chat)**
-- 🔑 **[API Key Al](https://aistudio.google.com/app/apikey)**
-
-Detaylı prompt şablonları ve API kullanımı için [**`MOBIL_UYGULAMA_VE_AI_STUDIO_REHBERI.md`**](MOBIL_UYGULAMA_VE_AI_STUDIO_REHBERI.md) dosyasını inceleyebilirsiniz.
+- **Mobil Yönetici Raporu:** Üst menüden veya ayarlardan tek tıkla açılan sınıf kontrol raporu.
+- **Kişisel Gelişim Asistanı:** Günlük gelişim raporunu tek tıkla kopyalama ve yapay zeka analiz desteği.
 
 ---
 
@@ -69,6 +65,7 @@ Detaylı prompt şablonları ve API kullanımı için [**`MOBIL_UYGULAMA_VE_AI_S
 
 * 🌐 **Canlı Web Uygulaması:** [https://mahofen.github.io/16-gunluk-gelisim-programi/](https://mahofen.github.io/16-gunluk-gelisim-programi/)
 * 📱 **Canlı Mobil Uygulama:** [https://mahofen.github.io/16-gunluk-gelisim-programi/mobile_app.html](https://mahofen.github.io/16-gunluk-gelisim-programi/mobile_app.html)
+* 📦 **GitHub Deposu:** [https://github.com/mahofen/16-gunluk-gelisim-programi](https://github.com/mahofen/16-gunluk-gelisim-programi)
 
 Yerel ortamda çalıştırmak için:
 1. Depoyu klonlayın:
@@ -77,22 +74,6 @@ Yerel ortamda çalıştırmak için:
    cd 16-gunluk-gelisim-programi
    ```
 2. `index.html` veya `mobile_app.html` dosyasını tarayıcınızda açın.
-
----
-
-## 📁 Proje Dosya Yapısı
-
-```text
-├── index.html                             # Çoklu Kullanıcı Destekli Web Portalı
-├── mobile_app.html                        # Mobil Odaklı Web Uygulaması (PWA Uyumlu)
-├── plan.png                               # Orijinal 16 Günlük Gelişim Planı Görseli
-├── PLAN_GORSEL_ANALIZI_VE_TASARIM.md      # Detaylı Pedagojik ve Görsel Analiz Raporu
-├── MOBIL_UYGULAMA_VE_AI_STUDIO_REHBERI.md # Mobil Tasarım & Google AI Studio Rehberi
-├── Osmanlıca_Niçin_Öğrenmeliyiz...md      # Osmanlıca Eğitim Semineri Notları
-├── infografik.html                        # Seminer İnfografik Web Sayfası
-├── infografik.md                          # İnfografik Metin Dokümantasyonu
-└── README.md                              # Proje Tanıtım ve Kılavuz Belgesi
-```
 
 ---
 

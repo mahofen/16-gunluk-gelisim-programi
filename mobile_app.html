@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Gelişim Cepte | 16 Günlük Çoklu Kullanıcı Mobil Portalı</title>
+  <title>Gelişim Cepte | Çoklu Kullanıcı & Yönetici Portalı</title>
   
   <!-- PWA Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -98,7 +98,7 @@
       </div>
     </div>
 
-    <!-- App Header With User Profile Switcher -->
+    <!-- App Header With User Profile Switcher & Admin Button -->
     <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white px-4 py-2.5 shrink-0 shadow-md">
       <div class="flex items-center justify-between">
         
@@ -112,13 +112,20 @@
           <i class="fa-solid fa-chevron-down text-[9px] text-sky-200"></i>
         </button>
 
-        <!-- Level & Streak Badges -->
+        <!-- Right: Admin Panel + XP Badge -->
         <div class="flex items-center gap-1.5">
-          <div class="bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-amber-300 flex items-center gap-1 border border-white/10">
+          <!-- Yönetici Paneli Butonu -->
+          <button onclick="openMobileAdminModal()" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce" title="Yönetici ve Öğretmen Paneli">
+            <i class="fa-solid fa-chart-pie text-sky-300"></i>
+            <span>Yönetici</span>
+          </button>
+
+          <div class="bg-white/15 backdrop-blur-md px-2 py-1 rounded-xl text-[11px] font-bold text-amber-300 flex items-center gap-1 border border-white/10">
             <i class="fa-solid fa-bolt"></i>
             <span id="mobileXpBadge">0 XP</span>
           </div>
-          <div class="bg-orange-500/90 text-white px-2 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 shadow-sm">
+
+          <div class="bg-orange-500/90 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm">
             <i class="fa-solid fa-fire text-amber-200"></i>
             <span id="mobileStreakBadge">0</span>
           </div>
@@ -231,7 +238,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 3: GOOGLE AI STUDIO ================= -->
+      <!-- ================= TAB 3: AKILLI AI KOÇ ================= -->
       <section id="tab-ai" class="tab-page hidden space-y-4">
         
         <div class="bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden">
@@ -290,9 +297,9 @@
 
           <div class="pt-2 border-t text-[10px] text-slate-500">
             <details class="cursor-pointer">
-              <summary class="font-semibold text-purple-700 hover:underline">⚙️ Google AI Studio API Anahtarı Ekle (İsteğe Bağlı)</summary>
+              <summary class="font-semibold text-purple-700 hover:underline">⚙️ Gemini API Anahtarı Ekle (İsteğe Bağlı)</summary>
               <div class="mt-2 space-y-1.5">
-                <input type="password" id="geminiApiKeyInput" placeholder="AI Studio API Key (AIzaSy...)" class="w-full p-2 rounded-lg bg-slate-100 border text-xs focus:bg-white focus:outline-none">
+                <input type="password" id="geminiApiKeyInput" placeholder="API Key (AIzaSy...)" class="w-full p-2 rounded-lg bg-slate-100 border text-xs focus:bg-white focus:outline-none">
                 <p class="text-[9px] text-slate-400">API anahtarı yalnızca cihazınızda tutulur.</p>
               </div>
             </details>
@@ -354,6 +361,22 @@
           </button>
         </div>
 
+        <!-- Yönetici Paneli Hızlı Giriş Kartı -->
+        <div class="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-2xl p-4 text-white shadow-md flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white/20 text-sky-300 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <div>
+              <h4 class="font-fun text-sm font-bold">Yönetici Kontrol Paneli</h4>
+              <p class="text-[10px] text-purple-200">Tüm öğrencilerin genel raporunu gör</p>
+            </div>
+          </div>
+          <button onclick="openMobileAdminModal()" class="px-3 py-1.5 rounded-xl bg-white text-indigo-900 text-xs font-bold font-fun shadow tap-bounce">
+            Aç 📊
+          </button>
+        </div>
+
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
           <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
             <i class="fa-solid fa-sliders text-slate-600"></i> Uygulama Seçenekleri
@@ -385,7 +408,7 @@
 
         <div class="text-center text-[10px] text-slate-400 py-2">
           Gelişim Cepte • 16 Günlük Bütüncül Program v2.0<br>
-          Kullanıcı bazlı veri saklama & Google AI Studio
+          Kullanıcı bazlı veri saklama & Yönetici Raporu
         </div>
 
       </section>
@@ -453,6 +476,53 @@
 
           <button onclick="handleMobileCreateOrLoginProfile()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md shadow-blue-600/20 tap-bounce">
             Giriş Yap ve Başla
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= MOBİL YÖNETİCİ & ÖĞRETMEN RAPOR MODALI ================= -->
+    <div id="mobileAdminModal" class="absolute inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex-col justify-end p-0">
+      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[90%] overflow-y-auto">
+        <div class="flex items-center justify-between border-b pb-2">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow">
+              <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <div>
+              <h3 class="font-fun text-base font-bold text-slate-800">Yönetici Kontrol Paneli</h3>
+              <p class="text-[10px] text-slate-400">Sınıf genel performansı ve öğrenci takibi</p>
+            </div>
+          </div>
+          <button onclick="closeMobileAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Özet Kartlar -->
+        <div class="grid grid-cols-2 gap-2" id="mobileAdminMetrics">
+          <!-- JS ile doldurulacak -->
+        </div>
+
+        <!-- Öğrenci Listesi -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Karneleri:</label>
+            <button onclick="exportAllClassDataMobile()" class="text-[10px] text-blue-600 font-bold hover:underline">
+              Toplu Yedeği İndir (JSON)
+            </button>
+          </div>
+          <div id="mobileAdminStudentList" class="space-y-2 max-h-60 overflow-y-auto pr-0.5">
+            <!-- JS ile öğrenci kartları -->
+          </div>
+        </div>
+
+        <div class="pt-2 border-t flex gap-2">
+          <button onclick="loadDemoClassDataMobile()" class="flex-1 py-2 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold tap-bounce">
+            Örnek Öğrenci Ekle (Demo)
+          </button>
+          <button onclick="closeMobileAdminModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">
+            Kapat
           </button>
         </div>
       </div>
@@ -761,7 +831,165 @@
       playChime('click');
     }
 
-    /* 4. SOUND & RENDER LOGIC */
+    /* 4. MOBİL YÖNETİCİ RAPORU MODALI */
+    function openMobileAdminModal() {
+      renderMobileAdminView();
+      document.getElementById("mobileAdminModal").classList.remove("hidden");
+      document.getElementById("mobileAdminModal").classList.add("flex");
+    }
+
+    function closeMobileAdminModal() {
+      document.getElementById("mobileAdminModal").classList.add("hidden");
+      document.getElementById("mobileAdminModal").classList.remove("flex");
+    }
+
+    function renderMobileAdminView() {
+      const metricsContainer = document.getElementById("mobileAdminMetrics");
+      let totalTasks = 0;
+      let totalLessons = 0;
+      let topStudent = { name: "-", xp: -1, avatar: "👤" };
+
+      profiles.forEach(p => {
+        let uData = null;
+        try { uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username))); } catch(e) {}
+        if (uData && uData.daysData) {
+          let uXP = 0;
+          Object.values(uData.daysData).forEach(d => {
+            Object.values(d.tasks || {}).forEach(st => {
+              if (st === 'done') { totalTasks++; uXP += 10; }
+              else if (st === 'half') { uXP += 5; }
+            });
+            (d.lessons || []).forEach(l => { if (l.done) { totalLessons++; uXP += 15; } });
+            if (d.rating) uXP += d.rating * 5;
+          });
+          if (uXP > topStudent.xp) {
+            topStudent = { name: p.username, xp: uXP, avatar: p.avatar };
+          }
+        }
+      });
+
+      const avgSuccess = profiles.length > 0 ? Math.round((totalTasks / (profiles.length * 80)) * 100) : 0;
+
+      metricsContainer.innerHTML = `
+        <div class="p-2.5 rounded-xl bg-blue-50 border border-blue-200">
+          <div class="text-[9px] font-bold text-blue-600 uppercase">Mevcut</div>
+          <div class="text-base font-fun font-bold text-blue-950">${profiles.length} Öğrenci</div>
+          <div class="text-[9px] text-blue-500">Kayıtlı Profil</div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200">
+          <div class="text-[9px] font-bold text-emerald-600 uppercase">Sınıf Başarısı</div>
+          <div class="text-base font-fun font-bold text-emerald-950">%${Math.min(100, avgSuccess)}</div>
+          <div class="text-[9px] text-emerald-500">${totalTasks} Görev Yapıldı</div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200">
+          <div class="text-[9px] font-bold text-amber-600 uppercase">Dersler</div>
+          <div class="text-base font-fun font-bold text-amber-950">${totalLessons} Ders</div>
+          <div class="text-[9px] text-amber-500">K/S Tamamlandı</div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200">
+          <div class="text-[9px] font-bold text-purple-600 uppercase">Lider</div>
+          <div class="text-xs font-fun font-bold text-purple-950 truncate">${topStudent.avatar} ${topStudent.name}</div>
+          <div class="text-[9px] text-purple-500">${Math.max(0, topStudent.xp)} XP</div>
+        </div>
+      `;
+
+      const listContainer = document.getElementById("mobileAdminStudentList");
+      listContainer.innerHTML = "";
+
+      profiles.forEach(p => {
+        let uData = null;
+        try { uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username))); } catch(e) {}
+        
+        let uXP = 0;
+        let uTasks = 0;
+        let uLessons = 0;
+        let uStreak = 0;
+        let lastNote = "";
+
+        if (uData && uData.daysData) {
+          DAYS_CONFIG.forEach(d => {
+            const day = uData.daysData[d.id] || { tasks: {}, lessons: [], rating: 0, note: "" };
+            let hasDone = false;
+            Object.values(day.tasks || {}).forEach(st => {
+              if (st === 'done') { uXP += 10; uTasks++; hasDone = true; }
+              else if (st === 'half') { uXP += 5; hasDone = true; }
+            });
+            (day.lessons || []).forEach(l => { if (l.done) { uXP += 15; uLessons++; hasDone = true; } });
+            if (day.rating) uXP += day.rating * 5;
+            if (day.note) lastNote = day.note;
+            if (hasDone) uStreak++;
+          });
+        }
+
+        const taskPct = Math.min(100, Math.round((uTasks / 80) * 100));
+
+        const card = document.createElement("div");
+        card.className = "p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-2";
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-white border flex items-center justify-center text-sm shadow-xs">${p.avatar}</span>
+              <div>
+                <h5 class="font-fun font-bold text-xs text-slate-800">${p.username}</h5>
+                <span class="text-[10px] text-amber-600 font-bold">${uXP} XP • 🔥 ${uStreak} Gün</span>
+              </div>
+            </div>
+            <button onclick="switchMobileUser('${p.username}'); closeMobileAdminModal();" class="px-2.5 py-1 rounded-xl bg-blue-600 text-white text-[10px] font-bold tap-bounce">
+              Geçiş Yap
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-1.5 text-[10px] bg-white p-2 rounded-xl border text-slate-600">
+            <div><strong>Görev:</strong> ${uTasks}/80 (%${taskPct})</div>
+            <div><strong>Ders:</strong> ${uLessons}/48</div>
+          </div>
+
+          ${lastNote ? `<p class="text-[10px] text-slate-500 italic truncate">"${lastNote}"</p>` : ''}
+        `;
+        listContainer.appendChild(card);
+      });
+    }
+
+    function exportAllClassDataMobile() {
+      let classData = {
+        exportedAt: new Date().toISOString(),
+        profiles: profiles,
+        studentsData: {}
+      };
+      profiles.forEach(p => {
+        const key = getUserStorageKey(p.username);
+        const data = localStorage.getItem(key);
+        if (data) {
+          try { classData.studentsData[p.username] = JSON.parse(data); } catch(e) {}
+        }
+      });
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(classData, null, 2));
+      const a = document.createElement("a");
+      a.href = dataStr;
+      a.download = `Sinif_Toplu_Yedek_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      playChime('done');
+    }
+
+    function loadDemoClassDataMobile() {
+      const demo1 = { username: "Ahmet", avatar: "🚀", color: "blue", createdAt: "2026-08-29" };
+      const demo2 = { username: "Zeynep", avatar: "🌟", color: "purple", createdAt: "2026-08-29" };
+
+      if (!profiles.some(p => p.username === demo1.username)) profiles.push(demo1);
+      if (!profiles.some(p => p.username === demo2.username)) profiles.push(demo2);
+      localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+
+      renderMobileAdminView();
+      alert("Örnek öğrenciler yüklendi!");
+      playChime('done');
+    }
+
+    /* 5. SOUND & RENDER LOGIC */
     function playChime(type = 'click') {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1175,7 +1403,7 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
         const btnText = document.getElementById("copyPromptBtnText");
         btnText.textContent = "Kopyalandı! ✓";
         playChime('done');
-        setTimeout(() => { btnText.textContent = "Promptu Kopyala"; }, 2000);
+        setTimeout(() => { btnText.textContent = "Günün Gelişim Raporunu Kopyala"; }, 2000);
       });
     }
 
