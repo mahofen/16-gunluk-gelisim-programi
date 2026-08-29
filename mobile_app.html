@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="tr" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Gelişim Cepte | 16 Günlük Mobil Uygulama</title>
+  
+  <!-- PWA Meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0284c7">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            fun: ['"Fredoka"', 'cursive', 'sans-serif'],
+          },
+          colors: {
+            app: {
+              blue: '#0284c7',
+              navy: '#0f172a',
+              card: '#ffffff',
+              bg: '#f1f5f9',
+            }
+          },
+          boxShadow: {
+            'mobile-nav': '0 -4px 20px rgba(0, 0, 0, 0.06)',
+            'card-sm': '0 2px 8px rgba(0, 0, 0, 0.04)',
+            'floating': '0 8px 30px rgba(2, 132, 199, 0.35)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* iOS Safe Area & Native App Feel */
+    body {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    .safe-top {
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+
+    /* Hide scrollbars for clean mobile feel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Active Tap Animation */
+    .tap-bounce:active {
+      transform: scale(0.96);
+    }
+
+    /* Pulse Glow */
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    .animate-pulse-glow {
+      animation: pulse-glow 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 h-full flex justify-center items-center antialiased">
+
+  <!-- ================= MOBILE APP WRAPPER ================= -->
+  <!-- On desktop it renders as an elegant phone mockup; on mobile devices it fills the entire screen seamlessly -->
+  <div class="w-full max-w-md h-full sm:h-[92vh] sm:max-h-[890px] bg-slate-50 sm:rounded-[44px] shadow-2xl flex flex-col overflow-hidden relative border-0 sm:border-[8px] sm:border-slate-800">
+    
+    <!-- Top Native Status Bar (Mock / Safe Area) -->
+    <div class="bg-blue-600 text-white pt-2 px-6 pb-1 flex items-center justify-between text-[11px] font-semibold safe-top shrink-0">
+      <span>09:41</span>
+      <div class="w-20 h-4 bg-slate-900 rounded-full hidden sm:block mx-auto -mt-1"></div>
+      <div class="flex items-center gap-1.5">
+        <i class="fa-solid fa-signal"></i>
+        <i class="fa-solid fa-wifi"></i>
+        <i class="fa-solid fa-battery-full text-sm"></i>
+      </div>
+    </div>
+
+    <!-- App Header -->
+    <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white px-4 py-3 shrink-0 shadow-md">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-amber-300 shadow-inner">
+            <i class="fa-solid fa-compass text-lg"></i>
+          </div>
+          <div>
+            <h1 class="font-fun text-base font-bold leading-tight">Gelişim Cepte 🚀</h1>
+            <p class="text-[10px] text-sky-100 font-medium" id="headerPhaseSubtitle">1. Aşama: Alışma (29 Ağu - 2 Eyl)</p>
+          </div>
+        </div>
+
+        <!-- Level & Streak Badges -->
+        <div class="flex items-center gap-1.5">
+          <div class="bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-amber-300 flex items-center gap-1 border border-white/10">
+            <i class="fa-solid fa-bolt"></i>
+            <span id="mobileXpBadge">0 XP</span>
+          </div>
+          <div class="bg-orange-500/90 text-white px-2 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 shadow-sm">
+            <i class="fa-solid fa-fire text-amber-200"></i>
+            <span id="mobileStreakBadge">0</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 16 Günlük Yatay Story Çizelgesi (Horizontal Story Scroll) -->
+    <div class="bg-white border-b border-slate-200 py-2.5 px-3 shrink-0">
+      <div class="flex gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1" id="mobileDaysContainer">
+        <!-- JS ile dinamik üretilecek 16 gün çemberi -->
+      </div>
+    </div>
+
+    <!-- ================= SCROLLABLE CONTENT BODY ================= -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar" id="tabContentArea">
+      
+      <!-- ================= TAB 1: BUGÜN (5 VAKİT & GÜNLÜK TAKİP) ================= -->
+      <section id="tab-today" class="tab-page space-y-4">
+        
+        <!-- Gün Bannerı & Aşama Bilgisi -->
+        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-3.5 text-white shadow-card-sm flex items-center justify-between">
+          <div>
+            <div class="text-[10px] font-bold uppercase tracking-wider text-sky-200" id="todayMonthText">29 AĞUSTOS CUMARTESİ</div>
+            <h2 class="font-fun text-lg font-bold" id="todayDayTitle">1. Gün Görevlerin</h2>
+            <p class="text-[11px] text-sky-100 mt-0.5 line-clamp-1" id="todayGoalText">Her vakitten en az 1 görev seç!</p>
+          </div>
+          <div class="text-right">
+            <span class="text-2xl font-fun font-bold text-amber-300" id="todayCompletedRatio">0/5</span>
+            <div class="text-[9px] text-sky-200">Vakit Hazır</div>
+          </div>
+        </div>
+
+        <!-- 5 VAKİT LİSTESİ -->
+        <div class="space-y-3" id="mobileVakitlerList">
+          <!-- JS ile doldurulacak -->
+        </div>
+
+        <!-- GÜN SONU YILDIZI & NOT KARTI -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-card-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-star text-amber-400"></i> Gün Sonu Öz Değerlendirme
+            </h3>
+            <span class="text-[11px] font-bold text-amber-600" id="mobileStarText">Yıldız Ver</span>
+          </div>
+
+          <!-- Yıldızlar -->
+          <div class="flex justify-center items-center gap-3 py-1 bg-amber-50 rounded-xl border border-amber-200/60" id="mobileStarsContainer">
+            <button onclick="setMobileRating(1)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="1"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setMobileRating(2)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="2"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setMobileRating(3)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="3"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setMobileRating(4)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="4"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setMobileRating(5)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="5"><i class="fa-solid fa-star"></i></button>
+          </div>
+
+          <!-- Günlük Not / Yansıma -->
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 mb-1">"Yarın neyi daha iyi yapabilirim?"</label>
+            <textarea id="mobileDailyNote" rows="2" placeholder="Bugün neler öğrendin, yarın neye odaklanacaksın?..." class="w-full p-2.5 text-xs rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:outline-none transition-all resize-none"></textarea>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 2: DERSLER (16 GÜNLÜK MATRİS) ================= -->
+      <section id="tab-lessons" class="tab-page hidden space-y-4">
+        
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-book-open text-blue-600"></i> Bugünün 3 Dersi
+            </h3>
+            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200" id="currentDayLessonsProgress">
+              0/3 Tamam
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-500 mb-3">
+            Günün derslerini işaretle (K: Konu Çalışması, S: Soru Çözümü):
+          </p>
+
+          <div class="space-y-2" id="todayLessonsList">
+            <!-- JS ile bugünün 3 dersi -->
+          </div>
+        </div>
+
+        <!-- 16 Günlük Ders Matrisi Görünümü -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-table-cells text-indigo-600"></i> 16 Günlük Ders Matrisi
+            </h4>
+            <span class="text-[10px] text-slate-400">48 Ders</span>
+          </div>
+
+          <div class="overflow-x-auto pb-1 no-scrollbar">
+            <table class="w-full text-center text-xs border-collapse min-w-[340px]" id="mobileLessonsMatrix">
+              <!-- JS ile mini matris -->
+            </table>
+          </div>
+
+          <div class="flex items-center justify-between text-[10px] text-slate-500 bg-slate-50 p-2 rounded-xl border">
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-600"></span> K: Konu</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-600"></span> S: Soru</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> ✓: Yapıldı</span>
+          </div>
+        </div>
+
+        <!-- Haftalık Referans Dağılımı -->
+        <div class="bg-blue-50/70 rounded-2xl p-3 border border-blue-200/80 text-[11px] text-blue-900 space-y-1">
+          <div class="font-bold flex items-center gap-1"><i class="fa-solid fa-circle-info text-blue-600"></i> Planımın Kuralları:</div>
+          <div>• Her gün en az 3 ders çalışırım.</div>
+          <div>• En az 1 Konu (K) ve 1 Soru (S) tamamlarım.</div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: GOOGLE AI STUDIO & KOÇ ================= -->
+      <section id="tab-ai" class="tab-page hidden space-y-4">
+        
+        <!-- Google AI Studio Bağlantı Kartı -->
+        <div class="bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 text-white/10 text-8xl pointer-events-none">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div class="relative z-10 space-y-2">
+            <div class="inline-flex items-center gap-1 bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase">
+              <i class="fa-solid fa-sparkles text-amber-300"></i> Google AI Studio Entegrasyonu
+            </div>
+            <h3 class="font-fun text-lg font-bold leading-tight">
+              16 Günlük Gemini AI Gelişim Koçu
+            </h3>
+            <p class="text-xs text-purple-100 leading-relaxed">
+              Google AI Studio ile doğrudan bağlantı kurarak gününü analiz ettirebilir, Osmanlıca çalışması yapabilir ve yaratıcı projeler üretebilirsin.
+            </p>
+
+            <!-- Doğrudan AI Studio Link Butonları -->
+            <div class="pt-2 flex flex-wrap gap-2">
+              <a href="https://aistudio.google.com/prompts/new_chat" target="_blank" rel="noopener noreferrer" class="flex-1 bg-white text-indigo-900 hover:bg-amber-300 font-fun font-bold text-xs py-2.5 px-3 rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all tap-bounce">
+                <i class="fa-solid fa-arrow-up-right-from-square text-indigo-600"></i>
+                <span>Google AI Studio'da Aç ↗</span>
+              </a>
+              <button onclick="copyAiPromptTemplate()" class="bg-white/20 hover:bg-white/30 text-white font-fun font-semibold text-xs py-2.5 px-3 rounded-xl border border-white/30 flex items-center gap-1.5 transition-all tap-bounce">
+                <i class="fa-regular fa-copy"></i>
+                <span id="copyPromptBtnText">Promptu Kopyala</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobil Canlı AI Sohbet / Analiz Arayüzü -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-robot text-purple-600"></i> Hızlı AI Koç Analizi
+            </h4>
+            <span class="text-[10px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full font-bold border border-purple-200">Gemini 2.0 / 1.5</span>
+          </div>
+
+          <!-- Chat Mesaj Alanı -->
+          <div class="h-44 overflow-y-auto space-y-2 p-2 bg-slate-50 rounded-xl border text-xs no-scrollbar" id="aiChatMessages">
+            <div class="bg-purple-100/70 text-purple-900 p-2.5 rounded-xl max-w-[90%] leading-relaxed">
+              👋 <strong>Merhaba Genç Kaşif!</strong> 16 günlük gelişim yolculuğunda sana koçluk etmek için buradayım. "Günü Analiz Et" butonuna basarak bugünkü ilerlemen hakkında anında geri bildirim alabilirsin!
+            </div>
+          </div>
+
+          <!-- Hızlı AI Aksiyon Butonları -->
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <button onclick="requestAiAction('evaluate_day')" class="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
+              <i class="fa-solid fa-chart-line text-purple-600"></i> Günümü Değerlendir
+            </button>
+            <button onclick="requestAiAction('ottoman_quiz')" class="p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
+              <i class="fa-solid fa-scroll text-blue-600"></i> Osmanlıca Kelime Sor
+            </button>
+            <button onclick="requestAiAction('project_idea')" class="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
+              <i class="fa-solid fa-lightbulb text-emerald-600"></i> Proje / Üretim Fikri
+            </button>
+            <button onclick="requestAiAction('motivation')" class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
+              <i class="fa-solid fa-fire text-amber-600"></i> Motivasyon Ver ⚡
+            </button>
+          </div>
+
+          <!-- API Key Opsiyonu (İsteğe Bağlı Canlı REST Çağrısı İçin) -->
+          <div class="pt-2 border-t text-[10px] text-slate-500">
+            <details class="cursor-pointer">
+              <summary class="font-semibold text-purple-700 hover:underline">⚙️ Google AI Studio API Anahtarı Ekle (İsteğe Bağlı)</summary>
+              <div class="mt-2 space-y-1.5">
+                <input type="password" id="geminiApiKeyInput" placeholder="AI Studio API Key (AIzaSy...)" class="w-full p-2 rounded-lg bg-slate-100 border text-xs focus:bg-white focus:outline-none">
+                <p class="text-[9px] text-slate-400">API anahtarı yalnızca cihazınızda tutulur. Anahtar yoksa akıllı hazır koç yanıtları verilir.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 4: ROZETLER & ANALİTİK ================= -->
+      <section id="tab-badges" class="tab-page hidden space-y-4">
+        
+        <!-- Seviye Kartı -->
+        <div class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-4 text-white shadow-card-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-100">Gelişim Seviyesi</span>
+            <span class="font-fun text-sm font-bold text-yellow-200" id="badgeTabLevelTitle">1. Seviye: Çırak</span>
+          </div>
+          <div class="w-full bg-black/20 h-3 rounded-full overflow-hidden p-0.5">
+            <div id="badgeTabXpBar" class="bg-yellow-300 h-full rounded-full transition-all duration-500" style="width: 20%"></div>
+          </div>
+          <div class="flex justify-between text-[11px] text-amber-100">
+            <span id="badgeTabXpText">0 XP</span>
+            <span>Hedef: 500 XP (Şampiyon)</span>
+          </div>
+        </div>
+
+        <!-- 4 Boyut Radar/Polar Analitiği -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-2">
+          <h4 class="font-fun text-xs font-bold text-slate-700 uppercase tracking-wider">4 Gelişim Alanı Dengesi</h4>
+          <div class="w-full h-48 relative flex items-center justify-center">
+            <canvas id="mobileAreasChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Başarı Rozetleri Grid -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
+          <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-trophy text-amber-500"></i> Başarı Rozetleri
+          </h4>
+          <div class="grid grid-cols-3 gap-2" id="mobileBadgesGrid">
+            <!-- JS ile doldurulacak -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 5: AYARLAR & YEDEK ================= -->
+      <section id="tab-settings" class="tab-page hidden space-y-4">
+        
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
+          <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-sliders text-slate-600"></i> Uygulama Ayarları
+          </h3>
+
+          <div class="space-y-2 text-xs">
+            <a href="index.html" class="w-full p-3 rounded-xl bg-slate-50 hover:bg-blue-50 border text-slate-700 font-semibold flex items-center justify-between transition-colors">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-desktop text-blue-600"></i> Masaüstü / Web Görünümüne Geç</span>
+              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            </a>
+
+            <button onclick="exportMobileData()" class="w-full p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border text-slate-700 font-semibold flex items-center justify-between transition-colors">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-download text-emerald-600"></i> Verileri JSON Olarak İndir</span>
+              <i class="fa-solid fa-arrow-down text-slate-400 text-xs"></i>
+            </button>
+
+            <label class="w-full p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border text-slate-700 font-semibold flex items-center justify-between cursor-pointer transition-colors">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-upload text-sky-600"></i> Yedeği Geri Yükle</span>
+              <input type="file" accept=".json" class="hidden" onchange="importMobileData(event)">
+              <i class="fa-solid fa-arrow-up text-slate-400 text-xs"></i>
+            </label>
+
+            <button onclick="resetMobileData()" class="w-full p-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-semibold flex items-center justify-between transition-colors">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-trash-can text-rose-600"></i> Tüm Verileri Sıfırla</span>
+              <i class="fa-solid fa-triangle-exclamation text-rose-400 text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="text-center text-[10px] text-slate-400 py-2">
+          Gelişim Cepte • 16 Günlük Bütüncül Program v1.0<br>
+          Google AI Studio & Antigravity Destekli
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
+    <nav class="bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2 flex items-center justify-around shadow-mobile-nav shrink-0 safe-bottom">
+      <button onclick="switchTab('today')" id="nav-btn-today" class="nav-tab-btn flex flex-col items-center gap-0.5 text-blue-600 font-bold transition-all tap-bounce">
+        <i class="fa-solid fa-sun text-lg"></i>
+        <span class="text-[10px]">Bugün</span>
+      </button>
+
+      <button onclick="switchTab('lessons')" id="nav-btn-lessons" class="nav-tab-btn flex flex-col items-center gap-0.5 text-slate-400 font-medium transition-all tap-bounce">
+        <i class="fa-solid fa-book-open text-lg"></i>
+        <span class="text-[10px]">Dersler</span>
+      </button>
+
+      <!-- Central AI Studio Quick Button -->
+      <button onclick="switchTab('ai')" id="nav-btn-ai" class="flex flex-col items-center justify-center -mt-5 w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-600 to-blue-600 text-white shadow-floating border-2 border-white tap-bounce">
+        <i class="fa-solid fa-sparkles text-lg animate-pulse"></i>
+      </button>
+
+      <button onclick="switchTab('badges')" id="nav-btn-badges" class="nav-tab-btn flex flex-col items-center gap-0.5 text-slate-400 font-medium transition-all tap-bounce">
+        <i class="fa-solid fa-trophy text-lg"></i>
+        <span class="text-[10px]">Rozetler</span>
+      </button>
+
+      <button onclick="switchTab('settings')" id="nav-btn-settings" class="nav-tab-btn flex flex-col items-center gap-0.5 text-slate-400 font-medium transition-all tap-bounce">
+        <i class="fa-solid fa-gear text-lg"></i>
+        <span class="text-[10px]">Ayarlar</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- ================= JAVASCRIPT APP LOGIC ================= -->
+  <script>
+    /* 1. CONFIG & CALENDAR DATA */
+    const DAYS_CONFIG = [
+      { id: 1, dateStr: "29 AĞU", dayName: "Cumartesi", dayNumber: 29, month: "AĞU", phase: 1, weekDayIndex: 5 },
+      { id: 2, dateStr: "30 AĞU", dayName: "Pazar", dayNumber: 30, month: "AĞU", phase: 1, weekDayIndex: 6 },
+      { id: 3, dateStr: "31 AĞU", dayName: "Pazartesi", dayNumber: 31, month: "AĞU", phase: 1, weekDayIndex: 0 },
+      { id: 4, dateStr: "1 EYL", dayName: "Salı", dayNumber: 1, month: "EYL", phase: 1, weekDayIndex: 1 },
+      { id: 5, dateStr: "2 EYL", dayName: "Çarşamba", dayNumber: 2, month: "EYL", phase: 1, weekDayIndex: 2 },
+      { id: 6, dateStr: "3 EYL", dayName: "Perşembe", dayNumber: 3, month: "EYL", phase: 2, weekDayIndex: 3 },
+      { id: 7, dateStr: "4 EYL", dayName: "Cuma", dayNumber: 4, month: "EYL", phase: 2, weekDayIndex: 4 },
+      { id: 8, dateStr: "5 EYL", dayName: "Cumartesi", dayNumber: 5, month: "EYL", phase: 2, weekDayIndex: 5 },
+      { id: 9, dateStr: "6 EYL", dayName: "Pazar", dayNumber: 6, month: "EYL", phase: 2, weekDayIndex: 6 },
+      { id: 10, dateStr: "7 EYL", dayName: "Pazartesi", dayNumber: 7, month: "EYL", phase: 2, weekDayIndex: 0 },
+      { id: 11, dateStr: "8 EYL", dayName: "Salı", dayNumber: 8, month: "EYL", phase: 2, weekDayIndex: 1 },
+      { id: 12, dateStr: "9 EYL", dayName: "Çarşamba", dayNumber: 9, month: "EYL", phase: 3, weekDayIndex: 2 },
+      { id: 13, dateStr: "10 EYL", dayName: "Perşembe", dayNumber: 10, month: "EYL", phase: 3, weekDayIndex: 3 },
+      { id: 14, dateStr: "11 EYL", dayName: "Cuma", dayNumber: 11, month: "EYL", phase: 3, weekDayIndex: 4 },
+      { id: 15, dateStr: "12 EYL", dayName: "Cumartesi", dayNumber: 12, month: "EYL", phase: 3, weekDayIndex: 5 },
+      { id: 16, dateStr: "13 EYL", dayName: "Pazar", dayNumber: 13, month: "EYL", phase: 3, weekDayIndex: 6 },
+    ];
+
+    const PHASES = {
+      1: { name: "1. Aşama: Alışma", range: "29 Ağu - 2 Eyl", icon: "🌱", goal: "Programa alışırım, basit görevlerle başlarım." },
+      2: { name: "2. Aşama: Gelişme", range: "3 - 8 Eyl", icon: "🚀", goal: "Akademik çalışmaları artırır, Osmanlıca ve proje yaparım." },
+      3: { name: "3. Aşama: Tamamlama", range: "9 - 13 Eyl", icon: "🎯", goal: "Eksikleri giderir, somut proje çıkarır, değerlendiririm." }
+    };
+
+    const DEFAULT_VAKITLER = [
+      {
+        id: "v1", no: 1, title: "1. Güne Başla", subtitle: "Bedeni & zihni hazırla",
+        icon: "fa-sun", color: "text-amber-500", bg: "bg-amber-500", lightBg: "bg-amber-50",
+        tasks: [
+          { id: "v1_1", text: "Sabah sporu", area: "C" },
+          { id: "v1_2", text: "Kahvaltıya yardım", area: "D" },
+          { id: "v1_3", text: "Çiçekleri kontrol et / bakım", area: "D" },
+          { id: "v1_4", text: "Odanı topla", area: "D" },
+          { id: "v1_5", text: "Günün planını gözden geçir", area: "D" },
+          { id: "v1_6", text: "Nefes egzersizi yap", area: "C" }
+        ]
+      },
+      {
+        id: "v2", no: 2, title: "2. Öğren", subtitle: "Odaklan ve çalış",
+        icon: "fa-lightbulb", color: "text-blue-500", bg: "bg-blue-500", lightBg: "bg-blue-50",
+        tasks: [
+          { id: "v2_1", text: "Konu çalış", area: "A" },
+          { id: "v2_2", text: "Soru çöz", area: "A" },
+          { id: "v2_3", text: "Osmanlıca oku / yaz", area: "A" },
+          { id: "v2_4", text: "Kitap oku (dersle ilgili)", area: "A" },
+          { id: "v2_5", text: "Yazı yaz", area: "A" },
+          { id: "v2_6", text: "Notlarını düzenle", area: "A" }
+        ]
+      },
+      {
+        id: "v3", no: 3, title: "3. Üret / Keşfet", subtitle: "Merak et, tasarla",
+        icon: "fa-magnifying-glass", color: "text-emerald-500", bg: "bg-emerald-500", lightBg: "bg-emerald-50",
+        tasks: [
+          { id: "v3_1", text: "Resim yap", area: "B" },
+          { id: "v3_2", text: "Lego ile üret", area: "B" },
+          { id: "v3_3", text: "Araştırma yap", area: "B" },
+          { id: "v3_4", text: "Atölye çalışması yap", area: "B" },
+          { id: "v3_5", text: "Proje çalışması yap", area: "B" },
+          { id: "v3_6", text: "Yeni bir şey dene", area: "B" }
+        ]
+      },
+      {
+        id: "v4", no: 4, title: "4. Hareket Et", subtitle: "Oyna, enerjini at",
+        icon: "fa-bicycle", color: "text-orange-500", bg: "bg-orange-500", lightBg: "bg-orange-50",
+        tasks: [
+          { id: "v4_1", text: "Bisiklete bin", area: "C" },
+          { id: "v4_2", text: "Havuza git", area: "C" },
+          { id: "v4_3", text: "Bahçede oyna", area: "C" },
+          { id: "v4_4", text: "Akşam yürüyüşü", area: "C" },
+          { id: "v4_5", text: "Serbest oyun", area: "C" },
+          { id: "v4_6", text: "Düzenli spor yap", area: "C" }
+        ]
+      },
+      {
+        id: "v5", no: 5, title: "5. Sakinleş & Oku", subtitle: "Dinlendir, oku",
+        icon: "fa-moon", color: "text-purple-500", bg: "bg-purple-500", lightBg: "bg-purple-50",
+        tasks: [
+          { id: "v5_1", text: "Kitap oku", area: "A" },
+          { id: "v5_2", text: "Dergi oku", area: "A" },
+          { id: "v5_3", text: "Günlük yaz", area: "A" },
+          { id: "v5_4", text: "Hafif Osmanlıca oku", area: "A" },
+          { id: "v5_5", text: "Günün değerlendirmesini yap", area: "D" }
+        ]
+      }
+    ];
+
+    const WEEKLY_LESSONS_TEMPLATE = [
+      [{ type: "K" }, { type: "S" }, { type: "S" }],
+      [{ type: "K" }, { type: "S" }, { type: "K" }],
+      [{ type: "K" }, { type: "S" }, { type: "S" }],
+      [{ type: "S" }, { type: "K" }, { type: "S" }],
+      [{ type: "K" }, { type: "S" }, { type: "K" }],
+      [{ type: "K" }, { type: "S" }, { type: "S" }],
+      [{ type: "S" }, { type: "K" }, { type: "K" }]
+    ];
+
+    const BADGES = [
+      { id: 'first_step', title: 'İlk Adım 🌱', desc: 'İlk gün görevini yap', icon: 'fa-shoe-prints', reqXP: 10 },
+      { id: 'study_pro', title: 'Ders Yıldızı 📚', desc: '10 ders tamamla', icon: 'fa-book-open-reader', reqXP: 100 },
+      { id: 'craft_master', title: 'Üretici 🎨', desc: '5 üretim görevi', icon: 'fa-palette', reqXP: 150 },
+      { id: 'sporty', title: 'Sporcu 🏃', desc: '5 hareket görevi', icon: 'fa-person-running', reqXP: 200 },
+      { id: 'five_star', title: '5 Yıldız ⭐', desc: '5 yıldızlı gün', icon: 'fa-star', reqXP: 50 },
+      { id: 'legend', title: 'Şampiyon 🏆', desc: 'Tüm program', icon: 'fa-trophy', reqXP: 500 }
+    ];
+
+    /* 2. STATE & PERSISTENCE */
+    const STORAGE_KEY = "fen_deneme_16_gunluk_gelisim_v1";
+    let state = {
+      selectedDayId: 1,
+      activeTab: 'today',
+      daysData: {}
+    };
+
+    function initMobileState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          state.daysData = parsed.daysData || {};
+          state.selectedDayId = parsed.selectedDayId || 1;
+        } catch(e) {
+          createDefaultState();
+        }
+      } else {
+        createDefaultState();
+      }
+
+      DAYS_CONFIG.forEach(d => {
+        if (!state.daysData[d.id]) {
+          const t = WEEKLY_LESSONS_TEMPLATE[d.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
+          state.daysData[d.id] = {
+            tasks: {},
+            lessons: [{ type: t[0].type, done: false }, { type: t[1].type, done: false }, { type: t[2].type, done: false }],
+            rating: 0,
+            note: ""
+          };
+        }
+      });
+    }
+
+    function createDefaultState() {
+      state.daysData = {};
+      DAYS_CONFIG.forEach(d => {
+        const t = WEEKLY_LESSONS_TEMPLATE[d.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
+        state.daysData[d.id] = {
+          tasks: {},
+          lessons: [{ type: t[0].type, done: false }, { type: t[1].type, done: false }, { type: t[2].type, done: false }],
+          rating: 0,
+          note: ""
+        };
+      });
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderGlobalStats();
+    }
+
+    /* 3. SOUND SYNTHESIZER */
+    function playChime(type = 'click') {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'done') {
+          osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
+          gain.gain.setValueAtTime(0.12, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.25);
+        } else {
+          osc.frequency.setValueAtTime(440, ctx.currentTime);
+          gain.gain.setValueAtTime(0.04, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.06);
+        }
+      } catch(e) {}
+    }
+
+    /* 4. RENDERERS */
+    function renderDaysStoryBar() {
+      const container = document.getElementById("mobileDaysContainer");
+      container.innerHTML = "";
+
+      DAYS_CONFIG.forEach(d => {
+        const isSelected = d.id === state.selectedDayId;
+        const dData = state.daysData[d.id] || { tasks: {}, lessons: [], rating: 0 };
+        const hasDone = Object.values(dData.tasks).some(v => v === 'done') || dData.lessons.some(l => l.done);
+
+        const btn = document.createElement("button");
+        btn.onclick = () => selectMobileDay(d.id);
+        btn.className = `flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-2xl transition-all tap-bounce ${
+          isSelected 
+            ? 'bg-blue-600 text-white shadow-md scale-105 ring-2 ring-blue-300 font-bold' 
+            : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80'
+        }`;
+
+        btn.innerHTML = `
+          <span class="text-[9px] uppercase tracking-tighter ${isSelected ? 'text-blue-200' : 'text-slate-400'}">${d.dayName.substring(0,2)}</span>
+          <span class="font-fun text-sm font-bold leading-tight">${d.dayNumber}</span>
+          ${hasDone ? `<span class="w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-amber-300' : 'bg-emerald-500'} mt-0.5"></span>` : '<span class="w-1.5 h-1.5"></span>'}
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function renderTodayView() {
+      const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId) || DAYS_CONFIG[0];
+      const pInfo = PHASES[cur.phase];
+      const dData = state.daysData[state.selectedDayId] || { tasks: {}, rating: 0, note: "" };
+
+      document.getElementById("headerPhaseSubtitle").textContent = `${pInfo.name} (${pInfo.range})`;
+      document.getElementById("todayMonthText").textContent = `${cur.dayNumber} ${cur.month === 'AĞU' ? 'AĞUSTOS' : 'EYLÜL'} ${cur.dayName.toUpperCase()}`;
+      document.getElementById("todayDayTitle").textContent = `${cur.id}. Gün Görevlerin ${pInfo.icon}`;
+      document.getElementById("todayGoalText").textContent = pInfo.goal;
+
+      // 5 Vakit Listesi
+      const listContainer = document.getElementById("mobileVakitlerList");
+      listContainer.innerHTML = "";
+
+      let completedVakitCount = 0;
+
+      DEFAULT_VAKITLER.forEach(v => {
+        const cDone = v.tasks.filter(t => dData.tasks[t.id] === 'done').length;
+        const cHalf = v.tasks.filter(t => dData.tasks[t.id] === 'half').length;
+        const isVakitMet = (cDone + cHalf) >= 1;
+        if (isVakitMet) completedVakitCount++;
+
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-2xl p-3.5 border border-slate-200 shadow-card-sm space-y-2.5";
+
+        let tasksHtml = '';
+        v.tasks.forEach(t => {
+          const st = dData.tasks[t.id] || 'none';
+          let iconHtml = '<span class="w-4 h-4 rounded-full border border-slate-300"></span>';
+          let btnClass = 'bg-slate-50 text-slate-700 border-slate-200';
+
+          if (st === 'done') {
+            iconHtml = '<span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>';
+            btnClass = 'bg-emerald-50 text-emerald-900 border-emerald-300 font-semibold';
+          } else if (st === 'half') {
+            iconHtml = '<span class="w-4 h-4 rounded-full bg-amber-500 text-white flex items-center justify-center text-[9px]"><i class="fa-solid fa-minus"></i></span>';
+            btnClass = 'bg-amber-50 text-amber-900 border-amber-300 font-semibold';
+          }
+
+          tasksHtml += `
+            <button onclick="toggleMobileTask('${t.id}')" class="w-full p-2 rounded-xl border text-xs flex items-center justify-between gap-2 transition-all ${btnClass} tap-bounce">
+              <span class="truncate">${t.text}</span>
+              ${iconHtml}
+            </button>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg ${v.lightBg} ${v.color} flex items-center justify-center text-sm">
+                <i class="fa-solid ${v.icon}"></i>
+              </div>
+              <div>
+                <h4 class="font-fun text-xs font-bold text-slate-800">${v.title}</h4>
+                <p class="text-[9px] text-slate-400">${v.subtitle}</p>
+              </div>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${isVakitMet ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'}">
+              ${isVakitMet ? '✓ Tamam' : 'En az 1 seç'}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 gap-1.5">
+            ${tasksHtml}
+          </div>
+        `;
+        listContainer.appendChild(card);
+      });
+
+      document.getElementById("todayCompletedRatio").textContent = `${completedVakitCount}/5`;
+
+      // Yıldızlar
+      const stars = document.querySelectorAll(".m-star");
+      stars.forEach(s => {
+        const val = parseInt(s.getAttribute("data-val"));
+        if (val <= (dData.rating || 0)) {
+          s.className = "m-star text-2xl text-amber-400 tap-bounce scale-110 drop-shadow";
+        } else {
+          s.className = "m-star text-2xl text-amber-200/60 tap-bounce";
+        }
+      });
+      document.getElementById("mobileStarText").textContent = dData.rating > 0 ? `${dData.rating} Yıldız Verildi` : "Puanını Seç";
+
+      // Not
+      const noteElem = document.getElementById("mobileDailyNote");
+      noteElem.value = dData.note || "";
+    }
+
+    function renderLessonsView() {
+      const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
+      const dData = state.daysData[state.selectedDayId] || { lessons: [] };
+
+      // Bugünün 3 Dersi
+      const listElem = document.getElementById("todayLessonsList");
+      listElem.innerHTML = "";
+
+      let doneCount = 0;
+      (dData.lessons || []).forEach((l, idx) => {
+        if (l.done) doneCount++;
+        const isK = l.type === 'K';
+
+        const row = document.createElement("div");
+        row.className = "p-2.5 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between";
+        row.innerHTML = `
+          <div class="flex items-center gap-2">
+            <button onclick="toggleMobileLessonType(${state.selectedDayId}, ${idx})" class="w-7 h-7 rounded-full font-bold text-xs text-white flex items-center justify-center ${isK ? 'bg-blue-600' : 'bg-rose-600'} shadow-sm tap-bounce" title="Konu/Soru Değiştir">
+              ${l.type}
+            </button>
+            <span class="text-xs font-bold text-slate-700">${idx + 1}. Ders (${isK ? 'Konu Çalışması' : 'Soru Çözümü'})</span>
+          </div>
+
+          <button onclick="toggleMobileLessonDone(${state.selectedDayId}, ${idx})" class="px-3 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
+            l.done ? 'bg-emerald-500 text-white shadow-sm' : 'bg-white border border-slate-300 text-slate-500'
+          } tap-bounce">
+            ${l.done ? '<i class="fa-solid fa-check"></i> Tamamlandı' : 'Tamamla'}
+          </button>
+        `;
+        listElem.appendChild(row);
+      });
+
+      document.getElementById("currentDayLessonsProgress").textContent = `${doneCount}/3 Tamam`;
+
+      // 16 Günlük Matris
+      const matrixElem = document.getElementById("mobileLessonsMatrix");
+      let header = '<tr class="bg-slate-100 text-slate-600 font-bold border-b"><th class="p-1 text-left">Ders</th>';
+      DAYS_CONFIG.forEach(d => {
+        header += `<th class="p-1 cursor-pointer ${d.id === state.selectedDayId ? 'text-blue-600 font-bold' : ''}" onclick="selectMobileDay(${d.id})">${d.dayNumber}</th>`;
+      });
+      header += '</tr>';
+
+      let rows = '';
+      for (let lIdx = 0; lIdx < 3; lIdx++) {
+        rows += `<tr><td class="p-1 font-bold text-slate-600 text-left">${lIdx+1}.D</td>`;
+        DAYS_CONFIG.forEach(d => {
+          const lData = (state.daysData[d.id] && state.daysData[d.id].lessons[lIdx]) || { type: 'K', done: false };
+          rows += `
+            <td class="p-1">
+              <span onclick="toggleMobileLessonDone(${d.id}, ${lIdx})" class="w-4 h-4 rounded-full text-[9px] font-bold inline-flex items-center justify-center cursor-pointer ${
+                lData.done ? 'bg-emerald-500 text-white' : (lData.type === 'K' ? 'bg-blue-100 text-blue-800' : 'bg-rose-100 text-rose-800')
+              }">
+                ${lData.done ? '✓' : lData.type}
+              </span>
+            </td>
+          `;
+        });
+        rows += '</tr>';
+      }
+      matrixElem.innerHTML = header + rows;
+    }
+
+    function renderBadgesView(totalXP) {
+      document.getElementById("badgeTabXpText").textContent = `${totalXP} XP`;
+      const fillPct = Math.min(100, Math.max(5, (totalXP / 500) * 100));
+      document.getElementById("badgeTabXpBar").style.width = `${fillPct}%`;
+
+      const grid = document.getElementById("mobileBadgesGrid");
+      grid.innerHTML = "";
+
+      BADGES.forEach(b => {
+        const unlocked = totalXP >= b.reqXP;
+        const col = document.createElement("div");
+        col.className = `p-2.5 rounded-xl border text-center flex flex-col items-center justify-center ${
+          unlocked ? 'bg-amber-50 border-amber-200 text-amber-900 shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-400 opacity-60'
+        }`;
+        col.innerHTML = `
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm mb-1 ${unlocked ? 'bg-amber-400 text-white' : 'bg-slate-200 text-slate-400'}">
+            <i class="fa-solid ${b.icon}"></i>
+          </div>
+          <div class="font-fun text-[11px] font-bold leading-tight">${b.title}</div>
+          <div class="text-[9px] text-slate-400 mt-0.5">${b.reqXP} XP</div>
+        `;
+        grid.appendChild(col);
+      });
+    }
+
+    let mobileChartInstance = null;
+    function renderGlobalStats() {
+      let totalXP = 0;
+      let areaScores = { A: 0, B: 0, C: 0, D: 0 };
+      let streak = 0;
+
+      DAYS_CONFIG.forEach(d => {
+        const dData = state.daysData[d.id] || { tasks: {}, lessons: [], rating: 0 };
+        let doneAny = false;
+
+        Object.entries(dData.tasks).forEach(([tId, status]) => {
+          let a = 'A';
+          DEFAULT_VAKITLER.forEach(v => {
+            const f = v.tasks.find(x => x.id === tId);
+            if (f) a = f.area;
+          });
+
+          if (status === 'done') {
+            totalXP += 10;
+            areaScores[a] += 10;
+            doneAny = true;
+          } else if (status === 'half') {
+            totalXP += 5;
+            areaScores[a] += 5;
+            doneAny = true;
+          }
+        });
+
+        (dData.lessons || []).forEach(l => {
+          if (l.done) {
+            totalXP += 15;
+            areaScores['A'] += 15;
+            doneAny = true;
+          }
+        });
+
+        if (dData.rating > 0) {
+          totalXP += dData.rating * 5;
+        }
+
+        if (doneAny) streak++;
+      });
+
+      document.getElementById("mobileXpBadge").textContent = `${totalXP} XP`;
+      document.getElementById("mobileStreakBadge").textContent = streak;
+
+      let lvlName = "1. Çırak 🌱";
+      if (totalXP >= 500) lvlName = "5. Efsane Şampiyon 🏆";
+      else if (totalXP >= 300) lvlName = "4. Bilge Kaşif 💡";
+      else if (totalXP >= 150) lvlName = "3. Çalışkan Üretici 🚀";
+      else if (totalXP >= 50) lvlName = "2. Yolcu 🌿";
+
+      document.getElementById("badgeTabLevelTitle").textContent = lvlName;
+
+      renderBadgesView(totalXP);
+
+      // Radar Chart
+      const ctx = document.getElementById("mobileAreasChart");
+      if (ctx) {
+        if (mobileChartInstance) {
+          mobileChartInstance.data.datasets[0].data = [areaScores.A, areaScores.B, areaScores.C, areaScores.D];
+          mobileChartInstance.update();
+        } else {
+          mobileChartInstance = new Chart(ctx, {
+            type: 'polarArea',
+            data: {
+              labels: ['Akademik', 'Üretim', 'Fiziksel', 'Yaşam'],
+              datasets: [{
+                data: [areaScores.A, areaScores.B, areaScores.C, areaScores.D],
+                backgroundColor: [
+                  'rgba(59, 130, 246, 0.75)',
+                  'rgba(16, 185, 129, 0.75)',
+                  'rgba(245, 158, 11, 0.75)',
+                  'rgba(139, 92, 246, 0.75)'
+                ]
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 9 } } } },
+              scales: { r: { ticks: { display: false } } }
+            }
+          });
+        }
+      }
+    }
+
+    /* 5. USER INTERACTIONS */
+    function selectMobileDay(dayId) {
+      state.selectedDayId = dayId;
+      playChime('click');
+      saveState();
+      renderDaysStoryBar();
+      renderTodayView();
+      renderLessonsView();
+    }
+
+    function toggleMobileTask(taskId) {
+      const dData = state.daysData[state.selectedDayId];
+      if (!dData) return;
+
+      const cur = dData.tasks[taskId] || 'none';
+      let next = 'done';
+      if (cur === 'done') next = 'half';
+      else if (cur === 'half') next = 'none';
+      else next = 'done';
+
+      dData.tasks[taskId] = next;
+      playChime(next === 'done' ? 'done' : 'click');
+      saveState();
+      renderTodayView();
+      renderDaysStoryBar();
+    }
+
+    function toggleMobileLessonType(dayId, idx) {
+      const dData = state.daysData[dayId];
+      if (!dData || !dData.lessons[idx]) return;
+      dData.lessons[idx].type = dData.lessons[idx].type === 'K' ? 'S' : 'K';
+      playChime('click');
+      saveState();
+      renderLessonsView();
+    }
+
+    function toggleMobileLessonDone(dayId, idx) {
+      const dData = state.daysData[dayId];
+      if (!dData || !dData.lessons[idx]) return;
+      dData.lessons[idx].done = !dData.lessons[idx].done;
+      playChime(dData.lessons[idx].done ? 'done' : 'click');
+      saveState();
+      renderLessonsView();
+      renderDaysStoryBar();
+    }
+
+    function setMobileRating(r) {
+      const dData = state.daysData[state.selectedDayId];
+      if (!dData) return;
+      dData.rating = r;
+      playChime('done');
+      if (r === 5) {
+        confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+      }
+      saveState();
+      renderTodayView();
+      renderDaysStoryBar();
+    }
+
+    // Tab Switching
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      playChime('click');
+
+      document.querySelectorAll(".tab-page").forEach(p => p.classList.add("hidden"));
+      const target = document.getElementById(`tab-${tabId}`);
+      if (target) target.classList.remove("hidden");
+
+      document.querySelectorAll(".nav-tab-btn").forEach(b => {
+        b.classList.remove("text-blue-600", "font-bold");
+        b.classList.add("text-slate-400", "font-medium");
+      });
+
+      const activeNavBtn = document.getElementById(`nav-btn-${tabId}`);
+      if (activeNavBtn) {
+        activeNavBtn.classList.remove("text-slate-400", "font-medium");
+        activeNavBtn.classList.add("text-blue-600", "font-bold");
+      }
+
+      if (tabId === 'lessons') renderLessonsView();
+      if (tabId === 'badges') renderGlobalStats();
+    }
+
+    /* 6. GOOGLE AI STUDIO & PROMPT ACTIONS */
+    const AI_SYSTEM_PROMPT = `Sen "16 Günlük Gelişim Programı" için özel olarak tasarlanmış eğlenceli, motive edici, pedagojik bir AI Gelişim Koçusun.
+Öğrencinin 4 gelişim alanını (A: Akademik & Bilişsel, B: Üretim, C: Fiziksel, D: Sorumluluk & Yaşam Becerileri) ve 5 vakit rutinini takip edip ona rehberlik ediyorsun.
+Öğrenci gününü tamamladığında ona pozitif geri bildirim ver, Osmanlıca kelimeler ve anlamlarını öğret, Lego/Atölye/Proje fikirleri öner ve gelişim zihniyetini (growth mindset) destekle.`;
+
+    function copyAiPromptTemplate() {
+      const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
+      const dData = state.daysData[state.selectedDayId] || { tasks: {}, lessons: [], rating: 0, note: "" };
+
+      const fullPrompt = `${AI_SYSTEM_PROMPT}
+
+Şu Anki Durum:
+- Gün: ${cur.id}. Gün (${cur.dayNumber} ${cur.month}) - ${PHASES[cur.phase].name}
+- Tamamlanan Görevler: ${JSON.stringify(dData.tasks)}
+- 3 Ders Durumu: ${JSON.stringify(dData.lessons)}
+- Gün Sonu Yıldızı: ${dData.rating}/5
+- Öğrencinin Notu: "${dData.note || 'Henüz not girilmedi'}"
+
+Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 küçük gelişim tavsiyesi ve yarın için heyecan verici bir Osmanlıca kelime öğret!`;
+
+      navigator.clipboard.writeText(fullPrompt).then(() => {
+        const btnText = document.getElementById("copyPromptBtnText");
+        btnText.textContent = "Kopyalandı! ✓";
+        playChime('done');
+        setTimeout(() => { btnText.textContent = "Promptu Kopyala"; }, 2000);
+      });
+    }
+
+    function appendAiMessage(sender, text) {
+      const msgBox = document.getElementById("aiChatMessages");
+      const div = document.createElement("div");
+      div.className = sender === 'user' 
+        ? "bg-blue-600 text-white p-2.5 rounded-xl ml-auto max-w-[85%] leading-relaxed" 
+        : "bg-purple-100/90 text-purple-950 p-2.5 rounded-xl max-w-[90%] leading-relaxed border border-purple-200";
+      div.innerHTML = text;
+      msgBox.appendChild(div);
+      msgBox.scrollTop = msgBox.scrollHeight;
+    }
+
+    async function requestAiAction(action) {
+      const apiKey = document.getElementById("geminiApiKeyInput").value.trim();
+      const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
+      const dData = state.daysData[state.selectedDayId] || { tasks: {}, lessons: [], rating: 0 };
+
+      playChime('click');
+
+      let userQuery = "";
+      if (action === 'evaluate_day') userQuery = "Bugünkü 5 vakit ve 3 ders performansımı değerlendirir misin?";
+      else if (action === 'ottoman_quiz') userQuery = "Bana bugünün Osmanlıca kelimesini ve eğlenceli anlamını öğret!";
+      else if (action === 'project_idea') userQuery = "3. Vakit (Üret/Keşfet) için bana evde yapabileceğim harika bir proje fikri ver!";
+      else if (action === 'motivation') userQuery = "Biraz enerjim düştü, bana ilham verici bir motivasyon sözü söyle!";
+
+      appendAiMessage('user', userQuery);
+
+      if (apiKey) {
+        appendAiMessage('ai', '<em>Gemini düşünüyor... 🤖✨</em>');
+        try {
+          const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{ text: `${AI_SYSTEM_PROMPT}\n\nÖğrenci Durumu: Gün ${cur.id}, Yıldız: ${dData.rating}\nKullanıcı: ${userQuery}` }]
+              }]
+            })
+          });
+          const data = await resp.json();
+          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Harika bir çaba! Adım adım ilerlemeye devam et!";
+          // Remove last thinking placeholder
+          const msgBox = document.getElementById("aiChatMessages");
+          msgBox.removeChild(msgBox.lastChild);
+          appendAiMessage('ai', reply.replace(/\n/g, '<br>'));
+          playChime('done');
+          return;
+        } catch(err) {
+          // Fallback to offline intelligent coach
+        }
+      }
+
+      // Offline Akıllı Simülasyon
+      setTimeout(() => {
+        let mockReply = "";
+        if (action === 'evaluate_day') {
+          mockReply = `🌟 <strong>Günün Analizi (${cur.dayNumber} ${cur.month}):</strong><br>• Harika bir disiplin sergiliyorsun! 5 vakit ritmini sürdürmen zihnini zinde tutar.<br>• <strong>Koç Tavsiyesi:</strong> Yarın 2. Vakit'te Konu (K) ve Soru (S) dengesini koruyarak tempoyu bir tık artırabilirsin! 🚀`;
+        } else if (action === 'ottoman_quiz') {
+          const words = [
+            { w: "Gayret (غيرت)", m: "Çaba göstermek, azimle çalışmak. 'Gayret bizden, muvaffakiyet Allah'tan!'" },
+            { w: "Muvaffakiyet (موفقيت)", m: "Başarı, hedefe ulaşma sevinci." },
+            { w: "Hikmet (حكمت)", m: "Derin bilgi, eşyanın hakikatini anlama." },
+            { w: "İstikamet (استقامت)", m: "Doğru yolda, kararlılıkla ve disiplinle yürümek." }
+          ];
+          const chosen = words[Math.floor(Math.random() * words.length)];
+          mockReply = `📜 <strong>Günün Osmanlıca Kelimesi:</strong><br><strong>${chosen.w}</strong><br><em>Anlamı:</em> ${chosen.m}`;
+        } else if (action === 'project_idea') {
+          mockReply = `💡 <strong>3. Vakit Üretim Fikri:</strong><br>• <strong>Gelişim Günlüğü Kapağı Tasarla:</strong> Evdeki karton, renkli kalemler veya legolarla 16 günlük serüveninin bir mini maketini inşa et!`;
+        } else {
+          mockReply = `⚡ <em>"Bugün küçük adımlar, yarın büyük başarılar getirir!"</em><br>Unutma, her şampiyon her gün sadece 1 adım daha atarak zirveye ulaştı. Sen de başarıyorsun! 🏆`;
+        }
+        appendAiMessage('ai', mockReply);
+        playChime('done');
+      }, 500);
+    }
+
+    /* 7. DATA MANAGEMENT (IMPORT/EXPORT/RESET) */
+    function exportMobileData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const a = document.createElement("a");
+      a.href = dataStr;
+      a.download = `Gelisim_Cepte_Yedek_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      playChime('done');
+    }
+
+    function importMobileData(e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const p = JSON.parse(evt.target.result);
+          if (p.daysData) {
+            state = p;
+            saveState();
+            renderDaysStoryBar();
+            renderTodayView();
+            renderLessonsView();
+            alert("Yedek başarıyla yüklendi! 🎉");
+            playChime('done');
+          }
+        } catch(err) {
+          alert("Dosya yüklenemedi.");
+        }
+      };
+      reader.readAsText(f);
+    }
+
+    function resetMobileData() {
+      if (confirm("Tüm gelişim verileri sıfırlansın mı?")) {
+        createDefaultState();
+        saveState();
+        renderDaysStoryBar();
+        renderTodayView();
+        renderLessonsView();
+        alert("Sıfırlandı.");
+      }
+    }
+
+    /* 8. BOOTSTRAP */
+    window.addEventListener("DOMContentLoaded", () => {
+      initMobileState();
+      renderDaysStoryBar();
+      renderTodayView();
+      renderGlobalStats();
+
+      const noteElem = document.getElementById("mobileDailyNote");
+      if (noteElem) {
+        noteElem.addEventListener("input", () => {
+          const dData = state.daysData[state.selectedDayId];
+          if (dData) {
+            dData.note = noteElem.value;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

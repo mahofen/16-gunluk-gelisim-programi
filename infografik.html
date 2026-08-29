@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İnfografik: Osmanlı Türkçesi Niçin Öğrenmeliyiz? - Polis Semineri</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #172554 0%, #0f172a 45%, #090d16 100%);
+      color: #f1f5f9;
+    }
+    
+    .font-serif-title {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-arabic {
+      font-family: 'Amiri', serif;
+    }
+
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .glass-card-gold {
+      background: linear-gradient(135deg, rgba(217, 119, 6, 0.12) 0%, rgba(30, 41, 59, 0.8) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .glass-card-police {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(15, 23, 42, 0.85) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+      }
+      .glass-card, .glass-card-gold, .glass-card-police {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #0f172a !important;
+        box-shadow: none !important;
+      }
+      .gold-gradient-text {
+        background: none !important;
+        -webkit-text-fill-color: #b45309 !important;
+        color: #b45309 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .text-slate-300, .text-slate-400 {
+        color: #334155 !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- TOP ACTION BAR (Print / Quick Action) -->
+  <div class="max-w-6xl mx-auto flex justify-between items-center mb-6 no-print">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-950/80 text-blue-300 border border-blue-800/60">
+      <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+      Emniyet Teşkilatı Seminer Rehberi & İnfografiği
+    </div>
+    <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all shadow-lg hover:shadow-amber-500/20 active:scale-95">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+      </svg>
+      Yazdır / PDF Olarak Kaydet
+    </button>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="max-w-6xl mx-auto space-y-10">
+
+    <!-- HEADER / HERO SECTION -->
+    <header class="relative rounded-3xl overflow-hidden glass-card-police p-8 md:p-12 text-center border-t border-blue-400/40">
+      <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+      
+      <!-- Top Badges -->
+      <div class="flex flex-wrap justify-center items-center gap-3 mb-6">
+        <span class="px-3.5 py-1 rounded-full text-xs tracking-wider uppercase font-extrabold bg-amber-500/10 text-amber-400 border border-amber-500/30">
+          Seminer 1. Bölüm
+        </span>
+        <span class="px-3.5 py-1 rounded-full text-xs tracking-wider uppercase font-extrabold bg-blue-500/10 text-blue-400 border border-blue-500/30">
+          Polis Teşkilatı Tarihî Hafızası
+        </span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4 font-serif-title">
+        OSMANLI TÜRKÇESİ<br>
+        <span class="gold-gradient-text">NİÇİN ÖĞRENMELİYİZ?</span>
+      </h1>
+
+      <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed">
+        "Osmanlı Türkçesi geçmişe dönmek değil; <strong class="text-amber-400 font-bold">geçmişimizin yazılı hafızasına ulaşabilmektir.</strong>"
+      </p>
+
+      <!-- Key Seminal Question -->
+      <div class="mt-8 inline-block bg-slate-900/80 border border-amber-500/30 rounded-2xl px-6 py-4 shadow-xl">
+        <div class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-1">Zihni Açan Temel Soru</div>
+        <div class="text-base sm:text-lg font-semibold text-slate-100">
+          "Yarın önünüze Osmanlı dönemine ait bir polis belgesi gelse, üzerindeki yazıyı okuyabilir misiniz?"
+        </div>
+      </div>
+    </header>
+
+    <!-- KEY METRICS / STATS STRIP -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass-card rounded-2xl p-5 text-center border-t-2 border-amber-500">
+        <div class="text-3xl sm:text-4xl font-extrabold gold-gradient-text">150M+</div>
+        <div class="text-xs sm:text-sm font-semibold text-slate-300 mt-1">Cumhurbaşkanlığı Arşivi Belgesi</div>
+        <div class="text-[11px] text-slate-400 mt-0.5">Dünyanın en zengin tarih hazinesi</div>
+      </div>
+      <div class="glass-card rounded-2xl p-5 text-center border-t-2 border-blue-500">
+        <div class="text-3xl sm:text-4xl font-extrabold text-blue-400">150.000</div>
+        <div class="text-xs sm:text-sm font-semibold text-slate-300 mt-1">Kelime Hazinesi</div>
+        <div class="text-[11px] text-slate-400 mt-0.5">1890 Redhouse / 90.000 Madde Başı</div>
+      </div>
+      <div class="glass-card rounded-2xl p-5 text-center border-t-2 border-emerald-500">
+        <div class="text-3xl sm:text-4xl font-extrabold text-emerald-400">4 Harf</div>
+        <div class="text-xs sm:text-sm font-semibold text-slate-300 mt-1">Temel Okutucu Harf</div>
+        <div class="text-[11px] text-slate-400 mt-0.5">Okumanın ilk ve en kolay adımı</div>
+      </div>
+      <div class="glass-card rounded-2xl p-5 text-center border-t-2 border-indigo-500">
+        <div class="text-3xl sm:text-4xl font-extrabold text-indigo-400">1 Asır+</div>
+        <div class="text-xs sm:text-sm font-semibold text-slate-300 mt-1">Polis Teşkilatı Hafızası</div>
+        <div class="text-[11px] text-slate-400 mt-0.5">Nizamnameler, zabıtlar ve siciller</div>
+      </div>
+    </div>
+
+    <!-- 3 MAJOR MENTAL BARRIERS & REALITIES -->
+    <section class="space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-lg">1</div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-100">3 Büyük Zihinsel Bariyer ve Kırılma Noktaları</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="glass-card rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">YANILGI #1</span>
+              <span class="text-2xl">🌐</span>
+            </div>
+            <h3 class="text-lg font-bold text-rose-300">"Osmanlıca Ayrı Bir Yabancı Dildir"</h3>
+            <div class="bg-slate-900/60 rounded-xl p-3 text-xs text-slate-400 border border-slate-700/50">
+              Fransızca, Almanca veya Rusça gibi bambaşka bir dil zannedilmesi.
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-700/60">
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1 flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              HAKİKAT
+            </div>
+            <p class="text-sm text-slate-200 font-medium">
+              Osmanlı Türkçesi, <strong class="text-amber-300">Kur'an harfleriyle yazılan Türkçedir</strong>. Yabancılık kelimelerden değil, alfabeden kaynaklanır.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">YANILGI #2</span>
+              <span class="text-2xl">🗣️</span>
+            </div>
+            <h3 class="text-lg font-bold text-rose-300">"Ben Bu Dili Hiç Bilmiyorum"</h3>
+            <div class="bg-slate-900/60 rounded-xl p-3 text-xs text-slate-400 border border-slate-700/50">
+              Sıfırdan gramer, kelime ve yabancı sentaks öğrenileceği korkusu.
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-700/60">
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1 flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              HAKİKAT
+            </div>
+            <p class="text-sm text-slate-200 font-medium">
+              "Peki Türkçe biliyor musunuz?" Evet! <strong class="text-amber-300">Bildiğimiz kelimelerin geçmişteki yazılış biçimini</strong> keşfediyoruz.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-card rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">YANILGI #3</span>
+              <span class="text-2xl">🎓</span>
+            </div>
+            <h3 class="text-lg font-bold text-rose-300">"Ben Tarihçi veya Akademisyen Değilim"</h3>
+            <div class="bg-slate-900/60 rounded-xl p-3 text-xs text-slate-400 border border-slate-700/50">
+              Yalnızca profesyonel tarihçilerin ve dilbilimcilerin işi sanılması.
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-700/60">
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1 flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              HAKİKAT
+            </div>
+            <p class="text-sm text-slate-200 font-medium">
+              Hedef akademik uzmanlık değil; <strong class="text-amber-300">tarihî mirasa erişim, aşinalık ve kurumsal hafızaya sahip çıkmaktır</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POLICE DEPARTMENT FOCUS (MESLEKİ BAĞLANTI) -->
+    <section class="glass-card-police rounded-3xl p-8 border border-blue-500/40 relative overflow-hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30">
+            <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"></path>
+            </svg>
+            Polis Memurlarına Özel Mesleki Anlam
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-serif-title">
+            "Sizin Mesleğinizin de Bir Hafızası Var"
+          </h2>
+          <p class="text-slate-300 leading-relaxed text-sm sm:text-base">
+            Bugünkü polis teşkilatı bir anda ortaya çıkmış değildir. Osmanlı dönemindeki polis ve güvenlik yapılanmalarına ait <span class="text-amber-300 font-semibold">nizamnameler, zabıt tutanakları, asayiş emirnameleri ve teşkilat yazışmaları</span> bu köklü tarihin belgeleridir.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <div class="flex items-start gap-2.5 bg-slate-900/60 p-3 rounded-xl border border-blue-900/40">
+              <span class="text-blue-400 text-lg font-bold">✓</span>
+              <span class="text-xs sm:text-sm text-slate-300">Teşkilat kültürünün köklerini bizzat kendi kaynağından okuma imkânı.</span>
+            </div>
+            <div class="flex items-start gap-2.5 bg-slate-900/60 p-3 rounded-xl border border-blue-900/40">
+              <span class="text-blue-400 text-lg font-bold">✓</span>
+              <span class="text-xs sm:text-sm text-slate-300">Tarihî bir polis vesikası gördüğünde yabancılaşmama özgüveni.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 bg-slate-900/80 rounded-2xl p-6 border border-amber-500/30 text-center shadow-xl">
+          <div class="text-amber-400 text-3xl font-serif mb-2">📜</div>
+          <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1">Seminerin Mottosu</div>
+          <blockquote class="text-sm font-semibold text-slate-200 italic leading-relaxed">
+            "Türk polisinin bir tarihi varsa, bu tarihin belgelerini okuyabilecek bir neslin de olması gerekir."
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 PILLARS OF CULTURAL MEMORY -->
+    <section class="space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-lg">2</div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-100">Kültür ve Medeniyet Hafızamızın 5 Büyük Kapısı</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- 1: Arşivler -->
+        <div class="glass-card rounded-2xl p-5 hover:border-amber-500/50 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+              🏛️
+            </div>
+            <h3 class="font-bold text-slate-100 text-base mb-1.5">1. Devlet Arşivleri</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              150 milyonu aşkın resmî evrak, ferman, irade ve teşkilat nizamnameleri.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/50 text-[11px] text-amber-400 font-semibold">
+            Tarihin Resmî Hafızası
+          </div>
+        </div>
+
+        <!-- 2: Yazma Eserler -->
+        <div class="glass-card rounded-2xl p-5 hover:border-blue-500/50 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+              📖
+            </div>
+            <h3 class="font-bold text-slate-100 text-base mb-1.5">2. Yazma Eserler</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Dinî kaynaklar, tıp, astronomi, fen bilimleri ve felsefe metinleri.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/50 text-[11px] text-blue-400 font-semibold">
+            İlim & Fikir Dünyası
+          </div>
+        </div>
+
+        <!-- 3: Edebiyat -->
+        <div class="glass-card rounded-2xl p-5 hover:border-purple-500/50 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+              ✒️
+            </div>
+            <h3 class="font-bold text-slate-100 text-base mb-1.5">3. Edebiyat</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Fuzûlî, Bâkî, Nâimâ, Cevdet Paşa ve Şeyh Galib'i orijinalinden tatmak.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/50 text-[11px] text-purple-400 font-semibold">
+            Estetik & Söz Sanatı
+          </div>
+        </div>
+
+        <!-- 4: Mezar Taşları -->
+        <div class="glass-card rounded-2xl p-5 hover:border-emerald-500/50 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+              🪦
+            </div>
+            <h3 class="font-bold text-slate-100 text-base mb-1.5">4. Mezar Taşları</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Açık hava müzeleri; isim, tarih, dua, meslek bilgisi ve taş işleme sanatı.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/50 text-[11px] text-emerald-400 font-semibold">
+            Biyografik Hafıza
+          </div>
+        </div>
+
+        <!-- 5: Kitabeler & Hat -->
+        <div class="glass-card rounded-2xl p-5 hover:border-amber-500/50 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+              🕌
+            </div>
+            <h3 class="font-bold text-slate-100 text-base mb-1.5">5. Kitabeler & Hat</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Çeşmeler, camiler, hanlar ve tarihî karakol binalarının üzerindeki yazılar.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/50 text-[11px] text-amber-400 font-semibold">
+            Şehir & Mimari Hafızası
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRACTICAL READING LAB: 4 OKUTUCU HARF -->
+    <section class="glass-card-gold rounded-3xl p-8 border border-amber-500/40 space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 font-bold text-lg">3</div>
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-100">Pratik Adım: 4 Temel Okutucu Harf ile İlk Okuma</h2>
+            <p class="text-xs sm:text-sm text-slate-400">Karmaşık gramer kuralları yerine anında sonuç veren 4 anahtar</p>
+          </div>
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-slate-950">
+          "Bakın, Okuyabiliyoruz!"
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Letter 1: Elif -->
+        <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700/60 hover:border-amber-400 transition-all">
+          <div class="flex justify-between items-start mb-3">
+            <span class="font-arabic text-4xl text-amber-400 font-bold">ا</span>
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300">ELİF</span>
+          </div>
+          <div class="text-xs text-slate-400 mb-1">Ses Karşılığı: <strong class="text-slate-200">A</strong></div>
+          <div class="mt-3 p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+            <div class="text-xs font-bold text-slate-400 mb-1">Örnek Çözüm:</div>
+            <div class="flex items-center justify-between">
+              <span class="font-arabic text-2xl text-amber-300">بابا</span>
+              <span class="text-xs font-mono text-slate-300">B + A + B + A</span>
+              <span class="text-xs font-extrabold text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded">BABA</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Letter 2: He -->
+        <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700/60 hover:border-amber-400 transition-all">
+          <div class="flex justify-between items-start mb-3">
+            <span class="font-arabic text-4xl text-amber-400 font-bold">ه</span>
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300">HE</span>
+          </div>
+          <div class="text-xs text-slate-400 mb-1">Ses Karşılığı: <strong class="text-slate-200">E</strong></div>
+          <div class="mt-3 p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+            <div class="text-xs font-bold text-slate-400 mb-1">Örnek Çözüm:</div>
+            <div class="flex items-center justify-between">
+              <span class="font-arabic text-2xl text-amber-300">دده</span>
+              <span class="text-xs font-mono text-slate-300">D + E + D + E</span>
+              <span class="text-xs font-extrabold text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded">DEDE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Letter 3: Vav -->
+        <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700/60 hover:border-amber-400 transition-all">
+          <div class="flex justify-between items-start mb-3">
+            <span class="font-arabic text-4xl text-amber-400 font-bold">و</span>
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300">VAV</span>
+          </div>
+          <div class="text-xs text-slate-400 mb-1">Ses Karşılığı: <strong class="text-slate-200">O / U / Ö / Ü</strong></div>
+          <div class="mt-3 p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+            <div class="text-xs font-bold text-slate-400 mb-1">Örnek Çözüm:</div>
+            <div class="flex items-center justify-between">
+              <span class="font-arabic text-2xl text-amber-300">چوجوق</span>
+              <span class="text-xs font-mono text-slate-300">Ç+O+C+U+K</span>
+              <span class="text-xs font-extrabold text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded">ÇOCUK</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Letter 4: Ye -->
+        <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700/60 hover:border-amber-400 transition-all">
+          <div class="flex justify-between items-start mb-3">
+            <span class="font-arabic text-4xl text-amber-400 font-bold">ی</span>
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300">YE</span>
+          </div>
+          <div class="text-xs text-slate-400 mb-1">Ses Karşılığı: <strong class="text-slate-200">I / İ</strong></div>
+          <div class="mt-3 p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+            <div class="text-xs font-bold text-slate-400 mb-1">Örnek Çözüm:</div>
+            <div class="flex items-center justify-between">
+              <span class="font-arabic text-2xl text-amber-300">كیوی</span>
+              <span class="text-xs font-mono text-slate-300">K + İ + V + İ</span>
+              <span class="text-xs font-extrabold text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded">KİVİ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEMINAR GENERAL FLOW / PSYCHOLOGICAL TRANSFORMATION -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- Flow Chart -->
+      <section class="glass-card rounded-3xl p-6 sm:p-8 space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-lg">4</div>
+          <h2 class="text-xl font-bold text-slate-100">Seminerin Pedagojik Akışı</h2>
+        </div>
+
+        <p class="text-xs text-slate-400">
+          Katılımcıyı savunma psikolojisinden çıkarıp keşif merakına taşıyan 10 basamaklı metodolojik rota:
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-center text-xs font-semibold">
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-amber-300">1. MERAK</div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-slate-200">2. SORU</div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-slate-200">3. ŞAŞKINLIK</div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-slate-200">4. FARKINDALIK</div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-blue-300">5. TARİH</div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-blue-400">6. POLİS TARİHİ</div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-slate-200">7. BELGE</div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-emerald-400">8. KÜÇÜK BAŞARI</div>
+          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-700/60 text-amber-400">9. MERAK ARTIŞI</div>
+          <div class="bg-amber-500/20 p-2.5 rounded-xl border border-amber-500/40 text-amber-300 font-bold">10. ÖĞRENME İSTEĞİ</div>
+        </div>
+      </section>
+
+      <!-- Psychological Target Evolution -->
+      <section class="glass-card rounded-3xl p-6 sm:p-8 space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-lg">5</div>
+          <h2 class="text-xl font-bold text-slate-100">Psikolojik Hedef Dönüşümü</h2>
+        </div>
+
+        <div class="space-y-3 pt-1">
+          <div class="flex items-center gap-3 bg-slate-900/60 p-3 rounded-xl border border-rose-950/40">
+            <span class="text-xs font-bold px-2 py-1 rounded bg-rose-500/20 text-rose-300">BAŞLANGIÇ</span>
+            <span class="text-xs sm:text-sm text-slate-300 italic">"Osmanlıca çok zor, ben anlayamam."</span>
+          </div>
+
+          <div class="flex items-center gap-3 bg-slate-900/60 p-3 rounded-xl border border-amber-950/40">
+            <span class="text-xs font-bold px-2 py-1 rounded bg-amber-500/20 text-amber-300">UYGULAMA</span>
+            <span class="text-xs sm:text-sm text-slate-300 italic">"Dört harfle Baba, Dede, Çocuk okuyabildim!"</span>
+          </div>
+
+          <div class="flex items-center gap-3 bg-slate-900/60 p-3 rounded-xl border border-blue-950/40">
+            <span class="text-xs font-bold px-2 py-1 rounded bg-blue-500/20 text-blue-300">SEMİNER SONU</span>
+            <span class="text-xs sm:text-sm text-slate-300 italic">"Biraz daha pratikle polis belgelerini çözebilirim."</span>
+          </div>
+
+          <div class="flex items-center gap-3 bg-emerald-950/40 p-3 rounded-xl border border-emerald-500/40">
+            <span class="text-xs font-bold px-2 py-1 rounded bg-emerald-500 text-slate-950 font-extrabold">KURS DAVETİ</span>
+            <span class="text-xs sm:text-sm font-bold text-emerald-300">"Bunu öğrenmek ve kursa katılmak istiyorum!"</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- INSPIRATIONAL QUOTES & FINAL CALL -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="glass-card rounded-2xl p-6 border-l-4 border-amber-500">
+        <div class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-2">Dil & Düşünce İlişkisi</div>
+        <blockquote class="text-sm sm:text-base text-slate-200 italic leading-relaxed">
+          "Dilimin sınırları, dünyamın sınırlarıdır."
+        </blockquote>
+        <div class="mt-2 text-xs font-semibold text-slate-400">— Ludwig Wittgenstein</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 border-l-4 border-blue-500">
+        <div class="text-xs uppercase tracking-widest text-blue-400 font-bold mb-2">Kültürel Süreklilik</div>
+        <blockquote class="text-sm sm:text-base text-slate-200 italic leading-relaxed">
+          "Bir milletin geçmişte ürettiği şaheserlerle doğrudan temas kurabilmesi, hafızasının devamlılığıdır."
+        </blockquote>
+        <div class="mt-2 text-xs font-semibold text-slate-400">— Peyami Safa Değerlendirmesi</div>
+      </div>
+    </div>
+
+    <!-- CLOSING CALL TO ACTION BANNER -->
+    <footer class="glass-card-gold rounded-3xl p-8 text-center space-y-4 border border-amber-400/40">
+      <div class="max-w-3xl mx-auto space-y-3">
+        <h3 class="text-xl sm:text-2xl font-extrabold text-white font-serif-title">
+          "Asırların birikimi olan kültür ve medeniyet mirasımıza ulaşmak, maziden atiye köprü kurmak için Osmanlı Türkçesi öğreniyoruz."
+        </h3>
+        <p class="text-sm text-amber-200/90 font-medium">
+          Geçmişi sadece seyretmek değil, okuyabilmek ve kurumsal hafızayı yaşatmak için sizleri eğitimlerimize davet ediyoruz.
+        </p>
+      </div>
+      <div class="pt-2 text-xs text-slate-400">
+        Hazırlayan: Polis Seminer Programı | Kaynak: Osmanlı Türkçesi Tanıtım ve Eğitim Müfredatı
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

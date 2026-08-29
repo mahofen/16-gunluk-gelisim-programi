@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benim 16 Günlük Gelişim Programım | İnteraktif Web Uygulaması</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            fun: ['"Fredoka"', 'cursive', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              blue: '#0284c7',
+              navy: '#0f172a',
+              amber: '#f59e0b',
+              emerald: '#10b981',
+              rose: '#f43f5e',
+              purple: '#8b5cf6',
+              sky: '#38bdf8',
+              orange: '#f97316',
+            }
+          },
+          boxShadow: {
+            'fun': '0 8px 0 0 rgba(0, 0, 0, 0.06), 0 15px 25px -5px rgba(0, 0, 0, 0.05)',
+            'fun-hover': '0 4px 0 0 rgba(0, 0, 0, 0.06), 0 8px 15px -3px rgba(0, 0, 0, 0.08)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(#e2e8f0 1px, transparent 1px),
+        radial-gradient(#e2e8f0 1px, #f8fafc 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+    }
+    
+    .status-badge {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .status-badge:active {
+      transform: scale(0.95);
+    }
+
+    /* Özel Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Print Stili */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+        color: black !important;
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo & Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
+          <i class="fa-solid fa-calendar-check text-xl"></i>
+        </div>
+        <div>
+          <h1 class="font-fun text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-700 via-sky-600 to-emerald-600 bg-clip-text text-transparent leading-tight">
+            BENİM 16 GÜNLÜK GELİŞİM PROGRAMIM
+          </h1>
+          <p class="text-xs text-slate-500 font-medium hidden sm:block">
+            29 Ağustos – 13 Eylül 2026 • Planla • Çalış • Üret • Hareket Et • Geliş
+          </p>
+        </div>
+      </div>
+
+      <!-- Header Sağ Butonlar / Gamification Info -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Level & XP Badge -->
+        <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full shadow-sm">
+          <i class="fa-solid fa-bolt text-amber-500 animate-pulse"></i>
+          <span class="text-xs font-bold text-amber-900" id="userLevelBadge">1. Seviye: Çırak</span>
+          <div class="w-16 bg-amber-200 h-2 rounded-full overflow-hidden hidden md:block">
+            <div id="xpBarFill" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 25%"></div>
+          </div>
+          <span class="text-xs font-semibold text-amber-700" id="xpText">0 XP</span>
+        </div>
+
+        <!-- Seri (Streak) -->
+        <div class="flex items-center gap-1.5 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-full shadow-sm" title="Tamamlanan Gün Serisi">
+          <i class="fa-solid fa-fire text-orange-500 text-sm"></i>
+          <span class="text-xs font-bold text-orange-800" id="streakBadge">0 Gün Seri</span>
+        </div>
+
+        <!-- Mobil Görünüme Geç Butonu -->
+        <a href="mobile_app.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all shadow-sm" title="Mobil Uygulama Arayüzü">
+          <i class="fa-solid fa-mobile-screen-button text-sm text-blue-600"></i>
+          <span class="hidden sm:inline">Mobil Uygulama</span>
+        </a>
+
+        <!-- Google AI Studio Link Butonu -->
+        <a href="https://aistudio.google.com/prompts/new_chat" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 hover:bg-purple-100 text-xs font-bold transition-all shadow-sm" title="Google AI Studio'da Aç">
+          <i class="fa-solid fa-sparkles text-sm text-purple-600"></i>
+          <span class="hidden md:inline">Google AI Studio</span>
+        </a>
+
+        <!-- Yazdır & Veri Menüsü -->
+        <button onclick="window.print()" class="p-2 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors" title="Raporu Yazdır / PDF Yap">
+          <i class="fa-solid fa-print text-lg"></i>
+        </button>
+
+        <button onclick="openDataModal()" class="p-2 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors" title="Yedekle / Veri Yönetimi">
+          <i class="fa-solid fa-cloud-arrow-down text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MOTTO & SUMMARY BANNER ================= -->
+  <section class="bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-600 text-white py-6 px-4 sm:px-6 relative overflow-hidden shadow-lg no-print">
+    <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-9xl">
+      <i class="fa-solid fa-rocket"></i>
+    </div>
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+      <div class="text-center md:text-left">
+        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase mb-2 border border-white/20">
+          <i class="fa-regular fa-lightbulb text-amber-300"></i> Motivasyon Köşesi
+        </div>
+        <h2 class="text-xl sm:text-2xl font-fun font-bold text-white tracking-wide">
+          "Bugün küçük adımlar, yarın büyük başarılar getirir! 💡"
+        </h2>
+        <p class="text-sm text-sky-100 mt-1 max-w-2xl">
+          16 günlük harika bir yolculuğa hoş geldin! Her gün 5 vakitten görevlerini tamamla, 3 dersini yap ve gelişimini izle.
+        </p>
+      </div>
+
+      <!-- Hızlı Genel İlerleme Kartı -->
+      <div class="bg-white/10 backdrop-blur-md border border-white/20 p-3 sm:p-4 rounded-2xl flex items-center gap-4 text-center min-w-[240px]">
+        <div class="relative w-14 h-14 flex items-center justify-center">
+          <svg class="w-14 h-14 transform -rotate-90">
+            <circle cx="28" cy="28" r="22" stroke="currentColor" stroke-width="4" class="text-white/20" fill="transparent" />
+            <circle id="overallCircleProgress" cx="28" cy="28" r="22" stroke="currentColor" stroke-width="4" class="text-amber-400 transition-all duration-700" stroke-dasharray="138" stroke-dashoffset="138" stroke-linecap="round" fill="transparent" />
+          </svg>
+          <span class="absolute font-fun font-bold text-sm text-white" id="overallPercentText">0%</span>
+        </div>
+        <div class="text-left">
+          <div class="text-xs text-sky-200 font-medium">Toplam İlerleme</div>
+          <div class="text-lg font-fun font-bold text-white" id="completedTasksRatio">0 / 0 Görev</div>
+          <div class="text-[11px] text-amber-300 font-semibold" id="activePhaseName">1. Aşama: Alışma</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+    <!-- 1. GÜN SEÇİCİ & 3 AŞAMALI YOLCULUK ÇİZELGESİ -->
+    <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-fun border border-slate-200">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5 border-b border-slate-100 pb-4">
+        <div>
+          <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-map-location-dot text-sky-500"></i>
+            3 Aşamalı 16 Günlük Yolculuğum
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">İncelemek ve veri girmek istediğin günü tıkla.</p>
+        </div>
+
+        <!-- 3 Aşama Açıklama Butonları / Rozetleri -->
+        <div class="flex flex-wrap gap-2 text-xs">
+          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium">
+            <span>🌱</span> <strong>1. Aşama (29 Ağu - 2 Eyl):</strong> Alışma
+          </div>
+          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 font-medium">
+            <span>🚀</span> <strong>2. Aşama (3 - 8 Eyl):</strong> Gelişme
+          </div>
+          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 text-purple-800 border border-purple-200 font-medium">
+            <span>🎯</span> <strong>3. Aşama (9 - 13 Eyl):</strong> Hazırlık & Tamamlama
+          </div>
+        </div>
+      </div>
+
+      <!-- 16 Gün Yatay Buton Barı -->
+      <div class="grid grid-cols-4 sm:grid-cols-8 md:grid-cols-16 gap-2" id="dayButtonsContainer">
+        <!-- JS ile dinamik oluşturulacak -->
+      </div>
+
+      <!-- Seçili Gün Başlığı ve Aşama Rehberi -->
+      <div class="mt-5 p-4 rounded-2xl bg-gradient-to-r from-slate-50 to-sky-50/50 border border-slate-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-white border border-sky-200 shadow-sm flex flex-col items-center justify-center font-fun text-sky-700">
+            <span class="text-[10px] font-bold uppercase leading-none" id="selectedDayMonth">AĞU</span>
+            <span class="text-lg font-bold leading-none" id="selectedDayNumber">29</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h4 class="font-fun text-lg font-bold text-slate-800" id="selectedDayFullTitle">29 Ağustos Cumartesi (1. Gün)</h4>
+              <span id="selectedDayPhaseBadge" class="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                1. Aşama: Alışma 🌱
+              </span>
+            </div>
+            <p class="text-xs text-slate-600 mt-0.5" id="selectedDayPhaseGoal">
+              🎯 <strong>Bu Aşamadaki Hedef:</strong> Programa ve plana alışırım, basit görevlerle başlarım, yeni alışkanlıklar kazanırım.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 self-end md:self-center">
+          <button onclick="changeSelectedDay(-1)" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-1">
+            <i class="fa-solid fa-chevron-left"></i> Önceki Gün
+          </button>
+          <button onclick="changeSelectedDay(1)" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-1">
+            Sonraki Gün <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. GELİŞİM ALANLARI ÖZET KARTLARI (4 BOYUT) -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- A. Akademik ve Bilişsel -->
+      <div class="bg-white rounded-3xl p-5 border-t-4 border-blue-500 shadow-sm border-x border-b border-slate-200/80 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div>
+            <h4 class="font-fun text-sm font-bold text-slate-800">A. AKADEMİK & BİLİŞSEL</h4>
+            <span class="text-[11px] text-blue-600 font-semibold">Odak & Bilgi</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Konu çalışmak, soru çözmek, araştırma, proje çalışması, Osmanlıca okuma/yazma, kitap & dergi.
+        </p>
+      </div>
+
+      <!-- B. Üretim -->
+      <div class="bg-white rounded-3xl p-5 border-t-4 border-emerald-500 shadow-sm border-x border-b border-slate-200/80 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-cubes-stacked"></i>
+          </div>
+          <div>
+            <h4 class="font-fun text-sm font-bold text-slate-800">B. ÜRETİM & YARATICILIK</h4>
+            <span class="text-[11px] text-emerald-600 font-semibold">Sanat & Keşif</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Resim yapmak, lego ile üretmek, atölye çalışması, proje üretimi, yeni deneyler, serbest yazı.
+        </p>
+      </div>
+
+      <!-- C. Fiziksel Gelişim -->
+      <div class="bg-white rounded-3xl p-5 border-t-4 border-amber-500 shadow-sm border-x border-b border-slate-200/80 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-person-running"></i>
+          </div>
+          <div>
+            <h4 class="font-fun text-sm font-bold text-slate-800">C. FİZİKSEL GELİŞİM</h4>
+            <span class="text-[11px] text-amber-600 font-semibold">Enerji & Sağlık</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Sabah sporu, akşam yürüyüşü, bisiklete binmek, havuza gitmek, bahçede oyun, düzenli spor.
+        </p>
+      </div>
+
+      <!-- D. Sorumluluk ve Yaşam Becerileri -->
+      <div class="bg-white rounded-3xl p-5 border-t-4 border-purple-500 shadow-sm border-x border-b border-slate-200/80 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-seedling"></i>
+          </div>
+          <div>
+            <h4 class="font-fun text-sm font-bold text-slate-800">D. SORUMLULUK & YAŞAM</h4>
+            <span class="text-[11px] text-purple-600 font-semibold">Düzen & Katkı</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Kahvaltıya yardım, çiçek bakımı, oyuncak ve oda toplama, bahçe işleri, günlük plan kontrolü.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. GÜNLÜK 5 VAKİT RUTİNİ (GÖREV SEÇİM VE TAKİP) -->
+    <section class="bg-white rounded-3xl p-5 sm:p-7 shadow-fun border border-slate-200">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold mb-1">
+            <i class="fa-solid fa-clock"></i> GÜNLÜK RUTİNİM
+          </div>
+          <h3 class="font-fun text-2xl font-bold text-slate-800">
+            5 Vakit – Günlük Planım
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-500">
+            Kural: Her vakitten <strong class="text-blue-600">en az 1 görev</strong> seç ve durumunu işaretle!
+          </p>
+        </div>
+
+        <!-- Durum Açıklama Lejantı -->
+        <div class="flex items-center gap-3 text-xs bg-slate-50 border border-slate-200 p-2.5 rounded-2xl">
+          <span class="font-bold text-slate-700">Durum:</span>
+          <span class="inline-flex items-center gap-1 text-emerald-700 font-medium">
+            <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 inline-block"></span> Yaptım
+          </span>
+          <span class="inline-flex items-center gap-1 text-amber-700 font-medium">
+            <span class="w-3.5 h-3.5 rounded-full bg-amber-400 inline-block"></span> Kısmen
+          </span>
+          <span class="inline-flex items-center gap-1 text-slate-400 font-medium">
+            <span class="w-3.5 h-3.5 rounded-full bg-slate-200 border border-slate-300 inline-block"></span> Yapmadım
+          </span>
+        </div>
+      </div>
+
+      <!-- 5 VAKİT KARTLARI GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4" id="vakitCardsContainer">
+        <!-- JS ile 5 Vakit Dinamik Basılacak -->
+      </div>
+    </section>
+
+    <!-- 4. HAFTALIK VE 16 GÜNLÜK DERS PLANI & TAKİP MATRİSİ -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Sol: Haftalık Ders Şablonu (Pazartesi - Pazar) -->
+      <div class="lg:col-span-4 bg-white rounded-3xl p-5 sm:p-6 shadow-fun border border-slate-200 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+            <h3 class="font-fun text-lg font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-table-cells text-indigo-600"></i> Haftalık Ders Planı
+            </h3>
+            <span class="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-lg font-bold">
+              En az 3 ders
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">
+            Her gün için belirlenen standart Konu (K) ve Soru (S) dağılım şablonu:
+          </p>
+
+          <!-- Haftalık Tablo -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-center border-collapse">
+              <thead>
+                <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                  <th class="py-2 px-1 text-left">GÜNLER</th>
+                  <th class="py-2 px-1 bg-red-50 text-red-700">PZT</th>
+                  <th class="py-2 px-1">SAL</th>
+                  <th class="py-2 px-1 bg-emerald-50 text-emerald-700">ÇAR</th>
+                  <th class="py-2 px-1">PER</th>
+                  <th class="py-2 px-1 bg-amber-50 text-amber-700">CUM</th>
+                  <th class="py-2 px-1 bg-sky-50 text-sky-700">CMT</th>
+                  <th class="py-2 px-1 bg-rose-50 text-rose-700">PZR</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 font-medium">
+                <tr>
+                  <td class="py-2 px-1 text-left font-bold text-slate-600">1. Ders</td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-1 text-left font-bold text-slate-600">2. Ders</td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-1 text-left font-bold text-slate-600">3. Ders</td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
+                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Plan Kuralları -->
+          <div class="mt-4 p-3 rounded-2xl bg-blue-50/70 border border-blue-200/80 text-xs text-slate-700 space-y-1">
+            <div class="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
+              <i class="fa-solid fa-book-bookmark text-blue-600"></i> Planımın Kuralları:
+            </div>
+            <div class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> Her gün en az 3 ders çalışırım.</div>
+            <div class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> En az 1 Konu (K) ve 1 Soru (S) yaparım.</div>
+            <div class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> Haftalık planıma sadık kalırım.</div>
+            <div class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> Eksiklerimi fark edip tamamlarım.</div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> K: Konu</span>
+          <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> S: Soru Çözümü</span>
+        </div>
+      </div>
+
+      <!-- Sağ: 16 Günlük İnteraktif Ders Takip Tablosu -->
+      <div class="lg:col-span-8 bg-white rounded-3xl p-5 sm:p-6 shadow-fun border border-slate-200 flex flex-col justify-between">
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-emerald-600"></i>
+                16 Günlük Ders Takip Tablosu
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">Her gün için 3 dersin durumunu doğrudan tablodan tıkla ve işaretle!</p>
+            </div>
+            <div class="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-xl font-bold self-start sm:self-auto flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i>
+              <span id="lessonTotalCount">0 / 48 Ders Tamamlandı</span>
+            </div>
+          </div>
+
+          <!-- 16 Günlük Yatay Kaydırılabilir Tablo -->
+          <div class="overflow-x-auto pb-2">
+            <table class="w-full text-xs text-center border-collapse min-w-[700px]" id="lessonsTrackerTable">
+              <!-- JS ile dinamik üretilecek -->
+            </table>
+          </div>
+        </div>
+
+        <div class="mt-4 p-3 rounded-2xl bg-emerald-50/60 border border-emerald-200/60 flex items-center justify-between text-xs text-emerald-900 font-medium">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+            Derslerini planla, işaretle ve ilerlemeni gör!
+          </span>
+          <span class="text-[11px] text-slate-500 font-normal">Kutuya tıklayarak K/S/Tamamlandı durumunu değiştir</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. GÜN SONU DEĞERLENDİRMEM & ÖZ-YANSIMA NOT DEFTERİ -->
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+      
+      <!-- Sol: Yıldız Derecelendirme -->
+      <div class="md:col-span-5 bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white rounded-3xl p-6 shadow-fun flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl pointer-events-none">
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <div class="relative z-10">
+          <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase mb-3">
+            <i class="fa-solid fa-award text-yellow-200"></i> Gün Sonu Öz Değerlendirme
+          </div>
+          <h3 class="font-fun text-2xl font-bold text-white mb-2">
+            Bugün Kendime Kaç Yıldız Veriyorum?
+          </h3>
+          <p class="text-xs text-amber-100 leading-relaxed mb-6">
+            Günün nasıl geçti? Görevlerini ne ölçüde başardın? Kendini dürüstçe değerlendir ve yıldızını seç!
+          </p>
+
+          <!-- 5 Yıldız Seçim Alanı -->
+          <div class="flex items-center justify-center gap-3 py-4 bg-black/15 backdrop-blur-sm rounded-2xl border border-white/20 mb-4" id="starRatingContainer">
+            <button onclick="setDailyRating(1)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="1"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setDailyRating(2)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="2"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setDailyRating(3)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="3"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setDailyRating(4)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="4"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setDailyRating(5)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="5"><i class="fa-solid fa-star"></i></button>
+          </div>
+
+          <div class="text-center font-fun text-sm font-bold text-yellow-200" id="starFeedbackText">
+            Henüz puan verilmedi
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-white/20 text-[11px] text-amber-100 text-center relative z-10">
+          ⭐ Her 5 yıldızlı gün sana ekstra +25 XP kazandırır!
+        </div>
+      </div>
+
+      <!-- Sağ: Günlük Yansıma Notu ("Yarın neyi daha iyi yapabilirim?") -->
+      <div class="md:col-span-7 bg-white rounded-3xl p-6 shadow-fun border border-slate-200 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+            <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-pen-fancy text-sky-600"></i> Günlük Yansıma & Gelişim Notu
+            </h3>
+            <span class="text-xs text-slate-400" id="noteSaveStatus">Otomatik Kaydedilir</span>
+          </div>
+
+          <label for="dailyNoteInput" class="block font-fun text-sm font-bold text-slate-700 mb-2">
+            "Yarın neyi daha iyi yapabilirim? Bugün neler öğrendim?"
+          </label>
+          <textarea id="dailyNoteInput" rows="5" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all resize-none font-medium" placeholder="Örn: Bugün Osmanlıca okumamı biraz daha artırabilirim, sabah sporunu hiç aksatmadım, yarın soru çözümüne 20 dakika erken başlayacağım..."></textarea>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-xs text-slate-500">
+            💡 Düşüncelerini kaydetmek gelişiminin en büyük anahtarıdır.
+          </span>
+          <button onclick="saveDailyNote()" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-fun font-semibold text-xs shadow-md shadow-sky-600/20 transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-floppy-disk"></i> Notu Kaydet
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. İSTATİSTİKLER VE GELİŞİM GRAFİKLERİ -->
+    <section class="bg-white rounded-3xl p-6 shadow-fun border border-slate-200">
+      <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-chart-pie text-purple-600"></i>
+            Gelişim Analitiği & Başarı Rozetleri
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">16 günlük serüveninde hangi alanda ne kadar ilerledin?</p>
+        </div>
+        <button onclick="refreshCharts()" class="text-xs text-slate-500 hover:text-blue-600 font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-arrows-rotate"></i> Yenile
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Grafik 1: Alan Dağılımı (Radar / Polar) -->
+        <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-4 border border-slate-200/80 flex flex-col items-center justify-center">
+          <h4 class="font-fun text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Gelişim Alanları Dağılımı</h4>
+          <div class="w-full max-w-[280px] h-[240px] relative">
+            <canvas id="areasChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Grafik 2: 16 Günlük Trend Çizgisi -->
+        <div class="lg:col-span-7 bg-slate-50 rounded-2xl p-4 border border-slate-200/80 flex flex-col justify-between">
+          <h4 class="font-fun text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">16 Günlük Görev Tamamlama Grafiği</h4>
+          <div class="w-full h-[220px]">
+            <canvas id="dailyProgressChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Başarı Rozetleri Koleksiyonu -->
+      <div class="mt-6 pt-5 border-t border-slate-100">
+        <h4 class="font-fun text-sm font-bold text-slate-800 mb-3 flex items-center gap-1.5">
+          <i class="fa-solid fa-trophy text-amber-500"></i> Kazanılan Başarı Rozetleri
+        </h4>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3" id="badgesContainer">
+          <!-- JS ile doldurulacak -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mt-12 no-print">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-fun font-bold text-blue-600 text-sm">BENİM 16 GÜNLÜK GELİŞİM PROGRAMIM</span>
+        <span>• 29 Ağustos - 13 Eylül 2026</span>
+      </div>
+      <div class="text-slate-400">
+        16 Günlük Gelişim Planı Portalı • Tüm veriler tarayıcınızda güvenle saklanır.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= DATA MANAGEMENT MODAL ================= -->
+  <div id="dataModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-fun text-lg font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-database text-sky-600"></i> Veri Yönetimi & Yedekleme
+        </h3>
+        <button onclick="closeDataModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-600">
+        Tüm 16 günlük çalışma verilerini bilgisayarına JSON dosyası olarak kaydedebilir veya daha önce kaydettiğin yedeği yükleyebilirsin.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+        <button onclick="exportData()" class="p-3 rounded-2xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-800 font-semibold text-xs flex flex-col items-center justify-center gap-2 transition-all">
+          <i class="fa-solid fa-download text-xl text-sky-600"></i>
+          <span>Verileri İndir (Yedek Al)</span>
+        </button>
+
+        <label class="p-3 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-semibold text-xs flex flex-col items-center justify-center gap-2 cursor-pointer transition-all">
+          <i class="fa-solid fa-upload text-xl text-emerald-600"></i>
+          <span>Yedeği Yükle (İçe Aktar)</span>
+          <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)">
+        </label>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+        <button onclick="resetAllData()" class="text-xs text-rose-600 hover:text-rose-700 font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-trash-can"></i> Tüm Verileri Sıfırla
+        </button>
+        <button onclick="closeDataModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">
+          Kapat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT APP LOGIC ================= -->
+  <script>
+    /* =========================================================================
+       1. DATA STRUCTURES & 16-DAY CALENDAR DEFINITIONS (29 AĞUSTOS - 13 EYLÜL)
+       ========================================================================= */
+
+    const DAYS_CONFIG = [
+      { id: 1, dateStr: "29 AĞU", dayName: "Cumartesi", dayNumber: 29, month: "AĞU", phase: 1, weekDayIndex: 5 },
+      { id: 2, dateStr: "30 AĞU", dayName: "Pazar", dayNumber: 30, month: "AĞU", phase: 1, weekDayIndex: 6 },
+      { id: 3, dateStr: "31 AĞU", dayName: "Pazartesi", dayNumber: 31, month: "AĞU", phase: 1, weekDayIndex: 0 },
+      { id: 4, dateStr: "1 EYL", dayName: "Salı", dayNumber: 1, month: "EYL", phase: 1, weekDayIndex: 1 },
+      { id: 5, dateStr: "2 EYL", dayName: "Çarşamba", dayNumber: 2, month: "EYL", phase: 1, weekDayIndex: 2 },
+      { id: 6, dateStr: "3 EYL", dayName: "Perşembe", dayNumber: 3, month: "EYL", phase: 2, weekDayIndex: 3 },
+      { id: 7, dateStr: "4 EYL", dayName: "Cuma", dayNumber: 4, month: "EYL", phase: 2, weekDayIndex: 4 },
+      { id: 8, dateStr: "5 EYL", dayName: "Cumartesi", dayNumber: 5, month: "EYL", phase: 2, weekDayIndex: 5 },
+      { id: 9, dateStr: "6 EYL", dayName: "Pazar", dayNumber: 6, month: "EYL", phase: 2, weekDayIndex: 6 },
+      { id: 10, dateStr: "7 EYL", dayName: "Pazartesi", dayNumber: 7, month: "EYL", phase: 2, weekDayIndex: 0 },
+      { id: 11, dateStr: "8 EYL", dayName: "Salı", dayNumber: 8, month: "EYL", phase: 2, weekDayIndex: 1 },
+      { id: 12, dateStr: "9 EYL", dayName: "Çarşamba", dayNumber: 9, month: "EYL", phase: 3, weekDayIndex: 2 },
+      { id: 13, dateStr: "10 EYL", dayName: "Perşembe", dayNumber: 10, month: "EYL", phase: 3, weekDayIndex: 3 },
+      { id: 14, dateStr: "11 EYL", dayName: "Cuma", dayNumber: 11, month: "EYL", phase: 3, weekDayIndex: 4 },
+      { id: 15, dateStr: "12 EYL", dayName: "Cumartesi", dayNumber: 12, month: "EYL", phase: 3, weekDayIndex: 5 },
+      { id: 16, dateStr: "13 EYL", dayName: "Pazar", dayNumber: 13, month: "EYL", phase: 3, weekDayIndex: 6 },
+    ];
+
+    const PHASES = {
+      1: {
+        title: "1. Aşama: Alışma (29 Ağustos – 2 Eylül)",
+        badge: "1. Aşama: Alışma 🌱",
+        class: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        colorHex: "#10b981",
+        goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Programa ve plana alışırım, basit görevlerle başlarım, düzenli olmayı öğrenir ve yeni alışkanlıklar kazanırım."
+      },
+      2: {
+        title: "2. Aşama: Gelişme (3 – 8 Eylül)",
+        badge: "2. Aşama: Gelişme 🚀",
+        class: "bg-sky-100 text-sky-800 border-sky-200",
+        colorHex: "#0284c7",
+        goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Akademik çalışmalarımı artırırım, Osmanlıca, araştırma ve proje çalışmalarımı düzenli yapar, yeni şeyler denerim."
+      },
+      3: {
+        title: "3. Aşama: Hazırlık ve Tamamlama (9 – 13 Eylül)",
+        badge: "3. Aşama: Hazırlık & Tamamlama 🎯🏆",
+        class: "bg-purple-100 text-purple-800 border-purple-200",
+        colorHex: "#8b5cf6",
+        goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Programımı kendi kendime takip ederim, eksiklerimi fark edip geliştiririm, bir proje/ürün ortaya koyup final değerlendirmesi yaparım."
+      }
+    };
+
+    // 5 Vakit Şablon Görevleri (Orijinal Plandan Birebir)
+    const DEFAULT_VAKITLER = [
+      {
+        id: "v1",
+        no: 1,
+        title: "1. VAKİT: GÜNE BAŞLA",
+        subtitle: "Bedeni ve zihni güne hazırla.",
+        slogan: "Enerjini yükselt, güne güzel başla!",
+        icon: "fa-solid fa-sun",
+        iconColor: "text-amber-500",
+        headerBg: "bg-amber-50 text-amber-900 border-amber-200",
+        borderColor: "border-amber-400",
+        tasks: [
+          { id: "v1_1", text: "Sabah sporu", area: "C" },
+          { id: "v1_2", text: "Kahvaltıya yardım", area: "D" },
+          { id: "v1_3", text: "Çiçekleri kontrol et / bakım yap", area: "D" },
+          { id: "v1_4", text: "Odanı topla", area: "D" },
+          { id: "v1_5", text: "Günün planını gözden geçir", area: "D" },
+          { id: "v1_6", text: "Nefes egzersizi yap", area: "C" }
+        ]
+      },
+      {
+        id: "v2",
+        no: 2,
+        title: "2. VAKİT: ÖĞREN",
+        subtitle: "En verimli zamanında öğrenmeye odaklan.",
+        slogan: "Dikkatini topla, bilgin artsın!",
+        icon: "fa-solid fa-lightbulb",
+        iconColor: "text-blue-500",
+        headerBg: "bg-blue-50 text-blue-900 border-blue-200",
+        borderColor: "border-blue-500",
+        tasks: [
+          { id: "v2_1", text: "Konu çalış", area: "A" },
+          { id: "v2_2", text: "Soru çöz", area: "A" },
+          { id: "v2_3", text: "Osmanlıca oku / yaz", area: "A" },
+          { id: "v2_4", text: "Kitap oku (dersle ilgili)", area: "A" },
+          { id: "v2_5", text: "Yazı yaz", area: "A" },
+          { id: "v2_6", text: "Notlarını düzenle", area: "A" }
+        ]
+      },
+      {
+        id: "v3",
+        no: 3,
+        title: "3. VAKİT: ÜRET / KEŞFET",
+        subtitle: "Merak et, araştır, üret ve keşfet.",
+        slogan: "Merakın seni ileri taşır!",
+        icon: "fa-solid fa-magnifying-glass",
+        iconColor: "text-emerald-500",
+        headerBg: "bg-emerald-50 text-emerald-900 border-emerald-200",
+        borderColor: "border-emerald-500",
+        tasks: [
+          { id: "v3_1", text: "Resim yap", area: "B" },
+          { id: "v3_2", text: "Lego ile üret", area: "B" },
+          { id: "v3_3", text: "Araştırma yap", area: "B" },
+          { id: "v3_4", text: "Atölye çalışması yap", area: "B" },
+          { id: "v3_5", text: "Proje çalışması yap", area: "B" },
+          { id: "v3_6", text: "Yeni bir şey dene", area: "B" }
+        ]
+      },
+      {
+        id: "v4",
+        no: 4,
+        title: "4. VAKİT: HAREKET ET",
+        subtitle: "Oyna, hareket et, enerjini at.",
+        slogan: "Hareket et, güçlü ol, mutlu ol!",
+        icon: "fa-solid fa-bicycle",
+        iconColor: "text-orange-500",
+        headerBg: "bg-orange-50 text-orange-900 border-orange-200",
+        borderColor: "border-orange-500",
+        tasks: [
+          { id: "v4_1", text: "Bisiklete bin", area: "C" },
+          { id: "v4_2", text: "Havuza git", area: "C" },
+          { id: "v4_3", text: "Bahçede oyna", area: "C" },
+          { id: "v4_4", text: "Akşam yürüyüşü", area: "C" },
+          { id: "v4_5", text: "Serbest oyun", area: "C" },
+          { id: "v4_6", text: "Düzenli spor yap", area: "C" }
+        ]
+      },
+      {
+        id: "v5",
+        no: 5,
+        title: "5. VAKİT: SAKİNLEŞ & OKU",
+        subtitle: "Zihnini dinlendir, okuyarak geliş.",
+        slogan: "Sakinleş, oku, güne güzel nokta koy!",
+        icon: "fa-solid fa-moon",
+        iconColor: "text-purple-500",
+        headerBg: "bg-purple-50 text-purple-900 border-purple-200",
+        borderColor: "border-purple-500",
+        tasks: [
+          { id: "v5_1", text: "Kitap oku", area: "A" },
+          { id: "v5_2", text: "Dergi oku", area: "A" },
+          { id: "v5_3", text: "Günlük yaz", area: "A" },
+          { id: "v5_4", text: "Hafif Osmanlıca oku", area: "A" },
+          { id: "v5_5", text: "Günün değerlendirmesini yap", area: "D" }
+        ]
+      }
+    ];
+
+    // Haftalık Standart Ders Şablonu (K: Konu, S: Soru)
+    const WEEKLY_LESSONS_TEMPLATE = [
+      // 0: Pazartesi
+      [{ type: "K" }, { type: "S" }, { type: "S" }],
+      // 1: Salı
+      [{ type: "K" }, { type: "S" }, { type: "K" }],
+      // 2: Çarşamba
+      [{ type: "K" }, { type: "S" }, { type: "S" }],
+      // 3: Perşembe
+      [{ type: "S" }, { type: "K" }, { type: "S" }],
+      // 4: Cuma
+      [{ type: "K" }, { type: "S" }, { type: "K" }],
+      // 5: Cumartesi
+      [{ type: "K" }, { type: "S" }, { type: "S" }],
+      // 6: Pazar
+      [{ type: "S" }, { type: "K" }, { type: "K" }]
+    ];
+
+    const BADGES = [
+      { id: 'first_step', title: 'İlk Adım 🌱', desc: 'İlk gün görevini tamamla', icon: 'fa-shoe-prints', reqXP: 10 },
+      { id: 'study_pro', title: 'Ders Şampiyonu 📚', desc: 'En az 10 ders tamamla', icon: 'fa-book-open-reader', reqXP: 100 },
+      { id: 'craft_master', title: 'Üretim Mimarı 🎨', desc: 'Üretim alanında 5 görev yap', icon: 'fa-palette', reqXP: 150 },
+      { id: 'sporty', title: 'Sporcu Ruh 🏃', desc: 'Hareket vaktini 5 kez tamamla', icon: 'fa-person-running', reqXP: 200 },
+      { id: 'five_star', title: '5 Yıldızlı Gün ⭐', desc: 'İlk 5 yıldızlı gününü al', icon: 'fa-star', reqXP: 50 },
+      { id: 'legend', title: '16 Gün Efsanesi 🏆', desc: 'Bütün programı tamamla', icon: 'fa-trophy', reqXP: 500 }
+    ];
+
+    /* =========================================================================
+       2. STATE & STORAGE MANAGEMENT
+       ========================================================================= */
+    const STORAGE_KEY = "fen_deneme_16_gunluk_gelisim_v1";
+
+    let state = {
+      selectedDayId: 1,
+      daysData: {}
+    };
+
+    // State Initialization
+    function initAppState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          state = JSON.parse(saved);
+        } catch(e) {
+          console.error("Storage parse error, resetting state", e);
+          createFreshState();
+        }
+      } else {
+        createFreshState();
+      }
+
+      // Eksik gün varsa tamamla
+      DAYS_CONFIG.forEach(day => {
+        if (!state.daysData[day.id]) {
+          state.daysData[day.id] = createDefaultDayData(day);
+        }
+      });
+    }
+
+    function createFreshState() {
+      state = {
+        selectedDayId: 1,
+        daysData: {}
+      };
+      DAYS_CONFIG.forEach(day => {
+        state.daysData[day.id] = createDefaultDayData(day);
+      });
+      saveState();
+    }
+
+    function createDefaultDayData(day) {
+      const template = WEEKLY_LESSONS_TEMPLATE[day.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
+      return {
+        tasks: {},
+        lessons: [
+          { type: template[0].type, done: false },
+          { type: template[1].type, done: false },
+          { type: template[2].type, done: false }
+        ],
+        rating: 0,
+        note: ""
+      };
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      updateGamificationAndUI();
+    }
+
+    /* =========================================================================
+       3. SOUND / AUDIO SYNTHESIZER
+       ========================================================================= */
+    function playChimeSound(type = 'click') {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'success') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+          osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.15); // G5
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.25);
+        } else if (type === 'star') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(659.25, audioCtx.currentTime); // E5
+          osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.2); // C6
+          gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.3);
+        } else {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.08);
+        }
+      } catch (e) {
+        // AudioContext disabled or not supported
+      }
+    }
+
+    /* =========================================================================
+       4. RENDERERS & UI BUILDERS
+       ========================================================================= */
+
+    // 16 Gün Yatay Butonlarını Render Et
+    function renderDayButtons() {
+      const container = document.getElementById("dayButtonsContainer");
+      container.innerHTML = "";
+
+      DAYS_CONFIG.forEach(day => {
+        const isSelected = day.id === state.selectedDayId;
+        const dayData = state.daysData[day.id] || { tasks: {}, lessons: [], rating: 0 };
+        
+        const taskCount = Object.values(dayData.tasks).filter(v => v === 'done').length;
+        const lessonCount = dayData.lessons.filter(l => l.done).length;
+        const hasActivity = taskCount > 0 || lessonCount > 0 || dayData.rating > 0;
+
+        let phaseBorderColor = "border-emerald-300";
+        if (day.phase === 2) phaseBorderColor = "border-sky-300";
+        if (day.phase === 3) phaseBorderColor = "border-purple-300";
+
+        const btn = document.createElement("button");
+        btn.onclick = () => selectDay(day.id);
+        btn.className = `flex flex-col items-center justify-center p-2 rounded-2xl border transition-all relative ${
+          isSelected 
+            ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105 border-blue-700 z-10' 
+            : 'bg-white hover:bg-slate-50 text-slate-700 ' + phaseBorderColor
+        }`;
+
+        btn.innerHTML = `
+          <span class="text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'text-blue-100' : 'text-slate-400'}">${day.dayName.substring(0,3)}</span>
+          <span class="font-fun text-base font-bold my-0.5">${day.dayNumber}</span>
+          <span class="text-[9px] font-semibold ${isSelected ? 'text-blue-200' : 'text-slate-500'}">${day.month}</span>
+          ${hasActivity ? `
+            <span class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white"></span>
+          ` : ''}
+          ${dayData.rating > 0 ? `
+            <span class="text-[10px] text-amber-400 font-bold mt-0.5">★${dayData.rating}</span>
+          ` : ''}
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    // Seçili Gün Başlık ve Açıklamasını Güncelle
+    function renderSelectedDayHeader() {
+      const currentDay = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
+      if (!currentDay) return;
+
+      const phaseInfo = PHASES[currentDay.phase];
+
+      document.getElementById("selectedDayMonth").textContent = currentDay.month;
+      document.getElementById("selectedDayNumber").textContent = currentDay.dayNumber;
+      document.getElementById("selectedDayFullTitle").textContent = `${currentDay.dayNumber} ${currentDay.month === 'AĞU' ? 'Ağustos' : 'Eylül'} ${currentDay.dayName} (${currentDay.id}. Gün)`;
+      
+      const badgeElem = document.getElementById("selectedDayPhaseBadge");
+      badgeElem.className = `text-xs px-2.5 py-0.5 rounded-full font-semibold border ${phaseInfo.class}`;
+      badgeElem.innerHTML = phaseInfo.badge;
+
+      document.getElementById("selectedDayPhaseGoal").innerHTML = phaseInfo.goal;
+      document.getElementById("activePhaseName").textContent = phaseInfo.title.split('(')[0];
+    }
+
+    // 5 Vakit Kartlarını Render Et
+    function renderVakitCards() {
+      const container = document.getElementById("vakitCardsContainer");
+      container.innerHTML = "";
+
+      const currentDay = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
+      const dayData = state.daysData[state.selectedDayId] || { tasks: {} };
+
+      DEFAULT_VAKITLER.forEach(vakit => {
+        const card = document.createElement("div");
+        card.className = `bg-slate-50/70 rounded-3xl p-4 border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all`;
+
+        const completedInVakit = vakit.tasks.filter(t => dayData.tasks[t.id] === 'done').length;
+        const halfInVakit = vakit.tasks.filter(t => dayData.tasks[t.id] === 'half').length;
+        const hasMetRule = (completedInVakit + halfInVakit) >= 1;
+
+        let tasksHtml = '';
+        vakit.tasks.forEach(task => {
+          const status = dayData.tasks[task.id] || 'none';
+          
+          let btnClass = "bg-white text-slate-700 border-slate-200 hover:border-blue-300";
+          let iconHtml = `<span class="w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-transparent">✓</span>`;
+
+          if (status === 'done') {
+            btnClass = "bg-emerald-100/90 text-emerald-900 border-emerald-300 font-semibold shadow-sm";
+            iconHtml = `<span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-sm"><i class="fa-solid fa-check"></i></span>`;
+          } else if (status === 'half') {
+            btnClass = "bg-amber-100/90 text-amber-900 border-amber-300 font-semibold shadow-sm";
+            iconHtml = `<span class="w-4 h-4 rounded-full bg-amber-500 text-white flex items-center justify-center text-[9px] shadow-sm"><i class="fa-solid fa-minus"></i></span>`;
+          }
+
+          tasksHtml += `
+            <button onclick="cycleTaskStatus('${task.id}')" class="w-full text-left p-2.5 rounded-2xl border text-xs flex items-center justify-between gap-2 transition-all ${btnClass} group">
+              <span class="flex-1 leading-snug">${task.text}</span>
+              ${iconHtml}
+            </button>
+          `;
+        });
+
+        card.innerHTML = `
+          <div>
+            <!-- Vakit Başlığı -->
+            <div class="flex items-center gap-2 mb-2 p-2 rounded-2xl ${vakit.headerBg} border">
+              <i class="${vakit.icon} ${vakit.iconColor} text-base"></i>
+              <div class="flex-1 min-w-0">
+                <h4 class="font-fun text-xs font-bold truncate">${vakit.title}</h4>
+                <p class="text-[10px] opacity-80 truncate">${vakit.subtitle}</p>
+              </div>
+            </div>
+
+            <!-- Vakit Sloganı -->
+            <div class="text-[10px] font-semibold text-center text-slate-500 bg-white/70 py-1 px-2 rounded-xl mb-3 border border-slate-100">
+              "${vakit.slogan}"
+            </div>
+
+            <!-- Görev Listesi -->
+            <div class="space-y-1.5">
+              ${tasksHtml}
+            </div>
+          </div>
+
+          <!-- Alt Durum Rozeti (En az 1 görev kuralı) -->
+          <div class="mt-3 pt-2.5 border-t border-slate-200/80 flex items-center justify-between text-[11px]">
+            <span class="font-medium ${hasMetRule ? 'text-emerald-700' : 'text-slate-400'}">
+              ${hasMetRule ? '<i class="fa-solid fa-circle-check text-emerald-500"></i> Kural Tamam' : '<i class="fa-regular fa-circle text-slate-300"></i> En az 1 seç'}
+            </span>
+            <span class="font-bold text-slate-600">${completedInVakit}/${vakit.tasks.length}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 16 Günlük İnteraktif Ders Takip Tablosunu Render Et
+    function renderLessonsTrackerTable() {
+      const table = document.getElementById("lessonsTrackerTable");
+      table.innerHTML = "";
+
+      let headerHtml = `
+        <thead>
+          <tr class="bg-slate-100 text-slate-600 font-bold border-b border-slate-200">
+            <th class="py-2.5 px-2 text-left sticky left-0 bg-slate-100 z-10 min-w-[70px]">DERSLER</th>
+      `;
+
+      DAYS_CONFIG.forEach(day => {
+        const isSelected = day.id === state.selectedDayId;
+        headerHtml += `
+          <th onclick="selectDay(${day.id})" class="py-2 px-1 cursor-pointer transition-colors hover:bg-slate-200 ${isSelected ? 'bg-blue-100 text-blue-800' : ''}">
+            <div class="font-bold text-[11px]">${day.dayNumber}</div>
+            <div class="text-[9px] font-medium text-slate-400">${day.dayName.substring(0,3)}</div>
+          </th>
+        `;
+      });
+      headerHtml += `</tr></thead>`;
+
+      let tbodyHtml = `<tbody class="divide-y divide-slate-100 font-medium">`;
+
+      for (let lessonIndex = 0; lessonIndex < 3; lessonIndex++) {
+        tbodyHtml += `
+          <tr>
+            <td class="py-2.5 px-2 text-left font-bold text-slate-700 sticky left-0 bg-white z-10 shadow-sm border-r border-slate-100">
+              ${lessonIndex + 1}. Ders
+            </td>
+        `;
+
+        DAYS_CONFIG.forEach(day => {
+          const dayData = state.daysData[day.id] || { lessons: [] };
+          const lesson = dayData.lessons[lessonIndex] || { type: "K", done: false };
+          const isSelected = day.id === state.selectedDayId;
+
+          const isKonu = lesson.type === "K";
+          const isDone = lesson.done;
+
+          tbodyHtml += `
+            <td class="py-2 px-1 ${isSelected ? 'bg-blue-50/50' : ''}">
+              <div class="flex flex-col items-center gap-1">
+                <!-- K / S Toggle Butonu -->
+                <button onclick="toggleLessonType(${day.id}, ${lessonIndex})" class="w-6 h-6 rounded-full text-[11px] font-bold flex items-center justify-center transition-all ${
+                  isKonu ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-rose-600 text-white hover:bg-rose-700'
+                }" title="Ders tipi değiştir (Konu / Soru)">
+                  ${lesson.type}
+                </button>
+
+                <!-- Tamamlandı Checkbox Dairesi -->
+                <button onclick="toggleLessonDone(${day.id}, ${lessonIndex})" class="w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] transition-all ${
+                  isDone 
+                    ? 'bg-emerald-500 border-emerald-600 text-white shadow-sm' 
+                    : 'border-slate-300 hover:border-emerald-400 bg-white'
+                }" title="Dersi tamamlandı olarak işaretle">
+                  ${isDone ? '<i class="fa-solid fa-check"></i>' : ''}
+                </button>
+              </div>
+            </td>
+          `;
+        });
+
+        tbodyHtml += `</tr>`;
+      }
+
+      tbodyHtml += `</tbody>`;
+      table.innerHTML = headerHtml + tbodyHtml;
+
+      let totalLessonsDone = 0;
+      DAYS_CONFIG.forEach(d => {
+        const dData = state.daysData[d.id];
+        if (dData && dData.lessons) {
+          totalLessonsDone += dData.lessons.filter(l => l.done).length;
+        }
+      });
+      document.getElementById("lessonTotalCount").textContent = `${totalLessonsDone} / 48 Ders Tamamlandı`;
+    }
+
+    // Yıldız Değerlendirme Alanını Render Et
+    function renderStarRating() {
+      const dayData = state.daysData[state.selectedDayId] || { rating: 0 };
+      const currentRating = dayData.rating || 0;
+
+      const buttons = document.querySelectorAll(".star-btn");
+      buttons.forEach(btn => {
+        const starVal = parseInt(btn.getAttribute("data-star"));
+        if (starVal <= currentRating) {
+          btn.className = "star-btn text-3xl sm:text-4xl text-yellow-300 scale-110 drop-shadow-md transition-all";
+        } else {
+          btn.className = "star-btn text-3xl sm:text-4xl text-amber-200/40 hover:text-yellow-200 hover:scale-125 transition-all";
+        }
+      });
+
+      const feedbackElem = document.getElementById("starFeedbackText");
+      const feedbackMessages = [
+        "Henüz puan verilmedi",
+        "1 Yıldız: Yarın çok daha iyi başlayacağız! 💪",
+        "2 Yıldız: İyi bir çabaydı, yarın artıracağız! 🌱",
+        "3 Yıldız: Güzel bir gün, dengeli ilerliyoruz! 👍",
+        "4 Yıldız: Harika bir performans, çok başarılı! 🌟",
+        "5 Yıldız: MÜKEMMELSİN! Efsane bir gün geçirdin! 🏆🎉"
+      ];
+      feedbackElem.textContent = feedbackMessages[currentRating];
+    }
+
+    // Günlük Not Alanını Güncelle
+    function renderDailyNote() {
+      const dayData = state.daysData[state.selectedDayId] || { note: "" };
+      const input = document.getElementById("dailyNoteInput");
+      input.value = dayData.note || "";
+    }
+
+    // Başarı Rozetlerini Render Et
+    function renderBadges(userXP) {
+      const container = document.getElementById("badgesContainer");
+      container.innerHTML = "";
+
+      BADGES.forEach(badge => {
+        const isUnlocked = userXP >= badge.reqXP;
+        const card = document.createElement("div");
+        card.className = `p-3 rounded-2xl border text-center flex flex-col items-center justify-center transition-all ${
+          isUnlocked 
+            ? 'bg-amber-50 border-amber-200 text-amber-900 shadow-sm' 
+            : 'bg-slate-50 border-slate-200 text-slate-400 opacity-60'
+        }`;
+
+        card.innerHTML = `
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg mb-1.5 ${
+            isUnlocked ? 'bg-amber-400 text-white shadow-md' : 'bg-slate-200 text-slate-400'
+          }">
+            <i class="fa-solid ${badge.icon}"></i>
+          </div>
+          <div class="font-fun text-xs font-bold leading-tight">${badge.title}</div>
+          <div class="text-[10px] mt-0.5 ${isUnlocked ? 'text-amber-700' : 'text-slate-400'}">${badge.desc}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    /* =========================================================================
+       5. USER ACTIONS & HANDLERS
+       ========================================================================= */
+
+    function selectDay(dayId) {
+      if (dayId < 1 || dayId > 16) return;
+      state.selectedDayId = dayId;
+      playChimeSound('click');
+      saveState();
+      renderAll();
+    }
+
+    function changeSelectedDay(delta) {
+      const nextId = state.selectedDayId + delta;
+      if (nextId >= 1 && nextId <= 16) {
+        selectDay(nextId);
+      }
+    }
+
+    function cycleTaskStatus(taskId) {
+      const dayData = state.daysData[state.selectedDayId];
+      if (!dayData) return;
+
+      const currentStatus = dayData.tasks[taskId] || 'none';
+      let nextStatus = 'done';
+      if (currentStatus === 'done') nextStatus = 'half';
+      else if (currentStatus === 'half') nextStatus = 'none';
+      else nextStatus = 'done';
+
+      dayData.tasks[taskId] = nextStatus;
+      
+      if (nextStatus === 'done') {
+        playChimeSound('success');
+      } else {
+        playChimeSound('click');
+      }
+
+      saveState();
+      renderVakitCards();
+      renderDayButtons();
+    }
+
+    function toggleLessonType(dayId, lessonIndex) {
+      const dayData = state.daysData[dayId];
+      if (!dayData || !dayData.lessons[lessonIndex]) return;
+
+      dayData.lessons[lessonIndex].type = dayData.lessons[lessonIndex].type === 'K' ? 'S' : 'K';
+      playChimeSound('click');
+      saveState();
+      renderLessonsTrackerTable();
+    }
+
+    function toggleLessonDone(dayId, lessonIndex) {
+      const dayData = state.daysData[dayId];
+      if (!dayData || !dayData.lessons[lessonIndex]) return;
+
+      dayData.lessons[lessonIndex].done = !dayData.lessons[lessonIndex].done;
+      if (dayData.lessons[lessonIndex].done) {
+        playChimeSound('success');
+      } else {
+        playChimeSound('click');
+      }
+      saveState();
+      renderLessonsTrackerTable();
+      renderDayButtons();
+    }
+
+    function setDailyRating(rating) {
+      const dayData = state.daysData[state.selectedDayId];
+      if (!dayData) return;
+
+      dayData.rating = rating;
+      playChimeSound('star');
+
+      if (rating === 5) {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.7 }
+        });
+      }
+
+      saveState();
+      renderStarRating();
+      renderDayButtons();
+    }
+
+    function saveDailyNote() {
+      const input = document.getElementById("dailyNoteInput");
+      const dayData = state.daysData[state.selectedDayId];
+      if (!dayData) return;
+
+      dayData.note = input.value.trim();
+      saveState();
+
+      const statusElem = document.getElementById("noteSaveStatus");
+      statusElem.textContent = "Kaydedildi ✓";
+      statusElem.className = "text-xs text-emerald-600 font-bold";
+      playChimeSound('success');
+
+      setTimeout(() => {
+        statusElem.textContent = "Otomatik Kaydedilir";
+        statusElem.className = "text-xs text-slate-400";
+      }, 2000);
+    }
+
+    /* =========================================================================
+       6. GAMIFICATION, XP, STREAK & ANALYTICS CALCULATIONS
+       ========================================================================= */
+
+    function updateGamificationAndUI() {
+      let totalXP = 0;
+      let totalCompletedTasks = 0;
+      let activeStreak = 0;
+
+      let areaScores = { A: 0, B: 0, C: 0, D: 0 };
+      let dailyCompletionCounts = [];
+
+      DAYS_CONFIG.forEach(day => {
+        const dayData = state.daysData[day.id] || { tasks: {}, lessons: [], rating: 0 };
+        
+        let dayTaskDone = 0;
+        Object.entries(dayData.tasks).forEach(([taskId, status]) => {
+          let taskArea = 'A';
+          DEFAULT_VAKITLER.forEach(v => {
+            const found = v.tasks.find(t => t.id === taskId);
+            if (found) taskArea = found.area;
+          });
+
+          if (status === 'done') {
+            totalXP += 10;
+            totalCompletedTasks += 1;
+            dayTaskDone += 1;
+            areaScores[taskArea] += 10;
+          } else if (status === 'half') {
+            totalXP += 5;
+            areaScores[taskArea] += 5;
+          }
+        });
+
+        (dayData.lessons || []).forEach(l => {
+          if (l.done) {
+            totalXP += 15;
+            areaScores['A'] += 15;
+          }
+        });
+
+        if (dayData.rating > 0) {
+          totalXP += dayData.rating * 5;
+          if (dayData.rating === 5) totalXP += 10;
+        }
+
+        dailyCompletionCounts.push(dayTaskDone);
+
+        if (dayTaskDone >= 1 || (dayData.lessons && dayData.lessons.some(l => l.done))) {
+          activeStreak += 1;
+        }
+      });
+
+      let levelTitle = "1. Seviye: Çırak";
+      let levelProgress = (totalXP % 150) / 1.5;
+      if (totalXP >= 500) {
+        levelTitle = "5. Seviye: Efsane Şampiyon 🏆";
+        levelProgress = 100;
+      } else if (totalXP >= 300) {
+        levelTitle = "4. Seviye: Bilge Kaşif 💡";
+      } else if (totalXP >= 150) {
+        levelTitle = "3. Seviye: Çalışkan Üretici 🚀";
+      } else if (totalXP >= 50) {
+        levelTitle = "2. Seviye: Yolcu 🌱";
+      }
+
+      document.getElementById("userLevelBadge").textContent = levelTitle;
+      document.getElementById("xpText").textContent = `${totalXP} XP`;
+      document.getElementById("xpBarFill").style.width = `${Math.min(100, Math.max(5, levelProgress))}%`;
+      document.getElementById("streakBadge").textContent = `${activeStreak} Gün Aktif`;
+
+      const overallPercent = Math.min(100, Math.round((totalCompletedTasks / 80) * 100));
+      document.getElementById("overallPercentText").textContent = `${overallPercent}%`;
+      document.getElementById("completedTasksRatio").textContent = `${totalCompletedTasks} Görev Tamam`;
+
+      const circle = document.getElementById("overallCircleProgress");
+      if (circle) {
+        const offset = 138 - (138 * overallPercent) / 100;
+        circle.style.strokeDashoffset = offset;
+      }
+
+      renderBadges(totalXP);
+      updateCharts(areaScores, dailyCompletionCounts);
+    }
+
+    /* =========================================================================
+       7. CHART.JS ANALYTICS INITIALIZATION & REFRESH
+       ========================================================================= */
+    let areasChartInstance = null;
+    let dailyChartInstance = null;
+
+    function updateCharts(areaScores, dailyCounts) {
+      const ctxAreas = document.getElementById("areasChart");
+      if (ctxAreas) {
+        if (areasChartInstance) {
+          areasChartInstance.data.datasets[0].data = [
+            areaScores.A || 0,
+            areaScores.B || 0,
+            areaScores.C || 0,
+            areaScores.D || 0
+          ];
+          areasChartInstance.update();
+        } else {
+          areasChartInstance = new Chart(ctxAreas, {
+            type: 'polarArea',
+            data: {
+              labels: ['Akademik (A)', 'Üretim (B)', 'Fiziksel (C)', 'Yaşam (D)'],
+              datasets: [{
+                data: [areaScores.A || 0, areaScores.B || 0, areaScores.C || 0, areaScores.D || 0],
+                backgroundColor: [
+                  'rgba(59, 130, 246, 0.7)',
+                  'rgba(16, 185, 129, 0.7)',
+                  'rgba(245, 158, 11, 0.7)',
+                  'rgba(139, 92, 246, 0.7)'
+                ],
+                borderWidth: 2,
+                borderColor: '#ffffff'
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10, family: 'Plus Jakarta Sans' } } }
+              },
+              scales: {
+                r: { ticks: { display: false } }
+              }
+            }
+          });
+        }
+      }
+
+      const ctxDaily = document.getElementById("dailyProgressChart");
+      if (ctxDaily) {
+        const labels = DAYS_CONFIG.map(d => `${d.dayNumber} ${d.month}`);
+        if (dailyChartInstance) {
+          dailyChartInstance.data.datasets[0].data = dailyCounts;
+          dailyChartInstance.update();
+        } else {
+          dailyChartInstance = new Chart(ctxDaily, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Tamamlanan Görev Sayısı',
+                data: dailyCounts,
+                backgroundColor: 'rgba(2, 132, 199, 0.8)',
+                borderRadius: 8,
+                hoverBackgroundColor: 'rgba(16, 185, 129, 0.9)'
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 10,
+                  ticks: { stepSize: 2, font: { size: 10 } },
+                  grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                x: {
+                  ticks: { font: { size: 9 } },
+                  grid: { display: false }
+                }
+              }
+            }
+          });
+        }
+      }
+    }
+
+    function refreshCharts() {
+      playChimeSound('click');
+      updateGamificationAndUI();
+    }
+
+    /* =========================================================================
+       8. DATA IMPORT / EXPORT MODAL & MANAGEMENT
+       ========================================================================= */
+    function openDataModal() {
+      document.getElementById("dataModal").classList.remove("hidden");
+      document.getElementById("dataModal").classList.add("flex");
+    }
+
+    function closeDataModal() {
+      document.getElementById("dataModal").classList.add("hidden");
+      document.getElementById("dataModal").classList.remove("flex");
+    }
+
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Gelisim_Plani_Yedek_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      playChimeSound('success');
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed.daysData) {
+            state = parsed;
+            saveState();
+            renderAll();
+            closeDataModal();
+            alert("Yedek başarıyla yüklendi! 🎉");
+            playChimeSound('success');
+          } else {
+            alert("Geçersiz yedek dosyası formatı!");
+          }
+        } catch (err) {
+          alert("Dosya okunurken bir hata oluştu: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAllData() {
+      if (confirm("Tüm gelişim ve çalışma verilerin sıfırlanacak. Emin misin?")) {
+        createFreshState();
+        renderAll();
+        closeDataModal();
+        alert("Bütün veriler sıfırlandı.");
+      }
+    }
+
+    /* =========================================================================
+       9. MASTER RENDER & INIT
+       ========================================================================= */
+    function renderAll() {
+      renderDayButtons();
+      renderSelectedDayHeader();
+      renderVakitCards();
+      renderLessonsTrackerTable();
+      renderStarRating();
+      renderDailyNote();
+      updateGamificationAndUI();
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initAppState();
+      renderAll();
+
+      const noteInput = document.getElementById("dailyNoteInput");
+      if (noteInput) {
+        noteInput.addEventListener("input", () => {
+          const dayData = state.daysData[state.selectedDayId];
+          if (dayData) {
+            dayData.note = noteInput.value;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
