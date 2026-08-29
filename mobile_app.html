@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Gelişim Cepte | 16 Günlük Mobil Uygulama</title>
+  <title>Gelişim Cepte | 16 Günlük Çoklu Kullanıcı Mobil Portalı</title>
   
   <!-- PWA Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -55,7 +55,6 @@
   </script>
 
   <style>
-    /* iOS Safe Area & Native App Feel */
     body {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
@@ -70,7 +69,6 @@
       padding-bottom: env(safe-area-inset-bottom, 16px);
     }
 
-    /* Hide scrollbars for clean mobile feel */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -79,28 +77,17 @@
       scrollbar-width: none;
     }
 
-    /* Active Tap Animation */
     .tap-bounce:active {
       transform: scale(0.96);
-    }
-
-    /* Pulse Glow */
-    @keyframes pulse-glow {
-      0%, 100% { opacity: 0.8; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.05); }
-    }
-    .animate-pulse-glow {
-      animation: pulse-glow 2s infinite ease-in-out;
     }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 h-full flex justify-center items-center antialiased">
 
   <!-- ================= MOBILE APP WRAPPER ================= -->
-  <!-- On desktop it renders as an elegant phone mockup; on mobile devices it fills the entire screen seamlessly -->
   <div class="w-full max-w-md h-full sm:h-[92vh] sm:max-h-[890px] bg-slate-50 sm:rounded-[44px] shadow-2xl flex flex-col overflow-hidden relative border-0 sm:border-[8px] sm:border-slate-800">
     
-    <!-- Top Native Status Bar (Mock / Safe Area) -->
+    <!-- Top Native Status Bar -->
     <div class="bg-blue-600 text-white pt-2 px-6 pb-1 flex items-center justify-between text-[11px] font-semibold safe-top shrink-0">
       <span>09:41</span>
       <div class="w-20 h-4 bg-slate-900 rounded-full hidden sm:block mx-auto -mt-1"></div>
@@ -111,18 +98,19 @@
       </div>
     </div>
 
-    <!-- App Header -->
-    <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white px-4 py-3 shrink-0 shadow-md">
+    <!-- App Header With User Profile Switcher -->
+    <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white px-4 py-2.5 shrink-0 shadow-md">
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-amber-300 shadow-inner">
-            <i class="fa-solid fa-compass text-lg"></i>
+        
+        <!-- User Profile Quick Button -->
+        <button onclick="openMobileProfileModal()" class="flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-md px-2.5 py-1 rounded-2xl border border-white/20 transition-all tap-bounce" title="Kullanıcı Değiştir">
+          <span class="w-7 h-7 rounded-xl bg-white text-slate-800 flex items-center justify-center text-sm shadow-sm" id="mobileUserAvatar">🚀</span>
+          <div class="text-left leading-tight">
+            <div class="text-[9px] text-sky-200 font-bold uppercase tracking-wider">Öğrenci</div>
+            <div class="text-xs font-bold text-white max-w-[80px] truncate" id="mobileUserName">Ahmet</div>
           </div>
-          <div>
-            <h1 class="font-fun text-base font-bold leading-tight">Gelişim Cepte 🚀</h1>
-            <p class="text-[10px] text-sky-100 font-medium" id="headerPhaseSubtitle">1. Aşama: Alışma (29 Ağu - 2 Eyl)</p>
-          </div>
-        </div>
+          <i class="fa-solid fa-chevron-down text-[9px] text-sky-200"></i>
+        </button>
 
         <!-- Level & Streak Badges -->
         <div class="flex items-center gap-1.5">
@@ -138,24 +126,24 @@
       </div>
     </header>
 
-    <!-- 16 Günlük Yatay Story Çizelgesi (Horizontal Story Scroll) -->
+    <!-- 16 Günlük Yatay Story Çizelgesi -->
     <div class="bg-white border-b border-slate-200 py-2.5 px-3 shrink-0">
       <div class="flex gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1" id="mobileDaysContainer">
-        <!-- JS ile dinamik üretilecek 16 gün çemberi -->
+        <!-- JS ile 16 gün çemberi -->
       </div>
     </div>
 
     <!-- ================= SCROLLABLE CONTENT BODY ================= -->
     <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar" id="tabContentArea">
       
-      <!-- ================= TAB 1: BUGÜN (5 VAKİT & GÜNLÜK TAKİP) ================= -->
+      <!-- ================= TAB 1: BUGÜN ================= -->
       <section id="tab-today" class="tab-page space-y-4">
         
-        <!-- Gün Bannerı & Aşama Bilgisi -->
+        <!-- Gün Bannerı -->
         <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-3.5 text-white shadow-card-sm flex items-center justify-between">
           <div>
             <div class="text-[10px] font-bold uppercase tracking-wider text-sky-200" id="todayMonthText">29 AĞUSTOS CUMARTESİ</div>
-            <h2 class="font-fun text-lg font-bold" id="todayDayTitle">1. Gün Görevlerin</h2>
+            <h2 class="font-fun text-lg font-bold" id="todayDayTitle">1. Gün Görevlerin 🚀</h2>
             <p class="text-[11px] text-sky-100 mt-0.5 line-clamp-1" id="todayGoalText">Her vakitten en az 1 görev seç!</p>
           </div>
           <div class="text-right">
@@ -178,7 +166,6 @@
             <span class="text-[11px] font-bold text-amber-600" id="mobileStarText">Yıldız Ver</span>
           </div>
 
-          <!-- Yıldızlar -->
           <div class="flex justify-center items-center gap-3 py-1 bg-amber-50 rounded-xl border border-amber-200/60" id="mobileStarsContainer">
             <button onclick="setMobileRating(1)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="1"><i class="fa-solid fa-star"></i></button>
             <button onclick="setMobileRating(2)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="2"><i class="fa-solid fa-star"></i></button>
@@ -187,7 +174,6 @@
             <button onclick="setMobileRating(5)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="5"><i class="fa-solid fa-star"></i></button>
           </div>
 
-          <!-- Günlük Not / Yansıma -->
           <div>
             <label class="block text-[11px] font-bold text-slate-600 mb-1">"Yarın neyi daha iyi yapabilirim?"</label>
             <textarea id="mobileDailyNote" rows="2" placeholder="Bugün neler öğrendin, yarın neye odaklanacaksın?..." class="w-full p-2.5 text-xs rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:outline-none transition-all resize-none"></textarea>
@@ -196,7 +182,7 @@
 
       </section>
 
-      <!-- ================= TAB 2: DERSLER (16 GÜNLÜK MATRİS) ================= -->
+      <!-- ================= TAB 2: DERSLER ================= -->
       <section id="tab-lessons" class="tab-page hidden space-y-4">
         
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm">
@@ -217,7 +203,6 @@
           </div>
         </div>
 
-        <!-- 16 Günlük Ders Matrisi Görünümü -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
           <div class="flex items-center justify-between">
             <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
@@ -239,7 +224,6 @@
           </div>
         </div>
 
-        <!-- Haftalık Referans Dağılımı -->
         <div class="bg-blue-50/70 rounded-2xl p-3 border border-blue-200/80 text-[11px] text-blue-900 space-y-1">
           <div class="font-bold flex items-center gap-1"><i class="fa-solid fa-circle-info text-blue-600"></i> Planımın Kuralları:</div>
           <div>• Her gün en az 3 ders çalışırım.</div>
@@ -247,10 +231,9 @@
         </div>
       </section>
 
-      <!-- ================= TAB 3: GOOGLE AI STUDIO & KOÇ ================= -->
+      <!-- ================= TAB 3: GOOGLE AI STUDIO ================= -->
       <section id="tab-ai" class="tab-page hidden space-y-4">
         
-        <!-- Google AI Studio Bağlantı Kartı -->
         <div class="bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden">
           <div class="absolute -right-4 -bottom-4 text-white/10 text-8xl pointer-events-none">
             <i class="fa-solid fa-brain"></i>
@@ -266,7 +249,6 @@
               Google AI Studio ile doğrudan bağlantı kurarak gününü analiz ettirebilir, Osmanlıca çalışması yapabilir ve yaratıcı projeler üretebilirsin.
             </p>
 
-            <!-- Doğrudan AI Studio Link Butonları -->
             <div class="pt-2 flex flex-wrap gap-2">
               <a href="https://aistudio.google.com/prompts/new_chat" target="_blank" rel="noopener noreferrer" class="flex-1 bg-white text-indigo-900 hover:bg-amber-300 font-fun font-bold text-xs py-2.5 px-3 rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all tap-bounce">
                 <i class="fa-solid fa-arrow-up-right-from-square text-indigo-600"></i>
@@ -280,7 +262,7 @@
           </div>
         </div>
 
-        <!-- Mobil Canlı AI Sohbet / Analiz Arayüzü -->
+        <!-- Chat Arayüzü -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
           <div class="flex items-center justify-between border-b pb-2">
             <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
@@ -289,14 +271,12 @@
             <span class="text-[10px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full font-bold border border-purple-200">Gemini 2.0 / 1.5</span>
           </div>
 
-          <!-- Chat Mesaj Alanı -->
           <div class="h-44 overflow-y-auto space-y-2 p-2 bg-slate-50 rounded-xl border text-xs no-scrollbar" id="aiChatMessages">
             <div class="bg-purple-100/70 text-purple-900 p-2.5 rounded-xl max-w-[90%] leading-relaxed">
-              👋 <strong>Merhaba Genç Kaşif!</strong> 16 günlük gelişim yolculuğunda sana koçluk etmek için buradayım. "Günü Analiz Et" butonuna basarak bugünkü ilerlemen hakkında anında geri bildirim alabilirsin!
+              👋 <strong>Merhaba <span id="chatStudentName">Öğrenci</span>!</strong> 16 günlük gelişim yolculuğunda sana koçluk etmek için buradayım. "Günümü Değerlendir" butonuna basarak bugünkü ilerlemen hakkında anında geri bildirim alabilirsin!
             </div>
           </div>
 
-          <!-- Hızlı AI Aksiyon Butonları -->
           <div class="grid grid-cols-2 gap-2 text-[11px]">
             <button onclick="requestAiAction('evaluate_day')" class="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
               <i class="fa-solid fa-chart-line text-purple-600"></i> Günümü Değerlendir
@@ -312,13 +292,12 @@
             </button>
           </div>
 
-          <!-- API Key Opsiyonu (İsteğe Bağlı Canlı REST Çağrısı İçin) -->
           <div class="pt-2 border-t text-[10px] text-slate-500">
             <details class="cursor-pointer">
               <summary class="font-semibold text-purple-700 hover:underline">⚙️ Google AI Studio API Anahtarı Ekle (İsteğe Bağlı)</summary>
               <div class="mt-2 space-y-1.5">
                 <input type="password" id="geminiApiKeyInput" placeholder="AI Studio API Key (AIzaSy...)" class="w-full p-2 rounded-lg bg-slate-100 border text-xs focus:bg-white focus:outline-none">
-                <p class="text-[9px] text-slate-400">API anahtarı yalnızca cihazınızda tutulur. Anahtar yoksa akıllı hazır koç yanıtları verilir.</p>
+                <p class="text-[9px] text-slate-400">API anahtarı yalnızca cihazınızda tutulur.</p>
               </div>
             </details>
           </div>
@@ -329,7 +308,6 @@
       <!-- ================= TAB 4: ROZETLER & ANALİTİK ================= -->
       <section id="tab-badges" class="tab-page hidden space-y-4">
         
-        <!-- Seviye Kartı -->
         <div class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-4 text-white shadow-card-sm space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-100">Gelişim Seviyesi</span>
@@ -344,7 +322,6 @@
           </div>
         </div>
 
-        <!-- 4 Boyut Radar/Polar Analitiği -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-2">
           <h4 class="font-fun text-xs font-bold text-slate-700 uppercase tracking-wider">4 Gelişim Alanı Dengesi</h4>
           <div class="w-full h-48 relative flex items-center justify-center">
@@ -352,7 +329,6 @@
           </div>
         </div>
 
-        <!-- Başarı Rozetleri Grid -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
           <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
             <i class="fa-solid fa-trophy text-amber-500"></i> Başarı Rozetleri
@@ -364,22 +340,37 @@
 
       </section>
 
-      <!-- ================= TAB 5: AYARLAR & YEDEK ================= -->
+      <!-- ================= TAB 5: AYARLAR & PROFİL ================= -->
       <section id="tab-settings" class="tab-page hidden space-y-4">
         
+        <!-- Kullanıcı Profil Kartı -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm" id="settingsUserAvatar">🚀</span>
+            <div>
+              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Aktif Kullanıcı</div>
+              <h3 class="font-fun text-base font-bold text-slate-800" id="settingsUserName">Ahmet</h3>
+            </div>
+          </div>
+
+          <button onclick="openMobileProfileModal()" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200 tap-bounce">
+            Değiştir
+          </button>
+        </div>
+
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
           <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
-            <i class="fa-solid fa-sliders text-slate-600"></i> Uygulama Ayarları
+            <i class="fa-solid fa-sliders text-slate-600"></i> Uygulama Seçenekleri
           </h3>
 
           <div class="space-y-2 text-xs">
             <a href="index.html" class="w-full p-3 rounded-xl bg-slate-50 hover:bg-blue-50 border text-slate-700 font-semibold flex items-center justify-between transition-colors">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-desktop text-blue-600"></i> Masaüstü / Web Görünümüne Geç</span>
+              <span class="flex items-center gap-2"><i class="fa-solid fa-desktop text-blue-600"></i> Masaüstü Web Portalı</span>
               <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
             </a>
 
             <button onclick="exportMobileData()" class="w-full p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border text-slate-700 font-semibold flex items-center justify-between transition-colors">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-download text-emerald-600"></i> Verileri JSON Olarak İndir</span>
+              <span class="flex items-center gap-2"><i class="fa-solid fa-download text-emerald-600"></i> Bu Kullanıcının Verilerini İndir</span>
               <i class="fa-solid fa-arrow-down text-slate-400 text-xs"></i>
             </button>
 
@@ -390,15 +381,15 @@
             </label>
 
             <button onclick="resetMobileData()" class="w-full p-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-semibold flex items-center justify-between transition-colors">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-trash-can text-rose-600"></i> Tüm Verileri Sıfırla</span>
+              <span class="flex items-center gap-2"><i class="fa-solid fa-trash-can text-rose-600"></i> Bu Kullanıcı Verisini Sıfırla</span>
               <i class="fa-solid fa-triangle-exclamation text-rose-400 text-xs"></i>
             </button>
           </div>
         </div>
 
         <div class="text-center text-[10px] text-slate-400 py-2">
-          Gelişim Cepte • 16 Günlük Bütüncül Program v1.0<br>
-          Google AI Studio & Antigravity Destekli
+          Gelişim Cepte • 16 Günlük Bütüncül Program v2.0<br>
+          Kullanıcı bazlı veri saklama & Google AI Studio
         </div>
 
       </section>
@@ -417,7 +408,6 @@
         <span class="text-[10px]">Dersler</span>
       </button>
 
-      <!-- Central AI Studio Quick Button -->
       <button onclick="switchTab('ai')" id="nav-btn-ai" class="flex flex-col items-center justify-center -mt-5 w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-600 to-blue-600 text-white shadow-floating border-2 border-white tap-bounce">
         <i class="fa-solid fa-sparkles text-lg animate-pulse"></i>
       </button>
@@ -433,11 +423,49 @@
       </button>
     </nav>
 
+    <!-- ================= MOBİL PROFİL & GİRİŞ MODALI ================= -->
+    <div id="mobileProfileModal" class="absolute inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex-col justify-end p-0">
+      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[85%] overflow-y-auto">
+        <div class="flex items-center justify-between border-b pb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">👤</span>
+            <h3 class="font-fun text-base font-bold text-slate-800">Öğrenci Girişi & Profiller</h3>
+          </div>
+          <button onclick="closeMobileProfileModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold text-slate-600 uppercase">Kayıtlı Kullanıcılar:</label>
+          <div id="mobileProfileList" class="space-y-1.5 max-h-36 overflow-y-auto">
+            <!-- JS ile profiller -->
+          </div>
+        </div>
+
+        <div class="pt-2 border-t space-y-2.5">
+          <label class="block text-[11px] font-bold text-slate-600 uppercase">Yeni Kullanıcı Girişi:</label>
+          
+          <input type="text" id="mobileNewUsernameInput" placeholder="Öğrenci İsmi..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:bg-white focus:outline-none">
+
+          <div>
+            <label class="block text-[10px] font-semibold text-slate-500 mb-1">Avatar Seç:</label>
+            <div class="flex flex-wrap gap-1.5" id="mobileAvatarPicker">
+              <!-- JS ile avatarlar -->
+            </div>
+          </div>
+
+          <button onclick="handleMobileCreateOrLoginProfile()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md shadow-blue-600/20 tap-bounce">
+            Giriş Yap ve Başla
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ================= JAVASCRIPT APP LOGIC ================= -->
   <script>
-    /* 1. CONFIG & CALENDAR DATA */
     const DAYS_CONFIG = [
       { id: 1, dateStr: "29 AĞU", dayName: "Cumartesi", dayNumber: 29, month: "AĞU", phase: 1, weekDayIndex: 5 },
       { id: 2, dateStr: "30 AĞU", dayName: "Pazar", dayNumber: 30, month: "AĞU", phase: 1, weekDayIndex: 6 },
@@ -544,21 +572,73 @@
       { id: 'legend', title: 'Şampiyon 🏆', desc: 'Tüm program', icon: 'fa-trophy', reqXP: 500 }
     ];
 
-    /* 2. STATE & PERSISTENCE */
-    const STORAGE_KEY = "fen_deneme_16_gunluk_gelisim_v1";
+    const AVATAR_OPTIONS = ['🚀', '🌟', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
+
+    /* 2. PROFILE & STORAGE SYSTEM */
+    const PROFILES_KEY = "fen_deneme_profiles_v2";
+    const ACTIVE_USER_KEY = "fen_deneme_active_user_v2";
+
+    let profiles = [];
+    let currentProfile = null;
+    let selectedMobileAvatar = '🚀';
+
     let state = {
       selectedDayId: 1,
       activeTab: 'today',
       daysData: {}
     };
 
-    function initMobileState() {
-      const saved = localStorage.getItem(STORAGE_KEY);
+    function getUserStorageKey(username) {
+      return "fen_deneme_user_data_" + encodeURIComponent(username.toLowerCase().trim());
+    }
+
+    function initMobileProfileSystem() {
+      const savedProfiles = localStorage.getItem(PROFILES_KEY);
+      if (savedProfiles) {
+        try {
+          profiles = JSON.parse(savedProfiles);
+        } catch(e) {
+          profiles = [];
+        }
+      }
+
+      if (profiles.length === 0) {
+        const defaultProfile = { username: "Gelişim Kaşifi", avatar: '🚀', color: 'blue', createdAt: new Date().toISOString() };
+        profiles = [defaultProfile];
+        localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+      }
+
+      let activeUsername = localStorage.getItem(ACTIVE_USER_KEY);
+      let found = profiles.find(p => p.username === activeUsername);
+      if (!found) found = profiles[0];
+
+      setActiveMobileProfile(found.username);
+    }
+
+    function setActiveMobileProfile(username) {
+      const profile = profiles.find(p => p.username === username);
+      if (!profile) return;
+
+      currentProfile = profile;
+      localStorage.setItem(ACTIVE_USER_KEY, profile.username);
+
+      document.getElementById("mobileUserName").textContent = profile.username;
+      document.getElementById("mobileUserAvatar").textContent = profile.avatar;
+      document.getElementById("settingsUserName").textContent = profile.username;
+      document.getElementById("settingsUserAvatar").textContent = profile.avatar;
+      document.getElementById("chatStudentName").textContent = profile.username;
+
+      loadMobileUserData(profile.username);
+    }
+
+    function loadMobileUserData(username) {
+      const userKey = getUserStorageKey(username);
+      const saved = localStorage.getItem(userKey);
+
       if (saved) {
         try {
-          const parsed = JSON.parse(saved);
-          state.daysData = parsed.daysData || {};
-          state.selectedDayId = parsed.selectedDayId || 1;
+          state.daysData = JSON.parse(saved).daysData || {};
+          state.selectedDayId = JSON.parse(saved).selectedDayId || 1;
         } catch(e) {
           createDefaultState();
         }
@@ -577,6 +657,11 @@
           };
         }
       });
+
+      saveState();
+      renderDaysStoryBar();
+      renderTodayView();
+      renderGlobalStats();
     }
 
     function createDefaultState() {
@@ -593,11 +678,94 @@
     }
 
     function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      if (currentProfile) {
+        localStorage.setItem(getUserStorageKey(currentProfile.username), JSON.stringify(state));
+      }
       renderGlobalStats();
     }
 
-    /* 3. SOUND SYNTHESIZER */
+    /* 3. PROFILE MODAL ACTIONS */
+    function openMobileProfileModal() {
+      renderMobileProfileList();
+      renderMobileAvatarPicker();
+      document.getElementById("mobileProfileModal").classList.remove("hidden");
+      document.getElementById("mobileProfileModal").classList.add("flex");
+    }
+
+    function closeMobileProfileModal() {
+      document.getElementById("mobileProfileModal").classList.add("hidden");
+      document.getElementById("mobileProfileModal").classList.remove("flex");
+    }
+
+    function renderMobileAvatarPicker() {
+      const c = document.getElementById("mobileAvatarPicker");
+      c.innerHTML = "";
+      AVATAR_OPTIONS.forEach(emoji => {
+        const isSel = emoji === selectedMobileAvatar;
+        const btn = document.createElement("button");
+        btn.onclick = () => {
+          selectedMobileAvatar = emoji;
+          renderMobileAvatarPicker();
+        };
+        btn.className = `w-7 h-7 rounded-lg text-sm flex items-center justify-center ${
+          isSel ? 'bg-blue-600 text-white scale-110 shadow' : 'bg-slate-100'
+        }`;
+        btn.textContent = emoji;
+        c.appendChild(btn);
+      });
+    }
+
+    function renderMobileProfileList() {
+      const c = document.getElementById("mobileProfileList");
+      c.innerHTML = "";
+
+      profiles.forEach(p => {
+        const isAct = currentProfile && currentProfile.username === p.username;
+        const div = document.createElement("div");
+        div.className = `p-2 rounded-xl border flex items-center justify-between text-xs ${
+          isAct ? 'bg-blue-50 border-blue-300 text-blue-900 font-bold' : 'bg-slate-50 border-slate-200'
+        }`;
+        div.innerHTML = `
+          <div class="flex items-center gap-2 cursor-pointer flex-1" onclick="switchMobileUser('${p.username}')">
+            <span class="w-7 h-7 rounded-lg bg-white border flex items-center justify-center shadow-xs">${p.avatar}</span>
+            <span>${p.username} ${isAct ? '(Seçili)' : ''}</span>
+          </div>
+          ${!isAct ? `
+            <button onclick="switchMobileUser('${p.username}')" class="px-2 py-0.5 rounded-lg bg-blue-600 text-white text-[10px] font-bold">Giriş</button>
+          ` : '<span class="text-emerald-600 text-xs"><i class="fa-solid fa-check"></i></span>'}
+        `;
+        c.appendChild(div);
+      });
+    }
+
+    function handleMobileCreateOrLoginProfile() {
+      const input = document.getElementById("mobileNewUsernameInput");
+      const name = input.value.trim();
+      if (!name) return;
+
+      let existing = profiles.find(p => p.username.toLowerCase() === name.toLowerCase());
+      if (existing) {
+        setActiveMobileProfile(existing.username);
+      } else {
+        const newP = { username: name, avatar: selectedMobileAvatar, color: 'blue', createdAt: new Date().toISOString() };
+        profiles.push(newP);
+        localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
+        setActiveMobileProfile(name);
+      }
+
+      input.value = "";
+      closeMobileProfileModal();
+      playChime('done');
+      confetti({ particleCount: 40, spread: 50, origin: { y: 0.7 } });
+    }
+
+    function switchMobileUser(username) {
+      setActiveMobileProfile(username);
+      closeMobileProfileModal();
+      playChime('click');
+    }
+
+    /* 4. SOUND & RENDER LOGIC */
     function playChime(type = 'click') {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -607,8 +775,8 @@
         gain.connect(ctx.destination);
 
         if (type === 'done') {
-          osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
+          osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
           gain.gain.setValueAtTime(0.12, ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
           osc.start();
@@ -623,7 +791,6 @@
       } catch(e) {}
     }
 
-    /* 4. RENDERERS */
     function renderDaysStoryBar() {
       const container = document.getElementById("mobileDaysContainer");
       container.innerHTML = "";
@@ -655,12 +822,10 @@
       const pInfo = PHASES[cur.phase];
       const dData = state.daysData[state.selectedDayId] || { tasks: {}, rating: 0, note: "" };
 
-      document.getElementById("headerPhaseSubtitle").textContent = `${pInfo.name} (${pInfo.range})`;
       document.getElementById("todayMonthText").textContent = `${cur.dayNumber} ${cur.month === 'AĞU' ? 'AĞUSTOS' : 'EYLÜL'} ${cur.dayName.toUpperCase()}`;
       document.getElementById("todayDayTitle").textContent = `${cur.id}. Gün Görevlerin ${pInfo.icon}`;
       document.getElementById("todayGoalText").textContent = pInfo.goal;
 
-      // 5 Vakit Listesi
       const listContainer = document.getElementById("mobileVakitlerList");
       listContainer.innerHTML = "";
 
@@ -722,7 +887,6 @@
 
       document.getElementById("todayCompletedRatio").textContent = `${completedVakitCount}/5`;
 
-      // Yıldızlar
       const stars = document.querySelectorAll(".m-star");
       stars.forEach(s => {
         const val = parseInt(s.getAttribute("data-val"));
@@ -734,7 +898,6 @@
       });
       document.getElementById("mobileStarText").textContent = dData.rating > 0 ? `${dData.rating} Yıldız Verildi` : "Puanını Seç";
 
-      // Not
       const noteElem = document.getElementById("mobileDailyNote");
       noteElem.value = dData.note || "";
     }
@@ -743,7 +906,6 @@
       const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
       const dData = state.daysData[state.selectedDayId] || { lessons: [] };
 
-      // Bugünün 3 Dersi
       const listElem = document.getElementById("todayLessonsList");
       listElem.innerHTML = "";
 
@@ -773,7 +935,6 @@
 
       document.getElementById("currentDayLessonsProgress").textContent = `${doneCount}/3 Tamam`;
 
-      // 16 Günlük Matris
       const matrixElem = document.getElementById("mobileLessonsMatrix");
       let header = '<tr class="bg-slate-100 text-slate-600 font-bold border-b"><th class="p-1 text-left">Ders</th>';
       DAYS_CONFIG.forEach(d => {
@@ -882,7 +1043,6 @@
 
       renderBadgesView(totalXP);
 
-      // Radar Chart
       const ctx = document.getElementById("mobileAreasChart");
       if (ctx) {
         if (mobileChartInstance) {
@@ -914,7 +1074,6 @@
       }
     }
 
-    /* 5. USER INTERACTIONS */
     function selectMobileDay(dayId) {
       state.selectedDayId = dayId;
       playChime('click');
@@ -973,7 +1132,6 @@
       renderDaysStoryBar();
     }
 
-    // Tab Switching
     function switchTab(tabId) {
       state.activeTab = tabId;
       playChime('click');
@@ -997,18 +1155,18 @@
       if (tabId === 'badges') renderGlobalStats();
     }
 
-    /* 6. GOOGLE AI STUDIO & PROMPT ACTIONS */
     const AI_SYSTEM_PROMPT = `Sen "16 Günlük Gelişim Programı" için özel olarak tasarlanmış eğlenceli, motive edici, pedagojik bir AI Gelişim Koçusun.
-Öğrencinin 4 gelişim alanını (A: Akademik & Bilişsel, B: Üretim, C: Fiziksel, D: Sorumluluk & Yaşam Becerileri) ve 5 vakit rutinini takip edip ona rehberlik ediyorsun.
-Öğrenci gününü tamamladığında ona pozitif geri bildirim ver, Osmanlıca kelimeler ve anlamlarını öğret, Lego/Atölye/Proje fikirleri öner ve gelişim zihniyetini (growth mindset) destekle.`;
+Öğrencinin 4 gelişim alanını (A: Akademik & Bilişsel, B: Üretim, C: Fiziksel, D: Sorumluluk & Yaşam Becerileri) ve 5 vakit rutinini takip edip ona rehberlik ediyorsun.`;
 
     function copyAiPromptTemplate() {
       const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
       const dData = state.daysData[state.selectedDayId] || { tasks: {}, lessons: [], rating: 0, note: "" };
+      const studentName = currentProfile ? currentProfile.username : 'Öğrenci';
 
       const fullPrompt = `${AI_SYSTEM_PROMPT}
 
-Şu Anki Durum:
+Öğrenci İsmi: ${studentName}
+Durum:
 - Gün: ${cur.id}. Gün (${cur.dayNumber} ${cur.month}) - ${PHASES[cur.phase].name}
 - Tamamlanan Görevler: ${JSON.stringify(dData.tasks)}
 - 3 Ders Durumu: ${JSON.stringify(dData.lessons)}
@@ -1040,14 +1198,15 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
       const apiKey = document.getElementById("geminiApiKeyInput").value.trim();
       const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
       const dData = state.daysData[state.selectedDayId] || { tasks: {}, lessons: [], rating: 0 };
+      const studentName = currentProfile ? currentProfile.username : 'Öğrenci';
 
       playChime('click');
 
       let userQuery = "";
       if (action === 'evaluate_day') userQuery = "Bugünkü 5 vakit ve 3 ders performansımı değerlendirir misin?";
       else if (action === 'ottoman_quiz') userQuery = "Bana bugünün Osmanlıca kelimesini ve eğlenceli anlamını öğret!";
-      else if (action === 'project_idea') userQuery = "3. Vakit (Üret/Keşfet) için bana evde yapabileceğim harika bir proje fikri ver!";
-      else if (action === 'motivation') userQuery = "Biraz enerjim düştü, bana ilham verici bir motivasyon sözü söyle!";
+      else if (action === 'project_idea') userQuery = "3. Vakit için bana harika bir proje/üretim fikri ver!";
+      else if (action === 'motivation') userQuery = "Bana ilham verici bir motivasyon sözü söyle!";
 
       appendAiMessage('user', userQuery);
 
@@ -1059,53 +1218,53 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               contents: [{
-                parts: [{ text: `${AI_SYSTEM_PROMPT}\n\nÖğrenci Durumu: Gün ${cur.id}, Yıldız: ${dData.rating}\nKullanıcı: ${userQuery}` }]
+                parts: [{ text: `${AI_SYSTEM_PROMPT}\n\nÖğrenci: ${studentName}, Gün ${cur.id}, Yıldız: ${dData.rating}\nİstek: ${userQuery}` }]
               }]
             })
           });
           const data = await resp.json();
           const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Harika bir çaba! Adım adım ilerlemeye devam et!";
-          // Remove last thinking placeholder
           const msgBox = document.getElementById("aiChatMessages");
           msgBox.removeChild(msgBox.lastChild);
           appendAiMessage('ai', reply.replace(/\n/g, '<br>'));
           playChime('done');
           return;
-        } catch(err) {
-          // Fallback to offline intelligent coach
-        }
+        } catch(err) {}
       }
 
-      // Offline Akıllı Simülasyon
       setTimeout(() => {
         let mockReply = "";
         if (action === 'evaluate_day') {
-          mockReply = `🌟 <strong>Günün Analizi (${cur.dayNumber} ${cur.month}):</strong><br>• Harika bir disiplin sergiliyorsun! 5 vakit ritmini sürdürmen zihnini zinde tutar.<br>• <strong>Koç Tavsiyesi:</strong> Yarın 2. Vakit'te Konu (K) ve Soru (S) dengesini koruyarak tempoyu bir tık artırabilirsin! 🚀`;
+          mockReply = `🌟 <strong>Tebrikler ${studentName}! (${cur.dayNumber} ${cur.month}):</strong><br>• 5 vakit ritmini sürdürmen mükemmel bir disiplin örneği.<br>• <strong>Koç Tavsiyesi:</strong> Yarın Konu (K) ve Soru (S) dengesini koruyarak tempoyu bir tık artırabilirsin! 🚀`;
         } else if (action === 'ottoman_quiz') {
           const words = [
             { w: "Gayret (غيرت)", m: "Çaba göstermek, azimle çalışmak. 'Gayret bizden, muvaffakiyet Allah'tan!'" },
             { w: "Muvaffakiyet (موفقيت)", m: "Başarı, hedefe ulaşma sevinci." },
-            { w: "Hikmet (حكمت)", m: "Derin bilgi, eşyanın hakikatini anlama." },
-            { w: "İstikamet (استقامت)", m: "Doğru yolda, kararlılıkla ve disiplinle yürümek." }
+            { w: "Hikmet (حكمت)", m: "Derin bilgi, eşyanın hakikatini anlama." }
           ];
           const chosen = words[Math.floor(Math.random() * words.length)];
           mockReply = `📜 <strong>Günün Osmanlıca Kelimesi:</strong><br><strong>${chosen.w}</strong><br><em>Anlamı:</em> ${chosen.m}`;
         } else if (action === 'project_idea') {
-          mockReply = `💡 <strong>3. Vakit Üretim Fikri:</strong><br>• <strong>Gelişim Günlüğü Kapağı Tasarla:</strong> Evdeki karton, renkli kalemler veya legolarla 16 günlük serüveninin bir mini maketini inşa et!`;
+          mockReply = `💡 <strong>3. Vakit Üretim Fikri:</strong><br>• Evdeki legolar veya malzemelerle 16 günlük hedeflerini temsil eden bir 'Başarı Kulesi' inşa et!`;
         } else {
-          mockReply = `⚡ <em>"Bugün küçük adımlar, yarın büyük başarılar getirir!"</em><br>Unutma, her şampiyon her gün sadece 1 adım daha atarak zirveye ulaştı. Sen de başarıyorsun! 🏆`;
+          mockReply = `⚡ <em>"Bugün küçük adımlar, yarın büyük başarılar getirir!"</em><br>Harika gidiyorsun ${studentName}, asla pes etme! 🏆`;
         }
         appendAiMessage('ai', mockReply);
         playChime('done');
       }, 500);
     }
 
-    /* 7. DATA MANAGEMENT (IMPORT/EXPORT/RESET) */
     function exportMobileData() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const username = currentProfile ? currentProfile.username : 'Gelisim_Plani';
+      const exportPayload = {
+        profile: currentProfile,
+        state: state,
+        exportedAt: new Date().toISOString()
+      };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportPayload, null, 2));
       const a = document.createElement("a");
       a.href = dataStr;
-      a.download = `Gelisim_Cepte_Yedek_${new Date().toISOString().slice(0,10)}.json`;
+      a.download = `${username}_Gelisim_Cepte_${new Date().toISOString().slice(0,10)}.json`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -1119,15 +1278,17 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
       reader.onload = function(evt) {
         try {
           const p = JSON.parse(evt.target.result);
-          if (p.daysData) {
+          if (p.state && p.state.daysData) {
+            state = p.state;
+          } else if (p.daysData) {
             state = p;
-            saveState();
-            renderDaysStoryBar();
-            renderTodayView();
-            renderLessonsView();
-            alert("Yedek başarıyla yüklendi! 🎉");
-            playChime('done');
           }
+          saveState();
+          renderDaysStoryBar();
+          renderTodayView();
+          renderLessonsView();
+          alert("Veriler başarıyla yüklendi! 🎉");
+          playChime('done');
         } catch(err) {
           alert("Dosya yüklenemedi.");
         }
@@ -1136,7 +1297,7 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
     }
 
     function resetMobileData() {
-      if (confirm("Tüm gelişim verileri sıfırlansın mı?")) {
+      if (confirm(`"${currentProfile ? currentProfile.username : 'Öğrenci'}" kullanıcısının verileri sıfırlansın mı?`)) {
         createDefaultState();
         saveState();
         renderDaysStoryBar();
@@ -1146,12 +1307,8 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
       }
     }
 
-    /* 8. BOOTSTRAP */
     window.addEventListener("DOMContentLoaded", () => {
-      initMobileState();
-      renderDaysStoryBar();
-      renderTodayView();
-      renderGlobalStats();
+      initMobileProfileSystem();
 
       const noteElem = document.getElementById("mobileDailyNote");
       if (noteElem) {
@@ -1159,7 +1316,9 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
           const dData = state.daysData[state.selectedDayId];
           if (dData) {
             dData.note = noteElem.value;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            if (currentProfile) {
+              localStorage.setItem(getUserStorageKey(currentProfile.username), JSON.stringify(state));
+            }
           }
         });
       }
