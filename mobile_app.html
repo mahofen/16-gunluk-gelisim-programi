@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Gelişim Cepte | Çoklu Kullanıcı & Yönetici Portalı</title>
+  <title>Gelişim Cepte | Güvenli Giriş & Yönetici Portalı</title>
   
   <!-- PWA Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -98,24 +98,23 @@
       </div>
     </div>
 
-    <!-- App Header With User Profile Switcher & Admin Button -->
+    <!-- App Header With User Info & Logout Button -->
     <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white px-4 py-2.5 shrink-0 shadow-md">
       <div class="flex items-center justify-between">
         
-        <!-- User Profile Quick Button -->
-        <button onclick="openMobileProfileModal()" class="flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-md px-2.5 py-1 rounded-2xl border border-white/20 transition-all tap-bounce" title="Kullanıcı Değiştir">
+        <!-- User Info Badge -->
+        <div class="flex items-center gap-2 bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-2xl border border-white/20">
           <span class="w-7 h-7 rounded-xl bg-white text-slate-800 flex items-center justify-center text-sm shadow-sm" id="mobileUserAvatar">🚀</span>
           <div class="text-left leading-tight">
-            <div class="text-[9px] text-sky-200 font-bold uppercase tracking-wider">Öğrenci</div>
+            <div class="text-[9px] text-sky-200 font-bold uppercase tracking-wider" id="mobileUserRoleBadge">Öğrenci</div>
             <div class="text-xs font-bold text-white max-w-[80px] truncate" id="mobileUserName">Ahmet</div>
           </div>
-          <i class="fa-solid fa-chevron-down text-[9px] text-sky-200"></i>
-        </button>
+        </div>
 
-        <!-- Right: Admin Panel + XP Badge -->
+        <!-- Right: Admin Panel + XP Badge + Logout -->
         <div class="flex items-center gap-1.5">
-          <!-- Yönetici Paneli Butonu -->
-          <button onclick="openMobileAdminModal()" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce" title="Yönetici ve Öğretmen Paneli">
+          <!-- Yönetici Paneli Butonu (Admin ise görünür) -->
+          <button onclick="openMobileAdminModal()" id="mobileAdminHeaderBtn" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce" title="Yönetici Paneli">
             <i class="fa-solid fa-chart-pie text-sky-300"></i>
             <span>Yönetici</span>
           </button>
@@ -125,10 +124,10 @@
             <span id="mobileXpBadge">0 XP</span>
           </div>
 
-          <div class="bg-orange-500/90 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm">
-            <i class="fa-solid fa-fire text-amber-200"></i>
-            <span id="mobileStreakBadge">0</span>
-          </div>
+          <!-- Çıkış Butonu -->
+          <button onclick="handleMobileLogout()" class="bg-rose-500/80 hover:bg-rose-600 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm tap-bounce" title="Çıkış Yap">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
         </div>
       </div>
     </header>
@@ -294,16 +293,6 @@
               <i class="fa-solid fa-fire text-amber-600"></i> Motivasyon Ver ⚡
             </button>
           </div>
-
-          <div class="pt-2 border-t text-[10px] text-slate-500">
-            <details class="cursor-pointer">
-              <summary class="font-semibold text-purple-700 hover:underline">⚙️ Gemini API Anahtarı Ekle (İsteğe Bağlı)</summary>
-              <div class="mt-2 space-y-1.5">
-                <input type="password" id="geminiApiKeyInput" placeholder="API Key (AIzaSy...)" class="w-full p-2 rounded-lg bg-slate-100 border text-xs focus:bg-white focus:outline-none">
-                <p class="text-[9px] text-slate-400">API anahtarı yalnızca cihazınızda tutulur.</p>
-              </div>
-            </details>
-          </div>
         </div>
 
       </section>
@@ -351,13 +340,13 @@
           <div class="flex items-center gap-3">
             <span class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm" id="settingsUserAvatar">🚀</span>
             <div>
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Aktif Kullanıcı</div>
+              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="settingsUserRole">Aktif Öğrenci</div>
               <h3 class="font-fun text-base font-bold text-slate-800" id="settingsUserName">Ahmet</h3>
             </div>
           </div>
 
-          <button onclick="openMobileProfileModal()" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200 tap-bounce">
-            Değiştir
+          <button onclick="handleMobileLogout()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200 tap-bounce">
+            Çıkış Yap
           </button>
         </div>
 
@@ -393,12 +382,6 @@
               <i class="fa-solid fa-arrow-down text-slate-400 text-xs"></i>
             </button>
 
-            <label class="w-full p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border text-slate-700 font-semibold flex items-center justify-between cursor-pointer transition-colors">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-upload text-sky-600"></i> Yedeği Geri Yükle</span>
-              <input type="file" accept=".json" class="hidden" onchange="importMobileData(event)">
-              <i class="fa-solid fa-arrow-up text-slate-400 text-xs"></i>
-            </label>
-
             <button onclick="resetMobileData()" class="w-full p-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-semibold flex items-center justify-between transition-colors">
               <span class="flex items-center gap-2"><i class="fa-solid fa-trash-can text-rose-600"></i> Bu Kullanıcı Verisini Sıfırla</span>
               <i class="fa-solid fa-triangle-exclamation text-rose-400 text-xs"></i>
@@ -407,8 +390,7 @@
         </div>
 
         <div class="text-center text-[10px] text-slate-400 py-2">
-          Gelişim Cepte • 16 Günlük Bütüncül Program v2.0<br>
-          Kullanıcı bazlı veri saklama & Yönetici Raporu
+          Gelişim Cepte • Güvenli Giriş & Yönetici Paneli v3.0
         </div>
 
       </section>
@@ -442,46 +424,68 @@
       </button>
     </nav>
 
-    <!-- ================= MOBİL PROFİL & GİRİŞ MODALI ================= -->
-    <div id="mobileProfileModal" class="absolute inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex-col justify-end p-0">
-      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[85%] overflow-y-auto">
-        <div class="flex items-center justify-between border-b pb-2">
-          <div class="flex items-center gap-2">
-            <span class="text-xl">👤</span>
-            <h3 class="font-fun text-base font-bold text-slate-800">Öğrenci Girişi & Profiller</h3>
+    <!-- ================= MOBİL ANA GİRİŞ & KAYIT KAPISI MODALI ================= -->
+    <div id="mobileAuthModal" class="absolute inset-0 z-50 bg-slate-900/90 backdrop-blur-md flex flex-col justify-end p-0">
+      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[92%] overflow-y-auto">
+        <div class="flex items-center gap-2 border-b pb-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow">
+            <i class="fa-solid fa-lock"></i>
           </div>
-          <button onclick="closeMobileProfileModal()" class="text-slate-400 hover:text-slate-600 text-lg">
-            <i class="fa-solid fa-xmark"></i>
+          <div>
+            <h3 class="font-fun text-base font-bold text-slate-800">Gelişim Cepte Girişi</h3>
+            <p class="text-[10px] text-slate-500">Öğrenci veya Yönetici Girişi</p>
+          </div>
+        </div>
+
+        <!-- Sekmeler: Giriş / Kayıt -->
+        <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-bold">
+          <button onclick="switchMobileAuthTab('login')" id="mAuthTab-login" class="flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm">
+            Giriş Yap
+          </button>
+          <button onclick="switchMobileAuthTab('register')" id="mAuthTab-register" class="flex-1 py-1.5 rounded-lg text-slate-500">
+            Yeni Kayıt
           </button>
         </div>
 
-        <div class="space-y-1.5">
-          <label class="block text-[11px] font-bold text-slate-600 uppercase">Kayıtlı Kullanıcılar:</label>
-          <div id="mobileProfileList" class="space-y-1.5 max-h-36 overflow-y-auto">
-            <!-- JS ile profiller -->
-          </div>
-        </div>
+        <!-- Hata Kutusu -->
+        <div id="mobileAuthAlert" class="hidden p-2.5 rounded-xl text-xs font-semibold"></div>
 
-        <div class="pt-2 border-t space-y-2.5">
-          <label class="block text-[11px] font-bold text-slate-600 uppercase">Yeni Kullanıcı Girişi:</label>
-          
-          <input type="text" id="mobileNewUsernameInput" placeholder="Öğrenci İsmi..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:bg-white focus:outline-none">
+        <!-- Form -->
+        <div class="space-y-2.5">
+          <input type="text" id="mAuthUsername" placeholder="Kullanıcı Adı..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:bg-white focus:outline-none">
+          <input type="password" id="mAuthPassword" placeholder="Şifre..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:bg-white focus:outline-none">
 
-          <div>
-            <label class="block text-[10px] font-semibold text-slate-500 mb-1">Avatar Seç:</label>
-            <div class="flex flex-wrap gap-1.5" id="mobileAvatarPicker">
-              <!-- JS ile avatarlar -->
+          <div id="mRegisterAvatarBox" class="hidden space-y-1">
+            <label class="block text-[10px] font-bold text-slate-500">Avatar Seç:</label>
+            <div class="flex flex-wrap gap-1.5" id="mAvatarPickerBox">
+              <!-- JS avatarlar -->
             </div>
           </div>
 
-          <button onclick="handleMobileCreateOrLoginProfile()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md shadow-blue-600/20 tap-bounce">
-            Giriş Yap ve Başla
+          <button onclick="handleMobileAuthSubmit()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md tap-bounce">
+            <span id="mAuthBtnText">Giriş Yap ve Başla</span>
           </button>
+        </div>
+
+        <!-- Hızlı Örnek Girişler -->
+        <div class="pt-2 border-t space-y-1.5 text-[10px]">
+          <div class="font-bold text-slate-600 uppercase">Örnek Girişler:</div>
+          <div class="grid grid-cols-3 gap-1">
+            <button onclick="fillMobileSample('admin', 'admin123')" class="p-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-900 font-bold text-center">
+              🛡️ admin<br><span class="text-[9px] font-normal font-mono">admin123</span>
+            </button>
+            <button onclick="fillMobileSample('Ahmet', '1234')" class="p-1.5 rounded-lg bg-sky-50 border border-sky-200 text-sky-900 font-bold text-center">
+              🚀 Ahmet<br><span class="text-[9px] font-normal font-mono">1234</span>
+            </button>
+            <button onclick="fillMobileSample('Zeynep', '1234')" class="p-1.5 rounded-lg bg-purple-50 border border-purple-200 text-purple-900 font-bold text-center">
+              🌟 Zeynep<br><span class="text-[9px] font-normal font-mono">1234</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- ================= MOBİL YÖNETİCİ & ÖĞRETMEN RAPOR MODALI ================= -->
+    <!-- ================= MOBİL YÖNETİCİ RAPOR MODALI ================= -->
     <div id="mobileAdminModal" class="absolute inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex-col justify-end p-0">
       <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[90%] overflow-y-auto">
         <div class="flex items-center justify-between border-b pb-2">
@@ -508,9 +512,6 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Karneleri:</label>
-            <button onclick="exportAllClassDataMobile()" class="text-[10px] text-blue-600 font-bold hover:underline">
-              Toplu Yedeği İndir (JSON)
-            </button>
           </div>
           <div id="mobileAdminStudentList" class="space-y-2 max-h-60 overflow-y-auto pr-0.5">
             <!-- JS ile öğrenci kartları -->
@@ -518,10 +519,7 @@
         </div>
 
         <div class="pt-2 border-t flex gap-2">
-          <button onclick="loadDemoClassDataMobile()" class="flex-1 py-2 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 text-xs font-bold tap-bounce">
-            Örnek Öğrenci Ekle (Demo)
-          </button>
-          <button onclick="closeMobileAdminModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">
+          <button onclick="closeMobileAdminModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">
             Kapat
           </button>
         </div>
@@ -640,13 +638,14 @@
 
     const AVATAR_OPTIONS = ['🚀', '🌟', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
 
-    /* 2. PROFILE & STORAGE SYSTEM */
-    const PROFILES_KEY = "fen_deneme_profiles_v2";
-    const ACTIVE_USER_KEY = "fen_deneme_active_user_v2";
+    /* 2. AUTH SYSTEM */
+    const AUTH_USERS_KEY = "fen_deneme_auth_users_v3";
+    const CURRENT_SESSION_KEY = "fen_deneme_current_session_v3";
 
-    let profiles = [];
-    let currentProfile = null;
-    let selectedMobileAvatar = '🚀';
+    let authUsers = [];
+    let currentSession = null;
+    let mobileAuthMode = 'login';
+    let selectedMobileRegAvatar = '🚀';
 
     let state = {
       selectedDayId: 1,
@@ -658,43 +657,154 @@
       return "fen_deneme_user_data_" + encodeURIComponent(username.toLowerCase().trim());
     }
 
-    function initMobileProfileSystem() {
-      const savedProfiles = localStorage.getItem(PROFILES_KEY);
-      if (savedProfiles) {
+    function initMobileAuth() {
+      const savedUsers = localStorage.getItem(AUTH_USERS_KEY);
+      if (savedUsers) {
+        try { authUsers = JSON.parse(savedUsers); } catch(e) { authUsers = []; }
+      }
+      if (!authUsers.some(u => u.username.toLowerCase() === 'admin')) {
+        authUsers.push({ username: "admin", password: "admin123", role: "admin", avatar: "🛡️", title: "Yönetici" });
+      }
+      if (!authUsers.some(u => u.username.toLowerCase() === 'ahmet')) {
+        authUsers.push({ username: "Ahmet", password: "1234", role: "student", avatar: "🚀", title: "Öğrenci" });
+      }
+      if (!authUsers.some(u => u.username.toLowerCase() === 'zeynep')) {
+        authUsers.push({ username: "Zeynep", password: "1234", role: "student", avatar: "🌟", title: "Öğrenci" });
+      }
+      localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
+
+      const savedSession = localStorage.getItem(CURRENT_SESSION_KEY);
+      if (savedSession) {
         try {
-          profiles = JSON.parse(savedProfiles);
-        } catch(e) {
-          profiles = [];
-        }
+          currentSession = JSON.parse(savedSession);
+          const found = authUsers.find(u => u.username.toLowerCase() === currentSession.username.toLowerCase());
+          if (found && found.password === currentSession.password) {
+            applyMobileSession(found);
+            return;
+          }
+        } catch(e) {}
       }
 
-      if (profiles.length === 0) {
-        const defaultProfile = { username: "Gelişim Kaşifi", avatar: '🚀', color: 'blue', createdAt: new Date().toISOString() };
-        profiles = [defaultProfile];
-        localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-      }
-
-      let activeUsername = localStorage.getItem(ACTIVE_USER_KEY);
-      let found = profiles.find(p => p.username === activeUsername);
-      if (!found) found = profiles[0];
-
-      setActiveMobileProfile(found.username);
+      showMobileAuthModal();
     }
 
-    function setActiveMobileProfile(username) {
-      const profile = profiles.find(p => p.username === username);
-      if (!profile) return;
+    function showMobileAuthModal() {
+      renderMobileAuthAvatarPicker();
+      document.getElementById("mobileAuthModal").classList.remove("hidden");
+      document.getElementById("mobileAuthModal").classList.add("flex");
+    }
 
-      currentProfile = profile;
-      localStorage.setItem(ACTIVE_USER_KEY, profile.username);
+    function hideMobileAuthModal() {
+      document.getElementById("mobileAuthModal").classList.add("hidden");
+      document.getElementById("mobileAuthModal").classList.remove("flex");
+    }
 
-      document.getElementById("mobileUserName").textContent = profile.username;
-      document.getElementById("mobileUserAvatar").textContent = profile.avatar;
-      document.getElementById("settingsUserName").textContent = profile.username;
-      document.getElementById("settingsUserAvatar").textContent = profile.avatar;
-      document.getElementById("chatStudentName").textContent = profile.username;
+    function switchMobileAuthTab(mode) {
+      mobileAuthMode = mode;
+      document.getElementById("mobileAuthAlert").classList.add("hidden");
+      if (mode === 'login') {
+        document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
+        document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg text-slate-500";
+        document.getElementById("mRegisterAvatarBox").classList.add("hidden");
+        document.getElementById("mAuthBtnText").textContent = "Giriş Yap ve Başla";
+      } else {
+        document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
+        document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg text-slate-500";
+        document.getElementById("mRegisterAvatarBox").classList.remove("hidden");
+        document.getElementById("mAuthBtnText").textContent = "Kayıt Ol ve Başla";
+      }
+    }
 
-      loadMobileUserData(profile.username);
+    function renderMobileAuthAvatarPicker() {
+      const c = document.getElementById("mAvatarPickerBox");
+      c.innerHTML = "";
+      AVATAR_OPTIONS.forEach(em => {
+        const isSel = em === selectedMobileRegAvatar;
+        const b = document.createElement("button");
+        b.onclick = () => { selectedMobileRegAvatar = em; renderMobileAuthAvatarPicker(); };
+        b.className = `w-7 h-7 rounded-lg text-sm flex items-center justify-center ${isSel ? 'bg-blue-600 text-white scale-110 shadow' : 'bg-slate-100'}`;
+        b.textContent = em;
+        c.appendChild(b);
+      });
+    }
+
+    function fillMobileSample(u, p) {
+      switchMobileAuthTab('login');
+      document.getElementById("mAuthUsername").value = u;
+      document.getElementById("mAuthPassword").value = p;
+      handleMobileAuthSubmit();
+    }
+
+    function handleMobileAuthSubmit() {
+      const u = document.getElementById("mAuthUsername").value.trim();
+      const p = document.getElementById("mAuthPassword").value.trim();
+      const alertBox = document.getElementById("mobileAuthAlert");
+
+      if (!u || !p) {
+        alertBox.textContent = "Kullanıcı adı ve şifre girin.";
+        alertBox.className = "p-2.5 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700";
+        alertBox.classList.remove("hidden");
+        return;
+      }
+
+      if (mobileAuthMode === 'login') {
+        const found = authUsers.find(x => x.username.toLowerCase() === u.toLowerCase());
+        if (!found || found.password !== p) {
+          alertBox.textContent = "Hatalı kullanıcı adı veya şifre!";
+          alertBox.className = "p-2.5 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700";
+          alertBox.classList.remove("hidden");
+          return;
+        }
+        currentSession = found;
+        localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
+        applyMobileSession(found);
+        hideMobileAuthModal();
+        playChime('done');
+      } else {
+        if (p.length < 4) {
+          alertBox.textContent = "Şifre en az 4 karakter olmalıdır.";
+          alertBox.className = "p-2.5 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700";
+          alertBox.classList.remove("hidden");
+          return;
+        }
+        const newUser = { username: u, password: p, role: "student", avatar: selectedMobileRegAvatar, title: "Öğrenci" };
+        authUsers.push(newUser);
+        localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
+        currentSession = newUser;
+        localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(newUser));
+        applyMobileSession(newUser);
+        hideMobileAuthModal();
+        playChime('done');
+      }
+    }
+
+    function applyMobileSession(user) {
+      document.getElementById("mobileUserName").textContent = user.username;
+      document.getElementById("mobileUserAvatar").textContent = user.avatar;
+      document.getElementById("mobileUserRoleBadge").textContent = user.role === 'admin' ? 'Yönetici' : 'Öğrenci';
+      document.getElementById("settingsUserName").textContent = user.username;
+      document.getElementById("settingsUserAvatar").textContent = user.avatar;
+      document.getElementById("settingsUserRole").textContent = user.role === 'admin' ? 'Yönetici / Öğretmen' : 'Aktif Öğrenci';
+      document.getElementById("chatStudentName").textContent = user.username;
+
+      if (user.role === 'admin') {
+        document.getElementById("mobileAdminHeaderBtn").classList.remove("hidden");
+        const first = authUsers.find(x => x.role === 'student') || { username: "Ahmet" };
+        loadMobileUserData(first.username);
+      } else {
+        document.getElementById("mobileAdminHeaderBtn").classList.add("hidden");
+        loadMobileUserData(user.username);
+      }
+    }
+
+    function handleMobileLogout() {
+      if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
+        localStorage.removeItem(CURRENT_SESSION_KEY);
+        currentSession = null;
+        document.getElementById("mAuthUsername").value = "";
+        document.getElementById("mAuthPassword").value = "";
+        showMobileAuthModal();
+      }
     }
 
     function loadMobileUserData(username) {
@@ -744,94 +854,12 @@
     }
 
     function saveState() {
-      if (currentProfile) {
-        localStorage.setItem(getUserStorageKey(currentProfile.username), JSON.stringify(state));
-      }
+      const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
+      localStorage.setItem(getUserStorageKey(activeName), JSON.stringify(state));
       renderGlobalStats();
     }
 
-    /* 3. PROFILE MODAL ACTIONS */
-    function openMobileProfileModal() {
-      renderMobileProfileList();
-      renderMobileAvatarPicker();
-      document.getElementById("mobileProfileModal").classList.remove("hidden");
-      document.getElementById("mobileProfileModal").classList.add("flex");
-    }
-
-    function closeMobileProfileModal() {
-      document.getElementById("mobileProfileModal").classList.add("hidden");
-      document.getElementById("mobileProfileModal").classList.remove("flex");
-    }
-
-    function renderMobileAvatarPicker() {
-      const c = document.getElementById("mobileAvatarPicker");
-      c.innerHTML = "";
-      AVATAR_OPTIONS.forEach(emoji => {
-        const isSel = emoji === selectedMobileAvatar;
-        const btn = document.createElement("button");
-        btn.onclick = () => {
-          selectedMobileAvatar = emoji;
-          renderMobileAvatarPicker();
-        };
-        btn.className = `w-7 h-7 rounded-lg text-sm flex items-center justify-center ${
-          isSel ? 'bg-blue-600 text-white scale-110 shadow' : 'bg-slate-100'
-        }`;
-        btn.textContent = emoji;
-        c.appendChild(btn);
-      });
-    }
-
-    function renderMobileProfileList() {
-      const c = document.getElementById("mobileProfileList");
-      c.innerHTML = "";
-
-      profiles.forEach(p => {
-        const isAct = currentProfile && currentProfile.username === p.username;
-        const div = document.createElement("div");
-        div.className = `p-2 rounded-xl border flex items-center justify-between text-xs ${
-          isAct ? 'bg-blue-50 border-blue-300 text-blue-900 font-bold' : 'bg-slate-50 border-slate-200'
-        }`;
-        div.innerHTML = `
-          <div class="flex items-center gap-2 cursor-pointer flex-1" onclick="switchMobileUser('${p.username}')">
-            <span class="w-7 h-7 rounded-lg bg-white border flex items-center justify-center shadow-xs">${p.avatar}</span>
-            <span>${p.username} ${isAct ? '(Seçili)' : ''}</span>
-          </div>
-          ${!isAct ? `
-            <button onclick="switchMobileUser('${p.username}')" class="px-2 py-0.5 rounded-lg bg-blue-600 text-white text-[10px] font-bold">Giriş</button>
-          ` : '<span class="text-emerald-600 text-xs"><i class="fa-solid fa-check"></i></span>'}
-        `;
-        c.appendChild(div);
-      });
-    }
-
-    function handleMobileCreateOrLoginProfile() {
-      const input = document.getElementById("mobileNewUsernameInput");
-      const name = input.value.trim();
-      if (!name) return;
-
-      let existing = profiles.find(p => p.username.toLowerCase() === name.toLowerCase());
-      if (existing) {
-        setActiveMobileProfile(existing.username);
-      } else {
-        const newP = { username: name, avatar: selectedMobileAvatar, color: 'blue', createdAt: new Date().toISOString() };
-        profiles.push(newP);
-        localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-        setActiveMobileProfile(name);
-      }
-
-      input.value = "";
-      closeMobileProfileModal();
-      playChime('done');
-      confetti({ particleCount: 40, spread: 50, origin: { y: 0.7 } });
-    }
-
-    function switchMobileUser(username) {
-      setActiveMobileProfile(username);
-      closeMobileProfileModal();
-      playChime('click');
-    }
-
-    /* 4. MOBİL YÖNETİCİ RAPORU MODALI */
+    /* 3. MOBİL YÖNETİCİ RAPORU MODALI */
     function openMobileAdminModal() {
       renderMobileAdminView();
       document.getElementById("mobileAdminModal").classList.remove("hidden");
@@ -844,12 +872,13 @@
     }
 
     function renderMobileAdminView() {
+      const studentUsers = authUsers.filter(x => x.role === 'student');
       const metricsContainer = document.getElementById("mobileAdminMetrics");
       let totalTasks = 0;
       let totalLessons = 0;
       let topStudent = { name: "-", xp: -1, avatar: "👤" };
 
-      profiles.forEach(p => {
+      studentUsers.forEach(p => {
         let uData = null;
         try { uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username))); } catch(e) {}
         if (uData && uData.daysData) {
@@ -868,12 +897,12 @@
         }
       });
 
-      const avgSuccess = profiles.length > 0 ? Math.round((totalTasks / (profiles.length * 80)) * 100) : 0;
+      const avgSuccess = studentUsers.length > 0 ? Math.round((totalTasks / (studentUsers.length * 80)) * 100) : 0;
 
       metricsContainer.innerHTML = `
         <div class="p-2.5 rounded-xl bg-blue-50 border border-blue-200">
           <div class="text-[9px] font-bold text-blue-600 uppercase">Mevcut</div>
-          <div class="text-base font-fun font-bold text-blue-950">${profiles.length} Öğrenci</div>
+          <div class="text-base font-fun font-bold text-blue-950">${studentUsers.length} Öğrenci</div>
           <div class="text-[9px] text-blue-500">Kayıtlı Profil</div>
         </div>
 
@@ -899,7 +928,7 @@
       const listContainer = document.getElementById("mobileAdminStudentList");
       listContainer.innerHTML = "";
 
-      profiles.forEach(p => {
+      studentUsers.forEach(p => {
         let uData = null;
         try { uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username))); } catch(e) {}
         
@@ -937,8 +966,8 @@
                 <span class="text-[10px] text-amber-600 font-bold">${uXP} XP • 🔥 ${uStreak} Gün</span>
               </div>
             </div>
-            <button onclick="switchMobileUser('${p.username}'); closeMobileAdminModal();" class="px-2.5 py-1 rounded-xl bg-blue-600 text-white text-[10px] font-bold tap-bounce">
-              Geçiş Yap
+            <button onclick="mobileInspectStudent('${p.username}')" class="px-2.5 py-1 rounded-xl bg-blue-600 text-white text-[10px] font-bold tap-bounce">
+              İncele
             </button>
           </div>
 
@@ -953,43 +982,14 @@
       });
     }
 
-    function exportAllClassDataMobile() {
-      let classData = {
-        exportedAt: new Date().toISOString(),
-        profiles: profiles,
-        studentsData: {}
-      };
-      profiles.forEach(p => {
-        const key = getUserStorageKey(p.username);
-        const data = localStorage.getItem(key);
-        if (data) {
-          try { classData.studentsData[p.username] = JSON.parse(data); } catch(e) {}
-        }
-      });
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(classData, null, 2));
-      const a = document.createElement("a");
-      a.href = dataStr;
-      a.download = `Sinif_Toplu_Yedek_${new Date().toISOString().slice(0,10)}.json`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      playChime('done');
+    function mobileInspectStudent(username) {
+      state.viewingUser = username;
+      loadMobileUserData(username);
+      closeMobileAdminModal();
+      playChime('click');
     }
 
-    function loadDemoClassDataMobile() {
-      const demo1 = { username: "Ahmet", avatar: "🚀", color: "blue", createdAt: "2026-08-29" };
-      const demo2 = { username: "Zeynep", avatar: "🌟", color: "purple", createdAt: "2026-08-29" };
-
-      if (!profiles.some(p => p.username === demo1.username)) profiles.push(demo1);
-      if (!profiles.some(p => p.username === demo2.username)) profiles.push(demo2);
-      localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-
-      renderMobileAdminView();
-      alert("Örnek öğrenciler yüklendi!");
-      playChime('done');
-    }
-
-    /* 5. SOUND & RENDER LOGIC */
+    /* 4. SOUND & RENDER LOGIC */
     function playChime(type = 'click') {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1255,7 +1255,6 @@
       });
 
       document.getElementById("mobileXpBadge").textContent = `${totalXP} XP`;
-      document.getElementById("mobileStreakBadge").textContent = streak;
 
       let lvlName = "1. Çırak 🌱";
       if (totalXP >= 500) lvlName = "5. Efsane Şampiyon 🏆";
@@ -1385,7 +1384,7 @@
     function copyAiPromptTemplate() {
       const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
       const dData = state.daysData[state.selectedDayId] || { tasks: {}, lessons: [], rating: 0, note: "" };
-      const studentName = currentProfile ? currentProfile.username : 'Öğrenci';
+      const studentName = currentSession ? currentSession.username : 'Öğrenci';
 
       const fullPrompt = `${AI_SYSTEM_PROMPT}
 
@@ -1419,10 +1418,9 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
     }
 
     async function requestAiAction(action) {
-      const apiKey = document.getElementById("geminiApiKeyInput").value.trim();
       const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
       const dData = state.daysData[state.selectedDayId] || { tasks: {}, lessons: [], rating: 0 };
-      const studentName = currentProfile ? currentProfile.username : 'Öğrenci';
+      const studentName = currentSession ? currentSession.username : 'Öğrenci';
 
       playChime('click');
 
@@ -1433,28 +1431,6 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
       else if (action === 'motivation') userQuery = "Bana ilham verici bir motivasyon sözü söyle!";
 
       appendAiMessage('user', userQuery);
-
-      if (apiKey) {
-        appendAiMessage('ai', '<em>Gemini düşünüyor... 🤖✨</em>');
-        try {
-          const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{
-                parts: [{ text: `${AI_SYSTEM_PROMPT}\n\nÖğrenci: ${studentName}, Gün ${cur.id}, Yıldız: ${dData.rating}\nİstek: ${userQuery}` }]
-              }]
-            })
-          });
-          const data = await resp.json();
-          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Harika bir çaba! Adım adım ilerlemeye devam et!";
-          const msgBox = document.getElementById("aiChatMessages");
-          msgBox.removeChild(msgBox.lastChild);
-          appendAiMessage('ai', reply.replace(/\n/g, '<br>'));
-          playChime('done');
-          return;
-        } catch(err) {}
-      }
 
       setTimeout(() => {
         let mockReply = "";
@@ -1479,9 +1455,9 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
     }
 
     function exportMobileData() {
-      const username = currentProfile ? currentProfile.username : 'Gelisim_Plani';
+      const username = currentSession ? currentSession.username : 'Gelisim_Plani';
       const exportPayload = {
-        profile: currentProfile,
+        profile: currentSession,
         state: state,
         exportedAt: new Date().toISOString()
       };
@@ -1495,33 +1471,8 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
       playChime('done');
     }
 
-    function importMobileData(e) {
-      const f = e.target.files[0];
-      if (!f) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        try {
-          const p = JSON.parse(evt.target.result);
-          if (p.state && p.state.daysData) {
-            state = p.state;
-          } else if (p.daysData) {
-            state = p;
-          }
-          saveState();
-          renderDaysStoryBar();
-          renderTodayView();
-          renderLessonsView();
-          alert("Veriler başarıyla yüklendi! 🎉");
-          playChime('done');
-        } catch(err) {
-          alert("Dosya yüklenemedi.");
-        }
-      };
-      reader.readAsText(f);
-    }
-
     function resetMobileData() {
-      if (confirm(`"${currentProfile ? currentProfile.username : 'Öğrenci'}" kullanıcısının verileri sıfırlansın mı?`)) {
+      if (confirm(`"${currentSession ? currentSession.username : 'Öğrenci'}" kullanıcısının verileri sıfırlansın mı?`)) {
         createDefaultState();
         saveState();
         renderDaysStoryBar();
@@ -1532,7 +1483,7 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      initMobileProfileSystem();
+      initMobileAuth();
 
       const noteElem = document.getElementById("mobileDailyNote");
       if (noteElem) {
@@ -1540,9 +1491,8 @@ Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 kü�
           const dData = state.daysData[state.selectedDayId];
           if (dData) {
             dData.note = noteElem.value;
-            if (currentProfile) {
-              localStorage.setItem(getUserStorageKey(currentProfile.username), JSON.stringify(state));
-            }
+            const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
+            localStorage.setItem(getUserStorageKey(activeName), JSON.stringify(state));
           }
         });
       }

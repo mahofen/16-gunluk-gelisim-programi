@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Benim 16 Günlük Gelişim Programı | Çoklu Kullanıcı & Yönetici Kontrol Portalı</title>
+  <title>Benim 16 Günlük Gelişim Programı | Güvenli Giriş & Yönetici Portalı</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -118,27 +118,26 @@
         </div>
       </div>
 
-      <!-- Header Sağ Butonlar / User Profile, Admin Panel & Gamification Info -->
+      <!-- Header Sağ Butonlar / User Profile, Admin Panel & Logout -->
       <div class="flex items-center gap-2 sm:gap-3">
         
         <!-- YÖNETİCİ & ÖĞRETMEN KONTROL PANELİ BUTONU -->
-        <button onclick="openAdminModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold transition-all shadow-sm group" title="Yönetici ve Öğretmen Kontrol Paneli">
+        <button onclick="openAdminModal()" id="headerAdminBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold transition-all shadow-sm group" title="Yönetici ve Öğretmen Kontrol Paneli">
           <i class="fa-solid fa-chart-pie text-sm text-indigo-600 group-hover:scale-110 transition-transform"></i>
           <span class="hidden sm:inline">Yönetici Paneli</span>
         </button>
 
-        <!-- AKTİF KULLANICI PROFİL BUTONU -->
-        <button onclick="openProfileModal()" class="flex items-center gap-2 bg-gradient-to-r from-sky-50 to-blue-50 hover:from-sky-100 hover:to-blue-100 border border-sky-200 px-3 py-1.5 rounded-2xl shadow-sm transition-all group" title="Kullanıcı Girişi / Profil Değiştir">
+        <!-- AKTİF KULLANICI PROFİL / OTURUM BİLGİSİ -->
+        <div class="flex items-center gap-2 bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 px-3 py-1.5 rounded-2xl shadow-sm">
           <span class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm" id="headerUserAvatar">🚀</span>
           <div class="text-left leading-tight hidden sm:block">
-            <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Kullanıcı</div>
-            <div class="text-xs font-bold text-slate-800 group-hover:text-blue-700 max-w-[90px] truncate" id="headerUserName">Öğrenci</div>
+            <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider" id="headerUserRoleBadge">Öğrenci</div>
+            <div class="text-xs font-bold text-slate-800 max-w-[90px] truncate" id="headerUserName">Ahmet</div>
           </div>
-          <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover:text-blue-600"></i>
-        </button>
+        </div>
 
         <!-- Level & XP Badge -->
-        <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-2xl shadow-sm">
+        <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-2xl shadow-sm" id="headerXpBadgeContainer">
           <i class="fa-solid fa-bolt text-amber-500 animate-pulse"></i>
           <span class="text-xs font-bold text-amber-900" id="userLevelBadge">1. Seviye: Çırak</span>
           <div class="w-14 bg-amber-200 h-2 rounded-full overflow-hidden hidden md:block">
@@ -148,7 +147,7 @@
         </div>
 
         <!-- Seri (Streak) -->
-        <div class="flex items-center gap-1.5 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-2xl shadow-sm" title="Tamamlanan Gün Serisi">
+        <div class="flex items-center gap-1.5 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-2xl shadow-sm" id="headerStreakContainer" title="Tamamlanan Gün Serisi">
           <i class="fa-solid fa-fire text-orange-500 text-sm"></i>
           <span class="text-xs font-bold text-orange-800" id="streakBadge">0 Gün</span>
         </div>
@@ -156,17 +155,18 @@
         <!-- Mobil Görünüme Geç Butonu -->
         <a href="mobile_app.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all shadow-sm" title="Mobil Uygulama Arayüzü">
           <i class="fa-solid fa-mobile-screen-button text-sm text-blue-600"></i>
-          <span class="hidden lg:inline">Mobil Arayüz</span>
+          <span class="hidden lg:inline">Mobil</span>
         </a>
+
+        <!-- ÇIKIŞ YAP BUTONU -->
+        <button onclick="handleLogout()" class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all flex items-center gap-1" title="Oturumu Kapat">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="hidden sm:inline">Çıkış</span>
+        </button>
 
         <!-- Yazdır Butonu -->
         <button onclick="window.print()" class="p-2 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors" title="Raporu Yazdır / PDF Yap">
           <i class="fa-solid fa-print text-lg"></i>
-        </button>
-
-        <!-- Veri Menüsü -->
-        <button onclick="openDataModal()" class="p-2 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors" title="Yedekle / Veri Yönetimi">
-          <i class="fa-solid fa-cloud-arrow-down text-lg"></i>
         </button>
       </div>
     </div>
@@ -615,10 +615,156 @@
         <span>• 29 Ağustos - 13 Eylül 2026</span>
       </div>
       <div class="text-slate-400">
-        16 Günlük Gelişim Planı Portalı • Yönetici Paneli ile tüm öğrencilerin verilerini takip edebilirsiniz.
+        16 Günlük Gelişim Planı Güvenli Portalı • Giriş yaparak verilerinizi güvende tutun.
       </div>
     </div>
   </footer>
+
+  <!-- ================= ANA GİRİŞ & KAYIT KAPISI MODALI (LOGIN GATEWAY) ================= -->
+  <div id="authGateModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-100 overflow-hidden flex flex-col md:flex-row max-h-[92vh]">
+      
+      <!-- Sol Panel: Giriş ve Kayıt Formu -->
+      <div class="p-6 md:p-8 flex-1 flex flex-col justify-between overflow-y-auto space-y-5">
+        <div>
+          <!-- Logo & Başlık -->
+          <div class="flex items-center gap-2.5 mb-2">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-lg shadow-md shadow-blue-500/30">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+              <h3 class="font-fun text-xl font-bold text-slate-800">Gelişim Portalı Girişi</h3>
+              <p class="text-xs text-slate-500">Öğrenci veya Yönetici hesabınızla giriş yapın</p>
+            </div>
+          </div>
+
+          <!-- Sekmeler: Giriş Yap / Yeni Kayıt -->
+          <div class="flex bg-slate-100 p-1 rounded-2xl text-xs font-bold my-4">
+            <button onclick="switchAuthMode('login')" id="authTabBtn-login" class="flex-1 py-2 rounded-xl bg-white text-blue-700 shadow-sm transition-all">
+              Giriş Yap
+            </button>
+            <button onclick="switchAuthMode('register')" id="authTabBtn-register" class="flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition-all">
+              Yeni Öğrenci Kaydı
+            </button>
+          </div>
+
+          <!-- Hata & Bilgi Mesajı -->
+          <div id="authAlertBox" class="hidden p-3 rounded-xl text-xs font-semibold mb-3"></div>
+
+          <!-- GİRİŞ FORMU -->
+          <form id="loginForm" onsubmit="event.preventDefault(); handleAuthSubmit();" class="space-y-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Kullanıcı Adı:</label>
+              <div class="relative">
+                <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+                <input type="text" id="authUsernameInput" placeholder="Örn: admin, Ahmet, Zeynep..." class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none transition-all" required>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Şifre:</label>
+              <div class="relative">
+                <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+                <input type="password" id="authPasswordInput" placeholder="Şifrenizi girin..." class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none transition-all" required>
+              </div>
+            </div>
+
+            <!-- Kayıt Ekstra Alanı: Avatar Seçimi -->
+            <div id="registerAvatarField" class="hidden space-y-1.5 pt-1">
+              <label class="block text-xs font-bold text-slate-700">Profil Avatarı:</label>
+              <div class="flex flex-wrap gap-1.5" id="authAvatarPicker">
+                <!-- JS ile avatarlar -->
+              </div>
+            </div>
+
+            <button type="submit" id="authSubmitBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-fun font-bold text-xs shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2 mt-2">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              <span id="authSubmitBtnText">Sisteme Giriş Yap</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="text-[11px] text-slate-400 text-center pt-3 border-t border-slate-100">
+          16 Günlük Bütünsel Gelişim Portalı • v3.0 Güvenli Kimlik Doğrulama
+        </div>
+      </div>
+
+      <!-- Sağ Panel: Açıklamalar, Kurallar ve Örnek Girişler -->
+      <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white p-6 md:p-8 md:w-[420px] flex flex-col justify-between overflow-y-auto space-y-4">
+        <div>
+          <div class="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-sky-300 uppercase tracking-wider mb-3 border border-white/10">
+            <i class="fa-solid fa-circle-info"></i> Giriş Rehberi & Kurallar
+          </div>
+
+          <h4 class="font-fun text-lg font-bold text-white mb-2">
+            Giriş Sistemi Nasıl Çalışır?
+          </h4>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">
+            Bu portal hem öğrenciler hem de yönetici/öğretmenler için tek bir güvenli giriş noktası sunar.
+          </p>
+
+          <!-- Örnek Giriş Kartları -->
+          <div class="space-y-2.5 text-xs">
+            
+            <!-- Yönetici Giriş Kartı -->
+            <div onclick="fillSampleLogin('admin', 'admin123')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-indigo-400/30 cursor-pointer transition-all space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-amber-300 flex items-center gap-1.5">
+                  <i class="fa-solid fa-user-shield"></i> Yönetici / Öğretmen Girişi
+                </span>
+                <span class="text-[10px] bg-indigo-500/50 px-2 py-0.5 rounded text-white font-mono">Tıkla ve Doldur</span>
+              </div>
+              <div class="font-mono text-[11px] text-sky-200">
+                Kullanıcı: <strong>admin</strong> | Şifre: <strong>admin123</strong>
+              </div>
+              <p class="text-[10px] text-slate-300">Tüm sınıfın karnesini, yansıma notlarını ve başarı analizlerini yönetir.</p>
+            </div>
+
+            <!-- Örnek Öğrenci 1 -->
+            <div onclick="fillSampleLogin('Ahmet', '1234')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 cursor-pointer transition-all space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-sky-300 flex items-center gap-1.5">
+                  🚀 Örnek Öğrenci (Ahmet)
+                </span>
+                <span class="text-[10px] bg-sky-500/40 px-2 py-0.5 rounded text-white font-mono">Tıkla ve Doldur</span>
+              </div>
+              <div class="font-mono text-[11px] text-sky-200">
+                Kullanıcı: <strong>Ahmet</strong> | Şifre: <strong>1234</strong>
+              </div>
+              <p class="text-[10px] text-slate-300">Önceden doldurulmuş örnek 1. gün çalışma verilerini içerir.</p>
+            </div>
+
+            <!-- Örnek Öğrenci 2 -->
+            <div onclick="fillSampleLogin('Zeynep', '1234')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 cursor-pointer transition-all space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-purple-300 flex items-center gap-1.5">
+                  🌟 Örnek Öğrenci (Zeynep)
+                </span>
+                <span class="text-[10px] bg-purple-500/40 px-2 py-0.5 rounded text-white font-mono">Tıkla ve Doldur</span>
+              </div>
+              <div class="font-mono text-[11px] text-sky-200">
+                Kullanıcı: <strong>Zeynep</strong> | Şifre: <strong>1234</strong>
+              </div>
+              <p class="text-[10px] text-slate-300">Örnek soru çözümü ve spor kayıtlarını içerir.</p>
+            </div>
+
+          </div>
+
+          <!-- Kurallar Listesi -->
+          <div class="mt-4 pt-3 border-t border-white/10 space-y-1.5 text-[11px] text-slate-300">
+            <div class="font-bold text-white flex items-center gap-1">
+              <i class="fa-solid fa-shield-halved text-amber-400"></i> Giriş Kuralları:
+            </div>
+            <div>• Şifreler en az 4 karakterden oluşmalıdır.</div>
+            <div>• Her öğrencinin verisi tarayıcıda kendi şifresiyle izole tutulur.</div>
+            <div>• Yönetici girişi yapıldığında sınıf kontrol merkezi açılır.</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 
   <!-- ================= YÖNETİCİ & ÖĞRETMEN KONTROL VE RAPORLAMA MODALI ================= -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-4">
@@ -732,7 +878,7 @@
           <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between">
             <div class="space-y-0.5">
               <h5 class="font-fun text-xs font-bold text-amber-900">Demo / Örnek Öğrenci Verileri Ekle</h5>
-              <p class="text-[11px] text-amber-700">Test ve sunum amacıyla sisteme 2 adet örnek öğrenci profili ve çalışma verisi ekler.</p>
+              <p class="text-[11px] text-amber-700">Test amacıyla sisteme örnek Ahmet ve Zeynep verilerini yükler.</p>
             </div>
             <button onclick="loadDemoClassData()" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-sm">
               Örnek Veri Yükle
@@ -745,100 +891,10 @@
     </div>
   </div>
 
-  <!-- ================= KULLANICI GİRİŞİ & PROFİL SEÇİM MODALI ================= -->
-  <div id="profileModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-5">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-user-gear"></i>
-          </div>
-          <div>
-            <h3 class="font-fun text-lg font-bold text-slate-800">Öğrenci / Kullanıcı Girişi</h3>
-            <p class="text-xs text-slate-500">Çalışma verilerini adına kaydet</p>
-          </div>
-        </div>
-        <button onclick="closeProfileModal()" class="text-slate-400 hover:text-slate-600 text-lg">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <!-- Mevcut Kayıtlı Profiller -->
-      <div class="space-y-2">
-        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Kayıtlı Profiller:</label>
-        <div id="profileListContainer" class="space-y-1.5 max-h-44 overflow-y-auto pr-1">
-          <!-- JS ile profiller listelenecek -->
-        </div>
-      </div>
-
-      <!-- Yeni Kullanıcı Oluştur / Giriş Yap Formu -->
-      <div class="pt-3 border-t border-slate-100 space-y-3">
-        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Yeni Kullanıcı Girişi:</label>
-        
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Adınız / Öğrenci İsmi:</label>
-          <input type="text" id="newUsernameInput" placeholder="Örn: Ahmet, Zeynep..." class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Profil Avatarını Seç:</label>
-          <div class="flex flex-wrap gap-2 py-1" id="avatarPickerContainer">
-            <!-- JS ile avatar emojileri -->
-          </div>
-        </div>
-
-        <button onclick="handleCreateOrLoginProfile()" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-fun font-bold text-sm shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-right-to-bracket"></i>
-          <span>Giriş Yap ve Başla</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= DATA MANAGEMENT MODAL ================= -->
-  <div id="dataModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <h3 class="font-fun text-lg font-bold text-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-database text-sky-600"></i> Veri Yönetimi & Yedekleme
-        </h3>
-        <button onclick="closeDataModal()" class="text-slate-400 hover:text-slate-600 text-lg">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <p class="text-xs text-slate-600">
-        <strong id="dataModalUserTitle">Aktif Kullanıcı</strong> için 16 günlük çalışma verilerini bilgisayarına JSON dosyası olarak kaydedebilir veya daha önce kaydettiğin yedeği yükleyebilirsin.
-      </p>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-        <button onclick="exportData()" class="p-3 rounded-2xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-800 font-semibold text-xs flex flex-col items-center justify-center gap-2 transition-all">
-          <i class="fa-solid fa-download text-xl text-sky-600"></i>
-          <span>Bu Kullanıcının Verilerini İndir</span>
-        </button>
-
-        <label class="p-3 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-semibold text-xs flex flex-col items-center justify-center gap-2 cursor-pointer transition-all">
-          <i class="fa-solid fa-upload text-xl text-emerald-600"></i>
-          <span>Yedeği Yükle (İçe Aktar)</span>
-          <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)">
-        </label>
-      </div>
-
-      <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-        <button onclick="resetCurrentUserData()" class="text-xs text-rose-600 hover:text-rose-700 font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-trash-can"></i> Bu Kullanıcının Verilerini Sıfırla
-        </button>
-        <button onclick="closeDataModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">
-          Kapat
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- ================= JAVASCRIPT APP LOGIC ================= -->
   <script>
     /* =========================================================================
-       1. DATA STRUCTURES & 16-DAY CALENDAR DEFINITIONS (29 AĞUSTOS - 13 EYLÜL)
+       1. DATA STRUCTURES & CALENDAR DEFINITIONS
        ========================================================================= */
 
     const DAYS_CONFIG = [
@@ -865,21 +921,18 @@
         title: "1. Aşama: Alışma (29 Ağustos – 2 Eylül)",
         badge: "1. Aşama: Alışma 🌱",
         class: "bg-emerald-100 text-emerald-800 border-emerald-200",
-        colorHex: "#10b981",
         goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Programa ve plana alışırım, basit görevlerle başlarım, düzenli olmayı öğrenir ve yeni alışkanlıklar kazanırım."
       },
       2: {
         title: "2. Aşama: Gelişme (3 – 8 Eylül)",
         badge: "2. Aşama: Gelişme 🚀",
         class: "bg-sky-100 text-sky-800 border-sky-200",
-        colorHex: "#0284c7",
         goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Akademik çalışmalarımı artırırım, Osmanlıca, araştırma ve proje çalışmalarımı düzenli yapar, yeni şeyler denerim."
       },
       3: {
         title: "3. Aşama: Hazırlık ve Tamamlama (9 – 13 Eylül)",
         badge: "3. Aşama: Hazırlık & Tamamlama 🎯🏆",
         class: "bg-purple-100 text-purple-800 border-purple-200",
-        colorHex: "#8b5cf6",
         goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Programımı kendi kendime takip ederim, eksiklerimi fark edip geliştiririm, bir proje/ürün ortaya koyup final değerlendirmesi yaparım."
       }
     };
@@ -888,7 +941,7 @@
       {
         id: "v1", no: 1, title: "1. VAKİT: GÜNE BAŞLA", subtitle: "Bedeni ve zihni güne hazırla.",
         slogan: "Enerjini yükselt, güne güzel başla!", icon: "fa-solid fa-sun", iconColor: "text-amber-500",
-        headerBg: "bg-amber-50 text-amber-900 border-amber-200", borderColor: "border-amber-400",
+        headerBg: "bg-amber-50 text-amber-900 border-amber-200",
         tasks: [
           { id: "v1_1", text: "Sabah sporu", area: "C" },
           { id: "v1_2", text: "Kahvaltıya yardım", area: "D" },
@@ -901,7 +954,7 @@
       {
         id: "v2", no: 2, title: "2. VAKİT: ÖĞREN", subtitle: "En verimli zamanında öğrenmeye odaklan.",
         slogan: "Dikkatini topla, bilgin artsın!", icon: "fa-solid fa-lightbulb", iconColor: "text-blue-500",
-        headerBg: "bg-blue-50 text-blue-900 border-blue-200", borderColor: "border-blue-500",
+        headerBg: "bg-blue-50 text-blue-900 border-blue-200",
         tasks: [
           { id: "v2_1", text: "Konu çalış", area: "A" },
           { id: "v2_2", text: "Soru çöz", area: "A" },
@@ -914,7 +967,7 @@
       {
         id: "v3", no: 3, title: "3. VAKİT: ÜRET / KEŞFET", subtitle: "Merak et, araştır, üret ve keşfet.",
         slogan: "Merakın seni ileri taşır!", icon: "fa-solid fa-magnifying-glass", iconColor: "text-emerald-500",
-        headerBg: "bg-emerald-50 text-emerald-900 border-emerald-200", borderColor: "border-emerald-500",
+        headerBg: "bg-emerald-50 text-emerald-900 border-emerald-200",
         tasks: [
           { id: "v3_1", text: "Resim yap", area: "B" },
           { id: "v3_2", text: "Lego ile üret", area: "B" },
@@ -927,7 +980,7 @@
       {
         id: "v4", no: 4, title: "4. VAKİT: HAREKET ET", subtitle: "Oyna, hareket et, enerjini at.",
         slogan: "Hareket et, güçlü ol, mutlu ol!", icon: "fa-solid fa-bicycle", iconColor: "text-orange-500",
-        headerBg: "bg-orange-50 text-orange-900 border-orange-200", borderColor: "border-orange-500",
+        headerBg: "bg-orange-50 text-orange-900 border-orange-200",
         tasks: [
           { id: "v4_1", text: "Bisiklete bin", area: "C" },
           { id: "v4_2", text: "Havuza git", area: "C" },
@@ -940,7 +993,7 @@
       {
         id: "v5", no: 5, title: "5. VAKİT: SAKİNLEŞ & OKU", subtitle: "Zihnini dinlendir, okuyarak geliş.",
         slogan: "Sakinleş, oku, güne güzel nokta koy!", icon: "fa-solid fa-moon", iconColor: "text-purple-500",
-        headerBg: "bg-purple-50 text-purple-900 border-purple-200", borderColor: "border-purple-500",
+        headerBg: "bg-purple-50 text-purple-900 border-purple-200",
         tasks: [
           { id: "v5_1", text: "Kitap oku", area: "A" },
           { id: "v5_2", text: "Dergi oku", area: "A" },
@@ -973,89 +1026,310 @@
     const AVATAR_OPTIONS = ['🚀', '🌟', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
 
     /* =========================================================================
-       2. MULTI-USER PROFILE & STATE MANAGEMENT
+       2. AUTHENTICATION & USER MANAGEMENT (KULLANICI & YÖNETİCİ GİRİŞİ)
        ========================================================================= */
-    const PROFILES_KEY = "fen_deneme_profiles_v2";
-    const ACTIVE_USER_KEY = "fen_deneme_active_user_v2";
-    const LEGACY_STORAGE_KEY = "fen_deneme_16_gunluk_gelisim_v1";
+    const AUTH_USERS_KEY = "fen_deneme_auth_users_v3";
+    const CURRENT_SESSION_KEY = "fen_deneme_current_session_v3";
 
-    let profiles = [];
-    let currentProfile = null;
-    let selectedAvatar = '🚀';
+    let authUsers = [];
+    let currentSession = null;
+    let authMode = 'login'; // 'login' | 'register'
+    let selectedRegAvatar = '🚀';
 
     let state = {
       selectedDayId: 1,
       daysData: {}
     };
 
-    function getUserStorageKey(username) {
+    function getUserDataStorageKey(username) {
       return "fen_deneme_user_data_" + encodeURIComponent(username.toLowerCase().trim());
     }
 
-    function initProfileSystem() {
-      const savedProfiles = localStorage.getItem(PROFILES_KEY);
-      if (savedProfiles) {
+    function initAuthSystem() {
+      const savedUsers = localStorage.getItem(AUTH_USERS_KEY);
+      if (savedUsers) {
+        try { authUsers = JSON.parse(savedUsers); } catch(e) { authUsers = []; }
+      }
+
+      // Varsayılan Kullanıcılar (Yönetici ve Demo Öğrenciler)
+      if (!authUsers.some(u => u.username.toLowerCase() === 'admin')) {
+        authUsers.push({
+          username: "admin",
+          password: "admin123",
+          role: "admin",
+          avatar: "🛡️",
+          title: "Yönetici / Öğretmen",
+          createdAt: "2026-08-29"
+        });
+      }
+      if (!authUsers.some(u => u.username.toLowerCase() === 'ahmet')) {
+        authUsers.push({
+          username: "Ahmet",
+          password: "1234",
+          role: "student",
+          avatar: "🚀",
+          title: "Öğrenci",
+          createdAt: "2026-08-29"
+        });
+      }
+      if (!authUsers.some(u => u.username.toLowerCase() === 'zeynep')) {
+        authUsers.push({
+          username: "Zeynep",
+          password: "1234",
+          role: "student",
+          avatar: "🌟",
+          title: "Öğrenci",
+          createdAt: "2026-08-29"
+        });
+      }
+      localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
+
+      // Mock demo data seeding if not exists
+      seedDemoDataIfEmpty();
+
+      // Check current active session
+      const savedSession = localStorage.getItem(CURRENT_SESSION_KEY);
+      if (savedSession) {
         try {
-          profiles = JSON.parse(savedProfiles);
-        } catch(e) {
-          profiles = [];
-        }
+          currentSession = JSON.parse(savedSession);
+          const found = authUsers.find(u => u.username.toLowerCase() === currentSession.username.toLowerCase());
+          if (found && found.password === currentSession.password) {
+            applyUserSession(found);
+            return;
+          }
+        } catch(e) {}
       }
 
-      if (profiles.length === 0) {
-        const legacyData = localStorage.getItem(LEGACY_STORAGE_KEY);
-        const initialName = "Gelişim Kaşifi";
-        const defaultProfile = { username: initialName, avatar: '🚀', color: 'blue', createdAt: new Date().toISOString() };
-        profiles = [defaultProfile];
-        localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-
-        if (legacyData) {
-          try {
-            localStorage.setItem(getUserStorageKey(initialName), legacyData);
-          } catch(e) {}
-        }
-      }
-
-      let activeUsername = localStorage.getItem(ACTIVE_USER_KEY);
-      let found = profiles.find(p => p.username === activeUsername);
-      if (!found) {
-        found = profiles[0];
-      }
-      setActiveProfile(found.username);
+      // No active session -> Show Auth Modal
+      showAuthGateModal();
     }
 
-    function setActiveProfile(username) {
-      const profile = profiles.find(p => p.username === username);
-      if (!profile) return;
-
-      currentProfile = profile;
-      localStorage.setItem(ACTIVE_USER_KEY, profile.username);
-
-      document.getElementById("headerUserName").textContent = profile.username;
-      document.getElementById("headerUserAvatar").textContent = profile.avatar;
-      document.getElementById("bannerStudentName").textContent = profile.username;
-      document.getElementById("dataModalUserTitle").textContent = profile.username;
-
-      loadUserData(profile.username);
+    function seedDemoDataIfEmpty() {
+      // Ahmet Mock
+      const ahmetKey = getUserDataStorageKey("Ahmet");
+      if (!localStorage.getItem(ahmetKey)) {
+        const ahmetSt = createDefaultStateObj();
+        ahmetSt.daysData[1].tasks["v1_1"] = 'done';
+        ahmetSt.daysData[1].tasks["v2_1"] = 'done';
+        ahmetSt.daysData[1].tasks["v3_2"] = 'done';
+        ahmetSt.daysData[1].lessons[0].done = true;
+        ahmetSt.daysData[1].rating = 5;
+        ahmetSt.daysData[1].note = "Bugün Osmanlıca okudum ve Lego ile kule yaptım.";
+        localStorage.setItem(ahmetKey, JSON.stringify(ahmetSt));
+      }
+      // Zeynep Mock
+      const zeynepKey = getUserDataStorageKey("Zeynep");
+      if (!localStorage.getItem(zeynepKey)) {
+        const zeynepSt = createDefaultStateObj();
+        zeynepSt.daysData[1].tasks["v1_1"] = 'done';
+        zeynepSt.daysData[1].tasks["v4_1"] = 'done';
+        zeynepSt.daysData[1].tasks["v5_1"] = 'done';
+        zeynepSt.daysData[1].lessons[0].done = true;
+        zeynepSt.daysData[1].lessons[1].done = true;
+        zeynepSt.daysData[1].rating = 4;
+        zeynepSt.daysData[1].note = "Yarın soru çözümüne biraz daha erken başlayacağım.";
+        localStorage.setItem(zeynepKey, JSON.stringify(zeynepSt));
+      }
     }
+
+    function createDefaultStateObj() {
+      let st = { selectedDayId: 1, daysData: {} };
+      DAYS_CONFIG.forEach(d => {
+        const template = WEEKLY_LESSONS_TEMPLATE[d.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
+        st.daysData[d.id] = {
+          tasks: {},
+          lessons: [{ type: template[0].type, done: false }, { type: template[1].type, done: false }, { type: template[2].type, done: false }],
+          rating: 0,
+          note: ""
+        };
+      });
+      return st;
+    }
+
+    function showAuthGateModal() {
+      renderAuthAvatarPicker();
+      document.getElementById("authGateModal").classList.remove("hidden");
+      document.getElementById("authGateModal").classList.add("flex");
+    }
+
+    function hideAuthGateModal() {
+      document.getElementById("authGateModal").classList.add("hidden");
+      document.getElementById("authGateModal").classList.remove("flex");
+    }
+
+    function switchAuthMode(mode) {
+      authMode = mode;
+      const alertBox = document.getElementById("authAlertBox");
+      alertBox.classList.add("hidden");
+
+      if (mode === 'login') {
+        document.getElementById("authTabBtn-login").className = "flex-1 py-2 rounded-xl bg-white text-blue-700 shadow-sm transition-all";
+        document.getElementById("authTabBtn-register").className = "flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition-all";
+        document.getElementById("registerAvatarField").classList.add("hidden");
+        document.getElementById("authSubmitBtnText").textContent = "Sisteme Giriş Yap";
+      } else {
+        document.getElementById("authTabBtn-register").className = "flex-1 py-2 rounded-xl bg-white text-blue-700 shadow-sm transition-all";
+        document.getElementById("authTabBtn-login").className = "flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition-all";
+        document.getElementById("registerAvatarField").classList.remove("hidden");
+        document.getElementById("authSubmitBtnText").textContent = "Hesap Oluştur ve Başla";
+      }
+    }
+
+    function renderAuthAvatarPicker() {
+      const c = document.getElementById("authAvatarPicker");
+      c.innerHTML = "";
+      AVATAR_OPTIONS.forEach(em => {
+        const isSel = em === selectedRegAvatar;
+        const b = document.createElement("button");
+        b.type = "button";
+        b.onclick = () => { selectedRegAvatar = em; renderAuthAvatarPicker(); };
+        b.className = `w-7 h-7 rounded-lg text-sm flex items-center justify-center ${isSel ? 'bg-blue-600 text-white scale-110 shadow' : 'bg-slate-100'}`;
+        b.textContent = em;
+        c.appendChild(b);
+      });
+    }
+
+    function fillSampleLogin(uname, pwd) {
+      switchAuthMode('login');
+      document.getElementById("authUsernameInput").value = uname;
+      document.getElementById("authPasswordInput").value = pwd;
+      handleAuthSubmit();
+    }
+
+    function handleAuthSubmit() {
+      const usernameInput = document.getElementById("authUsernameInput").value.trim();
+      const passwordInput = document.getElementById("authPasswordInput").value.trim();
+      const alertBox = document.getElementById("authAlertBox");
+
+      if (!usernameInput || !passwordInput) {
+        showAuthAlert("Lütfen kullanıcı adı ve şifre alanlarını doldurun.", "error");
+        return;
+      }
+
+      if (authMode === 'login') {
+        const found = authUsers.find(u => u.username.toLowerCase() === usernameInput.toLowerCase());
+        if (!found) {
+          showAuthAlert("Bu kullanıcı adı ile kayıtlı hesap bulunamadı! Yeni kayıt sekmesinden oluşturabilirsiniz.", "error");
+          return;
+        }
+
+        if (found.password !== passwordInput) {
+          showAuthAlert("Hatalı şifre girdiniz! Lütfen tekrar deneyin.", "error");
+          return;
+        }
+
+        // Başarılı Giriş
+        currentSession = found;
+        localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
+        applyUserSession(found);
+        hideAuthGateModal();
+        playChimeSound('success');
+
+        if (found.role === 'admin') {
+          openAdminModal();
+        } else {
+          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+        }
+
+      } else {
+        // Yeni Kayıt Modu
+        if (passwordInput.length < 4) {
+          showAuthAlert("Şifre en az 4 karakter uzunluğunda olmalıdır!", "error");
+          return;
+        }
+
+        const existing = authUsers.find(u => u.username.toLowerCase() === usernameInput.toLowerCase());
+        if (existing) {
+          showAuthAlert("Bu kullanıcı adı zaten kullanılıyor! Giriş yapabilirsiniz.", "error");
+          return;
+        }
+
+        const newUser = {
+          username: usernameInput,
+          password: passwordInput,
+          role: "student",
+          avatar: selectedRegAvatar,
+          title: "Öğrenci",
+          createdAt: new Date().toISOString()
+        };
+
+        authUsers.push(newUser);
+        localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
+
+        currentSession = newUser;
+        localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(newUser));
+        applyUserSession(newUser);
+        hideAuthGateModal();
+        playChimeSound('success');
+        confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+      }
+    }
+
+    function showAuthAlert(msg, type = "error") {
+      const alertBox = document.getElementById("authAlertBox");
+      alertBox.textContent = msg;
+      alertBox.className = type === 'error' 
+        ? "p-3 rounded-xl text-xs font-semibold mb-3 bg-rose-50 border border-rose-200 text-rose-700"
+        : "p-3 rounded-xl text-xs font-semibold mb-3 bg-emerald-50 border border-emerald-200 text-emerald-700";
+      alertBox.classList.remove("hidden");
+    }
+
+    function applyUserSession(user) {
+      document.getElementById("headerUserName").textContent = user.username;
+      document.getElementById("headerUserAvatar").textContent = user.avatar;
+      document.getElementById("headerUserRoleBadge").textContent = user.role === 'admin' ? 'Yönetici' : 'Öğrenci';
+      document.getElementById("bannerStudentName").textContent = user.username;
+
+      // If user is admin vs student
+      if (user.role === 'admin') {
+        document.getElementById("headerAdminBtn").classList.remove("hidden");
+        // Admin default view: Ahmet or first student's state
+        const firstStudent = authUsers.find(u => u.role === 'student') || { username: "Ahmet" };
+        loadUserData(firstStudent.username);
+      } else {
+        document.getElementById("headerAdminBtn").classList.add("hidden");
+        loadUserData(user.username);
+      }
+    }
+
+    function handleLogout() {
+      if (confirm("Oturumu kapatmak istediğinize emin misiniz?")) {
+        localStorage.removeItem(CURRENT_SESSION_KEY);
+        currentSession = null;
+        document.getElementById("authUsernameInput").value = "";
+        document.getElementById("authPasswordInput").value = "";
+        showAuthGateModal();
+        playChimeSound('click');
+      }
+    }
+
+    /* =========================================================================
+       3. USER DATA STATE MANAGEMENT
+       ========================================================================= */
 
     function loadUserData(username) {
-      const userKey = getUserStorageKey(username);
+      const userKey = getUserDataStorageKey(username);
       const savedData = localStorage.getItem(userKey);
       
       if (savedData) {
         try {
           state = JSON.parse(savedData);
         } catch(e) {
-          createFreshState();
+          state = createDefaultStateObj();
         }
       } else {
-        createFreshState();
+        state = createDefaultStateObj();
       }
 
       DAYS_CONFIG.forEach(day => {
         if (!state.daysData[day.id]) {
-          state.daysData[day.id] = createDefaultDayData(day);
+          const t = WEEKLY_LESSONS_TEMPLATE[day.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
+          state.daysData[day.id] = {
+            tasks: {},
+            lessons: [{ type: t[0].type, done: false }, { type: t[1].type, done: false }, { type: t[2].type, done: false }],
+            rating: 0,
+            note: ""
+          };
         }
       });
 
@@ -1063,190 +1337,14 @@
       renderAll();
     }
 
-    function createFreshState() {
-      state = {
-        selectedDayId: 1,
-        daysData: {}
-      };
-      DAYS_CONFIG.forEach(day => {
-        state.daysData[day.id] = createDefaultDayData(day);
-      });
-    }
-
-    function createDefaultDayData(day) {
-      const template = WEEKLY_LESSONS_TEMPLATE[day.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
-      return {
-        tasks: {},
-        lessons: [
-          { type: template[0].type, done: false },
-          { type: template[1].type, done: false },
-          { type: template[2].type, done: false }
-        ],
-        rating: 0,
-        note: ""
-      };
-    }
-
     function saveState() {
-      if (currentProfile) {
-        localStorage.setItem(getUserStorageKey(currentProfile.username), JSON.stringify(state));
-      }
+      const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
+      localStorage.setItem(getUserDataStorageKey(activeName), JSON.stringify(state));
       updateGamificationAndUI();
     }
 
     /* =========================================================================
-       3. PROFILE MODAL ACTIONS
-       ========================================================================= */
-    function openProfileModal() {
-      renderProfileList();
-      renderAvatarPicker();
-      document.getElementById("profileModal").classList.remove("hidden");
-      document.getElementById("profileModal").classList.add("flex");
-    }
-
-    function closeProfileModal() {
-      document.getElementById("profileModal").classList.add("hidden");
-      document.getElementById("profileModal").classList.remove("flex");
-    }
-
-    function renderAvatarPicker() {
-      const container = document.getElementById("avatarPickerContainer");
-      container.innerHTML = "";
-
-      AVATAR_OPTIONS.forEach(emoji => {
-        const isSelected = emoji === selectedAvatar;
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.onclick = () => {
-          selectedAvatar = emoji;
-          renderAvatarPicker();
-        };
-        btn.className = `w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-all ${
-          isSelected 
-            ? 'bg-blue-600 text-white scale-110 shadow-md ring-2 ring-blue-300' 
-            : 'bg-slate-100 hover:bg-slate-200'
-        }`;
-        btn.textContent = emoji;
-        container.appendChild(btn);
-      });
-    }
-
-    function renderProfileList() {
-      const container = document.getElementById("profileListContainer");
-      container.innerHTML = "";
-
-      profiles.forEach(p => {
-        const isActive = currentProfile && currentProfile.username === p.username;
-        let userXP = 0;
-        try {
-          const uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username)));
-          if (uData && uData.daysData) {
-            Object.values(uData.daysData).forEach(d => {
-              Object.values(d.tasks || {}).forEach(st => {
-                if (st === 'done') userXP += 10;
-                else if (st === 'half') userXP += 5;
-              });
-              (d.lessons || []).forEach(l => { if (l.done) userXP += 15; });
-              if (d.rating) userXP += d.rating * 5;
-            });
-          }
-        } catch(e) {}
-
-        const div = document.createElement("div");
-        div.className = `p-2.5 rounded-2xl border flex items-center justify-between transition-all ${
-          isActive 
-            ? 'bg-blue-50 border-blue-300 text-blue-900 shadow-sm' 
-            : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700'
-        }`;
-
-        div.innerHTML = `
-          <div class="flex items-center gap-2.5 cursor-pointer flex-1" onclick="switchUser('${p.username}')">
-            <span class="w-8 h-8 rounded-xl bg-white border flex items-center justify-center text-base shadow-sm">${p.avatar}</span>
-            <div>
-              <div class="font-fun font-bold text-xs leading-tight">${p.username} ${isActive ? '<span class="text-[10px] text-blue-600 font-semibold">(Aktif)</span>' : ''}</div>
-              <div class="text-[10px] text-slate-500 font-medium">${userXP} XP</div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-1">
-            ${!isActive ? `
-              <button onclick="switchUser('${p.username}')" class="px-2.5 py-1 rounded-xl bg-blue-600 text-white text-[11px] font-bold hover:bg-blue-700 shadow-sm">
-                Giriş
-              </button>
-              <button onclick="deleteUserProfile('${p.username}')" class="p-1.5 text-slate-400 hover:text-rose-600 text-xs" title="Profili Sil">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            ` : `
-              <span class="text-xs text-emerald-600 font-bold px-2 py-1 bg-emerald-50 rounded-lg border border-emerald-200">
-                <i class="fa-solid fa-check"></i> Seçili
-              </span>
-            `}
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function handleCreateOrLoginProfile() {
-      const input = document.getElementById("newUsernameInput");
-      const name = input.value.trim();
-      if (!name) {
-        alert("Lütfen bir kullanıcı adı girin!");
-        return;
-      }
-
-      let existing = profiles.find(p => p.username.toLowerCase() === name.toLowerCase());
-      if (existing) {
-        setActiveProfile(existing.username);
-      } else {
-        const newProfile = {
-          username: name,
-          avatar: selectedAvatar,
-          color: 'blue',
-          createdAt: new Date().toISOString()
-        };
-        profiles.push(newProfile);
-        localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-        setActiveProfile(name);
-      }
-
-      input.value = "";
-      closeProfileModal();
-      playChimeSound('success');
-
-      confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.6 }
-      });
-    }
-
-    function switchUser(username) {
-      setActiveProfile(username);
-      closeProfileModal();
-      playChimeSound('click');
-    }
-
-    function deleteUserProfile(username) {
-      if (confirm(`"${username}" profilini ve bu kullanıcıya ait tüm verileri silmek istediğinize emin misiniz?`)) {
-        profiles = profiles.filter(p => p.username !== username);
-        localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-        localStorage.removeItem(getUserStorageKey(username));
-
-        if (currentProfile && currentProfile.username === username) {
-          if (profiles.length > 0) {
-            setActiveProfile(profiles[0].username);
-          } else {
-            initProfileSystem();
-          }
-        } else {
-          renderProfileList();
-        }
-      }
-    }
-
-    /* =========================================================================
-       4. ADMIN & SUPERVISOR REPORTING SYSTEM (YENİ!)
+       4. ADMIN & SUPERVISOR REPORTING SYSTEM
        ========================================================================= */
     let currentAdminTab = 'students';
 
@@ -1278,7 +1376,7 @@
     function calculateStudentSummary(username) {
       let uData = null;
       try {
-        uData = JSON.parse(localStorage.getItem(getUserStorageKey(username)));
+        uData = JSON.parse(localStorage.getItem(getUserDataStorageKey(username)));
       } catch(e) {}
 
       if (!uData || !uData.daysData) {
@@ -1362,14 +1460,14 @@
     }
 
     function renderAdminDashboard() {
-      // 1. Metrik Kartları
+      const studentUsers = authUsers.filter(u => u.role === 'student');
       const cardsContainer = document.getElementById("adminMetricsCards");
       let totalClassXP = 0;
       let totalClassTasks = 0;
       let totalClassLessons = 0;
       let topStudent = { name: "-", xp: -1, avatar: "👤" };
 
-      profiles.forEach(p => {
+      studentUsers.forEach(p => {
         const summ = calculateStudentSummary(p.username);
         totalClassXP += summ.totalXP;
         totalClassTasks += summ.completedTasks;
@@ -1379,14 +1477,14 @@
         }
       });
 
-      const avgCompletionRate = profiles.length > 0 
-        ? Math.round((totalClassTasks / (profiles.length * 80)) * 100) 
+      const avgCompletionRate = studentUsers.length > 0 
+        ? Math.round((totalClassTasks / (studentUsers.length * 80)) * 100) 
         : 0;
 
       cardsContainer.innerHTML = `
         <div class="p-3.5 rounded-2xl bg-blue-50 border border-blue-200">
           <div class="text-[10px] font-bold text-blue-600 uppercase">Kayıtlı Öğrenci</div>
-          <div class="text-xl font-fun font-bold text-blue-950 mt-0.5">${profiles.length} Öğrenci</div>
+          <div class="text-xl font-fun font-bold text-blue-950 mt-0.5">${studentUsers.length} Öğrenci</div>
           <div class="text-[10px] text-blue-500 font-medium">Toplam Sınıf Mevcudu</div>
         </div>
 
@@ -1415,7 +1513,7 @@
       const tableBody = document.getElementById("adminStudentsTableBody");
       tableBody.innerHTML = "";
 
-      profiles.forEach(p => {
+      studentUsers.forEach(p => {
         const summ = calculateStudentSummary(p.username);
         const tr = document.createElement("tr");
         tr.className = "hover:bg-slate-50 transition-colors";
@@ -1429,7 +1527,7 @@
               <span class="w-7 h-7 rounded-xl bg-slate-100 border flex items-center justify-center text-sm">${p.avatar}</span>
               <div>
                 <div class="font-bold text-slate-800">${p.username}</div>
-                <div class="text-[10px] text-slate-400">Kayıt: ${p.createdAt ? p.createdAt.slice(0,10) : '2026-08-29'}</div>
+                <div class="text-[10px] text-slate-400">Şifre: <span class="font-mono text-slate-500">${p.password}</span></div>
               </div>
             </div>
           </td>
@@ -1463,8 +1561,8 @@
 
           <td class="p-3 text-right">
             <div class="flex items-center justify-end gap-1.5">
-              <button onclick="switchUser('${p.username}'); closeAdminModal();" class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold hover:bg-blue-100" title="Bu öğrencinin paneline geç">
-                Görüntüle
+              <button onclick="adminInspectStudent('${p.username}')" class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold hover:bg-blue-100" title="Bu öğrencinin paneline geç">
+                İncele 📋
               </button>
             </div>
           </td>
@@ -1477,7 +1575,7 @@
       reflectionsContainer.innerHTML = "";
 
       let allReflections = [];
-      profiles.forEach(p => {
+      studentUsers.forEach(p => {
         const summ = calculateStudentSummary(p.username);
         summ.reflections.forEach(ref => {
           allReflections.push({
@@ -1492,7 +1590,7 @@
       if (allReflections.length === 0) {
         reflectionsContainer.innerHTML = `
           <div class="p-6 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed">
-            Henüz öğrenci yansıma notu girilmedi. Öğrenciler "Yarın neyi daha iyi yapabilirim?" notu yazdıkça burada tarih sırasıyla listelenir.
+            Henüz öğrenci yansıma notu girilmedi.
           </div>
         `;
       } else {
@@ -1514,6 +1612,14 @@
       }
     }
 
+    function adminInspectStudent(username) {
+      state.viewingUser = username;
+      loadUserData(username);
+      closeAdminModal();
+      document.getElementById("bannerStudentName").textContent = `${username} (Yönetici İncelemesi)`;
+      playChimeSound('click');
+    }
+
     function printAdminReport() {
       window.print();
     }
@@ -1521,12 +1627,12 @@
     function exportAllClassData() {
       let classData = {
         exportedAt: new Date().toISOString(),
-        profiles: profiles,
+        authUsers: authUsers,
         studentsData: {}
       };
 
-      profiles.forEach(p => {
-        const key = getUserStorageKey(p.username);
+      authUsers.forEach(p => {
+        const key = getUserDataStorageKey(p.username);
         const data = localStorage.getItem(key);
         if (data) {
           try { classData.studentsData[p.username] = JSON.parse(data); } catch(e) {}
@@ -1551,12 +1657,12 @@
       reader.onload = function(e) {
         try {
           const parsed = JSON.parse(e.target.result);
-          if (parsed.profiles && parsed.studentsData) {
-            localStorage.setItem(PROFILES_KEY, JSON.stringify(parsed.profiles));
+          if (parsed.authUsers && parsed.studentsData) {
+            localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(parsed.authUsers));
             Object.entries(parsed.studentsData).forEach(([uName, uData]) => {
-              localStorage.setItem(getUserStorageKey(uName), JSON.stringify(uData));
+              localStorage.setItem(getUserDataStorageKey(uName), JSON.stringify(uData));
             });
-            initProfileSystem();
+            initAuthSystem();
             renderAdminDashboard();
             alert("Tüm sınıf verisi başarıyla yüklendi! 🎉");
             playChimeSound('success');
@@ -1571,51 +1677,10 @@
     }
 
     function loadDemoClassData() {
-      const demo1 = { username: "Ahmet", avatar: "🚀", color: "blue", createdAt: "2026-08-29" };
-      const demo2 = { username: "Zeynep", avatar: "🌟", color: "purple", createdAt: "2026-08-29" };
-
-      if (!profiles.some(p => p.username === demo1.username)) profiles.push(demo1);
-      if (!profiles.some(p => p.username === demo2.username)) profiles.push(demo2);
-      localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-
-      // Ahmet Mock Data
-      const ahmetData = createFreshStateObj();
-      ahmetData.daysData[1].tasks["v1_1"] = 'done';
-      ahmetData.daysData[1].tasks["v2_1"] = 'done';
-      ahmetData.daysData[1].tasks["v3_2"] = 'done';
-      ahmetData.daysData[1].lessons[0].done = true;
-      ahmetData.daysData[1].rating = 5;
-      ahmetData.daysData[1].note = "Bugün Osmanlıca ve Lego projemi çok iyi tamamladım!";
-      localStorage.setItem(getUserStorageKey("Ahmet"), JSON.stringify(ahmetData));
-
-      // Zeynep Mock Data
-      const zeynepData = createFreshStateObj();
-      zeynepData.daysData[1].tasks["v1_1"] = 'done';
-      zeynepData.daysData[1].tasks["v4_1"] = 'done';
-      zeynepData.daysData[1].tasks["v5_1"] = 'done';
-      zeynepData.daysData[1].lessons[0].done = true;
-      zeynepData.daysData[1].lessons[1].done = true;
-      zeynepData.daysData[1].rating = 4;
-      zeynepData.daysData[1].note = "Yarın soru çözümlerine 15 dakika erken başlayacağım.";
-      localStorage.setItem(getUserStorageKey("Zeynep"), JSON.stringify(zeynepData));
-
+      seedDemoDataIfEmpty();
       renderAdminDashboard();
-      alert("Örnek öğrenci verileri başarıyla yüklendi!");
+      alert("Örnek öğrenci verileri yüklendi!");
       playChimeSound('success');
-    }
-
-    function createFreshStateObj() {
-      let st = { selectedDayId: 1, daysData: {} };
-      DAYS_CONFIG.forEach(d => {
-        const template = WEEKLY_LESSONS_TEMPLATE[d.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
-        st.daysData[d.id] = {
-          tasks: {},
-          lessons: [{ type: template[0].type, done: false }, { type: template[1].type, done: false }, { type: template[2].type, done: false }],
-          rating: 0,
-          note: ""
-        };
-      });
-      return st;
     }
 
     /* =========================================================================
@@ -1721,7 +1786,6 @@
       const container = document.getElementById("vakitCardsContainer");
       container.innerHTML = "";
 
-      const currentDay = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
       const dayData = state.daysData[state.selectedDayId] || { tasks: {} };
 
       DEFAULT_VAKITLER.forEach(vakit => {
@@ -2026,7 +2090,7 @@
     }
 
     /* =========================================================================
-       8. GAMIFICATION, XP, STREAK & ANALYTICS CALCULATIONS
+       8. GAMIFICATION & ANALYTICS CALCULATIONS
        ========================================================================= */
 
     function updateGamificationAndUI() {
@@ -2111,7 +2175,7 @@
     }
 
     /* =========================================================================
-       9. CHART.JS ANALYTICS INITIALIZATION & REFRESH
+       9. CHART.JS ANALYTICS
        ========================================================================= */
     let areasChartInstance = null;
     let dailyChartInstance = null;
@@ -2148,7 +2212,7 @@
               responsive: true,
               maintainAspectRatio: false,
               plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10, family: 'Plus Jakarta Sans' } } }
+                legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
               },
               scales: {
                 r: { ticks: { display: false } }
@@ -2180,20 +2244,10 @@
             options: {
               responsive: true,
               maintainAspectRatio: false,
-              plugins: {
-                legend: { display: false }
-              },
+              plugins: { legend: { display: false } },
               scales: {
-                y: {
-                  beginAtZero: true,
-                  max: 10,
-                  ticks: { stepSize: 2, font: { size: 10 } },
-                  grid: { color: 'rgba(0,0,0,0.05)' }
-                },
-                x: {
-                  ticks: { font: { size: 9 } },
-                  grid: { display: false }
-                }
+                y: { beginAtZero: true, max: 10, ticks: { stepSize: 2, font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                x: { ticks: { font: { size: 9 } }, grid: { display: false } }
               }
             }
           });
@@ -2207,75 +2261,7 @@
     }
 
     /* =========================================================================
-       10. DATA IMPORT / EXPORT MODAL & MANAGEMENT
-       ========================================================================= */
-    function openDataModal() {
-      document.getElementById("dataModal").classList.remove("hidden");
-      document.getElementById("dataModal").classList.add("flex");
-    }
-
-    function closeDataModal() {
-      document.getElementById("dataModal").classList.add("hidden");
-      document.getElementById("dataModal").classList.remove("flex");
-    }
-
-    function exportData() {
-      const username = currentProfile ? currentProfile.username : 'Gelisim_Plani';
-      const exportPayload = {
-        profile: currentProfile,
-        state: state,
-        exportedAt: new Date().toISOString()
-      };
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportPayload, null, 2));
-      const downloadAnchor = document.createElement("a");
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `${username}_Gelisim_Plani_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-      playChimeSound('success');
-    }
-
-    function importData(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          if (parsed.state && parsed.state.daysData) {
-            state = parsed.state;
-          } else if (parsed.daysData) {
-            state = parsed;
-          } else {
-            alert("Geçersiz yedek dosyası formatı!");
-            return;
-          }
-          saveState();
-          renderAll();
-          closeDataModal();
-          alert("Kullanıcı verileri başarıyla yüklendi! 🎉");
-          playChimeSound('success');
-        } catch (err) {
-          alert("Dosya okunurken bir hata oluştu: " + err.message);
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function resetCurrentUserData() {
-      if (confirm(`"${currentProfile ? currentProfile.username : 'Öğrenci'}" kullanıcısının tüm 16 günlük verileri sıfırlanacak. Emin misiniz?`)) {
-        createFreshState();
-        saveState();
-        renderAll();
-        closeDataModal();
-        alert("Kullanıcı verileri sıfırlandı.");
-      }
-    }
-
-    /* =========================================================================
-       11. MASTER RENDER & INIT
+       10. MASTER RENDER & INIT
        ========================================================================= */
     function renderAll() {
       renderDayButtons();
@@ -2288,7 +2274,7 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      initProfileSystem();
+      initAuthSystem();
 
       const noteInput = document.getElementById("dailyNoteInput");
       if (noteInput) {
@@ -2296,9 +2282,8 @@
           const dayData = state.daysData[state.selectedDayId];
           if (dayData) {
             dayData.note = noteInput.value;
-            if (currentProfile) {
-              localStorage.setItem(getUserStorageKey(currentProfile.username), JSON.stringify(state));
-            }
+            const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
+            localStorage.setItem(getUserDataStorageKey(activeName), JSON.stringify(state));
           }
         });
       }

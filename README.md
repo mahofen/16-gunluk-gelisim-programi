@@ -3,7 +3,20 @@
 > **"Bugün küçük adımlar, yarın büyük başarılar getirir! 💡"**  
 > *29 Ağustos – 13 Eylül 2026 • Planla • Çalış • Üret • Hareket Et • Geliş*
 
-Bu proje; 16 günlük bütüncül öğrenci gelişim planının görsel analizi yapılarak hazırlanmış, **Kullanıcı Girişi**, **Yönetici / Öğretmen Kontrol Paneli**, oyunlaştırılmış modern **Web Uygulaması (`index.html`)** ve **Mobil Uygulaması (`mobile_app.html`)** içeren kapsamlı bir dijital takip ve raporlama sistemidir.
+Bu proje; 16 günlük bütüncül öğrenci gelişim planının görsel analizi yapılarak hazırlanmış, **Kullanıcı & Yönetici Şifreli Giriş Kapısı**, **Sınıf Raporlama ve Kontrol Paneli**, oyunlaştırılmış modern **Web Uygulaması (`index.html`)** ve **Mobil Uygulaması (`mobile_app.html`)** içeren kapsamlı bir dijital takip ve yönetim sistemidir.
+
+---
+
+## 🔐 Giriş Bilgileri & Örnek Hesaplar
+
+Sistem hem öğrenciler hem de yönetici/öğretmenler için tek bir güvenli giriş kapısı üzerinden çalışır:
+
+| Hesap Türü | Kullanıcı Adı | Şifre | Yetkiler & Özellikler |
+| :--- | :--- | :--- | :--- |
+| **🛡️ Yönetici / Öğretmen** | `admin` | `admin123` | Tüm sınıfın mevcudunu, başarı oranlarını, ders dökümlerini, öğrencilerin yansıma notlarını inceler ve toplu yedek alır. |
+| **🚀 Örnek Öğrenci 1** | `Ahmet` | `1234` | Örnek 1. gün görevleri, ders çalışması ve yansıma notu ile hazır profil. |
+| **🌟 Örnek Öğrenci 2** | `Zeynep` | `1234` | Örnek spor ve soru çözümü kayıtları ile hazır profil. |
+| **➕ Yeni Öğrenci Kaydı** | *Serbest İsim* | *En az 4 hane* | Giriş ekranındaki "Yeni Öğrenci Kaydı" sekmesinden anında hesap oluşturulabilir. |
 
 ---
 
@@ -14,6 +27,8 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 ```
 +-----------------------------------------------------------------------------------------------+
 |                        BENİM 16 GÜNLÜK GELİŞİM PROGRAMIM (29 Ağu - 13 Eyl)                    |
++-----------------------------------------------------------------------------------------------+
+|  🔐 GÜVENLİ GİRİŞ PORTALI: Kullanıcı Adı & Şifre ile Öğrenci / Yönetici Doğrulaması           |
 +-----------------------------------------------------------------------------------------------+
 |  📊 YÖNETİCİ & ÖĞRETMEN PANELİ: Sınıf Başarı Raporu, Öğrenci Karneleri, Günlük Not Akışı      |
 +-----------------------------------------------------------------------------------------------+
@@ -35,17 +50,16 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 
 ## ✨ Temel Özellikler
 
-### 📊 1. Yönetici & Öğretmen Kontrol Paneli (YENİ!)
-- **Sınıf Genel Başarı Raporu:** Toplam kayıtlı öğrenci mevcudu, sınıf tamamlama oranı (%), yapılan toplam görevler ve tamamlanan K/S dersleri tek ekranda.
-- **Öğrenci Performans Listesi:** Her öğrencinin seviyesi, XP puanı, görev ve ders tamamlama yüzdeleri, aktif gün serisi (streak) ve ortalama yıldız puanı.
-- **Günlük Yansıma Notları Akışı:** Öğrencilerin *"Yarın neyi daha iyi yapabilirim? Bugün neler öğrendim?"* kutusuna yazdıkları notların öğretmen ve veli tarafından tarih sırasıyla incelenebilmesi.
-- **Toplu Sınıf Yedeği (JSON):** Tüm sınıfın verilerini tek tıkla bilgisayara indirme veya geri yükleme.
-- **Rapor Yazdırma:** Sınıf karnesini tek tıkla yazdırma veya PDF olarak kaydetme.
+### 🔐 1. Güvenli Giriş & Kimlik Doğrulama Kapısı (YENİ!)
+- **Tek Noktadan Giriş:** Hem öğrenciler hem de öğretmen/yönetici aynı şık giriş penceresinden giriş yapar.
+- **Şifre Korumalı:** Öğrenci kendi belirlediği şifre ile giriş yaparak çalışma verilerini korur.
+- **Giriş Rehberi & Tıkla-Doldur:** Giriş ekranında kurallar ve tek tıkla örnek hesapları (`admin`, `Ahmet`, `Zeynep`) doldurma kolaylığı.
 
-### 👤 2. Çoklu Kullanıcı & Profil Yönetimi
-- **İsimle Giriş Yapma:** Aynı cihazda birden fazla öğrenci (kardeşler, sınıf arkadaşları) kendi adıyla giriş yapabilir.
-- **Kişiye Özel Avatar:** 15 farklı eğlenceli avatar emojisi (🚀, 🌟, 🦁, 🐯, 🦅, 📚, 🎨, 🏃, 💡, ⚡ vb.).
-- **İzole Veri Saklama:** Her öğrencinin görevleri, ders matrisi, XP puanı, rozetleri ve notları `localStorage` üzerinde sadece o kullanıcı adına özel saklanır.
+### 📊 2. Yönetici & Öğretmen Kontrol Paneli
+- **Sınıf Genel Başarı Raporu:** Toplam öğrenci mevcudu, sınıf tamamlama oranı (%), yapılan görevler ve tamamlanan K/S dersleri tek ekranda.
+- **Öğrenci Performans Listesi:** Seviye, XP, görev/ders ilerlemeleri, seri (streak) ve ortalama yıldız puanları.
+- **Günlük Yansıma Notları Akışı:** Öğrencilerin *"Yarın neyi daha iyi yapabilirim? Bugün neler öğrendim?"* kutusuna yazdıkları notların öğretmen tarafından tarih sırasıyla incelenebilmesi.
+- **Toplu Sınıf Yedeği (JSON):** Tüm sınıfın verilerini tek tıkla yedekleme ve geri yükleme.
 
 ### 💻 3. Web Uygulaması (`index.html`)
 - **Dinamik 16 Gün Çizelgesi:** 29 Ağustos'tan 13 Eylül'e kadar gün seçimi ve aşama göstergeleri.
@@ -57,7 +71,7 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 ### 📱 4. Mobil Uygulama (`mobile_app.html`)
 - **Native Mobil Deneyim:** Instagram Story tarzı gün çizelgesi, alt navigasyon menüsü (*Bottom Navigation*), ses efektleri (*Web Audio API*).
 - **Mobil Yönetici Raporu:** Üst menüden veya ayarlardan tek tıkla açılan sınıf kontrol raporu.
-- **Kişisel Gelişim Asistanı:** Günlük gelişim raporunu tek tıkla kopyalama ve yapay zeka analiz desteği.
+- **Kişisel Gelişim Asistanı:** Günlük gelişim raporunu tek tıkla kopyalama desteği.
 
 ---
 
