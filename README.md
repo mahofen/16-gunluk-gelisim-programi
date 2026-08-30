@@ -3,7 +3,20 @@
 > **"Bugün küçük adımlar, yarın büyük başarılar getirir! 💡"**  
 > *29 Ağustos – 13 Eylül 2026 • Planla • Çalış • Üret • Hareket Et • Geliş*
 
-Bu proje; 16 günlük bütüncül öğrenci gelişim planının görsel analizi yapılarak hazırlanmış, **Kullanıcı & Yönetici Şifreli Giriş Kapısı**, **Sınıf Raporlama ve Kontrol Paneli**, oyunlaştırılmış modern **Web Uygulaması (`index.html`)** ve **Mobil Uygulaması (`mobile_app.html`)** içeren kapsamlı bir dijital takip ve yönetim sistemidir.
+Bu proje; 16 günlük bütüncül öğrenci gelişim planının görsel analizi yapılarak hazırlanmış, **Karekod (QR) ve Şifreli Giriş Kapısı**, **Yönetici / Öğretmen Kontrol Paneli**, **Öğrenci Karekod Giriş Kartları Yazdırma Sistemi**, oyunlaştırılmış modern **Web Uygulaması (`index.html`)** ve **Mobil Uygulaması (`mobile_app.html`)** içeren kapsamlı bir dijital takip ve yönetim sistemidir.
+
+---
+
+## 📱 Karekod (QR Kod) ile Doğrudan Giriş Sistemi (YENİ!)
+
+Öğrencilerin şifre yazma zorunluluğunu ortadan kaldırmak için **2 farklı pratik yöntem** sunulmuştur:
+
+1. **📷 Telefon / Tablet Kamerası ile Tarama:**
+   - Öğretmenin verdiği **Karekod Giriş Kartını** telefonunuzun standart kamerasına tuttuğunuzda sayfa otomatik açılır ve **hiç şifre yazmadan anında kendi çalışma masanıza** bağlanırsınız!
+2. **💻 Web Kamerası ile Tarama:**
+   - Giriş sayfasında **"Karekod Tara"** sekmesini seçerek bilgisayar/laptop kamerasına kartınızı gösterip tek saniyede giriş yapabilirsiniz.
+3. **🖨️ Yönetici / Öğretmen Karekod Üretici:**
+   - Yönetici panelinden her öğrenciye özel karekod oluşturabilir, linkini kopyalayabilir veya **"Tüm Sınıfın Karekod Kartlarını Yazdır"** butonuyla tüm sınıf için fotoğraflı öğrenci giriş kartları basabilirsiniz.
 
 ---
 
@@ -11,12 +24,12 @@ Bu proje; 16 günlük bütüncül öğrenci gelişim planının görsel analizi 
 
 Sistem hem öğrenciler hem de yönetici/öğretmenler için tek bir güvenli giriş kapısı üzerinden çalışır:
 
-| Hesap Türü | Kullanıcı Adı | Şifre | Yetkiler & Özellikler |
+| Hesap Türü | Kullanıcı Adı | Şifre | Karekod / Yetkiler & Özellikler |
 | :--- | :--- | :--- | :--- |
-| **🛡️ Yönetici / Öğretmen** | `admin` | `admin123` | Tüm sınıfın mevcudunu, başarı oranlarını, ders dökümlerini, öğrencilerin yansıma notlarını inceler ve toplu yedek alır. |
-| **🚀 Örnek Öğrenci 1** | `Ahmet` | `1234` | Örnek 1. gün görevleri, ders çalışması ve yansıma notu ile hazır profil. |
-| **🌟 Örnek Öğrenci 2** | `Zeynep` | `1234` | Örnek spor ve soru çözümü kayıtları ile hazır profil. |
-| **➕ Yeni Öğrenci Kaydı** | *Serbest İsim* | *En az 4 hane* | Giriş ekranındaki "Yeni Öğrenci Kaydı" sekmesinden anında hesap oluşturulabilir. |
+| **🛡️ Yönetici / Öğretmen** | `admin` | `admin123` | Öğrencilere özel karekod oluşturur, sınıf karnesini, başarı oranlarını ve yansıma notlarını inceler, sınıf yedeği alır. |
+| **🚀 Örnek Öğrenci 1** | `Ahmet` | `1234` | Karekod ile anında giriş desteği, örnek 1. gün görevleri, ders ve yansıma notu ile hazır profil. |
+| **🌟 Örnek Öğrenci 2** | `Zeynep` | `1234` | Karekod ile anında giriş desteği, örnek spor ve soru çözümü kayıtları ile hazır profil. |
+| **➕ Yeni Öğrenci Kaydı** | *Serbest İsim* | *En az 4 hane* | Giriş ekranındaki "Yeni Kayıt" sekmesinden anında hesap oluşturulabilir ve otomatik karekod üretilir. |
 
 ---
 
@@ -28,9 +41,9 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 +-----------------------------------------------------------------------------------------------+
 |                        BENİM 16 GÜNLÜK GELİŞİM PROGRAMIM (29 Ağu - 13 Eyl)                    |
 +-----------------------------------------------------------------------------------------------+
-|  🔐 GÜVENLİ GİRİŞ PORTALI: Kullanıcı Adı & Şifre ile Öğrenci / Yönetici Doğrulaması           |
+|  📱 KAREKOD (QR) VE ŞİFRELİ GİRİŞ PORTALI: Telefon Kamerasını Tut, Anında Masana Bağlan!      |
 +-----------------------------------------------------------------------------------------------+
-|  📊 YÖNETİCİ & ÖĞRETMEN PANELİ: Sınıf Başarı Raporu, Öğrenci Karneleri, Günlük Not Akışı      |
+|  📊 YÖNETİCİ & ÖĞRETMEN PANELİ: Sınıf Başarı Raporu, Karekod Kartı Yazdırma, Not Akışı        |
 +-----------------------------------------------------------------------------------------------+
 |  👤 Çoklu Kullanıcı & Profil: Ahmet (🚀), Zeynep (🌟), Mehmet (🦁) - Kişiye Özel Veri Kaydı   |
 +-----------------------------------------------------------------------------------------------+
@@ -50,10 +63,10 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 
 ## ✨ Temel Özellikler
 
-### 🔐 1. Güvenli Giriş & Kimlik Doğrulama Kapısı (YENİ!)
-- **Tek Noktadan Giriş:** Hem öğrenciler hem de öğretmen/yönetici aynı şık giriş penceresinden giriş yapar.
-- **Şifre Korumalı:** Öğrenci kendi belirlediği şifre ile giriş yaparak çalışma verilerini korur.
-- **Giriş Rehberi & Tıkla-Doldur:** Giriş ekranında kurallar ve tek tıkla örnek hesapları (`admin`, `Ahmet`, `Zeynep`) doldurma kolaylığı.
+### 📱 1. Karekod (QR Kod) Giriş & Kart Yazdırma
+- **Kişiye Özel QR:** Her öğrencinin şifrelenmiş benzersiz giriş anahtarı vardır.
+- **Tek Tıkla Giriş Kartı Baskısı:** Yönetici panelinden tüm sınıfın fotoğraflı kimlik kartları tek sayfada yazdırılabilir.
+- **Entegre Kamera Okuyucu:** Web kamerası veya cep telefonu kamerasıyla anında tanıma.
 
 ### 📊 2. Yönetici & Öğretmen Kontrol Paneli
 - **Sınıf Genel Başarı Raporu:** Toplam öğrenci mevcudu, sınıf tamamlama oranı (%), yapılan görevler ve tamamlanan K/S dersleri tek ekranda.
@@ -70,8 +83,7 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 
 ### 📱 4. Mobil Uygulama (`mobile_app.html`)
 - **Native Mobil Deneyim:** Instagram Story tarzı gün çizelgesi, alt navigasyon menüsü (*Bottom Navigation*), ses efektleri (*Web Audio API*).
-- **Mobil Yönetici Raporu:** Üst menüden veya ayarlardan tek tıkla açılan sınıf kontrol raporu.
-- **Kişisel Gelişim Asistanı:** Günlük gelişim raporunu tek tıkla kopyalama desteği.
+- **Mobil Yönetici Raporu & QR Göster:** Üst menüden tek tıkla açılan sınıf kontrol ve öğrenci karekod ekranı.
 
 ---
 

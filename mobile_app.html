@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Gelişim Cepte | Güvenli Giriş & Yönetici Portalı</title>
+  <title>Gelişim Cepte | Karekod (QR) & Yönetici Portalı</title>
   
   <!-- PWA Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -26,6 +26,9 @@
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -358,7 +361,7 @@
             </div>
             <div>
               <h4 class="font-fun text-sm font-bold">Yönetici Kontrol Paneli</h4>
-              <p class="text-[10px] text-purple-200">Tüm öğrencilerin genel raporunu gör</p>
+              <p class="text-[10px] text-purple-200">Karekodlar ve öğrenci karneleri</p>
             </div>
           </div>
           <button onclick="openMobileAdminModal()" class="px-3 py-1.5 rounded-xl bg-white text-indigo-900 text-xs font-bold font-fun shadow tap-bounce">
@@ -390,7 +393,7 @@
         </div>
 
         <div class="text-center text-[10px] text-slate-400 py-2">
-          Gelişim Cepte • Güvenli Giriş & Yönetici Paneli v3.0
+          Gelişim Cepte • Karekod (QR) & Yönetici Paneli v3.5
         </div>
 
       </section>
@@ -424,7 +427,7 @@
       </button>
     </nav>
 
-    <!-- ================= MOBİL ANA GİRİŞ & KAYIT KAPISI MODALI ================= -->
+    <!-- ================= MOBİL ANA GİRİŞ KAPISI MODALI ================= -->
     <div id="mobileAuthModal" class="absolute inset-0 z-50 bg-slate-900/90 backdrop-blur-md flex flex-col justify-end p-0">
       <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[92%] overflow-y-auto">
         <div class="flex items-center gap-2 border-b pb-2">
@@ -433,11 +436,11 @@
           </div>
           <div>
             <h3 class="font-fun text-base font-bold text-slate-800">Gelişim Cepte Girişi</h3>
-            <p class="text-[10px] text-slate-500">Öğrenci veya Yönetici Girişi</p>
+            <p class="text-[10px] text-slate-500">Şifre veya Karekod ile giriş yapın</p>
           </div>
         </div>
 
-        <!-- Sekmeler: Giriş / Kayıt -->
+        <!-- Sekmeler -->
         <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-bold">
           <button onclick="switchMobileAuthTab('login')" id="mAuthTab-login" class="flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm">
             Giriş Yap
@@ -447,10 +450,8 @@
           </button>
         </div>
 
-        <!-- Hata Kutusu -->
         <div id="mobileAuthAlert" class="hidden p-2.5 rounded-xl text-xs font-semibold"></div>
 
-        <!-- Form -->
         <div class="space-y-2.5">
           <input type="text" id="mAuthUsername" placeholder="Kullanıcı Adı..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:bg-white focus:outline-none">
           <input type="password" id="mAuthPassword" placeholder="Şifre..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:bg-white focus:outline-none">
@@ -495,7 +496,7 @@
             </div>
             <div>
               <h3 class="font-fun text-base font-bold text-slate-800">Yönetici Kontrol Paneli</h3>
-              <p class="text-[10px] text-slate-400">Sınıf genel performansı ve öğrenci takibi</p>
+              <p class="text-[10px] text-slate-400">Sınıf genel performansı ve karekodlar</p>
             </div>
           </div>
           <button onclick="closeMobileAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg">
@@ -503,16 +504,12 @@
           </button>
         </div>
 
-        <!-- Özet Kartlar -->
         <div class="grid grid-cols-2 gap-2" id="mobileAdminMetrics">
           <!-- JS ile doldurulacak -->
         </div>
 
-        <!-- Öğrenci Listesi -->
         <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Karneleri:</label>
-          </div>
+          <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Karneleri & Karekod:</label>
           <div id="mobileAdminStudentList" class="space-y-2 max-h-60 overflow-y-auto pr-0.5">
             <!-- JS ile öğrenci kartları -->
           </div>
@@ -523,6 +520,37 @@
             Kapat
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- ================= MOBİL TEK KAREKOD MODALI ================= -->
+    <div id="mobileSingleQrModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
+      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 text-center">
+        <div class="flex items-center justify-between border-b pb-2">
+          <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1">
+            <i class="fa-solid fa-qrcode text-blue-600"></i> Öğrenci Giriş Karekodu
+          </h4>
+          <button onclick="closeMobileSingleQrModal()" class="text-slate-400 text-lg">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-center gap-2 p-2 bg-blue-50 rounded-xl">
+          <span class="text-xl" id="mQrAvatar">🚀</span>
+          <span class="font-bold text-xs text-slate-800" id="mQrName">Ahmet</span>
+        </div>
+
+        <div class="bg-white p-3 rounded-2xl border inline-block shadow-inner">
+          <div id="mobileQrCanvasContainer" class="flex items-center justify-center min-h-[140px] min-w-[140px]"></div>
+        </div>
+
+        <p class="text-[11px] text-slate-500 leading-snug">
+          Telefon kameranızla bu karekodu okuttuğunuzda anında sisteme giriş yapılır.
+        </p>
+
+        <button onclick="closeMobileSingleQrModal()" class="w-full py-2.5 rounded-xl bg-blue-600 text-white font-fun font-bold text-xs tap-bounce">
+          Kapat
+        </button>
       </div>
     </div>
 
@@ -657,6 +685,13 @@
       return "fen_deneme_user_data_" + encodeURIComponent(username.toLowerCase().trim());
     }
 
+    function generateQRLoginUrl(username, password) {
+      const payload = { u: username, p: password, t: Date.now() };
+      const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
+      const base = window.location.origin + window.location.pathname;
+      return `${base}?qr_auth=${encoded}`;
+    }
+
     function initMobileAuth() {
       const savedUsers = localStorage.getItem(AUTH_USERS_KEY);
       if (savedUsers) {
@@ -672,6 +707,31 @@
         authUsers.push({ username: "Zeynep", password: "1234", role: "student", avatar: "🌟", title: "Öğrenci" });
       }
       localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
+
+      // URL'den QR ile otomatik giriş kontrolü
+      const urlParams = new URLSearchParams(window.location.search);
+      const qrAuth = urlParams.get('qr_auth');
+      if (qrAuth) {
+        try {
+          const payload = JSON.parse(decodeURIComponent(atob(qrAuth)));
+          if (payload && payload.u && payload.p) {
+            let found = authUsers.find(x => x.username.toLowerCase() === payload.u.toLowerCase());
+            if (!found) {
+              found = { username: payload.u, password: payload.p, role: "student", avatar: "🚀", title: "Öğrenci" };
+              authUsers.push(found);
+              localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
+            }
+            currentSession = found;
+            localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
+            window.history.replaceState({}, document.title, window.location.pathname);
+            applyMobileSession(found);
+            playChime('done');
+            confetti({ particleCount: 60, spread: 70 });
+            alert(`🎉 Hoş geldin, ${found.username}!`);
+            return;
+          }
+        } catch(e) {}
+      }
 
       const savedSession = localStorage.getItem(CURRENT_SESSION_KEY);
       if (savedSession) {
@@ -966,20 +1026,52 @@
                 <span class="text-[10px] text-amber-600 font-bold">${uXP} XP • 🔥 ${uStreak} Gün</span>
               </div>
             </div>
-            <button onclick="mobileInspectStudent('${p.username}')" class="px-2.5 py-1 rounded-xl bg-blue-600 text-white text-[10px] font-bold tap-bounce">
-              İncele
-            </button>
+            <div class="flex items-center gap-1">
+              <button onclick="showMobileSingleQr('${p.username}')" class="px-2 py-1 rounded-xl bg-purple-100 text-purple-800 text-[10px] font-bold tap-bounce">
+                <i class="fa-solid fa-qrcode"></i> QR
+              </button>
+              <button onclick="mobileInspectStudent('${p.username}')" class="px-2 py-1 rounded-xl bg-blue-600 text-white text-[10px] font-bold tap-bounce">
+                İncele
+              </button>
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-1.5 text-[10px] bg-white p-2 rounded-xl border text-slate-600">
             <div><strong>Görev:</strong> ${uTasks}/80 (%${taskPct})</div>
             <div><strong>Ders:</strong> ${uLessons}/48</div>
           </div>
-
-          ${lastNote ? `<p class="text-[10px] text-slate-500 italic truncate">"${lastNote}"</p>` : ''}
         `;
         listContainer.appendChild(card);
       });
+    }
+
+    function showMobileSingleQr(username) {
+      const user = authUsers.find(x => x.username.toLowerCase() === username.toLowerCase());
+      if (!user) return;
+
+      document.getElementById("mQrName").textContent = user.username;
+      document.getElementById("mQrAvatar").textContent = user.avatar;
+
+      const container = document.getElementById("mobileQrCanvasContainer");
+      container.innerHTML = "";
+
+      const qrUrl = generateQRLoginUrl(user.username, user.password);
+      new QRCode(container, {
+        text: qrUrl,
+        width: 140,
+        height: 140,
+        colorDark : "#0f172a",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.M
+      });
+
+      document.getElementById("mobileSingleQrModal").classList.remove("hidden");
+      document.getElementById("mobileSingleQrModal").classList.add("flex");
+    }
+
+    function closeMobileSingleQrModal() {
+      document.getElementById("mobileSingleQrModal").classList.add("hidden");
+      document.getElementById("mobileSingleQrModal").classList.remove("flex");
     }
 
     function mobileInspectStudent(username) {
