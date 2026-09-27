@@ -1541,30 +1541,53 @@
         if (top.done) completedTopicsCount++;
 
         const div = document.createElement("div");
-        div.className = `p-3 rounded-2xl border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 ${
-          top.done ? 'bg-white border-emerald-300 shadow-sm' : 'bg-white/90 border-slate-200'
-        }`;
+        const curSubjectTopics = GRADE7_CURRICULUM[top.subject] || [];
+        const groups = {};
+        curSubjectTopics.forEach(it => {
+          if (!groups[it.unit]) groups[it.unit] = [];
+          groups[it.unit].push(it.topic);
+        });
 
-        let subOptions = GRADE7_SUBJECTS.map(s => `<option value="${s}" ${s === top.subject ? 'selected' : ''}>${s}</option>`).join('');
+        let topicOptionsHtml = `<option value="">-- Konu Seçiniz --</option>`;
+        let matchFound = false;
+        Object.entries(groups).forEach(([unitName, topics]) => {
+          topicOptionsHtml += `<optgroup label="${unitName}">`;
+          topics.forEach(tName => {
+            const isSelected = (top.name === tName);
+            if (isSelected) matchFound = true;
+            topicOptionsHtml += `<option value="${tName.replace(/"/g, '&quot;')}" ${isSelected ? 'selected' : ''}>${tName}</option>`;
+          });
+          topicOptionsHtml += `</optgroup>`;
+        });
+
+        if (top.name && !matchFound) {
+          topicOptionsHtml += `<optgroup label="Seçili Konu">`;
+          topicOptionsHtml += `<option value="${top.name.replace(/"/g, '&quot;')}" selected>${top.name}</option>`;
+          topicOptionsHtml += `</optgroup>`;
+        }
 
         div.innerHTML = `
-          <div class="flex items-center gap-2 flex-1 w-full sm:w-auto">
+          <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1 w-full sm:w-auto">
             <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center shrink-0">${idx + 1}</span>
             
-            <select onchange="updateDailyTopicSubject(${idx}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 rounded-xl px-2 py-1.5 focus:outline-none">
+            <!-- Ders Seçimi -->
+            <select onchange="updateDailyTopicSubject(${idx}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 rounded-xl px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
               ${subOptions}
             </select>
 
-            <!-- Açılır Pencere Konu Seçici Butonu -->
-            <button onclick="openTopicPickerModal(${idx}, '${top.subject}')" class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 shrink-0" title="Açılır pencereden konu seç">
-              <i class="fa-solid fa-list-ul"></i>
-              <span class="hidden md:inline">7. Sınıf Konusu</span> Seç
-            </button>
+            <!-- Doğrudan 7. Sınıf Konu Seçim Açılır Menüsü -->
+            <select onchange="updateDailyTopicName(${idx}, this.value)" class="flex-1 min-w-[170px] text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-blue-50/60 border border-blue-200 text-slate-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+              ${topicOptionsHtml}
+            </select>
 
-            <input type="text" value="${top.name || ''}" placeholder="Seçilen konu adı..." onchange="updateDailyTopicName(${idx}, this.value)" class="flex-1 text-xs px-2.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 font-semibold focus:bg-white focus:outline-none min-w-[120px]">
+            <!-- Açılır Pencere (Modal) ile İnceleme & Arama Butonu -->
+            <button onclick="openTopicPickerModal(${idx}, '${top.subject}')" class="px-2.5 py-1.5 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-800 border border-blue-300 text-xs font-bold flex items-center gap-1 shrink-0" title="Tüm 7. sınıf konularını pencereli aç ve ara">
+              <i class="fa-solid fa-list-ul"></i>
+              <span class="hidden md:inline">Tüm Konular</span>
+            </button>
           </div>
 
-          <button onclick="toggleDailyTopicDone(${idx})" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+          <button onclick="toggleDailyTopicDone(${idx})" class="w-full sm:w-auto px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
             top.done ? 'bg-emerald-600 text-white shadow' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }">
             <i class="fa-solid ${top.done ? 'fa-check' : 'fa-circle'} text-[10px]"></i>
