@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Gelişim Cepte | Haftalık Soru & Deneme Portalı</title>
+  <title>Gelişim Cepte | 7. Sınıf Soru & Deneme Portalı</title>
   
   <!-- PWA Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -64,25 +64,11 @@
       user-select: none;
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    
-    .safe-top {
-      padding-top: env(safe-area-inset-top, 0px);
-    }
-    .safe-bottom {
-      padding-bottom: env(safe-area-inset-bottom, 16px);
-    }
-
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    .tap-bounce:active {
-      transform: scale(0.96);
-    }
+    .safe-top { padding-top: env(safe-area-inset-top, 0px); }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 16px); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .tap-bounce:active { transform: scale(0.96); }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 h-full flex justify-center items-center antialiased">
@@ -105,18 +91,16 @@
     <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white px-4 py-2.5 shrink-0 shadow-md">
       <div class="flex items-center justify-between">
         
-        <!-- User Info Badge -->
         <div class="flex items-center gap-2 bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-2xl border border-white/20">
           <span class="w-7 h-7 rounded-xl bg-white text-slate-800 flex items-center justify-center text-sm shadow-sm" id="mobileUserAvatar">🚀</span>
           <div class="text-left leading-tight">
-            <div class="text-[9px] text-sky-200 font-bold uppercase tracking-wider" id="mobileUserRoleBadge">Öğrenci</div>
+            <div class="text-[9px] text-sky-200 font-bold uppercase tracking-wider" id="mobileUserRoleBadge">7. Sınıf</div>
             <div class="text-xs font-bold text-white max-w-[80px] truncate" id="mobileUserName">Ahmet</div>
           </div>
         </div>
 
-        <!-- Right: Admin Panel + Soru Rozeti + Logout -->
         <div class="flex items-center gap-1.5">
-          <button onclick="openMobileAdminModal()" id="mobileAdminHeaderBtn" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce" title="Yönetici Paneli">
+          <button onclick="openMobileAdminModal()" id="mobileAdminHeaderBtn" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce">
             <i class="fa-solid fa-chart-pie text-sky-300"></i>
             <span>Rapor</span>
           </button>
@@ -126,7 +110,7 @@
             <span id="mobileWeekQuestionBadge">0 Soru</span>
           </div>
 
-          <button onclick="handleMobileLogout()" class="bg-rose-500/80 hover:bg-rose-600 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm tap-bounce" title="Çıkış Yap">
+          <button onclick="handleMobileLogout()" class="bg-rose-500/80 hover:bg-rose-600 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm tap-bounce">
             <i class="fa-solid fa-right-from-bracket"></i>
           </button>
         </div>
@@ -136,33 +120,26 @@
     <!-- 40 Haftalık Hızlı Hafta Seçim Barı -->
     <div class="bg-white border-b border-slate-200 py-2 px-3 shrink-0 flex items-center justify-between gap-2">
       <button onclick="changeMobileWeek(-1)" class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs text-slate-600 tap-bounce"><i class="fa-solid fa-chevron-left"></i></button>
-      
-      <div class="flex gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1" id="mobileWeeksBar">
-        <!-- JS ile 40 hafta hap butonu -->
-      </div>
-
+      <div class="flex gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1" id="mobileWeeksBar"></div>
       <button onclick="changeMobileWeek(1)" class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs text-slate-600 tap-bounce"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
 
     <!-- 7 Günlük Tab Çubuğu (Pzt - Paz) -->
     <div class="bg-slate-50 border-b border-slate-200/80 px-2 py-1.5 shrink-0">
-      <div class="grid grid-cols-7 gap-1" id="mobileDaysTabBar">
-        <!-- JS ile 7 gün butonu -->
-      </div>
+      <div class="grid grid-cols-7 gap-1" id="mobileDaysTabBar"></div>
     </div>
 
     <!-- ================= SCROLLABLE CONTENT BODY ================= -->
     <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar" id="tabContentArea">
       
-      <!-- ================= TAB 1: GÜNLÜK GÖREVLER (3 DERS KONU & 3 DERS SORU) ================= -->
+      <!-- ================= TAB 1: GÜNLÜK GÖREVLER (7. SINIF KONULARI & MANUEL SORU) ================= -->
       <section id="tab-today" class="tab-page space-y-3.5">
         
-        <!-- Günlük Başlık & Özet -->
         <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-3.5 text-white shadow-card-sm flex items-center justify-between">
           <div>
             <div class="text-[10px] font-bold uppercase tracking-wider text-sky-200" id="mobileDayTitleText">1. HAFTA • PAZARTESİ</div>
-            <h2 class="font-fun text-base font-bold">Günlük 3 Konu & 3 Soru</h2>
-            <p class="text-[11px] text-sky-100 mt-0.5">Soru sayılarını manuel yazabilirsin ✍️</p>
+            <h2 class="font-fun text-base font-bold">7. Sınıf Günlük 3 Konu & 3 Soru</h2>
+            <p class="text-[11px] text-sky-100 mt-0.5">Açılır pencereden 7. sınıf konusu seçebilirsin 📚</p>
           </div>
           <div class="text-right">
             <span class="text-xl font-fun font-bold text-amber-300" id="mobileDailyQuestionTotalText">0 Soru</span>
@@ -170,13 +147,13 @@
           </div>
         </div>
 
-        <!-- 3 DERS KONU ÇALIŞMASI KARTI -->
+        <!-- 3 DERS 7. SINIF KONU ÇALIŞMASI KARTI -->
         <div class="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-card-sm space-y-2.5">
           <div class="flex items-center justify-between border-b pb-1.5">
             <h4 class="font-fun text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-book-bookmark text-blue-600"></i> 3 Ders Konu Çalışması
+              <i class="fa-solid fa-book-bookmark text-blue-600"></i> 7. Sınıf Konu Çalışması
             </h4>
-            <span class="text-[10px] text-slate-400">Her gün 3 ders</span>
+            <span class="text-[10px] text-slate-400">Açılır pencere destekli</span>
           </div>
 
           <div class="space-y-2" id="mobileTopicsList">
@@ -209,17 +186,17 @@
 
       </section>
 
-      <!-- ================= TAB 2: HAFTA SONU DENEME SINAVI (20'ŞER SORU) ================= -->
+      <!-- ================= TAB 2: HAFTA SONU DENEME SINAVI (7. SINIF 20'ŞER SORU) ================= -->
       <section id="tab-deneme" class="tab-page hidden space-y-3.5">
         
         <div class="bg-gradient-to-br from-indigo-700 via-purple-700 to-indigo-900 rounded-2xl p-4 text-white shadow-card-sm space-y-2">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-200">Hafta Sonu Genel Deneme</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-200">7. Sınıf Hafta Sonu Denemesi</span>
             <span class="text-xs font-fun font-bold text-yellow-300" id="mDenemeScoreBadge">0.00 Net</span>
           </div>
-          <h3 class="font-fun text-base font-bold">Tüm Branşlar (20'şer Soru)</h3>
+          <h3 class="font-fun text-base font-bold">6 Branş (20'şer Soru / 120 Soru)</h3>
           <p class="text-[11px] text-purple-100">
-            Türkçe, Matematik, Fen, İnkılap, Din ve İngilizce'den 20'şer soruluk sınav sonuçlarını gir!
+            Türkçe, Matematik, Fen, Sosyal Bilgiler, Din Kültürü ve İngilizce sınav sonuçlarını gir!
           </p>
         </div>
 
@@ -229,7 +206,7 @@
 
         <div class="bg-white rounded-2xl p-3 border border-slate-200 space-y-2">
           <label class="text-[11px] font-bold text-slate-700">Deneme Notu & Analizin:</label>
-          <input type="text" id="mDenemeNote" placeholder="Örn: Fen denemesinde netim çok iyiydi..." class="w-full p-2 text-xs rounded-xl bg-slate-50 border focus:bg-white focus:outline-none">
+          <input type="text" id="mDenemeNote" placeholder="Örn: 7. sınıf rasyonel sayılarda netim yükseldi..." class="w-full p-2 text-xs rounded-xl bg-slate-50 border focus:bg-white focus:outline-none">
           <button onclick="saveMobileDenemeResults()" class="w-full py-2 rounded-xl bg-indigo-600 text-white font-fun font-bold text-xs shadow tap-bounce">
             Deneme Sonuçlarını Kaydet
           </button>
@@ -239,17 +216,15 @@
 
       <!-- ================= TAB 3: HAFTALIK RAPOR & GRAFİKLER ================= -->
       <section id="tab-report" class="tab-page hidden space-y-3.5">
-        
-        <!-- Haftalık Karne Özeti -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
           <div class="flex items-center justify-between border-b pb-2">
             <h4 class="font-fun text-sm font-bold text-slate-800" id="mReportTitle">1. Hafta Karnesi</h4>
-            <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-full">Haftalık Rapor</span>
+            <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-full">7. Sınıf Raporu</span>
           </div>
 
           <div class="grid grid-cols-3 gap-2 text-center">
             <div class="p-2 rounded-xl bg-blue-50 border border-blue-100">
-              <span class="text-[9px] text-blue-600 font-bold block">Konu</span>
+              <span class="text-[9px] text-blue-600 font-bold block">7. Sınıf Konu</span>
               <strong class="font-fun text-sm text-blue-950" id="mReportTopics">0/21</strong>
             </div>
             <div class="p-2 rounded-xl bg-emerald-50 border border-emerald-100">
@@ -272,35 +247,32 @@
 
         <div class="bg-amber-50/70 rounded-2xl p-3.5 border border-amber-200 space-y-2">
           <label class="text-[11px] font-bold text-amber-900 block">Haftalık Öz Değerlendirme:</label>
-          <textarea id="mWeeklyReflection" rows="2" placeholder="Bu hafta nasıldı, gelecek hafta hedefin ne?..." class="w-full p-2 text-xs rounded-xl bg-white border border-amber-200 focus:outline-none resize-none"></textarea>
+          <textarea id="mWeeklyReflection" rows="2" placeholder="7. sınıf hedeflerini değerlendir..." class="w-full p-2 text-xs rounded-xl bg-white border border-amber-200 focus:outline-none resize-none"></textarea>
           <button onclick="saveMobileReflection()" class="w-full py-1.5 rounded-xl bg-amber-600 text-white font-fun font-bold text-xs tap-bounce">
             Yansımayı Kaydet
           </button>
         </div>
-
       </section>
 
       <!-- ================= TAB 4: AYARLAR & PROFİL ================= -->
       <section id="tab-settings" class="tab-page hidden space-y-3.5">
-        
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm flex items-center justify-between">
           <div class="flex items-center gap-3">
             <span class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm" id="mSettingsAvatar">🚀</span>
             <div>
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="mSettingsRole">Öğrenci</div>
+              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="mSettingsRole">7. Sınıf Öğrencisi</div>
               <h3 class="font-fun text-base font-bold text-slate-800" id="mSettingsName">Ahmet</h3>
             </div>
           </div>
           <button onclick="handleMobileLogout()" class="px-3 py-1.5 rounded-xl bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200 tap-bounce">
-            Çıkış Yap
+            Çıkış
           </button>
         </div>
 
-        <!-- Yönetici Paneli Hızlı Buton -->
         <div class="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-2xl p-4 text-white shadow flex items-center justify-between">
           <div>
             <h4 class="font-fun text-sm font-bold">Haftalık Sınıf Raporu</h4>
-            <p class="text-[10px] text-purple-200">Sınıfın soru ortalaması ve deneme karneleri</p>
+            <p class="text-[10px] text-purple-200">7. sınıf soru ortalaması ve denemeler</p>
           </div>
           <button onclick="openMobileAdminModal()" class="px-3 py-1.5 rounded-xl bg-white text-indigo-900 text-xs font-bold font-fun tap-bounce">
             Aç 📊
@@ -313,11 +285,6 @@
             <i class="fa-solid fa-chevron-right text-slate-400"></i>
           </a>
         </div>
-
-        <div class="text-center text-[10px] text-slate-400 py-2">
-          Haftalık Gelişim & Soru Portalı • 2026-2027 v4.0
-        </div>
-
       </section>
 
     </div>
@@ -345,6 +312,31 @@
       </button>
     </nav>
 
+    <!-- ================= 7. SINIF DERS KONULARI AÇILIR PENCERESİ (MOBİL MODAL) ================= -->
+    <div id="mTopicPickerModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
+      <div class="bg-white rounded-t-3xl p-4 shadow-2xl space-y-3 max-h-[88%] flex flex-col">
+        <div class="flex items-center justify-between border-b pb-2">
+          <div class="flex items-center gap-1.5">
+            <span class="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-book-open"></i></span>
+            <h4 class="font-fun text-sm font-bold text-slate-800">7. Sınıf Konu Seçici</h4>
+          </div>
+          <button onclick="closeMobileTopicPicker()" class="text-slate-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Ders Tabları -->
+        <div class="flex gap-1 overflow-x-auto no-scrollbar shrink-0" id="mTopicSubjectTabs"></div>
+
+        <input type="text" id="mTopicSearch" oninput="filterMobileTopics()" placeholder="7. sınıf konusu ara..." class="w-full p-2 text-xs rounded-xl bg-slate-50 border focus:outline-none shrink-0">
+
+        <!-- Konu Listesi -->
+        <div class="flex-1 overflow-y-auto space-y-1.5 pr-0.5" id="mTopicListContainer"></div>
+
+        <button onclick="closeMobileTopicPicker()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce shrink-0">
+          Kapat
+        </button>
+      </div>
+    </div>
+
     <!-- ================= MOBİL GİRİŞ MODALI ================= -->
     <div id="mobileAuthModal" class="absolute inset-0 z-50 bg-slate-900/90 backdrop-blur-md flex flex-col justify-end p-0">
       <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[92%] overflow-y-auto">
@@ -353,7 +345,7 @@
             <i class="fa-solid fa-graduation-cap"></i>
           </div>
           <div>
-            <h3 class="font-fun text-base font-bold text-slate-800">Gelişim Portalı Girişi</h3>
+            <h3 class="font-fun text-base font-bold text-slate-800">7. Sınıf Gelişim Portalı</h3>
             <p class="text-[10px] text-slate-500">Haftalık soru & deneme takip sistemi</p>
           </div>
         </div>
@@ -368,12 +360,6 @@
         <div class="space-y-2.5">
           <input type="text" id="mAuthUsername" placeholder="Kullanıcı Adı..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:outline-none">
           <input type="password" id="mAuthPassword" placeholder="Şifre..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:outline-none">
-
-          <div id="mRegAvatarBox" class="hidden space-y-1">
-            <label class="block text-[10px] font-bold text-slate-500">Avatar Seç:</label>
-            <div class="flex flex-wrap gap-1.5" id="mRegAvatarPicker"></div>
-          </div>
-
           <button onclick="handleMobileAuthSubmit()" class="w-full py-2.5 rounded-xl bg-blue-600 text-white font-fun font-bold text-xs shadow tap-bounce">
             Giriş Yap ve Başla
           </button>
@@ -396,29 +382,16 @@
         <div class="flex items-center justify-between border-b pb-2">
           <div class="flex items-center gap-2">
             <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-chart-pie"></i></span>
-            <h3 class="font-fun text-sm font-bold text-slate-800">Haftalık Sınıf Karnesi</h3>
+            <h3 class="font-fun text-sm font-bold text-slate-800">7. Sınıf Haftalık Karnesi</h3>
           </div>
           <button onclick="closeMobileAdminModal()" class="text-slate-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
         <div class="grid grid-cols-2 gap-2" id="mAdminMetrics"></div>
-
         <div class="space-y-1.5">
           <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Soru & Deneme Dökümü:</label>
           <div id="mAdminStudentList" class="space-y-2 max-h-56 overflow-y-auto"></div>
         </div>
-
         <button onclick="closeMobileAdminModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">Kapat</button>
-      </div>
-    </div>
-
-    <!-- ================= MOBİL KAREKOD MODALI ================= -->
-    <div id="mobileSingleQrModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
-      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-3 text-center">
-        <h4 class="font-fun text-sm font-bold text-slate-800" id="mSingleQrTitle">Giriş Karekodu</h4>
-        <div id="mSingleQrBox" class="p-2 inline-block bg-white border rounded-xl"></div>
-        <p class="text-[10px] text-slate-500">Telefon kamerasıyla okutarak doğrudan bağlanın.</p>
-        <button onclick="document.getElementById('mobileSingleQrModal').classList.add('hidden')" class="w-full py-2 rounded-xl bg-blue-600 text-white font-fun font-bold text-xs tap-bounce">Kapat</button>
       </div>
     </div>
 
@@ -426,11 +399,88 @@
 
   <!-- ================= JAVASCRIPT MASTER LOGIC ================= -->
   <script>
-    const MONTH_NAMES = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
-    const DAY_NAMES = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
-    const DEFAULT_SUBJECTS = ["Matematik", "Fen Bilimleri", "Türkçe", "İnkılap Tarihi", "Din Kültürü", "İngilizce"];
+    const GRADE7_CURRICULUM = {
+      "Matematik": [
+        { unit: "1. Ünite", topic: "Tam Sayılarla Toplama ve Çıkarma İşlemleri" },
+        { unit: "1. Ünite", topic: "Tam Sayılarla Çarpma ve Bölme İşlemleri" },
+        { unit: "1. Ünite", topic: "Tam Sayıların Tekrarlı Çarpımı (Üslü Sayılar)" },
+        { unit: "1. Ünite", topic: "Tam Sayı Problemleri" },
+        { unit: "2. Ünite", topic: "Rasyonel Sayılar ve Sayı Doğrusunda Gösterme" },
+        { unit: "2. Ünite", topic: "Devirli Ondalık Açılımlar ve Sıralama" },
+        { unit: "2. Ünite", topic: "Rasyonel Sayılarla Dört İşlem" },
+        { unit: "2. Ünite", topic: "Rasyonel Sayı Problemleri" },
+        { unit: "3. Ünite", topic: "Cebirsel İfadelerle Toplama ve Çıkarma" },
+        { unit: "3. Ünite", topic: "Birinci Dereceden Denklemler ve Eşitlik" },
+        { unit: "3. Ünite", topic: "Denklem Kurma Problemleri" },
+        { unit: "4. Ünite", topic: "Oran ve Orantı (Doğru ve Ters Orantı)" },
+        { unit: "4. Ünite", topic: "Yüzdeler ve Yüzde Problemleri (Kâr, Zarar, İndirim)" },
+        { unit: "5. Ünite", topic: "Doğrular ve Açılar" },
+        { unit: "5. Ünite", topic: "Çokgenler ve Özel Dörtgenler (Yamuk, Eşkenar Dörtgen)" },
+        { unit: "5. Ünite", topic: "Çember ve Dairenin Alanı" },
+        { unit: "6. Ünite", topic: "Veri Analizi (Çizgi ve Daire Grafikleri)" }
+      ],
+      "Fen Bilimleri": [
+        { unit: "1. Ünite", topic: "Uzay Araştırmaları (Uydular, Teleskoplar)" },
+        { unit: "1. Ünite", topic: "Güneş Sistemi Ötesi: Gök Cisimleri" },
+        { unit: "2. Ünite", topic: "Hücre ve Organeller" },
+        { unit: "2. Ünite", topic: "Mitoz Bölünme" },
+        { unit: "2. Ünite", topic: "Mayoz Bölünme" },
+        { unit: "3. Ünite", topic: "Kütle ve Ağırlık İlişkisi" },
+        { unit: "3. Ünite", topic: "Kuvvet, İş ve Enerji İlişkisi" },
+        { unit: "3. Ünite", topic: "Kinetik ve Potansiyel Enerji Dönüşümleri" },
+        { unit: "4. Ünite", topic: "Maddenin Tanecikli Yapısı (Atom, Molekül)" },
+        { unit: "4. Ünite", topic: "Saf Maddeler (Element ve Bileşikler)" },
+        { unit: "4. Ünite", topic: "Karışımlar ve Karışımların Ayrılması" },
+        { unit: "5. Ünite", topic: "Işığın Soğurulması ve Aynalar" },
+        { unit: "5. Ünite", topic: "Işığın Kırılması ve Mercekler" },
+        { unit: "6. Ünite", topic: "İnsanda, Bitkide ve Hayvanda Üreme" },
+        { unit: "7. Ünite", topic: "Elektrik Devreleri (Seri ve Paralel Bağlama)" }
+      ],
+      "Türkçe": [
+        { unit: "1. Tema", topic: "Fiillerde Anlam (İş, Oluş, Durum)" },
+        { unit: "1. Tema", topic: "Fiillerde Kip ve Kişi Ekleri" },
+        { unit: "2. Tema", topic: "Fiilde Anlam Kayması ve Ek Fiil" },
+        { unit: "3. Tema", topic: "Zarflar (Belirteçler)" },
+        { unit: "4. Tema", topic: "Sözcükte ve Cümlede Anlam" },
+        { unit: "5. Tema", topic: "Paragrafta Anlam ve Yapı" },
+        { unit: "6. Tema", topic: "Metin Türleri ve Söz Sanatları" },
+        { unit: "7. Tema", topic: "Yazım Kuralları ve Noktalama İşaretleri" }
+      ],
+      "Sosyal Bilgiler": [
+        { unit: "1. Ünite", topic: "İletişim ve İnsan İlişkileri" },
+        { unit: "2. Ünite", topic: "Beylikten Cihan Devletine: Osmanlı Devleti" },
+        { unit: "2. Ünite", topic: "Fetihler ve Osmanlı Kültürü" },
+        { unit: "3. Ünite", topic: "Türkiye'de Nüfus ve Yerleşme" },
+        { unit: "4. Ünite", topic: "Zaman İçinde Bilim ve Türk-İslam Bilginleri" },
+        { unit: "5. Ünite", topic: "Ekonomi ve Sosyal Hayat (Toprak, Vakıflar)" },
+        { unit: "6. Ünite", topic: "Yaşayan Demokrasi ve Anayasamız" },
+        { unit: "7. Ünite", topic: "Küresel Bağlantılar" }
+      ],
+      "Din Kültürü": [
+        { unit: "1. Ünite", topic: "Melek ve Ahiret İnancı" },
+        { unit: "2. Ünite", topic: "Hac ve Kurban İbadeti" },
+        { unit: "3. Ünite", topic: "Ahlaki Davranışlar" },
+        { unit: "4. Ünite", topic: "Hz. Muhammed'in (s.a.v.) Örnekliği" },
+        { unit: "5. Ünite", topic: "İslam Düşüncesinde Yorumlar" }
+      ],
+      "İngilizce": [
+        { unit: "Unit 1", topic: "Appearance and Personality" },
+        { unit: "Unit 2", topic: "Sports" },
+        { unit: "Unit 3", topic: "Biographies" },
+        { unit: "Unit 4", topic: "Wild Animals" },
+        { unit: "Unit 5", topic: "Television" },
+        { unit: "Unit 6", topic: "Celebrations" },
+        { unit: "Unit 7", topic: "Dreams" },
+        { unit: "Unit 8", topic: "Public Buildings" },
+        { unit: "Unit 9", topic: "Environment" },
+        { unit: "Unit 10", topic: "Planets" }
+      ]
+    };
 
-    // 40 Haftalık Takvim
+    const GRADE7_SUBJECTS = ["Matematik", "Fen Bilimleri", "Türkçe", "Sosyal Bilgiler", "Din Kültürü", "İngilizce"];
+    const DAY_NAMES = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
+    const MONTH_NAMES = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+
     const ALL_WEEKS = [];
     (function generate40Weeks() {
       let cur = new Date(2026, 8, 28);
@@ -439,13 +489,11 @@
         let end = new Date(cur);
         end.setDate(end.getDate() + 6);
         if (w === 40) end = new Date(2027, 5, 30);
-
         ALL_WEEKS.push({
           weekNumber: w,
           startDate: start,
           endDate: end,
-          label: `${w}. Hafta (${start.getDate()} ${MONTH_NAMES[start.getMonth()].substring(0,3)} – ${end.getDate()} ${MONTH_NAMES[end.getMonth()].substring(0,3)})`,
-          shortTitle: `${w}. Hafta`
+          label: `${w}. Hafta (${start.getDate()} ${MONTH_NAMES[start.getMonth()].substring(0,3)} – ${end.getDate()} ${MONTH_NAMES[end.getMonth()].substring(0,3)})`
         });
         cur.setDate(cur.getDate() + 7);
       }
@@ -453,11 +501,11 @@
 
     const AUTH_USERS_KEY = "fen_deneme_auth_users_v4";
     const CURRENT_SESSION_KEY = "fen_deneme_current_session_v4";
-    const AVATAR_OPTIONS = ['🚀', '🌟', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
 
     let authUsers = [];
     let currentSession = null;
-    let selectedRegAvatar = '🚀';
+    let mPickingSlot = { slotIndex: 0 };
+    let mSelectedPickerSubject = "Matematik";
 
     let state = {
       selectedWeek: 1,
@@ -466,9 +514,7 @@
       weeksData: {}
     };
 
-    function getUserStorageKey(u) {
-      return "fen_haftalik_data_" + encodeURIComponent(u.toLowerCase().trim());
-    }
+    function getUserStorageKey(u) { return "fen_haftalik_data_" + encodeURIComponent(u.toLowerCase().trim()); }
 
     function initMobile() {
       const savedUsers = localStorage.getItem(AUTH_USERS_KEY);
@@ -476,39 +522,15 @@
         try { authUsers = JSON.parse(savedUsers); } catch(e) { authUsers = []; }
       }
       if (!authUsers.some(u => u.username.toLowerCase() === 'admin')) {
-        authUsers.push({ username: "admin", password: "admin123", role: "admin", avatar: "🛡️", title: "Yönetici" });
+        authUsers.push({ username: "admin", password: "admin123", role: "admin", avatar: "🛡️" });
       }
       if (!authUsers.some(u => u.username.toLowerCase() === 'ahmet')) {
-        authUsers.push({ username: "Ahmet", password: "1234", role: "student", avatar: "🚀", title: "Öğrenci" });
+        authUsers.push({ username: "Ahmet", password: "1234", role: "student", avatar: "🚀" });
       }
       if (!authUsers.some(u => u.username.toLowerCase() === 'zeynep')) {
-        authUsers.push({ username: "Zeynep", password: "1234", role: "student", avatar: "🌟", title: "Öğrenci" });
+        authUsers.push({ username: "Zeynep", password: "1234", role: "student", avatar: "🌟" });
       }
       localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
-
-      // QR Url Giriş Kontrolü
-      const urlParams = new URLSearchParams(window.location.search);
-      const qrAuth = urlParams.get('qr_auth');
-      if (qrAuth) {
-        try {
-          const payload = JSON.parse(decodeURIComponent(atob(qrAuth)));
-          if (payload && payload.u && payload.p) {
-            let found = authUsers.find(x => x.username.toLowerCase() === payload.u.toLowerCase());
-            if (!found) {
-              found = { username: payload.u, password: payload.p, role: "student", avatar: "🚀" };
-              authUsers.push(found);
-              localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
-            }
-            currentSession = found;
-            localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
-            window.history.replaceState({}, document.title, window.location.pathname);
-            applySession(found);
-            playChime('done');
-            confetti({ particleCount: 50 });
-            return;
-          }
-        } catch(e) {}
-      }
 
       const savedSess = localStorage.getItem(CURRENT_SESSION_KEY);
       if (savedSess) {
@@ -521,20 +543,6 @@
           }
         } catch(e) {}
       }
-
-      showAuthModal();
-    }
-
-    function showAuthModal() {
-      const c = document.getElementById("mRegAvatarPicker");
-      c.innerHTML = "";
-      AVATAR_OPTIONS.forEach(em => {
-        const b = document.createElement("button");
-        b.onclick = () => { selectedRegAvatar = em; };
-        b.className = "w-6 h-6 rounded text-xs bg-slate-100 flex items-center justify-center";
-        b.textContent = em;
-        c.appendChild(b);
-      });
       document.getElementById("mobileAuthModal").classList.remove("hidden");
     }
 
@@ -542,11 +550,9 @@
       if (mode === 'login') {
         document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
         document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg text-slate-500";
-        document.getElementById("mRegAvatarBox").classList.add("hidden");
       } else {
         document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
         document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg text-slate-500";
-        document.getElementById("mRegAvatarBox").classList.remove("hidden");
       }
     }
 
@@ -559,27 +565,15 @@
     function handleMobileAuthSubmit() {
       const u = document.getElementById("mAuthUsername").value.trim();
       const p = document.getElementById("mAuthPassword").value.trim();
-      const alertBox = document.getElementById("mobileAuthAlert");
-
-      if (!u || !p) {
-        alertBox.textContent = "Kullanıcı adı ve şifre girin.";
-        alertBox.className = "p-2 rounded-xl text-xs bg-rose-50 text-rose-700 block";
-        return;
-      }
-
+      if (!u || !p) return;
       let found = authUsers.find(x => x.username.toLowerCase() === u.toLowerCase());
       if (found) {
-        if (found.password !== p) {
-          alertBox.textContent = "Hatalı şifre!";
-          alertBox.className = "p-2 rounded-xl text-xs bg-rose-50 text-rose-700 block";
-          return;
-        }
+        if (found.password !== p) { alert("Hatalı şifre!"); return; }
       } else {
-        found = { username: u, password: p, role: "student", avatar: selectedRegAvatar };
+        found = { username: u, password: p, role: "student", avatar: "🚀" };
         authUsers.push(found);
         localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
       }
-
       currentSession = found;
       localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
       applySession(found);
@@ -590,7 +584,6 @@
     function applySession(user) {
       document.getElementById("mobileUserName").textContent = user.username;
       document.getElementById("mobileUserAvatar").textContent = user.avatar;
-      document.getElementById("mobileUserRoleBadge").textContent = user.role === 'admin' ? 'Yönetici' : 'Öğrenci';
       document.getElementById("mSettingsName").textContent = user.username;
       document.getElementById("mSettingsAvatar").textContent = user.avatar;
 
@@ -608,7 +601,7 @@
       if (confirm("Çıkış yapılsın mı?")) {
         localStorage.removeItem(CURRENT_SESSION_KEY);
         currentSession = null;
-        showAuthModal();
+        document.getElementById("mobileAuthModal").classList.remove("hidden");
       }
     }
 
@@ -618,14 +611,14 @@
         for (let d = 0; d < 7; d++) {
           daysObj[d] = {
             topics: [
-              { subject: DEFAULT_SUBJECTS[0], name: "Konu 1", done: false },
-              { subject: DEFAULT_SUBJECTS[1], name: "Konu 2", done: false },
-              { subject: DEFAULT_SUBJECTS[2], name: "Konu 3", done: false }
+              { subject: "Matematik", name: GRADE7_CURRICULUM["Matematik"][0].topic, done: false },
+              { subject: "Fen Bilimleri", name: GRADE7_CURRICULUM["Fen Bilimleri"][0].topic, done: false },
+              { subject: "Türkçe", name: GRADE7_CURRICULUM["Türkçe"][0].topic, done: false }
             ],
             questions: [
-              { subject: DEFAULT_SUBJECTS[0], count: 0 },
-              { subject: DEFAULT_SUBJECTS[1], count: 0 },
-              { subject: DEFAULT_SUBJECTS[2], count: 0 }
+              { subject: "Matematik", count: 0 },
+              { subject: "Fen Bilimleri", count: 0 },
+              { subject: "Türkçe", count: 0 }
             ],
             rating: 0, note: ""
           };
@@ -634,7 +627,7 @@
           { subject: "Türkçe", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
           { subject: "Matematik", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
           { subject: "Fen Bilimleri", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "İnkılap Tarihi", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "Sosyal Bilgiler", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
           { subject: "Din Kültürü", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
           { subject: "İngilizce", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 }
         ];
@@ -663,6 +656,69 @@
       updateMetrics();
     }
 
+    /* 7. SINIF AÇILIR PENCERE (POPUP) SEÇİCİ */
+    function openMobileTopicPicker(slotIdx, initSub) {
+      mPickingSlot = { slotIndex: slotIdx };
+      if (initSub && GRADE7_SUBJECTS.includes(initSub)) mSelectedPickerSubject = initSub;
+      renderMobilePickerTabs();
+      renderMobilePickerList();
+      document.getElementById("mTopicPickerModal").classList.remove("hidden");
+      document.getElementById("mTopicPickerModal").classList.add("flex");
+    }
+
+    function closeMobileTopicPicker() {
+      document.getElementById("mTopicPickerModal").classList.add("hidden");
+      document.getElementById("mTopicPickerModal").classList.remove("flex");
+    }
+
+    function renderMobilePickerTabs() {
+      const c = document.getElementById("mTopicSubjectTabs");
+      c.innerHTML = "";
+      GRADE7_SUBJECTS.forEach(s => {
+        const isSel = s === mSelectedPickerSubject;
+        const b = document.createElement("button");
+        b.onclick = () => { mSelectedPickerSubject = s; renderMobilePickerTabs(); renderMobilePickerList(); };
+        b.className = `px-2.5 py-1 rounded-xl text-xs font-bold shrink-0 ${isSel ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700'}`;
+        b.textContent = s;
+        c.appendChild(b);
+      });
+    }
+
+    function renderMobilePickerList(filter = "") {
+      const c = document.getElementById("mTopicListContainer");
+      c.innerHTML = "";
+      const raw = GRADE7_CURRICULUM[mSelectedPickerSubject] || [];
+      const s = filter.toLowerCase().trim();
+      const filtered = raw.filter(x => x.topic.toLowerCase().includes(s) || x.unit.toLowerCase().includes(s));
+
+      filtered.forEach(item => {
+        const b = document.createElement("button");
+        b.onclick = () => selectMobileTopic(mSelectedPickerSubject, item.topic);
+        b.className = "w-full text-left p-2 rounded-xl bg-slate-50 border text-xs font-semibold text-slate-800 flex items-center justify-between";
+        b.innerHTML = `<span class="truncate pr-1">${item.topic}</span><span class="text-[9px] bg-white border px-1.5 py-0.5 rounded text-blue-600 font-bold">Seç</span>`;
+        c.appendChild(b);
+      });
+    }
+
+    function filterMobileTopics() {
+      renderMobilePickerList(document.getElementById("mTopicSearch").value);
+    }
+
+    function selectMobileTopic(sub, top) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const slot = mPickingSlot.slotIndex || 0;
+      wData.days[state.selectedDayIndex].topics[slot].subject = sub;
+      wData.days[state.selectedDayIndex].topics[slot].name = top;
+      if (wData.days[state.selectedDayIndex].questions[slot]) {
+        wData.days[state.selectedDayIndex].questions[slot].subject = sub;
+      }
+      playChime('done');
+      saveState();
+      closeMobileTopicPicker();
+      renderDayTasks();
+      renderDaysTabBar();
+    }
+
     /* RENDER FLOW */
     function renderWeeksBar() {
       const bar = document.getElementById("mobileWeeksBar");
@@ -688,9 +744,7 @@
       renderAll();
     }
 
-    function changeMobileWeek(delta) {
-      selectMobileWeek(state.selectedWeek + delta);
-    }
+    function changeMobileWeek(delta) { selectMobileWeek(state.selectedWeek + delta); }
 
     function renderDaysTabBar() {
       const bar = document.getElementById("mobileDaysTabBar");
@@ -714,7 +768,6 @@
         `;
         bar.appendChild(b);
       }
-
       document.getElementById("mobileDayTitleText").textContent = `${state.selectedWeek}. HAFTA • ${DAY_NAMES[state.selectedDayIndex].toUpperCase()}`;
     }
 
@@ -730,18 +783,21 @@
       dayRec.topics.forEach((t, idx) => {
         if (t.done) doneCount++;
         const div = document.createElement("div");
-        div.className = `p-2 rounded-xl border flex items-center justify-between gap-1.5 ${t.done ? 'bg-emerald-50 border-emerald-300' : 'bg-slate-50'}`;
+        div.className = `p-2 rounded-xl border flex flex-col gap-1.5 ${t.done ? 'bg-emerald-50 border-emerald-300' : 'bg-slate-50'}`;
         
-        let subOpts = DEFAULT_SUBJECTS.map(s => `<option value="${s}" ${s === t.subject ? 'selected' : ''}>${s}</option>`).join('');
         div.innerHTML = `
-          <div class="flex items-center gap-1.5 flex-1 min-w-0">
-            <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px] flex items-center justify-center">${idx+1}</span>
-            <select onchange="updateMTopicSub(${idx}, this.value)" class="text-[11px] font-bold bg-white border rounded-lg p-1 max-w-[90px]">${subOpts}</select>
-            <input type="text" value="${t.name || ''}" placeholder="Konu..." onchange="updateMTopicName(${idx}, this.value)" class="text-[11px] p-1 bg-white border rounded-lg flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-1">
+            <span class="font-bold text-xs text-blue-900">${idx+1}. ${t.subject}</span>
+            <button onclick="openMobileTopicPicker(${idx}, '${t.subject}')" class="px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold">
+              Konu Seç 📋
+            </button>
           </div>
-          <button onclick="toggleMTopic(${idx})" class="px-2 py-1 rounded-lg text-[10px] font-bold ${t.done ? 'bg-emerald-600 text-white' : 'bg-white border text-slate-600'} tap-bounce">
-            ${t.done ? '✓' : 'Yap'}
-          </button>
+          <div class="flex items-center justify-between gap-1">
+            <span class="text-xs text-slate-700 font-semibold truncate flex-1">${t.name}</span>
+            <button onclick="toggleMTopic(${idx})" class="px-2 py-1 rounded-lg text-[10px] font-bold ${t.done ? 'bg-emerald-600 text-white' : 'bg-white border text-slate-600'} tap-bounce">
+              ${t.done ? '✓ Bitti' : 'Tamamla'}
+            </button>
+          </div>
         `;
         topList.appendChild(div);
       });
@@ -759,17 +815,13 @@
         const div = document.createElement("div");
         div.className = "p-2 rounded-xl bg-slate-50 border flex items-center justify-between gap-2";
 
-        let subOpts = DEFAULT_SUBJECTS.map(s => `<option value="${s}" ${s === q.subject ? 'selected' : ''}>${s}</option>`).join('');
         div.innerHTML = `
-          <div class="flex items-center gap-1.5">
-            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px] flex items-center justify-center">${idx+1}</span>
-            <select onchange="updateMQSub(${idx}, this.value)" class="text-[11px] font-bold bg-white border rounded-lg p-1">${subOpts}</select>
-          </div>
+          <span class="font-bold text-xs text-emerald-950">${idx+1}. ${q.subject}</span>
           <div class="flex items-center gap-1">
             <button onclick="adjustMQ(${idx}, -5)" class="w-6 h-6 rounded bg-white border text-[10px] font-bold">-5</button>
             <input type="number" min="0" value="${count}" onchange="updateMQCount(${idx}, this.value)" class="w-12 p-1 text-center font-bold text-xs bg-white border rounded-lg">
             <button onclick="adjustMQ(${idx}, 5)" class="w-6 h-6 rounded bg-white border text-[10px] font-bold">+5</button>
-            <span class="text-[10px] text-slate-400">S</span>
+            <span class="text-[10px] text-slate-400">Soru</span>
           </div>
         `;
         qList.appendChild(div);
@@ -778,7 +830,6 @@
       document.getElementById("mobileDailyQuestionTotalText").textContent = `${dayQTotal} Soru`;
       document.getElementById("mobileDaySumBadge").textContent = `${dayQTotal} Soru`;
 
-      // Yıldızlar
       const sBox = document.getElementById("mDailyStars");
       sBox.innerHTML = "";
       for (let s = 1; s <= 5; s++) {
@@ -787,15 +838,11 @@
       document.getElementById("mDailyNote").value = dayRec.note || "";
     }
 
-    function updateMTopicSub(idx, val) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].topics[idx].subject = val; saveState(); }
-    function updateMTopicName(idx, val) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].topics[idx].name = val; saveState(); }
     function toggleMTopic(idx) { const wData = getOrCreateWeekData(state.selectedWeek); const t = wData.days[state.selectedDayIndex].topics[idx]; t.done = !t.done; playChime('click'); saveState(); renderDayTasks(); renderDaysTabBar(); }
-    function updateMQSub(idx, val) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].questions[idx].subject = val; saveState(); }
     function updateMQCount(idx, val) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].questions[idx].count = Math.max(0, parseInt(val) || 0); playChime('click'); saveState(); renderDayTasks(); renderDaysTabBar(); }
     function adjustMQ(idx, delta) { const wData = getOrCreateWeekData(state.selectedWeek); const c = parseInt(wData.days[state.selectedDayIndex].questions[idx].count) || 0; wData.days[state.selectedDayIndex].questions[idx].count = Math.max(0, c + delta); playChime('click'); saveState(); renderDayTasks(); renderDaysTabBar(); }
     function setMDailyRating(r) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].rating = r; playChime('done'); saveState(); renderDayTasks(); }
 
-    /* DENEME RENDERING */
     function renderDenemeView() {
       const wData = getOrCreateWeekData(state.selectedWeek);
       const list = document.getElementById("mobileDenemeList");
@@ -808,7 +855,7 @@
         card.className = "p-3 rounded-2xl bg-white border space-y-2 shadow-card-sm";
         card.innerHTML = `
           <div class="flex items-center justify-between">
-            <span class="font-bold text-xs text-slate-800">${s.subject} (20 S)</span>
+            <span class="font-bold text-xs text-slate-800">${s.subject} (20 Soru)</span>
             <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg">${s.net.toFixed(2)} Net</span>
           </div>
           <div class="grid grid-cols-3 gap-2 text-center text-xs">
@@ -837,7 +884,6 @@
       const wData = getOrCreateWeekData(state.selectedWeek);
       const s = wData.deneme.subjects[idx];
       let num = Math.min(20, Math.max(0, parseInt(val) || 0));
-
       if (type === 'correct') {
         s.correct = num;
         if (s.correct + s.incorrect > 20) s.incorrect = 20 - s.correct;
@@ -857,7 +903,7 @@
       wData.deneme.note = document.getElementById("mDenemeNote").value;
       saveState();
       playChime('done');
-      alert("Deneme sonuçları kaydedildi! 🎉");
+      alert("7. Sınıf deneme sonuçları kaydedildi! 🎉");
     }
 
     function saveMobileReflection() {
@@ -868,7 +914,6 @@
       alert("Haftalık yansıma kaydedildi! ✓");
     }
 
-    /* CHART & METRICS */
     let mDailyChart = null;
     function updateMetrics() {
       const wData = getOrCreateWeekData(state.selectedWeek);
@@ -938,7 +983,6 @@
       if (tId === 'report') updateMetrics();
     }
 
-    /* MOBİL ADMIN MODAL */
     function openMobileAdminModal() {
       renderMobileAdmin();
       document.getElementById("mobileAdminModal").classList.remove("hidden");
@@ -967,14 +1011,13 @@
         }
       });
 
-      const mBox = document.getElementById("mAdminMetrics");
-      mBox.innerHTML = `
+      document.getElementById("mAdminMetrics").innerHTML = `
         <div class="p-2.5 rounded-xl bg-blue-50 border border-blue-200">
           <span class="text-[9px] font-bold text-blue-600 block uppercase">Haftalık Soru</span>
           <strong class="font-fun text-sm text-blue-950">${classQ} Soru</strong>
         </div>
         <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200">
-          <span class="text-[9px] font-bold text-purple-600 block uppercase">Deneme Ort.</span>
+          <span class="text-[9px] font-bold text-purple-600 block uppercase">7. Sınıf Deneme Ort.</span>
           <strong class="font-fun text-sm text-purple-950">${studentUsers.length > 0 ? (classDeneme/studentUsers.length).toFixed(1) : 0} Net</strong>
         </div>
       `;
@@ -1004,23 +1047,10 @@
               <span class="text-[10px] text-slate-500">${pQ} Soru • ${pNet.toFixed(1)} Net</span>
             </div>
           </div>
-          <div class="flex items-center gap-1">
-            <button onclick="showMobileQR('${p.username}', '${p.password}')" class="px-2 py-1 rounded-lg bg-purple-100 text-purple-800 text-[10px] font-bold">QR</button>
-            <button onclick="mobileInspect('${p.username}')" class="px-2 py-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold">İncele</button>
-          </div>
+          <button onclick="mobileInspect('${p.username}')" class="px-2 py-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold">İncele</button>
         `;
         list.appendChild(div);
       });
-    }
-
-    function showMobileQR(u, p) {
-      document.getElementById("mSingleQrTitle").textContent = `${u} - Giriş Karekodu`;
-      const box = document.getElementById("mSingleQrBox");
-      box.innerHTML = "";
-      const payload = { u: u, p: p, t: Date.now() };
-      const url = `${window.location.origin + window.location.pathname}?qr_auth=${btoa(encodeURIComponent(JSON.stringify(payload)))}`;
-      new QRCode(box, { text: url, width: 140, height: 140 });
-      document.getElementById("mobileSingleQrModal").classList.remove("hidden");
     }
 
     function mobileInspect(u) {

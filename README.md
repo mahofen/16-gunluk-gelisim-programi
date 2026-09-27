@@ -1,9 +1,19 @@
-# 🌟 Haftalık Gelişim, Soru & Deneme Takip Portalı (2026 - 2027)
+# 🌟 7. Sınıf Haftalık Gelişim, Soru & Deneme Takip Portalı (2026 - 2027)
 
-> **"Düzenli konu çalışması, günlük soru çözümü ve hafta sonu denemeleri zirveye taşır! 🎯"**  
-> *28 Eylül 2026 – 30 Haziran 2027 • 40 Hafta • Konu • Soru Sayısı • 20'şer Soruluk Denemeler*
+> **"7. Sınıf Müfredatını Tamamla, Günlük Sorunu Çöz, Hafta Sonu Denemesinde Zirveye Çık! 🎯"**  
+> *28 Eylül 2026 – 30 Haziran 2027 • 40 Hafta • 7. Sınıf MEB Konu Havuzu • Manuel Soru Girişi • 20'şer Soruluk Denemeler*
 
-Bu proje; 2026-2027 eğitim-öğretim yılı boyunca (Eylül 2026 sonundan Haziran 2027 sonuna kadar) öğrencilerin akademik gelişimini **haftalık** olarak takip eden, **günlük 3 ders konu çalışması** ve **3 ders manuel soru sayısı girişi** ile **hafta sonu tüm branşlardan 20'şer soruluk genel deneme sınavı** sonuçlarını raporlayan kapsamlı bir dijital takip ve yönetim sistemidir.
+Bu proje; 2026-2027 eğitim-öğretim yılı boyunca 7. sınıf öğrencilerinin akademik başarısını artırmak için tasarlanmış; **Açılır Pencere (Modal Popup) ile 7. Sınıf MEB Ders Konuları Seçici**, **Günlük 3 Ders Konu ve Manuel Soru Sayısı Girişi**, **Hafta Sonu Tüm Branşlardan 20'şer Soruluk Deneme Sınavı Takibi** ve **Haftalık Yönetici/Öğretmen Raporlama Sistemi** içeren kapsamlı bir dijital eğitim platformudur.
+
+---
+
+## 📋 Açılır Pencere (Popup) 7. Sınıf Konu Havuzu (YENİ!)
+
+Öğrenciler ders çalışırken konu adını elle yazmak zorunda kalmaz:
+- Günlük görev listesindeki **"Konu Seç 📋"** butonuna basıldığında modern bir **Açılır Pencere (Modal)** açılır.
+- **6 Temel Branş:** Matematik, Fen Bilimleri, Türkçe, Sosyal Bilgiler, Din Kültürü ve İngilizce.
+- **Tüm Üniteler:** 7. sınıfın 1. dönem ve 2. dönem tüm MEB kazanım ve üniteleri listelenir.
+- **Arama Çubuğu:** İstediğiniz konuyu (örn: *Rasyonel Sayılar, Hücre, Fiilde Anlam, Osmanlı Devleti, vb.*) anında arayarak tek tıkla seçebilirsiniz.
 
 ---
 
@@ -12,7 +22,7 @@ Bu proje; 2026-2027 eğitim-öğretim yılı boyunca (Eylül 2026 sonundan Hazir
 - **Kapsam:** 28 Eylül 2026 Pazartesi gününden 30 Haziran 2027 Çarşamba gününe kadar tam **40 Hafta**.
 - **Haftalık Gezinme:** 40 haftalık yatay seçim çubuğu, açılır hafta listesi ve *"Bu Haftaya Git"* hızlı butonu.
 - **Haftalık Raporlama:**
-  - Bu hafta tamamlanan konu sayısı (Hedef: 21 Konu)
+  - Bu hafta tamamlanan 7. sınıf konu sayısı (Hedef: 21 Konu)
   - Günlük soru sayıları toplamı (manuel girişler)
   - Hafta sonu deneme sınavı branş netleri ve toplam başarı skoru
   - Haftalık öz değerlendirme ve koçluk notu
@@ -22,22 +32,21 @@ Bu proje; 2026-2027 eğitim-öğretim yılı boyunca (Eylül 2026 sonundan Hazir
 ## 📝 Günlük Görevler & Manuel Soru Sayısı Takibi
 
 Her gün için öğrencinin karşısına çıkan iki ana görev bölümü:
-1. **📚 Günlük 3 Ders Konu Çalışması:**
-   - 3 farklı ders (Matematik, Fen Bilimleri, Türkçe, İnkılap vb.) seçimi ve konu başlığı girişi.
-   - Tek tıkla "Çalışıldı ✓" durumu.
+1. **📚 Günlük 3 Ders 7. Sınıf Konu Çalışması:**
+   - Açılır pencereden konu seçimi ve tek tıkla "Çalışıldı ✓" durumu.
 2. **✍️ Günlük 3 Ders Soru Çözümü (Manuel Soru Sayısı):**
    - Çözülen soru sayısı doğrudan klavye ile yazılabilir veya `+5 / -5` hızlı butonlarıyla ayarlanabilir.
    - Günlük toplam soru sayısı ve haftalık kümülatif soru sayısı anında hesaplanır.
 
 ---
 
-## 🎯 Hafta Sonu Genel Deneme Sınavı (20'şer Soru / Toplam 120 Soru)
+## 🎯 7. Sınıf Hafta Sonu Genel Deneme Sınavı (20'şer Soru / Toplam 120 Soru)
 
-Her hafta sonu (Cumartesi / Pazar) tüm temel branşlardan 20'şer soruluk deneme sınavı takip edilir:
+Her hafta sonu (Cumartesi / Pazar) 7. sınıfın 6 temel branşından 20'şer soruluk genel deneme sınavı takip edilir:
 - **Türkçe (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
 - **Matematik (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
 - **Fen Bilimleri (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
-- **T.C. İnkılap Tarihi (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
+- **Sosyal Bilgiler (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
 - **Din Kültürü ve Ahlak Bilgisi (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
 - **Yabancı Dil (İngilizce) (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
 - **Otomatik Net ve Başarı:** Formül `Net = D - (Y / 3)` ile hesaplanır, 120 soru üzerinden başarı yüzdesi ve grafikler oluşturulur.
@@ -62,8 +71,8 @@ Her hafta sonu (Cumartesi / Pazar) tüm temel branşlardan 20'şer soruluk denem
 | Hesap Türü | Kullanıcı Adı | Şifre | Yetkiler & Özellikler |
 | :--- | :--- | :--- | :--- |
 | **🛡️ Yönetici / Öğretmen** | `admin` | `admin123` | Tüm 40 haftanın sınıf raporlarını inceler, öğrenci karekodu üretir ve toplu yedek alır. |
-| **🚀 Örnek Öğrenci 1** | `Ahmet` | `1234` | 1. Hafta günlük soru ve hafta sonu deneme sınavı sonuçları girilmiş hazır profil. |
-| **🌟 Örnek Öğrenci 2** | `Zeynep` | `1234` | Günlük soru ve konu çalışma kayıtları hazır profil. |
+| **🚀 Örnek Öğrenci 1** | `Ahmet` | `1234` | 7. Sınıf 1. Hafta günlük soru ve hafta sonu deneme sınavı sonuçları girilmiş hazır profil. |
+| **🌟 Örnek Öğrenci 2** | `Zeynep` | `1234` | 7. Sınıf günlük soru ve konu çalışma kayıtları hazır profil. |
 | **➕ Yeni Öğrenci Kaydı** | *Serbest İsim* | *En az 4 hane* | "Yeni Kayıt" sekmesinden anında hesap oluşturulabilir. |
 
 ---
