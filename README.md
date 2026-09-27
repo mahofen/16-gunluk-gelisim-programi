@@ -1,19 +1,19 @@
-# 🌟 7. Sınıf Haftalık Gelişim, Soru & Deneme Takip Portalı (2026 - 2027)
+# 🌟 Arif Said İlkbahar • 7. Sınıf Haftalık Gelişim, Soru & Deneme Portalı (2026 - 2027)
 
 > **"7. Sınıf Müfredatını Tamamla, Günlük Sorunu Çöz, Hafta Sonu Denemesinde Zirveye Çık! 🎯"**  
 > *28 Eylül 2026 – 30 Haziran 2027 • 40 Hafta • 7. Sınıf MEB Konu Havuzu • Manuel Soru Girişi • 20'şer Soruluk Denemeler*
 
-Bu proje; 2026-2027 eğitim-öğretim yılı boyunca 7. sınıf öğrencilerinin akademik başarısını artırmak için tasarlanmış; **Açılır Pencere (Modal Popup) ile 7. Sınıf MEB Ders Konuları Seçici**, **Günlük 3 Ders Konu ve Manuel Soru Sayısı Girişi**, **Hafta Sonu Tüm Branşlardan 20'şer Soruluk Deneme Sınavı Takibi** ve **Haftalık Yönetici/Öğretmen Raporlama Sistemi** içeren kapsamlı bir dijital eğitim platformudur.
+Bu proje; 2026-2027 eğitim-öğretim yılı boyunca **Arif Said İlkbahar**'ın akademik gelişimini, günlük ders konu çalışmalarını, manuel soru çözümlerini ve hafta sonu 20'şer soruluk branş denemelerini takip etmek için özel olarak tasarlanmıştır.
+
+**Önemli Güncelleme:** Giriş ekranındaki güvenlik ve şifre zorunluluğu kaldırılmıştır. Sistem doğrudan **Arif Said İlkbahar** adına açılır ve tüm ilerlemeler tarayıcıya otomatik olarak anlık kaydedilir.
 
 ---
 
-## 📋 Açılır Pencere (Popup) 7. Sınıf Konu Havuzu (YENİ!)
+## 📋 7. Sınıf Konu Seçimi & Açılır Pencere (Modal)
 
-Öğrenciler ders çalışırken konu adını elle yazmak zorunda kalmaz:
-- Günlük görev listesindeki **"Konu Seç 📋"** butonuna basıldığında modern bir **Açılır Pencere (Modal)** açılır.
+- **Doğrudan Açılır Liste (Dropdown):** Günlük 3 ders konu çalışması satırında seçilen dersin (Matematik, Fen, Türkçe vb.) tüm 7. sınıf MEB üniteleri ve konuları anında açılır listeden doğrudan seçilebilir.
+- **Açılır Pencere (Modal) ile İnceleme:** İstenildiğinde "Tüm Konular / Gözat 📋" butonuna tıklanarak 7. sınıf konuları detaylı incelenebilir ve arama çubuğuyla saniyeler içinde filtrelenebilir.
 - **6 Temel Branş:** Matematik, Fen Bilimleri, Türkçe, Sosyal Bilgiler, Din Kültürü ve İngilizce.
-- **Tüm Üniteler:** 7. sınıfın 1. dönem ve 2. dönem tüm MEB kazanım ve üniteleri listelenir.
-- **Arama Çubuğu:** İstediğiniz konuyu (örn: *Rasyonel Sayılar, Hücre, Fiilde Anlam, Osmanlı Devleti, vb.*) anında arayarak tek tıkla seçebilirsiniz.
 
 ---
 
@@ -25,15 +25,15 @@ Bu proje; 2026-2027 eğitim-öğretim yılı boyunca 7. sınıf öğrencilerinin
   - Bu hafta tamamlanan 7. sınıf konu sayısı (Hedef: 21 Konu)
   - Günlük soru sayıları toplamı (manuel girişler)
   - Hafta sonu deneme sınavı branş netleri ve toplam başarı skoru
-  - Haftalık öz değerlendirme ve koçluk notu
+  - Haftalık öz değerlendirme ve çalışma notu
 
 ---
 
 ## 📝 Günlük Görevler & Manuel Soru Sayısı Takibi
 
-Her gün için öğrencinin karşısına çıkan iki ana görev bölümü:
+Her gün için karşınıza çıkan iki ana görev bölümü:
 1. **📚 Günlük 3 Ders 7. Sınıf Konu Çalışması:**
-   - Açılır pencereden konu seçimi ve tek tıkla "Çalışıldı ✓" durumu.
+   - Açılır listeden veya modal pencereden konu seçimi ve tek tıkla "Çalışıldı ✓" durumu.
 2. **✍️ Günlük 3 Ders Soru Çözümü (Manuel Soru Sayısı):**
    - Çözülen soru sayısı doğrudan klavye ile yazılabilir veya `+5 / -5` hızlı butonlarıyla ayarlanabilir.
    - Günlük toplam soru sayısı ve haftalık kümülatif soru sayısı anında hesaplanır.
@@ -49,38 +49,25 @@ Her hafta sonu (Cumartesi / Pazar) 7. sınıfın 6 temel branşından 20'şer so
 - **Sosyal Bilgiler (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
 - **Din Kültürü ve Ahlak Bilgisi (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
 - **Yabancı Dil (İngilizce) (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
-- **Otomatik Net ve Başarı:** Formül `Net = D - (Y / 3)` ile hesaplanır, 120 soru üzerinden başarı yüzdesi ve grafikler oluşturulur.
+- **Otomatik Net ve Başarı:** Formül `Net = D - (Y / 3)` ile hesaplanır, 120 soru üzerinden başarı yüzdesi ve grafikler anlık oluşturulur.
 
 ---
 
-## 📊 Yönetici & Öğretmen Haftalık Kontrol Paneli
+## 📊 Haftalık Karne & Öğretmen Rapor Paneli
 
-- **Haftaya Göre Sınıf Raporu:** Üst menüden herhangi bir hafta (1..40) seçildiğinde sınıfın o haftaki performansı listelenir:
-  - Sınıfın o hafta çözdüğü toplam soru adedi
-  - Öğrenci başına ortalama soru sayısı
-  - Sınıfın hafta sonu deneme net ortalaması
-  - Haftanın en çok soru çözen lider öğrencisi
-- **Öğrenci Haftalık Karnesi:** Her öğrencinin konu, soru ve deneme netleri.
-- **Karekod (QR) Giriş Kartı:** Öğrencilere özel karekod oluşturma ve tek tıkla doğrudan giriş.
-- **Haftalık Sınıf Karnesini Yazdır / PDF Yap.**
+- Üst menüdeki **"Haftalık Karne & Rapor"** butonuna basarak seçilen haftanın detaylı dökümü incelenebilir:
+  - Arif Said İlkbahar'ın çözdüğü toplam soru adedi
+  - Tamamlanan 7. sınıf konu sayısı
+  - 120 soru üzerinden deneme net skoru ve başarı yüzdesi
+  - Haftalık yansıma notları
+  - **"Öğrenci Karnesini Yazdır / PDF":** Tek tıkla çıktı alınabilir veya PDF olarak kaydedilebilir.
 
 ---
 
-## 🔐 Giriş Bilgileri & Örnek Hesaplar
+## 🚀 Canlı Bağlantılar
 
-| Hesap Türü | Kullanıcı Adı | Şifre | Yetkiler & Özellikler |
-| :--- | :--- | :--- | :--- |
-| **🛡️ Yönetici / Öğretmen** | `admin` | `admin123` | Tüm 40 haftanın sınıf raporlarını inceler, öğrenci karekodu üretir ve toplu yedek alır. |
-| **🚀 Örnek Öğrenci 1** | `Ahmet` | `1234` | 7. Sınıf 1. Hafta günlük soru ve hafta sonu deneme sınavı sonuçları girilmiş hazır profil. |
-| **🌟 Örnek Öğrenci 2** | `Zeynep` | `1234` | 7. Sınıf günlük soru ve konu çalışma kayıtları hazır profil. |
-| **➕ Yeni Öğrenci Kaydı** | *Serbest İsim* | *En az 4 hane* | "Yeni Kayıt" sekmesinden anında hesap oluşturulabilir. |
-
----
-
-## 🚀 Canlı Bağlantılar ve Çalıştırma
-
-* 🌐 **Canlı Web Uygulaması:** [https://mahofen.github.io/16-gunluk-gelisim-programi/](https://mahofen.github.io/16-gunluk-gelisim-programi/)
-* 📱 **Canlı Mobil Uygulama:** [https://mahofen.github.io/16-gunluk-gelisim-programi/mobile_app.html](https://mahofen.github.io/16-gunluk-gelisim-programi/mobile_app.html)
+* 🌐 **Canlı Web Portalı:** [https://mahofen.github.io/16-gunluk-gelisim-programi/](https://mahofen.github.io/16-gunluk-gelisim-programi/)
+* 📱 **Canlı Mobil Portalı:** [https://mahofen.github.io/16-gunluk-gelisim-programi/mobile_app.html](https://mahofen.github.io/16-gunluk-gelisim-programi/mobile_app.html)
 * 📦 **GitHub Deposu:** [https://github.com/mahofen/16-gunluk-gelisim-programi](https://github.com/mahofen/16-gunluk-gelisim-programi)
 
 ---

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Gelişim Cepte | 7. Sınıf Soru & Deneme Portalı</title>
+  <title>Arif Said İlkbahar • 7. Sınıf Mobil Gelişim Portalı</title>
   
   <!-- PWA Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -92,17 +92,17 @@
       <div class="flex items-center justify-between">
         
         <div class="flex items-center gap-2 bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-2xl border border-white/20">
-          <span class="w-7 h-7 rounded-xl bg-white text-slate-800 flex items-center justify-center text-sm shadow-sm" id="mobileUserAvatar">🚀</span>
+          <span class="w-7 h-7 rounded-xl bg-white text-slate-800 flex items-center justify-center text-sm shadow-sm" id="mobileUserAvatar">🌟</span>
           <div class="text-left leading-tight">
             <div class="text-[9px] text-sky-200 font-bold uppercase tracking-wider" id="mobileUserRoleBadge">7. Sınıf</div>
-            <div class="text-xs font-bold text-white max-w-[80px] truncate" id="mobileUserName">Ahmet</div>
+            <div class="text-xs font-bold text-white max-w-[120px] truncate" id="mobileUserName">Arif Said İlkbahar</div>
           </div>
         </div>
 
         <div class="flex items-center gap-1.5">
           <button onclick="openMobileAdminModal()" id="mobileAdminHeaderBtn" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce">
             <i class="fa-solid fa-chart-pie text-sky-300"></i>
-            <span>Rapor</span>
+            <span>Karne</span>
           </button>
 
           <div class="bg-white/15 backdrop-blur-md px-2 py-1 rounded-xl text-[11px] font-bold text-amber-300 flex items-center gap-1 border border-white/10">
@@ -110,9 +110,9 @@
             <span id="mobileWeekQuestionBadge">0 Soru</span>
           </div>
 
-          <button onclick="handleMobileLogout()" class="bg-rose-500/80 hover:bg-rose-600 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm tap-bounce">
-            <i class="fa-solid fa-right-from-bracket"></i>
-          </button>
+          <a href="index.html" class="bg-white/20 hover:bg-white/30 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm tap-bounce" title="Web Portalı">
+            <i class="fa-solid fa-laptop"></i>
+          </a>
         </div>
       </div>
     </header>
@@ -258,15 +258,15 @@
       <section id="tab-settings" class="tab-page hidden space-y-3.5">
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <span class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm" id="mSettingsAvatar">🚀</span>
+            <span class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm" id="mSettingsAvatar">🌟</span>
             <div>
               <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="mSettingsRole">7. Sınıf Öğrencisi</div>
-              <h3 class="font-fun text-base font-bold text-slate-800" id="mSettingsName">Ahmet</h3>
+              <h3 class="font-fun text-base font-bold text-slate-800" id="mSettingsName">Arif Said İlkbahar</h3>
             </div>
           </div>
-          <button onclick="handleMobileLogout()" class="px-3 py-1.5 rounded-xl bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200 tap-bounce">
-            Çıkış
-          </button>
+          <span class="px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+            ✓ Aktif
+          </span>
         </div>
 
         <div class="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-2xl p-4 text-white shadow flex items-center justify-between">
@@ -337,8 +337,8 @@
       </div>
     </div>
 
-    <!-- ================= MOBİL GİRİŞ MODALI ================= -->
-    <div id="mobileAuthModal" class="absolute inset-0 z-50 bg-slate-900/90 backdrop-blur-md flex flex-col justify-end p-0">
+    <!-- ================= MOBİL GİRİŞ MODALI (GÜVENLİK KALDIRILDI) ================= -->
+    <div id="mobileAuthModal" class="hidden" style="display:none !important;">
       <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[92%] overflow-y-auto">
         <div class="flex items-center gap-2 border-b pb-2">
           <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow">
@@ -502,8 +502,19 @@
     const AUTH_USERS_KEY = "fen_deneme_auth_users_v4";
     const CURRENT_SESSION_KEY = "fen_deneme_current_session_v4";
 
-    let authUsers = [];
-    let currentSession = null;
+    const STUDENT_NAME = "Arif Said İlkbahar";
+    const STUDENT_AVATAR = "🌟";
+    const STUDENT_TITLE = "7. Sınıf Öğrencisi";
+
+    const DEFAULT_STUDENT = {
+      username: STUDENT_NAME,
+      role: "student",
+      avatar: STUDENT_AVATAR,
+      title: STUDENT_TITLE
+    };
+
+    let authUsers = [ DEFAULT_STUDENT ];
+    let currentSession = DEFAULT_STUDENT;
     let mPickingSlot = { slotIndex: 0 };
     let mSelectedPickerSubject = "Matematik";
 
@@ -514,95 +525,42 @@
       weeksData: {}
     };
 
-    function getUserStorageKey(u) { return "fen_haftalik_data_" + encodeURIComponent(u.toLowerCase().trim()); }
+    function getUserStorageKey(u) { return "fen_haftalik_data_arif_said_ilkbahar"; }
 
     function initMobile() {
-      const savedUsers = localStorage.getItem(AUTH_USERS_KEY);
-      if (savedUsers) {
-        try { authUsers = JSON.parse(savedUsers); } catch(e) { authUsers = []; }
-      }
-      if (!authUsers.some(u => u.username.toLowerCase() === 'admin')) {
-        authUsers.push({ username: "admin", password: "admin123", role: "admin", avatar: "🛡️" });
-      }
-      if (!authUsers.some(u => u.username.toLowerCase() === 'ahmet')) {
-        authUsers.push({ username: "Ahmet", password: "1234", role: "student", avatar: "🚀" });
-      }
-      if (!authUsers.some(u => u.username.toLowerCase() === 'zeynep')) {
-        authUsers.push({ username: "Zeynep", password: "1234", role: "student", avatar: "🌟" });
-      }
+      // Güvenlik ve parola zorunluluğu kaldırıldı: Doğrudan Arif Said İlkbahar olarak açılır
+      currentSession = DEFAULT_STUDENT;
+      authUsers = [ DEFAULT_STUDENT ];
+      localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(DEFAULT_STUDENT));
       localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
 
-      const savedSess = localStorage.getItem(CURRENT_SESSION_KEY);
-      if (savedSess) {
-        try {
-          currentSession = JSON.parse(savedSess);
-          const found = authUsers.find(x => x.username.toLowerCase() === currentSession.username.toLowerCase());
-          if (found && found.password === currentSession.password) {
-            applySession(found);
-            return;
-          }
-        } catch(e) {}
-      }
-      document.getElementById("mobileAuthModal").classList.remove("hidden");
+      applySession(DEFAULT_STUDENT);
+      const m = document.getElementById("mobileAuthModal");
+      if (m) m.classList.add("hidden");
     }
 
-    function switchMobileAuthTab(mode) {
-      if (mode === 'login') {
-        document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
-        document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg text-slate-500";
-      } else {
-        document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
-        document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg text-slate-500";
-      }
-    }
+    function switchMobileAuthTab(mode) {}
 
-    function fillMobileSample(u, p) {
-      document.getElementById("mAuthUsername").value = u;
-      document.getElementById("mAuthPassword").value = p;
-      handleMobileAuthSubmit();
-    }
+    function fillMobileSample(u, p) {}
 
-    function handleMobileAuthSubmit() {
-      const u = document.getElementById("mAuthUsername").value.trim();
-      const p = document.getElementById("mAuthPassword").value.trim();
-      if (!u || !p) return;
-      let found = authUsers.find(x => x.username.toLowerCase() === u.toLowerCase());
-      if (found) {
-        if (found.password !== p) { alert("Hatalı şifre!"); return; }
-      } else {
-        found = { username: u, password: p, role: "student", avatar: "🚀" };
-        authUsers.push(found);
-        localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
-      }
-      currentSession = found;
-      localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
-      applySession(found);
-      document.getElementById("mobileAuthModal").classList.add("hidden");
-      playChime('done');
-    }
+    function handleMobileAuthSubmit() {}
 
     function applySession(user) {
-      document.getElementById("mobileUserName").textContent = user.username;
-      document.getElementById("mobileUserAvatar").textContent = user.avatar;
-      document.getElementById("mSettingsName").textContent = user.username;
-      document.getElementById("mSettingsAvatar").textContent = user.avatar;
-
-      if (user.role === 'admin') {
-        document.getElementById("mobileAdminHeaderBtn").classList.remove("hidden");
-        const f = authUsers.find(x => x.role === 'student') || { username: "Ahmet" };
-        loadUserData(f.username);
-      } else {
-        document.getElementById("mobileAdminHeaderBtn").classList.add("hidden");
-        loadUserData(user.username);
-      }
+      document.getElementById("mobileUserName").textContent = STUDENT_NAME;
+      document.getElementById("mobileUserAvatar").textContent = STUDENT_AVATAR;
+      document.getElementById("mSettingsName").textContent = STUDENT_NAME;
+      document.getElementById("mSettingsAvatar").textContent = STUDENT_AVATAR;
+      document.getElementById("mobileAdminHeaderBtn").classList.remove("hidden");
+      loadUserData(STUDENT_NAME);
     }
 
     function handleMobileLogout() {
-      if (confirm("Çıkış yapılsın mı?")) {
-        localStorage.removeItem(CURRENT_SESSION_KEY);
-        currentSession = null;
-        document.getElementById("mobileAuthModal").classList.remove("hidden");
-      }
+      if (confirm("Arif Said İlkbahar verilerini sıfırlamak istiyor musunuz?")) {
+        localStorage.removeItem(getUserStorageKey(STUDENT_NAME));
+        state = { selectedWeek: 1, selectedDayIndex: 0, activeTab: 'today', weeksData: {} };
+        loadUserData(STUDENT_NAME);
+        playChime('click');
+        alert("Arif Said İlkbahar verileri sıfırlandı.");
     }
 
     function getOrCreateWeekData(wNum) {
@@ -651,8 +609,7 @@
     }
 
     function saveState() {
-      const uname = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
-      localStorage.setItem(getUserStorageKey(uname), JSON.stringify(state));
+      localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
       updateMetrics();
     }
 

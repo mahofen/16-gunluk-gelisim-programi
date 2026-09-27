@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>7. Sınıf Haftalık Gelişim, Soru & Deneme Portalı (2026 - 2027)</title>
+  <title>Arif Said İlkbahar - 7. Sınıf Haftalık Gelişim, Soru & Deneme Portalı (2026 - 2027)</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -120,10 +120,10 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="font-fun text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-700 via-indigo-600 to-emerald-600 bg-clip-text text-transparent leading-tight">
-              7. SINIF GELİŞİM & SORU TAKİP SİSTEMİ
+              Arif Said İlkbahar
             </h1>
             <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
-              MEB Müfredatı
+              7. Sınıf Gelişim Portalı
             </span>
           </div>
           <p class="text-xs text-slate-500 font-medium hidden sm:block">
@@ -135,18 +135,18 @@
       <!-- Header Sağ Butonlar -->
       <div class="flex items-center gap-2 sm:gap-3">
         
-        <!-- YÖNETİCİ KONTROL PANELİ BUTONU -->
-        <button onclick="openAdminModal()" id="headerAdminBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold transition-all shadow-sm group" title="Haftalık Sınıf Raporu & Yönetici Paneli">
+        <!-- GELİŞİM & KARNE RAPORU BUTONU -->
+        <button onclick="openAdminModal()" id="headerAdminBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold transition-all shadow-sm group" title="Arif Said İlkbahar Haftalık Gelişim & Karne Raporu">
           <i class="fa-solid fa-chart-pie text-sm text-indigo-600 group-hover:scale-110 transition-transform"></i>
-          <span class="hidden sm:inline">Haftalık Sınıf Raporu</span>
+          <span class="hidden sm:inline">Haftalık Karne & Rapor</span>
         </button>
 
-        <!-- AKTİF KULLANICI PROFİLİ -->
+        <!-- AKTİF KULLANICI PROFİLİ: ARİF SAİD İLKBAHAR -->
         <div class="flex items-center gap-2 bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 px-3 py-1.5 rounded-2xl shadow-sm">
-          <span class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm" id="headerUserAvatar">🚀</span>
+          <span class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm" id="headerUserAvatar">🌟</span>
           <div class="text-left leading-tight hidden sm:block">
-            <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider" id="headerUserRoleBadge">Öğrenci</div>
-            <div class="text-xs font-bold text-slate-800 max-w-[90px] truncate" id="headerUserName">Ahmet</div>
+            <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider" id="headerUserRoleBadge">7. Sınıf Öğrencisi</div>
+            <div class="text-xs font-bold text-slate-800 max-w-[130px] truncate" id="headerUserName">Arif Said İlkbahar</div>
           </div>
         </div>
 
@@ -168,11 +168,11 @@
           <span class="hidden lg:inline">Mobil</span>
         </a>
 
-        <!-- ÇIKIŞ YAP -->
-        <button onclick="handleLogout()" class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all flex items-center gap-1" title="Çıkış">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span class="hidden sm:inline">Çıkış</span>
-        </button>
+        <!-- OTOMATİK KAYIT BİLGİLENDİRMESİ -->
+        <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold" title="Tüm verileriniz otomatik olarak cihazınıza kaydedilmektedir">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i>
+          <span>Otomatik Kayıt</span>
+        </div>
 
         <!-- Yazdır -->
         <button onclick="window.print()" class="p-2 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors" title="Haftalık Raporu Yazdır / PDF">
@@ -199,7 +199,7 @@
           "7. Sınıf Konularını Tamamla, Soru Çöz, Denemede Fark Yarat! 🎯"
         </h2>
         <p class="text-xs sm:text-sm text-sky-100 mt-1 max-w-2xl">
-          Sevgili <strong class="text-amber-300" id="bannerStudentName">Öğrenci</strong>, açılır pencereden 7. sınıf konularını seç, günlük soru sayılarını gir ve hafta sonu 20'şer soruluk branş denemelerinde netlerini gör!
+          Sevgili <strong class="text-amber-300" id="bannerStudentName">Arif Said İlkbahar</strong>, açılır pencereden 7. sınıf konularını seç, günlük soru sayılarını gir ve hafta sonu 20'şer soruluk branş denemelerinde netlerini gör!
         </p>
       </div>
 
@@ -555,8 +555,8 @@
     </div>
   </footer>
 
-  <!-- ================= ANA GİRİŞ & KAREKOD KAPISI MODALI ================= -->
-  <div id="authGateModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+  <!-- ================= ANA GİRİŞ & KAREKOD KAPISI MODALI (GÜVENLİK KALDIRILDI) ================= -->
+  <div id="authGateModal" class="hidden" style="display:none !important;">
     <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-100 overflow-hidden flex flex-col md:flex-row max-h-[92vh]">
       
       <!-- Sol Panel -->
@@ -687,15 +687,15 @@
             <i class="fa-solid fa-chart-pie"></i>
           </div>
           <div>
-            <h3 class="font-fun text-xl font-bold text-slate-800">7. Sınıf Haftalık Sınıf Gelişim & Deneme Raporu</h3>
-            <p class="text-xs text-slate-500">Seçilen haftada sınıfın toplam çözdüğü soru sayısı, konu sayısı ve deneme netleri</p>
+            <h3 class="font-fun text-xl font-bold text-slate-800">Arif Said İlkbahar • Haftalık Gelişim & Deneme Raporu</h3>
+            <p class="text-xs text-slate-500">Seçilen haftada toplam çözülen soru sayısı, çalışılan konu sayısı ve deneme netleri</p>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
           <select id="adminWeekSelector" onchange="renderAdminDashboard(parseInt(this.value))" class="px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-bold focus:outline-none cursor-pointer"></select>
           <button onclick="printAdminReport()" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold border border-purple-200 flex items-center gap-1.5 shadow-sm">
-            <i class="fa-solid fa-print"></i> Sınıf Karnesini Yazdır
+            <i class="fa-solid fa-print"></i> Öğrenci Karnesini Yazdır
           </button>
           <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 text-2xl p-1"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -937,12 +937,25 @@
        ========================================================================= */
     const AUTH_USERS_KEY = "fen_deneme_auth_users_v4";
     const CURRENT_SESSION_KEY = "fen_deneme_current_session_v4";
-    const AVATAR_OPTIONS = ['🚀', '🌟', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
+    const AVATAR_OPTIONS = ['🌟', '🚀', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
 
-    let authUsers = [];
-    let currentSession = null;
+    // TEK ÖĞRENCİ PROFİLİ: ARİF SAİD İLKBAHAR
+    const STUDENT_NAME = "Arif Said İlkbahar";
+    const STUDENT_AVATAR = "🌟";
+    const STUDENT_TITLE = "7. Sınıf Öğrencisi";
+
+    const DEFAULT_STUDENT = {
+      username: STUDENT_NAME,
+      role: "student",
+      avatar: STUDENT_AVATAR,
+      title: STUDENT_TITLE,
+      password: ""
+    };
+
+    let authUsers = [ DEFAULT_STUDENT ];
+    let currentSession = DEFAULT_STUDENT;
     let authMode = 'login';
-    let selectedRegAvatar = '🚀';
+    let selectedRegAvatar = '🌟';
     let html5QrCodeScanner = null;
     let activeQrTargetUrl = "";
 
@@ -957,80 +970,31 @@
     };
 
     function getUserDataStorageKey(username) {
-      return "fen_haftalik_data_" + encodeURIComponent(username.toLowerCase().trim());
+      return "fen_haftalik_data_arif_said_ilkbahar";
     }
 
     function initAuth() {
-      const savedUsers = localStorage.getItem(AUTH_USERS_KEY);
-      if (savedUsers) {
-        try { authUsers = JSON.parse(savedUsers); } catch(e) { authUsers = []; }
-      }
-
-      if (!authUsers.some(u => u.username.toLowerCase() === 'admin')) {
-        authUsers.push({ username: "admin", password: "admin123", role: "admin", avatar: "🛡️", title: "Yönetici / Öğretmen" });
-      }
-      if (!authUsers.some(u => u.username.toLowerCase() === 'ahmet')) {
-        authUsers.push({ username: "Ahmet", password: "1234", role: "student", avatar: "🚀", title: "7. Sınıf Öğrencisi" });
-      }
-      if (!authUsers.some(u => u.username.toLowerCase() === 'zeynep')) {
-        authUsers.push({ username: "Zeynep", password: "1234", role: "student", avatar: "🌟", title: "7. Sınıf Öğrencisi" });
-      }
+      // Güvenlik / Şifre ekranı kaldırıldı: Sistem doğrudan Arif Said İlkbahar olarak başlar
+      currentSession = DEFAULT_STUDENT;
+      authUsers = [ DEFAULT_STUDENT ];
+      localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(DEFAULT_STUDENT));
       localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
 
       seedDefaultWeeklyDataIfEmpty();
-
-      // URL'den QR Parametresi Var mı?
-      if (checkQrLoginFromUrl()) return;
-
-      const savedSession = localStorage.getItem(CURRENT_SESSION_KEY);
-      if (savedSession) {
-        try {
-          currentSession = JSON.parse(savedSession);
-          const found = authUsers.find(u => u.username.toLowerCase() === currentSession.username.toLowerCase());
-          if (found && found.password === currentSession.password) {
-            applyUserSession(found);
-            return;
-          }
-        } catch(e) {}
-      }
-
-      showAuthGateModal();
+      applyUserSession(DEFAULT_STUDENT);
+      hideAuthGateModal();
     }
 
     function checkQrLoginFromUrl() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('qr_auth');
-      if (!token) return false;
-
-      try {
-        const payload = JSON.parse(decodeURIComponent(atob(token)));
-        if (payload && payload.u && payload.p) {
-          let found = authUsers.find(u => u.username.toLowerCase() === payload.u.toLowerCase());
-          if (!found) {
-            found = { username: payload.u, password: payload.p, role: "student", avatar: "🚀", title: "7. Sınıf Öğrencisi" };
-            authUsers.push(found);
-            localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
-          }
-          currentSession = found;
-          localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
-          window.history.replaceState({}, document.title, window.location.pathname);
-          applyUserSession(found);
-          hideAuthGateModal();
-          playChimeSound('success');
-          confetti({ particleCount: 70, spread: 80 });
-          alert(`🎉 Karekod Okundu! Hoş geldin, ${found.username}!`);
-          return true;
-        }
-      } catch(e) {}
       return false;
     }
 
     function seedDefaultWeeklyDataIfEmpty() {
-      const ahmetKey = getUserDataStorageKey("Ahmet");
-      if (!localStorage.getItem(ahmetKey)) {
+      const studentKey = getUserDataStorageKey(STUDENT_NAME);
+      if (!localStorage.getItem(studentKey)) {
         const d = createDefaultWeekState();
         d.weeksData[1].days[0].topics[0] = { subject: "Matematik", name: "Tam Sayılarla Toplama ve Çıkarma İşlemleri", done: true };
-        d.weeksData[1].days[0].topics[1] = { subject: "Fen Bilimleri", name: "Uzay Araştırmaları (Uydular, Teleskoplar)", done: true };
+        d.weeksData[1].days[0].topics[1] = { subject: "Fen Bilimleri", name: "Uzay Araştırmaları (Roketler, Uydular, Teleskoplar, Uzay Kirliliği)", done: true };
         d.weeksData[1].days[0].topics[2] = { subject: "Türkçe", name: "Fiillerde Anlam (İş, Oluş, Durum)", done: false };
         d.weeksData[1].days[0].questions[0] = { subject: "Matematik", count: 35 };
         d.weeksData[1].days[0].questions[1] = { subject: "Fen Bilimleri", count: 40 };
@@ -1045,10 +1009,10 @@
             { unit: "", subject: "Din Kültürü", total: 20, correct: 20, incorrect: 0, empty: 0, net: 20.00 },
             { subject: "İngilizce", total: 20, correct: 18, incorrect: 2, empty: 0, net: 17.33 }
           ],
-          note: "İlk denemem 7. sınıf konularında çok iyiydi."
+          note: "İlk denemem 7. sınıf konularında çok başarılıydı."
         };
-        d.weeksData[1].weeklyReflection = "7. sınıf matematik rasyonel sayılara geçmeden tam sayı testlerini bitirdim.";
-        localStorage.setItem(ahmetKey, JSON.stringify(d));
+        d.weeksData[1].weeklyReflection = "7. sınıf ders konularımı düzenli takip edip soru hedeflerime ulaştım.";
+        localStorage.setItem(studentKey, JSON.stringify(d));
       }
     }
 
@@ -1113,33 +1077,27 @@
     }
 
     function saveState() {
-      const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
-      localStorage.setItem(getUserDataStorageKey(activeName), JSON.stringify(state));
+      localStorage.setItem(getUserDataStorageKey(STUDENT_NAME), JSON.stringify(state));
       updateSummaryMetrics();
     }
 
     function applyUserSession(user) {
-      document.getElementById("headerUserName").textContent = user.username;
-      document.getElementById("headerUserAvatar").textContent = user.avatar;
-      document.getElementById("headerUserRoleBadge").textContent = user.role === 'admin' ? 'Yönetici' : '7. Sınıf Öğrencisi';
-      document.getElementById("bannerStudentName").textContent = user.username;
-
-      if (user.role === 'admin') {
-        document.getElementById("headerAdminBtn").classList.remove("hidden");
-        const first = authUsers.find(u => u.role === 'student') || { username: "Ahmet" };
-        loadUserData(first.username);
-      } else {
-        document.getElementById("headerAdminBtn").classList.add("hidden");
-        loadUserData(user.username);
-      }
+      document.getElementById("headerUserName").textContent = STUDENT_NAME;
+      document.getElementById("headerUserAvatar").textContent = STUDENT_AVATAR;
+      document.getElementById("headerUserRoleBadge").textContent = STUDENT_TITLE;
+      document.getElementById("bannerStudentName").textContent = STUDENT_NAME;
+      document.getElementById("headerAdminBtn").classList.remove("hidden");
+      loadUserData(STUDENT_NAME);
     }
 
     function handleLogout() {
-      if (confirm("Oturumu kapatmak istediğinize emin misiniz?")) {
-        localStorage.removeItem(CURRENT_SESSION_KEY);
-        currentSession = null;
-        showAuthGateModal();
+      if (confirm("Arif Said İlkbahar verilerini sıfırlamak istiyor musunuz?")) {
+        localStorage.removeItem(getUserDataStorageKey(STUDENT_NAME));
+        state = createDefaultWeekState();
+        seedDefaultWeeklyDataIfEmpty();
+        loadUserData(STUDENT_NAME);
         playChimeSound('click');
+        alert("Arif Said İlkbahar verileri sıfırlandı.");
       }
     }
 
@@ -2006,58 +1964,56 @@
       const avgQuestions = studentUsers.length > 0 ? Math.round(totalClassQuestions / studentUsers.length) : 0;
       const avgDeneme = studentUsers.length > 0 ? (totalClassDenemeNet / studentUsers.length).toFixed(2) : 0;
 
+      const summ = calculateStudentWeekSummary(STUDENT_NAME, targetWeekNum);
+
       document.getElementById("adminMetricsCards").innerHTML = `
         <div class="p-3.5 rounded-2xl bg-blue-50 border border-blue-200">
           <div class="text-[10px] font-bold text-blue-600 uppercase">Haftalık Soru</div>
-          <div class="text-xl font-fun font-bold text-blue-950 mt-0.5">${totalClassQuestions} Soru</div>
-          <div class="text-[10px] text-blue-500 font-medium">Sınıf Geneli</div>
+          <div class="text-xl font-fun font-bold text-blue-950 mt-0.5">${summ.totalQuestions} Soru</div>
+          <div class="text-[10px] text-blue-500 font-medium">Arif Said İlkbahar</div>
         </div>
         <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
-          <div class="text-[10px] font-bold text-emerald-600 uppercase">Öğrenci Başına Ort.</div>
-          <div class="text-xl font-fun font-bold text-emerald-950 mt-0.5">${avgQuestions} Soru</div>
-          <div class="text-[10px] text-emerald-500 font-medium">Haftalık Ortalama</div>
+          <div class="text-[10px] font-bold text-emerald-600 uppercase">Tamamlanan Konu</div>
+          <div class="text-xl font-fun font-bold text-emerald-950 mt-0.5">${summ.topicsDone} / 21</div>
+          <div class="text-[10px] text-emerald-500 font-medium">7. Sınıf Konu Hedefi</div>
         </div>
         <div class="p-3.5 rounded-2xl bg-purple-50 border border-purple-200">
-          <div class="text-[10px] font-bold text-purple-600 uppercase">7. Sınıf Deneme Ort.</div>
-          <div class="text-xl font-fun font-bold text-purple-950 mt-0.5">${avgDeneme} Net</div>
+          <div class="text-[10px] font-bold text-purple-600 uppercase">Hafta Sonu Denemesi</div>
+          <div class="text-xl font-fun font-bold text-purple-950 mt-0.5">${summ.denemeNet} Net</div>
           <div class="text-[10px] text-purple-500 font-medium">120 Soru Üzerinden</div>
         </div>
         <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
-          <div class="text-[10px] font-bold text-amber-600 uppercase">Haftanın Lideri</div>
-          <div class="text-sm font-fun font-bold text-amber-950 truncate mt-0.5">${topStudent.avatar} ${topStudent.name}</div>
-          <div class="text-[10px] text-amber-600 font-medium">${Math.max(0, topStudent.questions)} Soru</div>
+          <div class="text-[10px] font-bold text-amber-600 uppercase">Genel Başarı Oranı</div>
+          <div class="text-xl font-fun font-bold text-amber-950 mt-0.5">%${Math.min(100, Math.round((summ.denemeNet / 120) * 100))}</div>
+          <div class="text-[10px] text-amber-600 font-medium">Deneme Başarısı</div>
         </div>
       `;
 
       const tbody = document.getElementById("adminStudentsTableBody");
       tbody.innerHTML = "";
-      studentUsers.forEach(p => {
-        const summ = calculateStudentWeekSummary(p.username, targetWeekNum);
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-slate-50 transition-colors";
-        const pct = Math.min(100, Math.round((summ.denemeNet / 120) * 100));
+      const pct = Math.min(100, Math.round((summ.denemeNet / 120) * 100));
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-slate-50 transition-colors";
 
-        tr.innerHTML = `
-          <td class="p-3">
-            <div class="flex items-center gap-2">
-              <span class="w-8 h-8 rounded-xl bg-slate-100 border flex items-center justify-center text-sm">${p.avatar}</span>
-              <div>
-                <div class="font-bold text-slate-800">${p.username}</div>
-                <div class="text-[10px] text-slate-400">Şifre: <span class="font-mono">${p.password}</span></div>
-              </div>
+      tr.innerHTML = `
+        <td class="p-3">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-xl bg-blue-100 border flex items-center justify-center text-sm">${STUDENT_AVATAR}</span>
+            <div>
+              <div class="font-bold text-slate-800">${STUDENT_NAME}</div>
+              <div class="text-[10px] text-blue-600 font-semibold">${STUDENT_TITLE}</div>
             </div>
-          </td>
-          <td class="p-3 text-center font-bold text-slate-700">${summ.topicsDone} / 21</td>
-          <td class="p-3 text-center font-bold text-emerald-700">${summ.totalQuestions} Soru</td>
-          <td class="p-3 text-center font-bold text-indigo-700">${summ.denemeNet} Net</td>
-          <td class="p-3 text-center"><span class="text-xs px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-800 font-bold border border-indigo-200">%${pct}</span></td>
-          <td class="p-3 text-right">
-            <button onclick="showStudentQR('${p.username}')" class="px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold hover:bg-purple-100">Karekod</button>
-            <button onclick="adminInspectStudent('${p.username}')" class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold hover:bg-blue-100 ml-1">İncele 📋</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+          </div>
+        </td>
+        <td class="p-3 text-center font-bold text-slate-700">${summ.topicsDone} / 21</td>
+        <td class="p-3 text-center font-bold text-emerald-700">${summ.totalQuestions} Soru</td>
+        <td class="p-3 text-center font-bold text-indigo-700">${summ.denemeNet} Net</td>
+        <td class="p-3 text-center"><span class="text-xs px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-800 font-bold border border-indigo-200">%${pct}</span></td>
+        <td class="p-3 text-right">
+          <button onclick="adminInspectStudent('${STUDENT_NAME}')" class="px-3 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 shadow-sm">Karnesi 📋</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
     }
 
     function adminInspectStudent(username) {
