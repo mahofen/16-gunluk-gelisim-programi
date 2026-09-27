@@ -1,89 +1,70 @@
-# 🌟 Benim 16 Günlük Gelişim Programı | Web & Mobil Takip Portalı
+# 🌟 Haftalık Gelişim, Soru & Deneme Takip Portalı (2026 - 2027)
 
-> **"Bugün küçük adımlar, yarın büyük başarılar getirir! 💡"**  
-> *29 Ağustos – 13 Eylül 2026 • Planla • Çalış • Üret • Hareket Et • Geliş*
+> **"Düzenli konu çalışması, günlük soru çözümü ve hafta sonu denemeleri zirveye taşır! 🎯"**  
+> *28 Eylül 2026 – 30 Haziran 2027 • 40 Hafta • Konu • Soru Sayısı • 20'şer Soruluk Denemeler*
 
-Bu proje; 16 günlük bütüncül öğrenci gelişim planının görsel analizi yapılarak hazırlanmış, **Karekod (QR) ve Şifreli Giriş Kapısı**, **Yönetici / Öğretmen Kontrol Paneli**, **Öğrenci Karekod Giriş Kartları Yazdırma Sistemi**, oyunlaştırılmış modern **Web Uygulaması (`index.html`)** ve **Mobil Uygulaması (`mobile_app.html`)** içeren kapsamlı bir dijital takip ve yönetim sistemidir.
+Bu proje; 2026-2027 eğitim-öğretim yılı boyunca (Eylül 2026 sonundan Haziran 2027 sonuna kadar) öğrencilerin akademik gelişimini **haftalık** olarak takip eden, **günlük 3 ders konu çalışması** ve **3 ders manuel soru sayısı girişi** ile **hafta sonu tüm branşlardan 20'şer soruluk genel deneme sınavı** sonuçlarını raporlayan kapsamlı bir dijital takip ve yönetim sistemidir.
 
 ---
 
-## 📱 Karekod (QR Kod) ile Doğrudan Giriş Sistemi (YENİ!)
+## 📅 40 Haftalık Yıllık Takvim & Haftalık Raporlama
 
-Öğrencilerin şifre yazma zorunluluğunu ortadan kaldırmak için **2 farklı pratik yöntem** sunulmuştur:
+- **Kapsam:** 28 Eylül 2026 Pazartesi gününden 30 Haziran 2027 Çarşamba gününe kadar tam **40 Hafta**.
+- **Haftalık Gezinme:** 40 haftalık yatay seçim çubuğu, açılır hafta listesi ve *"Bu Haftaya Git"* hızlı butonu.
+- **Haftalık Raporlama:**
+  - Bu hafta tamamlanan konu sayısı (Hedef: 21 Konu)
+  - Günlük soru sayıları toplamı (manuel girişler)
+  - Hafta sonu deneme sınavı branş netleri ve toplam başarı skoru
+  - Haftalık öz değerlendirme ve koçluk notu
 
-1. **📷 Telefon / Tablet Kamerası ile Tarama:**
-   - Öğretmenin verdiği **Karekod Giriş Kartını** telefonunuzun standart kamerasına tuttuğunuzda sayfa otomatik açılır ve **hiç şifre yazmadan anında kendi çalışma masanıza** bağlanırsınız!
-2. **💻 Web Kamerası ile Tarama:**
-   - Giriş sayfasında **"Karekod Tara"** sekmesini seçerek bilgisayar/laptop kamerasına kartınızı gösterip tek saniyede giriş yapabilirsiniz.
-3. **🖨️ Yönetici / Öğretmen Karekod Üretici:**
-   - Yönetici panelinden her öğrenciye özel karekod oluşturabilir, linkini kopyalayabilir veya **"Tüm Sınıfın Karekod Kartlarını Yazdır"** butonuyla tüm sınıf için fotoğraflı öğrenci giriş kartları basabilirsiniz.
+---
+
+## 📝 Günlük Görevler & Manuel Soru Sayısı Takibi
+
+Her gün için öğrencinin karşısına çıkan iki ana görev bölümü:
+1. **📚 Günlük 3 Ders Konu Çalışması:**
+   - 3 farklı ders (Matematik, Fen Bilimleri, Türkçe, İnkılap vb.) seçimi ve konu başlığı girişi.
+   - Tek tıkla "Çalışıldı ✓" durumu.
+2. **✍️ Günlük 3 Ders Soru Çözümü (Manuel Soru Sayısı):**
+   - Çözülen soru sayısı doğrudan klavye ile yazılabilir veya `+5 / -5` hızlı butonlarıyla ayarlanabilir.
+   - Günlük toplam soru sayısı ve haftalık kümülatif soru sayısı anında hesaplanır.
+
+---
+
+## 🎯 Hafta Sonu Genel Deneme Sınavı (20'şer Soru / Toplam 120 Soru)
+
+Her hafta sonu (Cumartesi / Pazar) tüm temel branşlardan 20'şer soruluk deneme sınavı takip edilir:
+- **Türkçe (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
+- **Matematik (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
+- **Fen Bilimleri (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
+- **T.C. İnkılap Tarihi (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
+- **Din Kültürü ve Ahlak Bilgisi (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
+- **Yabancı Dil (İngilizce) (20 Soru):** Doğru (D), Yanlış (Y), Boş (B), Net
+- **Otomatik Net ve Başarı:** Formül `Net = D - (Y / 3)` ile hesaplanır, 120 soru üzerinden başarı yüzdesi ve grafikler oluşturulur.
+
+---
+
+## 📊 Yönetici & Öğretmen Haftalık Kontrol Paneli
+
+- **Haftaya Göre Sınıf Raporu:** Üst menüden herhangi bir hafta (1..40) seçildiğinde sınıfın o haftaki performansı listelenir:
+  - Sınıfın o hafta çözdüğü toplam soru adedi
+  - Öğrenci başına ortalama soru sayısı
+  - Sınıfın hafta sonu deneme net ortalaması
+  - Haftanın en çok soru çözen lider öğrencisi
+- **Öğrenci Haftalık Karnesi:** Her öğrencinin konu, soru ve deneme netleri.
+- **Karekod (QR) Giriş Kartı:** Öğrencilere özel karekod oluşturma ve tek tıkla doğrudan giriş.
+- **Haftalık Sınıf Karnesini Yazdır / PDF Yap.**
 
 ---
 
 ## 🔐 Giriş Bilgileri & Örnek Hesaplar
 
-Sistem hem öğrenciler hem de yönetici/öğretmenler için tek bir güvenli giriş kapısı üzerinden çalışır:
-
-| Hesap Türü | Kullanıcı Adı | Şifre | Karekod / Yetkiler & Özellikler |
+| Hesap Türü | Kullanıcı Adı | Şifre | Yetkiler & Özellikler |
 | :--- | :--- | :--- | :--- |
-| **🛡️ Yönetici / Öğretmen** | `admin` | `admin123` | Öğrencilere özel karekod oluşturur, sınıf karnesini, başarı oranlarını ve yansıma notlarını inceler, sınıf yedeği alır. |
-| **🚀 Örnek Öğrenci 1** | `Ahmet` | `1234` | Karekod ile anında giriş desteği, örnek 1. gün görevleri, ders ve yansıma notu ile hazır profil. |
-| **🌟 Örnek Öğrenci 2** | `Zeynep` | `1234` | Karekod ile anında giriş desteği, örnek spor ve soru çözümü kayıtları ile hazır profil. |
-| **➕ Yeni Öğrenci Kaydı** | *Serbest İsim* | *En az 4 hane* | Giriş ekranındaki "Yeni Kayıt" sekmesinden anında hesap oluşturulabilir ve otomatik karekod üretilir. |
-
----
-
-## 📸 Ekran & Mimari Önizleme
-
-Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzerine kurulmuştur:
-
-```
-+-----------------------------------------------------------------------------------------------+
-|                        BENİM 16 GÜNLÜK GELİŞİM PROGRAMIM (29 Ağu - 13 Eyl)                    |
-+-----------------------------------------------------------------------------------------------+
-|  📱 KAREKOD (QR) VE ŞİFRELİ GİRİŞ PORTALI: Telefon Kamerasını Tut, Anında Masana Bağlan!      |
-+-----------------------------------------------------------------------------------------------+
-|  📊 YÖNETİCİ & ÖĞRETMEN PANELİ: Sınıf Başarı Raporu, Karekod Kartı Yazdırma, Not Akışı        |
-+-----------------------------------------------------------------------------------------------+
-|  👤 Çoklu Kullanıcı & Profil: Ahmet (🚀), Zeynep (🌟), Mehmet (🦁) - Kişiye Özel Veri Kaydı   |
-+-----------------------------------------------------------------------------------------------+
-|  A. Bilişsel & Akademik 🧠  |  B. Üretim & Keşif 🎨  |  C. Fiziksel 🏃  |  D. Yaşam Becerisi 🌱 |
-+-----------------------------------------------------------------------------------------------+
-|  1. Aşama: Alışma 🌱 (29 Ağu - 2 Eyl)  | 2. Aşama: Gelişme 🚀 (3-8 Eyl) | 3. Aşama: Tamamlama 🎯 |
-+-----------------------------------------------------------------------------------------------+
-|  5 Vakit: 1. Güne Başla 🌅 ➔ 2. Öğren 💡 ➔ 3. Üret 🔍 ➔ 4. Hareket Et 🚲 ➔ 5. Sakinleş & Oku 🌙|
-+-----------------------------------------------------------------------------------------------+
-|  Ders Matrisi: Günde 3 Ders (Konu 'K' & Soru 'S') x 16 Gün = 48 Ders Takip Slotu               |
-+-----------------------------------------------------------------------------------------------+
-|  Öz-Değerlendirme: ⭐⭐⭐⭐⭐ 5 Yıldız Puanlama & "Yarın neyi daha iyi yapabilirim?" Not Defteri|
-+-----------------------------------------------------------------------------------------------+
-```
-
----
-
-## ✨ Temel Özellikler
-
-### 📱 1. Karekod (QR Kod) Giriş & Kart Yazdırma
-- **Kişiye Özel QR:** Her öğrencinin şifrelenmiş benzersiz giriş anahtarı vardır.
-- **Tek Tıkla Giriş Kartı Baskısı:** Yönetici panelinden tüm sınıfın fotoğraflı kimlik kartları tek sayfada yazdırılabilir.
-- **Entegre Kamera Okuyucu:** Web kamerası veya cep telefonu kamerasıyla anında tanıma.
-
-### 📊 2. Yönetici & Öğretmen Kontrol Paneli
-- **Sınıf Genel Başarı Raporu:** Toplam öğrenci mevcudu, sınıf tamamlama oranı (%), yapılan görevler ve tamamlanan K/S dersleri tek ekranda.
-- **Öğrenci Performans Listesi:** Seviye, XP, görev/ders ilerlemeleri, seri (streak) ve ortalama yıldız puanları.
-- **Günlük Yansıma Notları Akışı:** Öğrencilerin *"Yarın neyi daha iyi yapabilirim? Bugün neler öğrendim?"* kutusuna yazdıkları notların öğretmen tarafından tarih sırasıyla incelenebilmesi.
-- **Toplu Sınıf Yedeği (JSON):** Tüm sınıfın verilerini tek tıkla yedekleme ve geri yükleme.
-
-### 💻 3. Web Uygulaması (`index.html`)
-- **Dinamik 16 Gün Çizelgesi:** 29 Ağustos'tan 13 Eylül'e kadar gün seçimi ve aşama göstergeleri.
-- **5 Vakit Görev Takibi:** Tek tıkla `⚪ Yapmadım` ➔ `🟢 Yaptım (+10 XP)` ➔ `🟡 Kısmen (+5 XP)` durum döngüsü.
-- **16 Günlük 48 Ders Matrisi:** Konu (K) ve Soru (S) derslerinin doğrudan tablo üzerinden yönetimi.
-- **Oyunlaştırma (Gamification):** XP puanları, seviye sistemi (*Çırak ➔ Şampiyon*), başarı rozetleri ve konfeti kutlamaları.
-- **Gelişim Analitiği (Chart.js):** 4 gelişim alanının polar/radar grafiği ve 16 günlük tamamlama grafiği.
-
-### 📱 4. Mobil Uygulama (`mobile_app.html`)
-- **Native Mobil Deneyim:** Instagram Story tarzı gün çizelgesi, alt navigasyon menüsü (*Bottom Navigation*), ses efektleri (*Web Audio API*).
-- **Mobil Yönetici Raporu & QR Göster:** Üst menüden tek tıkla açılan sınıf kontrol ve öğrenci karekod ekranı.
+| **🛡️ Yönetici / Öğretmen** | `admin` | `admin123` | Tüm 40 haftanın sınıf raporlarını inceler, öğrenci karekodu üretir ve toplu yedek alır. |
+| **🚀 Örnek Öğrenci 1** | `Ahmet` | `1234` | 1. Hafta günlük soru ve hafta sonu deneme sınavı sonuçları girilmiş hazır profil. |
+| **🌟 Örnek Öğrenci 2** | `Zeynep` | `1234` | Günlük soru ve konu çalışma kayıtları hazır profil. |
+| **➕ Yeni Öğrenci Kaydı** | *Serbest İsim* | *En az 4 hane* | "Yeni Kayıt" sekmesinden anında hesap oluşturulabilir. |
 
 ---
 
@@ -93,15 +74,7 @@ Orijinal gelişim planı 4 temel boyut, 3 aşama ve günlük 5 vakit ritmi üzer
 * 📱 **Canlı Mobil Uygulama:** [https://mahofen.github.io/16-gunluk-gelisim-programi/mobile_app.html](https://mahofen.github.io/16-gunluk-gelisim-programi/mobile_app.html)
 * 📦 **GitHub Deposu:** [https://github.com/mahofen/16-gunluk-gelisim-programi](https://github.com/mahofen/16-gunluk-gelisim-programi)
 
-Yerel ortamda çalıştırmak için:
-1. Depoyu klonlayın:
-   ```bash
-   git clone https://github.com/mahofen/16-gunluk-gelisim-programi.git
-   cd 16-gunluk-gelisim-programi
-   ```
-2. `index.html` veya `mobile_app.html` dosyasını tarayıcınızda açın.
-
 ---
 
 ## 📄 Lisans
-Bu proje açık kaynaklı olup MIT lisansı altında paylaşılmıştır.
+Bu proje açık kaynaklı olup MIT lisansı altındadır.

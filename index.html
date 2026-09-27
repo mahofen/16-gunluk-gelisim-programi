@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Benim 16 Günlük Gelişim Programı | Güvenli Karekod (QR) & Yönetici Portalı</title>
+  <title>Haftalık Gelişim & Soru Takip Portalı (Ekim 2026 - Haziran 2027)</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -22,10 +22,10 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- QRCode.js (Karekod Üretici) -->
+  <!-- QRCode.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-  <!-- HTML5 QR Code Scanner (Kamera ile Karekod Okuyucu) -->
+  <!-- HTML5 QR Code Scanner -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
   <script>
@@ -51,7 +51,7 @@
           },
           boxShadow: {
             'fun': '0 8px 0 0 rgba(0, 0, 0, 0.06), 0 15px 25px -5px rgba(0, 0, 0, 0.05)',
-            'fun-hover': '0 4px 0 0 rgba(0, 0, 0, 0.06), 0 8px 15px -3px rgba(0, 0, 0, 0.08)',
+            'card-lift': '0 10px 30px -5px rgba(0, 0, 0, 0.08)',
           }
         }
       }
@@ -67,15 +67,7 @@
       background-size: 40px 40px;
       background-position: 0 0, 20px 20px;
     }
-    
-    .status-badge {
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .status-badge:active {
-      transform: scale(0.95);
-    }
 
-    /* Özel Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -92,7 +84,14 @@
       background: #94a3b8;
     }
 
-    /* Print Stili */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
     @media print {
       .no-print {
         display: none !important;
@@ -107,36 +106,37 @@
     }
   </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
+<body class="text-slate-800 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
 
   <!-- ================= TOP HEADER ================= -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Logo & Title -->
+      
+      <!-- Logo & Başlık -->
       <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
-          <i class="fa-solid fa-calendar-check text-xl"></i>
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+          <i class="fa-solid fa-graduation-cap text-xl"></i>
         </div>
         <div>
-          <h1 class="font-fun text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-700 via-sky-600 to-emerald-600 bg-clip-text text-transparent leading-tight">
-            BENİM 16 GÜNLÜK GELİŞİM PROGRAMIM
+          <h1 class="font-fun text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-700 via-indigo-600 to-emerald-600 bg-clip-text text-transparent leading-tight">
+            HAFTALIK GELİŞİM & SORU TAKİP SİSTEMİ
           </h1>
           <p class="text-xs text-slate-500 font-medium hidden sm:block">
-            29 Ağustos – 13 Eylül 2026 • Planla • Çalış • Üret • Hareket Et • Geliş
+            2026-2027 Eğitim Yılı • 40 Hafta (Eylül 2026 – Haziran 2027) • Konu • Soru Sayısı • Deneme Sınavları
           </p>
         </div>
       </div>
 
-      <!-- Header Sağ Butonlar / User Profile, Admin Panel & Logout -->
+      <!-- Header Sağ Butonlar -->
       <div class="flex items-center gap-2 sm:gap-3">
         
-        <!-- YÖNETİCİ & ÖĞRETMEN KONTROL PANELİ BUTONU -->
-        <button onclick="openAdminModal()" id="headerAdminBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold transition-all shadow-sm group" title="Yönetici ve Öğretmen Kontrol Paneli">
+        <!-- YÖNETİCİ KONTROL PANELİ BUTONU -->
+        <button onclick="openAdminModal()" id="headerAdminBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold transition-all shadow-sm group" title="Haftalık Sınıf Raporu & Yönetici Paneli">
           <i class="fa-solid fa-chart-pie text-sm text-indigo-600 group-hover:scale-110 transition-transform"></i>
-          <span class="hidden sm:inline">Yönetici Paneli</span>
+          <span class="hidden sm:inline">Haftalık Sınıf Raporu</span>
         </button>
 
-        <!-- AKTİF KULLANICI PROFİL / OTURUM BİLGİSİ -->
+        <!-- AKTİF KULLANICI PROFİLİ -->
         <div class="flex items-center gap-2 bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 px-3 py-1.5 rounded-2xl shadow-sm">
           <span class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-sm" id="headerUserAvatar">🚀</span>
           <div class="text-left leading-tight hidden sm:block">
@@ -145,473 +145,343 @@
           </div>
         </div>
 
-        <!-- Level & XP Badge -->
-        <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-2xl shadow-sm" id="headerXpBadgeContainer">
-          <i class="fa-solid fa-bolt text-amber-500 animate-pulse"></i>
-          <span class="text-xs font-bold text-amber-900" id="userLevelBadge">1. Seviye: Çırak</span>
-          <div class="w-14 bg-amber-200 h-2 rounded-full overflow-hidden hidden md:block">
-            <div id="xpBarFill" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 25%"></div>
-          </div>
-          <span class="text-xs font-semibold text-amber-700" id="xpText">0 XP</span>
+        <!-- Haftalık Soru Rozeti -->
+        <div class="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-2xl shadow-sm" title="Bu Hafta Çözülen Toplam Soru">
+          <i class="fa-solid fa-pen-nib text-emerald-600 text-sm"></i>
+          <span class="text-xs font-bold text-emerald-800" id="headerWeekQuestionCount">0 Soru</span>
         </div>
 
-        <!-- Seri (Streak) -->
-        <div class="flex items-center gap-1.5 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-2xl shadow-sm" id="headerStreakContainer" title="Tamamlanan Gün Serisi">
-          <i class="fa-solid fa-fire text-orange-500 text-sm"></i>
-          <span class="text-xs font-bold text-orange-800" id="streakBadge">0 Gün</span>
+        <!-- Deneme Rozeti -->
+        <div class="flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-2xl shadow-sm" title="Bu Haftanın Deneme Neti">
+          <i class="fa-solid fa-award text-amber-500 text-sm"></i>
+          <span class="text-xs font-bold text-amber-800" id="headerWeekDenemeNet">0.00 Net</span>
         </div>
 
-        <!-- Mobil Görünüme Geç Butonu -->
-        <a href="mobile_app.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all shadow-sm" title="Mobil Uygulama Arayüzü">
+        <!-- Mobil Versiyona Geç -->
+        <a href="mobile_app.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all shadow-sm" title="Mobil Takip Sayfası">
           <i class="fa-solid fa-mobile-screen-button text-sm text-blue-600"></i>
           <span class="hidden lg:inline">Mobil</span>
         </a>
 
-        <!-- ÇIKIŞ YAP BUTONU -->
-        <button onclick="handleLogout()" class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all flex items-center gap-1" title="Oturumu Kapat">
+        <!-- ÇIKIŞ YAP -->
+        <button onclick="handleLogout()" class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-xs font-bold transition-all flex items-center gap-1" title="Çıkış">
           <i class="fa-solid fa-right-from-bracket"></i>
           <span class="hidden sm:inline">Çıkış</span>
         </button>
 
-        <!-- Yazdır Butonu -->
-        <button onclick="window.print()" class="p-2 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors" title="Raporu Yazdır / PDF Yap">
+        <!-- Yazdır -->
+        <button onclick="window.print()" class="p-2 rounded-xl text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors" title="Haftalık Raporu Yazdır / PDF">
           <i class="fa-solid fa-print text-lg"></i>
         </button>
       </div>
+
     </div>
   </header>
 
-  <!-- ================= MOTTO & SUMMARY BANNER ================= -->
-  <section class="bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-600 text-white py-6 px-4 sm:px-6 relative overflow-hidden shadow-lg no-print">
-    <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-9xl">
-      <i class="fa-solid fa-rocket"></i>
+  <!-- ================= HAFTALIK MOTTO & ÖZET BANNER ================= -->
+  <section class="bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-600 text-white py-5 px-4 sm:px-6 relative overflow-hidden shadow-lg no-print">
+    <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none text-9xl">
+      <i class="fa-solid fa-book-open"></i>
     </div>
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+      
       <div class="text-center md:text-left">
-        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase mb-2 border border-white/20">
-          <i class="fa-regular fa-lightbulb text-amber-300"></i> Motivasyon Köşesi
+        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase mb-1.5 border border-white/20">
+          <i class="fa-solid fa-calendar-week text-amber-300"></i>
+          <span id="bannerWeekTitleBadge">1. Hafta (28 Eylül – 4 Ekim 2026)</span>
         </div>
         <h2 class="text-xl sm:text-2xl font-fun font-bold text-white tracking-wide">
-          "Bugün küçük adımlar, yarın büyük başarılar getirir! 💡"
+          "Düzenli soru çözümü ve hafta sonu denemeleri zirveye taşır! 🎯"
         </h2>
-        <p class="text-sm text-sky-100 mt-1 max-w-2xl">
-          Sevgili <strong class="text-amber-300" id="bannerStudentName">Öğrenci</strong>, 16 günlük harika bir yolculuğa hoş geldin! Her gün 5 vakitten görevlerini tamamla, 3 dersini yap ve gelişimini izle.
+        <p class="text-xs sm:text-sm text-sky-100 mt-1 max-w-2xl">
+          Sevgili <strong class="text-amber-300" id="bannerStudentName">Öğrenci</strong>, bu hafta her gün 3 ders konu çalışmanı tamamla, çözdüğün soru sayılarını gir ve hafta sonu 20'şer soruluk branş denemeleriyle kendini sına!
         </p>
       </div>
 
-      <!-- Hızlı Genel İlerleme Kartı -->
-      <div class="bg-white/10 backdrop-blur-md border border-white/20 p-3 sm:p-4 rounded-2xl flex items-center gap-4 text-center min-w-[240px]">
-        <div class="relative w-14 h-14 flex items-center justify-center">
-          <svg class="w-14 h-14 transform -rotate-90">
-            <circle cx="28" cy="28" r="22" stroke="currentColor" stroke-width="4" class="text-white/20" fill="transparent" />
-            <circle id="overallCircleProgress" cx="28" cy="28" r="22" stroke="currentColor" stroke-width="4" class="text-amber-400 transition-all duration-700" stroke-dasharray="138" stroke-dashoffset="138" stroke-linecap="round" fill="transparent" />
-          </svg>
-          <span class="absolute font-fun font-bold text-sm text-white" id="overallPercentText">0%</span>
+      <!-- Haftalık 3 Temel Başarı Metriği -->
+      <div class="grid grid-cols-3 gap-2 sm:gap-3 bg-white/10 backdrop-blur-md border border-white/20 p-2.5 sm:p-3 rounded-2xl min-w-[320px] text-center">
+        
+        <div class="p-2 rounded-xl bg-white/10 border border-white/10">
+          <div class="text-[10px] text-sky-200 font-bold uppercase">Konular</div>
+          <div class="text-lg font-fun font-bold text-amber-300 mt-0.5" id="bannerWeekTopicsRatio">0/21</div>
+          <div class="text-[9px] text-sky-100">3 Ders x 7 Gün</div>
         </div>
-        <div class="text-left">
-          <div class="text-xs text-sky-200 font-medium">Toplam İlerleme</div>
-          <div class="text-lg font-fun font-bold text-white" id="completedTasksRatio">0 / 0 Görev</div>
-          <div class="text-[11px] text-amber-300 font-semibold" id="activePhaseName">1. Aşama: Alışma</div>
+
+        <div class="p-2 rounded-xl bg-white/10 border border-white/10">
+          <div class="text-[10px] text-sky-200 font-bold uppercase">Toplam Soru</div>
+          <div class="text-lg font-fun font-bold text-emerald-300 mt-0.5" id="bannerWeekTotalQuestions">0</div>
+          <div class="text-[9px] text-sky-100">Haftalık Soru</div>
         </div>
+
+        <div class="p-2 rounded-xl bg-white/10 border border-white/10">
+          <div class="text-[10px] text-sky-200 font-bold uppercase">Deneme Neti</div>
+          <div class="text-lg font-fun font-bold text-yellow-300 mt-0.5" id="bannerWeekDenemeScore">0 / 120</div>
+          <div class="text-[9px] text-sky-100">Hafta Sonu Sınavı</div>
+        </div>
+
       </div>
+
     </div>
   </section>
 
   <!-- ================= MAIN CONTAINER ================= -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
 
-    <!-- 1. GÜN SEÇİCİ & 3 AŞAMALI YOLCULUK ÇİZELGESİ -->
-    <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-fun border border-slate-200">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5 border-b border-slate-100 pb-4">
+    <!-- 1. HAFTA SEÇİCİ VE YILLIK TAKVİM REHBERİ (EYLÜL 2026 - HAZİRAN 2027) -->
+    <section class="bg-white rounded-3xl p-5 shadow-fun border border-slate-200 no-print">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
         <div>
           <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-map-location-dot text-sky-500"></i>
-            3 Aşamalı 16 Günlük Yolculuğum
+            <i class="fa-solid fa-calendar-days text-blue-600"></i>
+            Haftalık Takip Çizelgesi (40 Hafta)
           </h3>
-          <p class="text-xs text-slate-500 mt-0.5">İncelemek ve veri girmek istediğin günü tıkla.</p>
-        </div>
-
-        <!-- 3 Aşama Açıklama Butonları / Rozetleri -->
-        <div class="flex flex-wrap gap-2 text-xs">
-          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium">
-            <span>🌱</span> <strong>1. Aşama (29 Ağu - 2 Eyl):</strong> Alışma
-          </div>
-          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-50 text-sky-800 border border-sky-200 font-medium">
-            <span>🚀</span> <strong>2. Aşama (3 - 8 Eyl):</strong> Gelişme
-          </div>
-          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 text-purple-800 border border-purple-200 font-medium">
-            <span>🎯</span> <strong>3. Aşama (9 - 13 Eyl):</strong> Hazırlık & Tamamlama
-          </div>
-        </div>
-      </div>
-
-      <!-- 16 Gün Yatay Buton Barı -->
-      <div class="grid grid-cols-4 sm:grid-cols-8 md:grid-cols-16 gap-2" id="dayButtonsContainer">
-        <!-- JS ile dinamik oluşturulacak -->
-      </div>
-
-      <!-- Seçili Gün Başlığı ve Aşama Rehberi -->
-      <div class="mt-5 p-4 rounded-2xl bg-gradient-to-r from-slate-50 to-sky-50/50 border border-slate-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-white border border-sky-200 shadow-sm flex flex-col items-center justify-center font-fun text-sky-700">
-            <span class="text-[10px] font-bold uppercase leading-none" id="selectedDayMonth">AĞU</span>
-            <span class="text-lg font-bold leading-none" id="selectedDayNumber">29</span>
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h4 class="font-fun text-lg font-bold text-slate-800" id="selectedDayFullTitle">29 Ağustos Cumartesi (1. Gün)</h4>
-              <span id="selectedDayPhaseBadge" class="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                1. Aşama: Alışma 🌱
-              </span>
-            </div>
-            <p class="text-xs text-slate-600 mt-0.5" id="selectedDayPhaseGoal">
-              🎯 <strong>Bu Aşamadaki Hedef:</strong> Programa ve plana alışırım, basit görevlerle başlarım, yeni alışkanlıklar kazanırım.
-            </p>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2 self-end md:self-center">
-          <button onclick="changeSelectedDay(-1)" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-1">
-            <i class="fa-solid fa-chevron-left"></i> Önceki Gün
-          </button>
-          <button onclick="changeSelectedDay(1)" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-1">
-            Sonraki Gün <i class="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. GELİŞİM ALANLARI ÖZET KARTLARI (4 BOYUT) -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <!-- A. Akademik ve Bilişsel -->
-      <div class="bg-white rounded-3xl p-5 border-t-4 border-blue-500 shadow-sm border-x border-b border-slate-200/80 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-brain"></i>
-          </div>
-          <div>
-            <h4 class="font-fun text-sm font-bold text-slate-800">A. AKADEMİK & BİLİŞSEL</h4>
-            <span class="text-[11px] text-blue-600 font-semibold">Odak & Bilgi</span>
-          </div>
-        </div>
-        <p class="text-xs text-slate-600 leading-relaxed">
-          Konu çalışmak, soru çözmek, araştırma, proje çalışması, Osmanlıca okuma/yazma, kitap & dergi.
-        </p>
-      </div>
-
-      <!-- B. Üretim -->
-      <div class="bg-white rounded-3xl p-5 border-t-4 border-emerald-500 shadow-sm border-x border-b border-slate-200/80 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-cubes-stacked"></i>
-          </div>
-          <div>
-            <h4 class="font-fun text-sm font-bold text-slate-800">B. ÜRETİM & YARATICILIK</h4>
-            <span class="text-[11px] text-emerald-600 font-semibold">Sanat & Keşif</span>
-          </div>
-        </div>
-        <p class="text-xs text-slate-600 leading-relaxed">
-          Resim yapmak, lego ile üretmek, atölye çalışması, proje üretimi, yeni deneyler, serbest yazı.
-        </p>
-      </div>
-
-      <!-- C. Fiziksel Gelişim -->
-      <div class="bg-white rounded-3xl p-5 border-t-4 border-amber-500 shadow-sm border-x border-b border-slate-200/80 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-person-running"></i>
-          </div>
-          <div>
-            <h4 class="font-fun text-sm font-bold text-slate-800">C. FİZİKSEL GELİŞİM</h4>
-            <span class="text-[11px] text-amber-600 font-semibold">Enerji & Sağlık</span>
-          </div>
-        </div>
-        <p class="text-xs text-slate-600 leading-relaxed">
-          Sabah sporu, akşam yürüyüşü, bisiklete binmek, havuza gitmek, bahçede oyun, düzenli spor.
-        </p>
-      </div>
-
-      <!-- D. Sorumluluk ve Yaşam Becerileri -->
-      <div class="bg-white rounded-3xl p-5 border-t-4 border-purple-500 shadow-sm border-x border-b border-slate-200/80 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg">
-            <i class="fa-solid fa-seedling"></i>
-          </div>
-          <div>
-            <h4 class="font-fun text-sm font-bold text-slate-800">D. SORUMLULUK & YAŞAM</h4>
-            <span class="text-[11px] text-purple-600 font-semibold">Düzen & Katkı</span>
-          </div>
-        </div>
-        <p class="text-xs text-slate-600 leading-relaxed">
-          Kahvaltıya yardım, çiçek bakımı, oyuncak ve oda toplama, bahçe işleri, günlük plan kontrolü.
-        </p>
-      </div>
-    </section>
-
-    <!-- 3. GÜNLÜK 5 VAKİT RUTİNİ (GÖREV SEÇİM VE TAKİP) -->
-    <section class="bg-white rounded-3xl p-5 sm:p-7 shadow-fun border border-slate-200">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
-        <div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold mb-1">
-            <i class="fa-solid fa-clock"></i> GÜNLÜK RUTİNİM
-          </div>
-          <h3 class="font-fun text-2xl font-bold text-slate-800">
-            5 Vakit – Günlük Planım
-          </h3>
-          <p class="text-xs sm:text-sm text-slate-500">
-            Kural: Her vakitten <strong class="text-blue-600">en az 1 görev</strong> seç ve durumunu işaretle!
+          <p class="text-xs text-slate-500 mt-0.5">
+            28 Eylül 2026'dan 30 Haziran 2027 sonuna kadar takip etmek istediğin haftayı seç.
           </p>
         </div>
 
-        <!-- Durum Açıklama Lejantı -->
-        <div class="flex items-center gap-3 text-xs bg-slate-50 border border-slate-200 p-2.5 rounded-2xl">
-          <span class="font-bold text-slate-700">Durum:</span>
-          <span class="inline-flex items-center gap-1 text-emerald-700 font-medium">
-            <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 inline-block"></span> Yaptım
-          </span>
-          <span class="inline-flex items-center gap-1 text-amber-700 font-medium">
-            <span class="w-3.5 h-3.5 rounded-full bg-amber-400 inline-block"></span> Kısmen
-          </span>
-          <span class="inline-flex items-center gap-1 text-slate-400 font-medium">
-            <span class="w-3.5 h-3.5 rounded-full bg-slate-200 border border-slate-300 inline-block"></span> Yapmadım
-          </span>
+        <!-- Hafta Gezinme Kontrolleri -->
+        <div class="flex items-center gap-2 self-stretch md:self-auto justify-between md:justify-end">
+          <button onclick="changeWeek(-1)" class="px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 flex items-center gap-1 shadow-sm">
+            <i class="fa-solid fa-chevron-left"></i> Önceki Hafta
+          </button>
+          
+          <select id="weekSelectDropdown" onchange="selectWeek(parseInt(this.value))" class="px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-xs font-bold text-blue-900 focus:outline-none cursor-pointer">
+            <!-- JS ile 40 hafta seçenekleri -->
+          </select>
+
+          <button onclick="changeWeek(1)" class="px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 flex items-center gap-1 shadow-sm">
+            Sonraki Hafta <i class="fa-solid fa-chevron-right"></i>
+          </button>
+
+          <button onclick="goToCurrentSystemWeek()" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-800 hidden sm:flex items-center gap-1 shadow-sm">
+            <i class="fa-solid fa-clock-rotate-left"></i> Bu Haftaya Git
+          </button>
         </div>
       </div>
 
-      <!-- 5 VAKİT KARTLARI GRID -->
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-4" id="vakitCardsContainer">
-        <!-- JS ile 5 Vakit Dinamik Basılacak -->
+      <!-- 40 Haftalık Hızlı Seçim Şeridi (Yatay Kaydırılabilir) -->
+      <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar" id="weeksHorizontalBar">
+        <!-- JS ile 40 adet mini hafta butonu -->
       </div>
     </section>
 
-    <!-- 4. HAFTALIK VE 16 GÜNLÜK DERS PLANI & TAKİP MATRİSİ -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- 2. HAFTALIK GÜN SEÇİCİ (PAZARTESİ - PAZAR) -->
+    <section class="bg-white rounded-3xl p-5 shadow-fun border border-slate-200">
       
-      <!-- Sol: Haftalık Ders Şablonu (Pazartesi - Pazar) -->
-      <div class="lg:col-span-4 bg-white rounded-3xl p-5 sm:p-6 shadow-fun border border-slate-200 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
-            <h3 class="font-fun text-lg font-bold text-slate-800 flex items-center gap-2">
-              <i class="fa-solid fa-table-cells text-indigo-600"></i> Haftalık Ders Planı
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div>
+            <h3 class="font-fun text-lg font-bold text-slate-800" id="currentWeekRangeHeader">
+              1. Hafta: 28 Eylül – 4 Ekim 2026
             </h3>
-            <span class="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-lg font-bold">
-              En az 3 ders
+            <span class="text-xs text-slate-500">Günlük 3 Ders Konu Çalışması ve 3 Ders Soru Girişi</span>
+          </div>
+        </div>
+
+        <div class="text-xs text-slate-500 bg-slate-50 px-3 py-1 rounded-xl border">
+          Bugün Seçili: <strong class="text-blue-700 font-fun" id="selectedDayNameText">Pazartesi</strong>
+        </div>
+      </div>
+
+      <!-- 7 Gün Butonları (Pzt, Sal, Çar, Per, Cum, Cmt, Paz) -->
+      <div class="grid grid-cols-7 gap-2 mb-6" id="daysTabBar">
+        <!-- JS ile 7 gün butonu -->
+      </div>
+
+      <!-- SEÇİLİ GÜNÜN GÖREV PANELİ (3 DERS KONU & 3 DERS SORU SAYISI) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- SOL: 3 DERS KONU ÇALIŞMA PANELİ -->
+        <div class="lg:col-span-6 bg-gradient-to-br from-blue-50/60 to-indigo-50/60 rounded-3xl p-5 border border-blue-200/70 space-y-4">
+          <div class="flex items-center justify-between border-b border-blue-200/60 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs shadow">
+                <i class="fa-solid fa-book-bookmark"></i>
+              </span>
+              <div>
+                <h4 class="font-fun text-base font-bold text-slate-800">1. Günlük 3 Ders Konu Çalışması</h4>
+                <p class="text-[11px] text-slate-500">Çalıştığın 3 dersi seç ve tamamlandığında işaretle</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-xl bg-white border border-blue-200 text-blue-700 shadow-sm" id="dailyTopicsProgressBadge">
+              0 / 3 Konu
             </span>
           </div>
-          <p class="text-xs text-slate-500 mb-4">
-            Her gün için belirlenen standart Konu (K) ve Soru (S) dağılım şablonu:
-          </p>
 
-          <!-- Haftalık Tablo -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-center border-collapse">
-              <thead>
-                <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
-                  <th class="py-2 px-1 text-left">GÜNLER</th>
-                  <th class="py-2 px-1 bg-red-50 text-red-700">PZT</th>
-                  <th class="py-2 px-1">SAL</th>
-                  <th class="py-2 px-1 bg-emerald-50 text-emerald-700">ÇAR</th>
-                  <th class="py-2 px-1">PER</th>
-                  <th class="py-2 px-1 bg-amber-50 text-amber-700">CUM</th>
-                  <th class="py-2 px-1 bg-sky-50 text-sky-700">CMT</th>
-                  <th class="py-2 px-1 bg-rose-50 text-rose-700">PZR</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 font-medium">
-                <tr>
-                  <td class="py-2 px-1 text-left font-bold text-slate-600">1. Ders</td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                </tr>
-                <tr>
-                  <td class="py-2 px-1 text-left font-bold text-slate-600">2. Ders</td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                </tr>
-                <tr>
-                  <td class="py-2 px-1 text-left font-bold text-slate-600">3. Ders</td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-rose-600 text-white font-bold inline-flex items-center justify-center text-[11px]">S</span></td>
-                  <td class="py-2 px-1"><span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold inline-flex items-center justify-center text-[11px]">K</span></td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="space-y-3" id="dailyTopicsList">
+            <!-- JS ile 3 Konu Çalışma Kartı -->
           </div>
 
-          <!-- Plan Kuralları -->
-          <div class="mt-4 p-3 rounded-2xl bg-blue-50/70 border border-blue-200/80 text-xs text-slate-700 space-y-1">
-            <div class="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
-              <i class="fa-solid fa-book-bookmark text-blue-600"></i> Planımın Kuralları:
+          <div class="text-[11px] text-blue-900 bg-white/80 p-2.5 rounded-2xl border border-blue-200/60 flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-blue-600"></i>
+            <span>Ders adını ve çalıştığın konu başlığını özgürce değiştirebilirsin.</span>
+          </div>
+        </div>
+
+        <!-- SAĞ: 3 DERS SORU ÇÖZÜMÜ & MANUEL SORU SAYISI GİRİŞİ -->
+        <div class="lg:col-span-6 bg-gradient-to-br from-emerald-50/60 to-teal-50/60 rounded-3xl p-5 border border-emerald-200/70 space-y-4">
+          <div class="flex items-center justify-between border-b border-emerald-200/60 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xs shadow">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </span>
+              <div>
+                <h4 class="font-fun text-base font-bold text-slate-800">2. Günlük 3 Ders Soru Çözümü</h4>
+                <p class="text-[11px] text-slate-500">Çözdüğün soru sayısını manuel olarak kutulara yaz</p>
+              </div>
             </div>
-            <div class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> Her gün en az 3 ders çalışırım.</div>
-            <div class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> En az 1 Konu (K) ve 1 Soru (S) yaparım.</div>
-            <div class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> Haftalık planıma sadık kalırım.</div>
-            <div class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> Eksiklerimi fark edip tamamlarım.</div>
+            <div class="text-right">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-xl bg-white border border-emerald-200 text-emerald-800 shadow-sm" id="dailyQuestionsTotalBadge">
+                0 Soru Çözüldü
+              </span>
+            </div>
+          </div>
+
+          <div class="space-y-3" id="dailyQuestionsList">
+            <!-- JS ile 3 Ders Manuel Soru Giriş Kartı -->
+          </div>
+
+          <!-- Günlük Hızlı Puan & Not Girişi -->
+          <div class="bg-white/90 p-3.5 rounded-2xl border border-emerald-200/70 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-700">Bugünkü Performans:</span>
+              <div class="flex gap-1" id="dailyStarsContainer">
+                <!-- 5 yıldız -->
+              </div>
+            </div>
+
+            <div class="w-full sm:w-auto flex-1 max-w-xs">
+              <input type="text" id="dailyShortNoteInput" placeholder="Günün kısa notu (Örn: Çarpanlar konusu iyiydi)..." class="w-full px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:bg-white focus:outline-none">
+            </div>
           </div>
         </div>
 
-        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-          <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> K: Konu</span>
-          <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> S: Soru Çözümü</span>
-        </div>
       </div>
 
-      <!-- Sağ: 16 Günlük İnteraktif Ders Takip Tablosu -->
-      <div class="lg:col-span-8 bg-white rounded-3xl p-5 sm:p-6 shadow-fun border border-slate-200 flex flex-col justify-between">
-        <div>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
-            <div>
-              <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-list-check text-emerald-600"></i>
-                16 Günlük Ders Takip Tablosu
-              </h3>
-              <p class="text-xs text-slate-500 mt-0.5">Her gün için 3 dersin durumunu doğrudan tablodan tıkla ve işaretle!</p>
-            </div>
-            <div class="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-xl font-bold self-start sm:self-auto flex items-center gap-1.5">
-              <i class="fa-solid fa-circle-check text-emerald-600"></i>
-              <span id="lessonTotalCount">0 / 48 Ders Tamamlandı</span>
-            </div>
-          </div>
-
-          <!-- 16 Günlük Yatay Kaydırılabilir Tablo -->
-          <div class="overflow-x-auto pb-2">
-            <table class="w-full text-xs text-center border-collapse min-w-[700px]" id="lessonsTrackerTable">
-              <!-- JS ile dinamik üretilecek -->
-            </table>
-          </div>
-        </div>
-
-        <div class="mt-4 p-3 rounded-2xl bg-emerald-50/60 border border-emerald-200/60 flex items-center justify-between text-xs text-emerald-900 font-medium">
-          <span class="flex items-center gap-2">
-            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
-            Derslerini planla, işaretle ve ilerlemeni gör!
-          </span>
-          <span class="text-[11px] text-slate-500 font-normal">Kutuya tıklayarak K/S/Tamamlandı durumunu değiştir</span>
-        </div>
-      </div>
     </section>
 
-    <!-- 5. GÜN SONU DEĞERLENDİRMEM & ÖZ-YANSIMA NOT DEFTERİ -->
-    <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+    <!-- 3. HAFTA SONU GENEL DENEME SINAVI (TÜM BRANŞLAR - 20'ŞER SORU) -->
+    <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-fun border-2 border-indigo-200">
       
-      <!-- Sol: Yıldız Derecelendirme -->
-      <div class="md:col-span-5 bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white rounded-3xl p-6 shadow-fun flex flex-col justify-between relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl pointer-events-none">
-          <i class="fa-solid fa-star"></i>
-        </div>
-        <div class="relative z-10">
-          <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase mb-3">
-            <i class="fa-solid fa-award text-yellow-200"></i> Gün Sonu Öz Değerlendirme
-          </div>
-          <h3 class="font-fun text-2xl font-bold text-white mb-2">
-            Bugün Kendime Kaç Yıldız Veriyorum?
-          </h3>
-          <p class="text-xs text-amber-100 leading-relaxed mb-6">
-            Günün nasıl geçti? Görevlerini ne ölçüde başardın? Kendini dürüstçe değerlendir ve yıldızını seç!
-          </p>
-
-          <!-- 5 Yıldız Seçim Alanı -->
-          <div class="flex items-center justify-center gap-3 py-4 bg-black/15 backdrop-blur-sm rounded-2xl border border-white/20 mb-4" id="starRatingContainer">
-            <button onclick="setDailyRating(1)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="1"><i class="fa-solid fa-star"></i></button>
-            <button onclick="setDailyRating(2)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="2"><i class="fa-solid fa-star"></i></button>
-            <button onclick="setDailyRating(3)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="3"><i class="fa-solid fa-star"></i></button>
-            <button onclick="setDailyRating(4)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="4"><i class="fa-solid fa-star"></i></button>
-            <button onclick="setDailyRating(5)" class="star-btn text-3xl sm:text-4xl text-amber-200/50 hover:text-yellow-300 hover:scale-125 transition-all" data-star="5"><i class="fa-solid fa-star"></i></button>
-          </div>
-
-          <div class="text-center font-fun text-sm font-bold text-yellow-200" id="starFeedbackText">
-            Henüz puan verilmedi
-          </div>
-        </div>
-
-        <div class="mt-4 pt-3 border-t border-white/20 text-[11px] text-amber-100 text-center relative z-10">
-          ⭐ Her 5 yıldızlı gün sana ekstra +25 XP kazandırır!
-        </div>
-      </div>
-
-      <!-- Sağ: Günlük Yansıma Notu ("Yarın neyi daha iyi yapabilirim?") -->
-      <div class="md:col-span-7 bg-white rounded-3xl p-6 shadow-fun border border-slate-200 flex flex-col justify-between">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 mb-5 pb-4 border-b border-indigo-100">
         <div>
-          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
-            <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
-              <i class="fa-solid fa-pen-fancy text-sky-600"></i> Günlük Yansıma & Gelişim Notu
-            </h3>
-            <span class="text-xs text-slate-400" id="noteSaveStatus">Otomatik Kaydedilir</span>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 text-xs font-bold mb-1">
+            <i class="fa-solid fa-file-signature text-indigo-600"></i> HAFTA SONU DENEME SINAVI (CUMARTESİ / PAZAR)
           </div>
-
-          <label for="dailyNoteInput" class="block font-fun text-sm font-bold text-slate-700 mb-2">
-            "Yarın neyi daha iyi yapabilirim? Bugün neler öğrendim?"
-          </label>
-          <textarea id="dailyNoteInput" rows="5" class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all resize-none font-medium" placeholder="Örn: Bugün Osmanlıca okumamı biraz daha artırabilirim, sabah sporunu hiç aksatmadım, yarın soru çözümüne 20 dakika erken başlayacağım..."></textarea>
+          <h3 class="font-fun text-2xl font-bold text-slate-800">
+            Tüm Branşlardan 20'şer Soruluk Deneme Sınavı
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Her hafta sonu tüm derslerden 20'şer soru çözülür. Doğru ve Yanlış sayılarını girin, netler otomatik hesaplansın!
+          </p>
         </div>
 
-        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-          <span class="text-xs text-slate-500">
-            💡 Düşüncelerini kaydetmek gelişiminin en büyük anahtarıdır.
-          </span>
-          <button onclick="saveDailyNote()" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-fun font-semibold text-xs shadow-md shadow-sky-600/20 transition-all flex items-center gap-1.5">
-            <i class="fa-solid fa-floppy-disk"></i> Notu Kaydet
-          </button>
+        <!-- Toplam Deneme Net Kartı -->
+        <div class="flex items-center gap-3 bg-gradient-to-r from-indigo-900 to-purple-900 text-white p-3.5 rounded-2xl shadow-md min-w-[260px] justify-between">
+          <div>
+            <div class="text-[10px] text-purple-200 uppercase font-bold tracking-wider">Haftalık Deneme Skoru</div>
+            <div class="text-2xl font-fun font-bold text-yellow-300" id="denemeTotalNetDisplay">0.00 Net</div>
+            <div class="text-[10px] text-purple-300">Toplam 120 Soru Üzerinden</div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs px-2.5 py-1 rounded-xl bg-white/20 text-white font-bold" id="denemeSuccessRateBadge">%0 Başarı</span>
+            <div class="text-[10px] text-purple-200 mt-1" id="denemeCorrectWrongRatio">0 D / 0 Y</div>
+          </div>
         </div>
       </div>
+
+      <!-- 6 Branş Deneme Tablosu / Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="denemeSubjectsGrid">
+        <!-- JS ile 6 branş kartı (Türkçe, Matematik, Fen, İnkılap, Din, İngilizce) -->
+      </div>
+
+      <!-- Deneme Değerlendirme Notu -->
+      <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="w-full sm:flex-1">
+          <input type="text" id="denemeNoteInput" placeholder="Deneme analizi & yorumun (Örn: Matematikte süre yetmedi, fen netim yükseldi)..." class="w-full px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:bg-white focus:outline-none">
+        </div>
+        <button onclick="saveWeekDenemeResults()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-fun font-bold text-xs shadow-md shadow-indigo-600/20 transition-all flex items-center gap-1.5 shrink-0">
+          <i class="fa-solid fa-floppy-disk"></i> Deneme Sonuçlarını Kaydet
+        </button>
+      </div>
+
     </section>
 
-    <!-- 6. İSTATİSTİKLER VE GELİŞİM GRAFİKLERİ -->
-    <section class="bg-white rounded-3xl p-6 shadow-fun border border-slate-200">
-      <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
+    <!-- 4. HAFTALIK ÖZET RAPOR VE GRAFİK ANALİTİĞİ -->
+    <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-fun border border-slate-200">
+      
+      <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-100">
         <div>
           <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-chart-pie text-purple-600"></i>
-            Gelişim Analitiği & Başarı Rozetleri
+            <i class="fa-solid fa-chart-line text-purple-600"></i>
+            Bu Haftanın Performans Analitiği
           </h3>
-          <p class="text-xs text-slate-500 mt-0.5">16 günlük serüveninde hangi alanda ne kadar ilerledin?</p>
+          <p class="text-xs text-slate-500 mt-0.5">Haftalık soru dağılımı ve gün gün ilerleme durumu</p>
         </div>
-        <button onclick="refreshCharts()" class="text-xs text-slate-500 hover:text-blue-600 font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-arrows-rotate"></i> Yenile
+
+        <button onclick="renderWeeklyCharts()" class="text-xs text-slate-500 hover:text-blue-600 font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-arrows-rotate"></i> Grafikleri Yenile
         </button>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Grafik 1: Alan Dağılımı (Radar / Polar) -->
-        <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-4 border border-slate-200/80 flex flex-col items-center justify-center">
-          <h4 class="font-fun text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Gelişim Alanları Dağılımı</h4>
-          <div class="w-full max-w-[280px] h-[240px] relative">
-            <canvas id="areasChart"></canvas>
-          </div>
-        </div>
-
-        <!-- Grafik 2: 16 Günlük Trend Çizgisi -->
+        
+        <!-- Grafik 1: Günlük Çözülen Soru Sayısı Bar Grafiği -->
         <div class="lg:col-span-7 bg-slate-50 rounded-2xl p-4 border border-slate-200/80 flex flex-col justify-between">
-          <h4 class="font-fun text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">16 Günlük Görev Tamamlama Grafiği</h4>
+          <h4 class="font-fun text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Günlük Soru Çözüm Dağılımı (Pzt - Paz)</h4>
           <div class="w-full h-[220px]">
-            <canvas id="dailyProgressChart"></canvas>
+            <canvas id="weeklyDailyQuestionsChart"></canvas>
           </div>
         </div>
+
+        <!-- Grafik 2: Ders Bazında Soru Dağılımı Pasta Grafiği -->
+        <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-4 border border-slate-200/80 flex flex-col items-center justify-center">
+          <h4 class="font-fun text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Ders Bazında Soru Ağırlığı</h4>
+          <div class="w-full max-w-[260px] h-[220px] relative">
+            <canvas id="weeklySubjectShareChart"></canvas>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Başarı Rozetleri Koleksiyonu -->
-      <div class="mt-6 pt-5 border-t border-slate-100">
-        <h4 class="font-fun text-sm font-bold text-slate-800 mb-3 flex items-center gap-1.5">
-          <i class="fa-solid fa-trophy text-amber-500"></i> Kazanılan Başarı Rozetleri
-        </h4>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3" id="badgesContainer">
-          <!-- JS ile doldurulacak -->
+      <!-- Haftalık Yansıma ve Koçluk Notu Defteri -->
+      <div class="mt-6 pt-5 border-t border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-4">
+        
+        <div class="md:col-span-8 bg-amber-50/60 p-4 rounded-2xl border border-amber-200/70 space-y-2">
+          <label class="block font-fun text-xs font-bold text-amber-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-feather-pointed text-amber-600"></i> Bu Haftanın Değerlendirmesi: "Neyi iyi yaptım, gelecek hafta neye odaklanacağım?"
+          </label>
+          <textarea id="weeklyReflectionText" rows="3" placeholder="Örn: Bu hafta günlük 100 soru hedefimi aştım. Fen denemesinde 19 net yaptım. Gelecek hafta matematikte yeni nesil soru kalıplarına daha çok zaman ayıracağım..." class="w-full p-3 rounded-xl bg-white border border-amber-200 text-xs focus:outline-none resize-none"></textarea>
+          <div class="flex justify-between items-center text-[11px] text-amber-800">
+            <span>💡 Haftalık düşüncelerini yazmak sürekli gelişmeni sağlar.</span>
+            <button onclick="saveWeeklyReflection()" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-fun font-bold text-xs shadow-sm">
+              Kaydet
+            </button>
+          </div>
         </div>
+
+        <div class="md:col-span-4 bg-gradient-to-br from-indigo-900 to-purple-900 text-white p-4 rounded-2xl flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-purple-200">Haftalık Karne Özeti</span>
+            <h5 class="font-fun text-base font-bold mt-1 text-white" id="weeklyCardTitle">1. Hafta Karnesi</h5>
+            <div class="mt-2 space-y-1 text-xs text-purple-100">
+              <div class="flex justify-between"><span>Konu Tamamlama:</span> <strong id="karnеTopicsCount">0 / 21</strong></div>
+              <div class="flex justify-between"><span>Haftalık Soru:</span> <strong id="karneQuestionsCount">0 Soru</strong></div>
+              <div class="flex justify-between"><span>Hafta Sonu Denemesi:</span> <strong id="karneDenemeNet">0.00 Net</strong></div>
+            </div>
+          </div>
+
+          <button onclick="window.print()" class="w-full py-2 rounded-xl bg-white text-indigo-900 font-fun font-bold text-xs mt-3 shadow hover:bg-purple-50 transition-colors">
+            Haftalık Raporu Yazdır 🖨️
+          </button>
+        </div>
+
       </div>
+
     </section>
 
   </main>
@@ -620,36 +490,35 @@
   <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mt-12 no-print">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-2">
-        <span class="font-fun font-bold text-blue-600 text-sm">BENİM 16 GÜNLÜK GELİŞİM PROGRAMIM</span>
-        <span>• 29 Ağustos - 13 Eylül 2026</span>
+        <span class="font-fun font-bold text-blue-600 text-sm">HAFTALIK GELİŞİM & SORU TAKİP SİSTEMİ</span>
+        <span>• 2026-2027 Eğitim Öğretim Yılı (Eylül 2026 – Haziran 2027)</span>
       </div>
       <div class="text-slate-400">
-        16 Günlük Gelişim Planı Portalı • Karekod (QR) ve Şifreli Giriş Desteği
+        Haftalık Takip • Günlük 3 Ders Konu & Soru Sayısı • 20'şer Soruluk Hafta Sonu Denemesi • Karekod Giriş
       </div>
     </div>
   </footer>
 
-  <!-- ================= ANA GİRİŞ & KAYIT KAPISI MODALI (LOGIN GATEWAY) ================= -->
+  <!-- ================= ANA GİRİŞ & KAREKOD KAPISI MODALI ================= -->
   <div id="authGateModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-100 overflow-hidden flex flex-col md:flex-row max-h-[92vh]">
       
-      <!-- Sol Panel: Giriş, QR Tarama ve Kayıt Formu -->
+      <!-- Sol Panel: Şifre, Karekod ve Kayıt Formu -->
       <div class="p-6 md:p-8 flex-1 flex flex-col justify-between overflow-y-auto space-y-4">
         <div>
-          <!-- Logo & Başlık -->
           <div class="flex items-center gap-2.5 mb-2">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-lg shadow-md shadow-blue-500/30">
-              <i class="fa-solid fa-lock"></i>
+              <i class="fa-solid fa-graduation-cap"></i>
             </div>
             <div>
               <h3 class="font-fun text-xl font-bold text-slate-800">Gelişim Portalı Girişi</h3>
-              <p class="text-xs text-slate-500">Şifre veya Karekod (QR) ile doğrudan bağlanın</p>
+              <p class="text-xs text-slate-500">Haftalık soru ve deneme takip sistemine bağlanın</p>
             </div>
           </div>
 
-          <!-- Sekmeler: Şifre ile Giriş / Karekod Tara / Yeni Kayıt -->
+          <!-- Sekmeler -->
           <div class="flex bg-slate-100 p-1 rounded-2xl text-xs font-bold my-3">
-            <button onclick="switchAuthMode('login')" id="authTabBtn-login" class="flex-1 py-2 rounded-xl bg-white text-blue-700 shadow-sm transition-all flex items-center justify-center gap-1">
+            <button onclick="switchAuthMode('login')" id="authTabBtn-login" class="flex-1 py-2 rounded-xl bg-white text-blue-700 shadow-sm transition-all flex items-center justify-center gap-1 font-bold">
               <i class="fa-solid fa-key text-[11px]"></i> <span>Şifre ile</span>
             </button>
             <button onclick="switchAuthMode('qr')" id="authTabBtn-qr" class="flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition-all flex items-center justify-center gap-1">
@@ -660,10 +529,9 @@
             </button>
           </div>
 
-          <!-- Hata & Bilgi Mesajı -->
           <div id="authAlertBox" class="hidden p-3 rounded-xl text-xs font-semibold mb-3"></div>
 
-          <!-- GİRİŞ FORMU (Şifre & Kayıt) -->
+          <!-- Şifre Paneli -->
           <div id="authPasswordPanel">
             <form id="loginForm" onsubmit="event.preventDefault(); handleAuthSubmit();" class="space-y-3">
               <div>
@@ -682,12 +550,9 @@
                 </div>
               </div>
 
-              <!-- Kayıt Ekstra Alanı: Avatar Seçimi -->
               <div id="registerAvatarField" class="hidden space-y-1.5 pt-1">
                 <label class="block text-xs font-bold text-slate-700">Profil Avatarı:</label>
-                <div class="flex flex-wrap gap-1.5" id="authAvatarPicker">
-                  <!-- JS ile avatarlar -->
-                </div>
+                <div class="flex flex-wrap gap-1.5" id="authAvatarPicker"></div>
               </div>
 
               <button type="submit" id="authSubmitBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-fun font-bold text-xs shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2 mt-2">
@@ -697,21 +562,15 @@
             </form>
           </div>
 
-          <!-- KAREKOD KAMERA TARAMA PANELİ -->
+          <!-- Karekod Kamera Tarayıcı -->
           <div id="authQrScannerPanel" class="hidden space-y-3 text-center">
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
               <p class="text-xs text-slate-600 font-semibold">
-                Öğretmeninizin verdiği <strong>Öğrenci Karekod Kartını</strong> kameraya gösterin:
+                Öğrenci Karekod Kartınızı kameraya gösterin:
               </p>
-              
-              <!-- Kamera Viewport -->
               <div id="qr-reader" class="w-full max-w-[280px] mx-auto rounded-xl overflow-hidden border border-slate-300"></div>
-
-              <div id="qrScannerStatus" class="text-[11px] text-slate-500">
-                Kamera başlatılıyor...
-              </div>
+              <div id="qrScannerStatus" class="text-[11px] text-slate-500">Kamera başlatılıyor...</div>
             </div>
-
             <button onclick="stopQrScanner(); switchAuthMode('login');" class="text-xs text-slate-500 hover:text-slate-700 font-semibold">
               <i class="fa-solid fa-arrow-left"></i> Şifre ile Girişe Dön
             </button>
@@ -720,85 +579,61 @@
         </div>
 
         <div class="text-[11px] text-slate-400 text-center pt-3 border-t border-slate-100">
-          16 Günlük Bütünsel Gelişim Portalı • v3.5 Karekod & Şifreli Kimlik Doğrulama
+          2026-2027 Haftalık Soru & Deneme Portalı • Karekod & Şifreli Kimlik Doğrulama
         </div>
       </div>
 
-      <!-- Sağ Panel: Açıklamalar, Kurallar ve Örnek Girişler -->
+      <!-- Sağ Panel: Örnek Hesaplar ve Bilgilendirme -->
       <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white p-6 md:p-8 md:w-[420px] flex flex-col justify-between overflow-y-auto space-y-4">
         <div>
           <div class="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-sky-300 uppercase tracking-wider mb-3 border border-white/10">
-            <i class="fa-solid fa-qrcode"></i> Karekod & Giriş Rehberi
+            <i class="fa-solid fa-qrcode"></i> Giriş Rehberi & Örnekler
           </div>
 
           <h4 class="font-fun text-lg font-bold text-white mb-2">
-            Karekod ile Nasıl Giriş Yapılır?
+            Haftalık Gelişim Takip Sistemi
           </h4>
           <p class="text-xs text-slate-300 leading-relaxed mb-4">
-            Öğretmeninizin oluşturduğu karekod kartını telefonunuzun kamerasıyla okutarak veya web kamerasına tutarak <strong>hiç şifre yazmadan tek saniyede</strong> çalışma masanıza bağlanabilirsiniz!
+            Eylül 2026'dan Haziran 2027 sonuna kadar 40 hafta boyunca her gün 3 ders konu çalışmanızı ve manuel çözülen soru sayılarınızı kaydedebilir, hafta sonu 20'şer soruluk branş denemelerinizi puanlayabilirsiniz!
           </p>
 
-          <!-- Örnek Giriş Kartları -->
           <div class="space-y-2.5 text-xs">
-            
-            <!-- Yönetici Giriş Kartı -->
             <div onclick="fillSampleLogin('admin', 'admin123')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-indigo-400/30 cursor-pointer transition-all space-y-1">
               <div class="flex items-center justify-between">
                 <span class="font-bold text-amber-300 flex items-center gap-1.5">
                   <i class="fa-solid fa-user-shield"></i> Yönetici / Öğretmen Girişi
                 </span>
-                <span class="text-[10px] bg-indigo-500/50 px-2 py-0.5 rounded text-white font-mono">Tıkla ve Doldur</span>
+                <span class="text-[10px] bg-indigo-500/50 px-2 py-0.5 rounded text-white font-mono">Tıkla ve Gir</span>
               </div>
               <div class="font-mono text-[11px] text-sky-200">
                 Kullanıcı: <strong>admin</strong> | Şifre: <strong>admin123</strong>
               </div>
-              <p class="text-[10px] text-slate-300">Öğrencilere karekod oluşturur, sınıf karnesini ve yansıma notlarını inceler.</p>
+              <p class="text-[10px] text-slate-300">Tüm sınıfın haftalık soru sayılarını, deneme netlerini ve karnelerini inceler.</p>
             </div>
 
-            <!-- Örnek Öğrenci 1 -->
             <div onclick="fillSampleLogin('Ahmet', '1234')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 cursor-pointer transition-all space-y-1">
               <div class="flex items-center justify-between">
-                <span class="font-bold text-sky-300 flex items-center gap-1.5">
-                  🚀 Örnek Öğrenci (Ahmet)
-                </span>
+                <span class="font-bold text-sky-300">🚀 Örnek Öğrenci (Ahmet)</span>
                 <span class="text-[10px] bg-sky-500/40 px-2 py-0.5 rounded text-white font-mono">Tıkla</span>
               </div>
-              <div class="font-mono text-[11px] text-sky-200">
-                Kullanıcı: <strong>Ahmet</strong> | Şifre: <strong>1234</strong>
-              </div>
+              <div class="font-mono text-[11px] text-sky-200">Kullanıcı: <strong>Ahmet</strong> | Şifre: <strong>1234</strong></div>
             </div>
 
-            <!-- Örnek Öğrenci 2 -->
             <div onclick="fillSampleLogin('Zeynep', '1234')" class="p-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 cursor-pointer transition-all space-y-1">
               <div class="flex items-center justify-between">
-                <span class="font-bold text-purple-300 flex items-center gap-1.5">
-                  🌟 Örnek Öğrenci (Zeynep)
-                </span>
+                <span class="font-bold text-purple-300">🌟 Örnek Öğrenci (Zeynep)</span>
                 <span class="text-[10px] bg-purple-500/40 px-2 py-0.5 rounded text-white font-mono">Tıkla</span>
               </div>
-              <div class="font-mono text-[11px] text-sky-200">
-                Kullanıcı: <strong>Zeynep</strong> | Şifre: <strong>1234</strong>
-              </div>
+              <div class="font-mono text-[11px] text-sky-200">Kullanıcı: <strong>Zeynep</strong> | Şifre: <strong>1234</strong></div>
             </div>
-
-          </div>
-
-          <!-- Kurallar Listesi -->
-          <div class="mt-4 pt-3 border-t border-white/10 space-y-1.5 text-[11px] text-slate-300">
-            <div class="font-bold text-white flex items-center gap-1">
-              <i class="fa-solid fa-shield-halved text-amber-400"></i> Güvenlik Kuralları:
-            </div>
-            <div>• Karekodlar öğrenciye özel şifrelenmiş giriş anahtarı içerir.</div>
-            <div>• Telefon kameranızla karekodu okutmanız doğrudan giriş için yeterlidir.</div>
           </div>
         </div>
-
       </div>
 
     </div>
   </div>
 
-  <!-- ================= YÖNETİCİ & ÖĞRETMEN KONTROL VE RAPORLAMA MODALI ================= -->
+  <!-- ================= YÖNETİCİ & ÖĞRETMEN HAFTALIK RAPORLAMA VE KAREKOD MODALI ================= -->
   <div id="adminModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-5xl w-full p-6 shadow-2xl border border-slate-100 space-y-6 max-h-[92vh] flex flex-col">
       
@@ -806,21 +641,24 @@
       <div class="flex items-center justify-between border-b border-slate-100 pb-4 shrink-0">
         <div class="flex items-center gap-3">
           <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-2xl shadow-md shadow-indigo-600/20">
-            <i class="fa-solid fa-chart-line"></i>
+            <i class="fa-solid fa-chart-pie"></i>
           </div>
           <div>
             <h3 class="font-fun text-xl font-bold text-slate-800 flex items-center gap-2">
-              Yönetici & Öğretmen Kontrol Paneli
+              Haftalık Sınıf Gelişim & Deneme Raporu
             </h3>
-            <p class="text-xs text-slate-500">Tüm öğrencilerin çalışma raporları ve karekodlu giriş kartı yönetimi</p>
+            <p class="text-xs text-slate-500">Seçilen haftada sınıfın toplam çözdüğü soru sayısı, konu sayısı ve deneme netleri</p>
           </div>
         </div>
+
         <div class="flex items-center gap-2">
-          <button onclick="printAllStudentQRCards()" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold border border-purple-200 flex items-center gap-1.5 shadow-sm">
-            <i class="fa-solid fa-qrcode"></i> Tüm Karekod Kartlarını Yazdır
-          </button>
-          <button onclick="printAdminReport()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 shadow-sm">
-            <i class="fa-solid fa-print"></i> Sınıf Raporu
+          <!-- Raporlanacak Hafta Seçici -->
+          <select id="adminWeekSelector" onchange="renderAdminDashboard(parseInt(this.value))" class="px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-bold focus:outline-none cursor-pointer">
+            <!-- JS ile doldurulacak -->
+          </select>
+
+          <button onclick="printAdminReport()" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold border border-purple-200 flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-print"></i> Haftalık Sınıf Karnesini Yazdır
           </button>
           <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 text-2xl p-1">
             <i class="fa-solid fa-xmark"></i>
@@ -828,96 +666,77 @@
         </div>
       </div>
 
-      <!-- Sınıf / Grup Özet Metrik Kartları -->
+      <!-- Sınıf Özet Metrikleri (Seçilen Hafta İçin) -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 shrink-0" id="adminMetricsCards">
-        <!-- JS ile doldurulacak -->
+        <!-- JS ile metrikler -->
       </div>
 
-      <!-- Admin Sekmeleri (Tab Switcher) -->
+      <!-- Admin Tab Switcher -->
       <div class="flex border-b border-slate-200 text-xs font-bold gap-4 shrink-0">
         <button onclick="switchAdminTab('students')" id="adminTabBtn-students" class="pb-2 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5">
-          <i class="fa-solid fa-users"></i> Öğrenci Listesi & Karekodlar
+          <i class="fa-solid fa-users"></i> Öğrenci Karneleri & Karekodlar
         </button>
         <button onclick="switchAdminTab('reflections')" id="adminTabBtn-reflections" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5">
-          <i class="fa-solid fa-pen-nib"></i> Günlük Yansıma Notları
+          <i class="fa-solid fa-pen-nib"></i> Haftalık Yansıma Notları
         </button>
         <button onclick="switchAdminTab('tools')" id="adminTabBtn-tools" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5">
-          <i class="fa-solid fa-toolbox"></i> Toplu Veri Yönetimi
+          <i class="fa-solid fa-toolbox"></i> Toplu Yedek & Araçlar
         </button>
       </div>
 
       <!-- Modal Body (Scrollable) -->
       <div class="flex-1 overflow-y-auto pr-1 space-y-4">
         
-        <!-- SEKME 1: ÖĞRENCİ PERFORMANS VE KAREKOD TABLOSU -->
+        <!-- Sekme 1: Öğrenci Haftalık Karneleri & Soru Sayıları -->
         <div id="adminTab-students" class="space-y-3">
           <div class="overflow-x-auto rounded-2xl border border-slate-200">
             <table class="w-full text-xs text-left border-collapse">
               <thead>
                 <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
                   <th class="p-3">ÖĞRENCİ</th>
-                  <th class="p-3 text-center">SEVİYE & XP</th>
-                  <th class="p-3 text-center">5 VAKİT GÖREV</th>
-                  <th class="p-3 text-center">DERSLER</th>
-                  <th class="p-3 text-center">SERİ</th>
-                  <th class="p-3 text-center">ORT. YILDIZ</th>
-                  <th class="p-3 text-right">İŞLEMLER & KAREKOD</th>
+                  <th class="p-3 text-center">KONU (HAFTA)</th>
+                  <th class="p-3 text-center">ÇÖZÜLEN SORU</th>
+                  <th class="p-3 text-center">DENEME (120 S)</th>
+                  <th class="p-3 text-center">BAŞARI</th>
+                  <th class="p-3 text-right">KAREKOD & İNCELE</th>
                 </tr>
               </thead>
               <tbody id="adminStudentsTableBody" class="divide-y divide-slate-100 font-medium">
-                <!-- JS ile öğrenci satırları -->
+                <!-- JS ile satırlar -->
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- SEKME 2: GÜNLÜK YANSIMA NOTLARI AKIŞI -->
+        <!-- Sekme 2: Yansıma Notları -->
         <div id="adminTab-reflections" class="hidden space-y-3">
-          <p class="text-xs text-slate-500">Öğrencilerin "Yarın neyi daha iyi yapabilirim? Bugün neler öğrendim?" kutusuna yazdıkları düşünceler:</p>
-          <div id="adminReflectionsContainer" class="space-y-2.5">
-            <!-- JS ile not kartları -->
-          </div>
+          <p class="text-xs text-slate-500">Öğrencilerin bu hafta için yazdıkları değerlendirme notları:</p>
+          <div id="adminReflectionsContainer" class="space-y-2.5"></div>
         </div>
 
-        <!-- SEKME 3: TOPLU YÖNETİCİ ARAÇLARI -->
+        <!-- Sekme 3: Araçlar -->
         <div id="adminTab-tools" class="hidden space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
               <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-cloud-arrow-down text-blue-600"></i> Toplu Sınıf Yedeği Al
+                <i class="fa-solid fa-cloud-arrow-down text-blue-600"></i> Tüm Sınıf Verisini İndir
               </h4>
-              <p class="text-xs text-slate-600">
-                Sistemdeki tüm kayıtlı öğrencileri ve onların 16 günlük çalışma verilerini tek bir JSON dosyasında bilgisayara indirin.
-              </p>
-              <button onclick="exportAllClassData()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md transition-all">
-                Tüm Sınıf Verisini İndir (JSON)
+              <p class="text-xs text-slate-600">40 haftalık tüm öğrenci kayıtlarını ve soru sayılarını JSON olarak yedekleyin.</p>
+              <button onclick="exportAllClassData()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md">
+                Tüm Verileri İndir (JSON)
               </button>
             </div>
 
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
               <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i> Toplu Sınıf Yedeği Yükle
+                <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i> Toplu Yedek Yükle
               </h4>
-              <p class="text-xs text-slate-600">
-                Daha önce yedek aldığınız tüm öğrencilerin verilerini sisteme geri yükleyin.
-              </p>
-              <label class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-fun font-bold text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all">
-                <i class="fa-solid fa-upload"></i> Toplu Yedeği İçe Aktar
+              <p class="text-xs text-slate-600">Daha önce yedeklediğiniz sınıf verilerini geri yükleyin.</p>
+              <label class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-fun font-bold text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-upload"></i> Dosya Seç ve Yükle
                 <input type="file" accept=".json" class="hidden" onchange="importAllClassData(event)">
               </label>
             </div>
-
-          </div>
-
-          <div class="p-4 rounded-2xl bg-purple-50 border border-purple-200 flex items-center justify-between">
-            <div class="space-y-0.5">
-              <h5 class="font-fun text-xs font-bold text-purple-900">Sınıf Karekod Giriş Kartları Şablonu</h5>
-              <p class="text-[11px] text-purple-700">Tüm öğrencilerin fotoğraflı ve karekodlu giriş kartlarını tek sayfada yazdırılabilir forma dönüştürür.</p>
-            </div>
-            <button onclick="printAllStudentQRCards()" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-sm">
-              Kartları Gör & Yazdır 🖨️
-            </button>
           </div>
         </div>
 
@@ -938,238 +757,143 @@
         </button>
       </div>
 
-      <!-- Öğrenci Kart Üstü -->
       <div class="flex items-center justify-center gap-2 p-2 bg-blue-50 rounded-2xl border border-blue-100">
         <span class="w-10 h-10 rounded-2xl bg-white border flex items-center justify-center text-xl shadow-xs" id="qrStudentAvatar">🚀</span>
         <div class="text-left">
           <h5 class="font-fun font-bold text-sm text-slate-800" id="qrStudentName">Ahmet</h5>
-          <span class="text-[10px] text-slate-500 font-medium">16 Günlük Gelişim Öğrencisi</span>
+          <span class="text-[10px] text-slate-500 font-medium">Haftalık Soru & Deneme Portalı</span>
         </div>
       </div>
 
-      <!-- Karekod Görsel Alanı -->
       <div class="bg-white p-4 rounded-2xl border border-slate-200 inline-block shadow-inner">
         <div id="singleQrContainer" class="flex items-center justify-center min-h-[160px] min-w-[160px]"></div>
       </div>
 
       <p class="text-xs text-slate-500 leading-relaxed">
-        📱 Telefon kameranızı bu karekoda tuttuğunuzda <strong>şifresiz doğrudan</strong> portala bağlanırsınız.
+        📱 Telefon kamerasını karekoda tutarak <strong>hiç şifre yazmadan anında</strong> bağlanabilirsiniz.
       </p>
 
       <div class="pt-2 flex gap-2">
-        <button onclick="copyQrLoginUrl()" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all">
+        <button onclick="copyQrLoginUrl()" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs">
           <i class="fa-regular fa-copy"></i> <span id="copyQrLinkBtnText">Linki Kopyala</span>
         </button>
-        <button onclick="window.print()" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md transition-all">
+        <button onclick="window.print()" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md">
           <i class="fa-solid fa-print"></i> Yazdır
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ================= TÜM SINIF KAREKOD KARTLARI YAZDIRMA ALANI ================= -->
-  <div id="allQRCardsPrintArea" class="hidden print-only p-4">
-    <div class="text-center mb-6 border-b pb-4">
-      <h2 class="text-2xl font-bold text-slate-900">BENİM 16 GÜNLÜK GELİŞİM PROGRAMI</h2>
-      <p class="text-sm text-slate-600">Öğrenci Karekod Giriş Kartları • Telefon kamerasıyla okutarak doğrudan bağlanın</p>
-    </div>
-    <div id="allQRCardsGrid" class="grid grid-cols-2 gap-4">
-      <!-- JS ile kartlar basılacak -->
-    </div>
-  </div>
-
-  <!-- ================= JAVASCRIPT APP LOGIC ================= -->
+  <!-- ================= JAVASCRIPT MASTER LOGIC ================= -->
   <script>
     /* =========================================================================
-       1. DATA STRUCTURES & CALENDAR DEFINITIONS
+       1. 40 HAFTALIK TAKVİM OLUŞTURUCU (28 EYLÜL 2026 - 30 HAZİRAN 2027)
        ========================================================================= */
+    const MONTH_NAMES = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    const DAY_NAMES = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
+    const DEFAULT_SUBJECTS = ["Matematik", "Fen Bilimleri", "Türkçe", "T.C. İnkılap Tarihi", "Din Kültürü", "İngilizce"];
 
-    const DAYS_CONFIG = [
-      { id: 1, dateStr: "29 AĞU", dayName: "Cumartesi", dayNumber: 29, month: "AĞU", phase: 1, weekDayIndex: 5 },
-      { id: 2, dateStr: "30 AĞU", dayName: "Pazar", dayNumber: 30, month: "AĞU", phase: 1, weekDayIndex: 6 },
-      { id: 3, dateStr: "31 AĞU", dayName: "Pazartesi", dayNumber: 31, month: "AĞU", phase: 1, weekDayIndex: 0 },
-      { id: 4, dateStr: "1 EYL", dayName: "Salı", dayNumber: 1, month: "EYL", phase: 1, weekDayIndex: 1 },
-      { id: 5, dateStr: "2 EYL", dayName: "Çarşamba", dayNumber: 2, month: "EYL", phase: 1, weekDayIndex: 2 },
-      { id: 6, dateStr: "3 EYL", dayName: "Perşembe", dayNumber: 3, month: "EYL", phase: 2, weekDayIndex: 3 },
-      { id: 7, dateStr: "4 EYL", dayName: "Cuma", dayNumber: 4, month: "EYL", phase: 2, weekDayIndex: 4 },
-      { id: 8, dateStr: "5 EYL", dayName: "Cumartesi", dayNumber: 5, month: "EYL", phase: 2, weekDayIndex: 5 },
-      { id: 9, dateStr: "6 EYL", dayName: "Pazar", dayNumber: 6, month: "EYL", phase: 2, weekDayIndex: 6 },
-      { id: 10, dateStr: "7 EYL", dayName: "Pazartesi", dayNumber: 7, month: "EYL", phase: 2, weekDayIndex: 0 },
-      { id: 11, dateStr: "8 EYL", dayName: "Salı", dayNumber: 8, month: "EYL", phase: 2, weekDayIndex: 1 },
-      { id: 12, dateStr: "9 EYL", dayName: "Çarşamba", dayNumber: 9, month: "EYL", phase: 3, weekDayIndex: 2 },
-      { id: 13, dateStr: "10 EYL", dayName: "Perşembe", dayNumber: 10, month: "EYL", phase: 3, weekDayIndex: 3 },
-      { id: 14, dateStr: "11 EYL", dayName: "Cuma", dayNumber: 11, month: "EYL", phase: 3, weekDayIndex: 4 },
-      { id: 15, dateStr: "12 EYL", dayName: "Cumartesi", dayNumber: 12, month: "EYL", phase: 3, weekDayIndex: 5 },
-      { id: 16, dateStr: "13 EYL", dayName: "Pazar", dayNumber: 13, month: "EYL", phase: 3, weekDayIndex: 6 },
-    ];
+    // 40 Haftayı Üret
+    const ALL_WEEKS = [];
+    (function generate40Weeks() {
+      // 28 Eylül 2026 Pazartesi
+      let cur = new Date(2026, 8, 28); // Month is 0-indexed: 8 is September
+      for (let w = 1; w <= 40; w++) {
+        let start = new Date(cur);
+        let end = new Date(cur);
+        end.setDate(end.getDate() + 6);
 
-    const PHASES = {
-      1: {
-        title: "1. Aşama: Alışma (29 Ağustos – 2 Eylül)",
-        badge: "1. Aşama: Alışma 🌱",
-        class: "bg-emerald-100 text-emerald-800 border-emerald-200",
-        goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Programa ve plana alışırım, basit görevlerle başlarım, düzenli olmayı öğrenir ve yeni alışkanlıklar kazanırım."
-      },
-      2: {
-        title: "2. Aşama: Gelişme (3 – 8 Eylül)",
-        badge: "2. Aşama: Gelişme 🚀",
-        class: "bg-sky-100 text-sky-800 border-sky-200",
-        goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Akademik çalışmalarımı artırırım, Osmanlıca, araştırma ve proje çalışmalarımı düzenli yapar, yeni şeyler denerim."
-      },
-      3: {
-        title: "3. Aşama: Hazırlık ve Tamamlama (9 – 13 Eylül)",
-        badge: "3. Aşama: Hazırlık & Tamamlama 🎯🏆",
-        class: "bg-purple-100 text-purple-800 border-purple-200",
-        goal: "🎯 <strong>Bu Aşamadaki Hedef:</strong> Programımı kendi kendime takip ederim, eksiklerimi fark edip geliştiririm, bir proje/ürün ortaya koyup final değerlendirmesi yaparım."
+        // 40. Hafta Haziran sonu (30 Haziran 2027) için sınırla
+        if (w === 40) {
+          end = new Date(2027, 5, 30);
+        }
+
+        const startStr = `${start.getDate()} ${MONTH_NAMES[start.getMonth()]}`;
+        const endStr = `${end.getDate()} ${MONTH_NAMES[end.getMonth()]} ${end.getFullYear()}`;
+        const label = `${w}. Hafta (${startStr} – ${endStr})`;
+
+        const days = [];
+        for (let d = 0; d < 7; d++) {
+          let dayDate = new Date(start);
+          dayDate.setDate(dayDate.getDate() + d);
+          days.push({
+            dayIndex: d,
+            dayName: DAY_NAMES[d],
+            shortDate: `${dayDate.getDate()} ${MONTH_NAMES[dayDate.getMonth()].substring(0,3)}`,
+            isWeekend: d >= 5
+          });
+        }
+
+        ALL_WEEKS.push({
+          weekNumber: w,
+          startDate: start,
+          endDate: end,
+          label: label,
+          shortTitle: `${w}. Hafta`,
+          days: days
+        });
+
+        // Bir sonraki haftaya 7 gün ekle
+        cur.setDate(cur.getDate() + 7);
       }
-    };
-
-    const DEFAULT_VAKITLER = [
-      {
-        id: "v1", no: 1, title: "1. VAKİT: GÜNE BAŞLA", subtitle: "Bedeni ve zihni güne hazırla.",
-        slogan: "Enerjini yükselt, güne güzel başla!", icon: "fa-solid fa-sun", iconColor: "text-amber-500",
-        headerBg: "bg-amber-50 text-amber-900 border-amber-200",
-        tasks: [
-          { id: "v1_1", text: "Sabah sporu", area: "C" },
-          { id: "v1_2", text: "Kahvaltıya yardım", area: "D" },
-          { id: "v1_3", text: "Çiçekleri kontrol et / bakım yap", area: "D" },
-          { id: "v1_4", text: "Odanı topla", area: "D" },
-          { id: "v1_5", text: "Günün planını gözden geçir", area: "D" },
-          { id: "v1_6", text: "Nefes egzersizi yap", area: "C" }
-        ]
-      },
-      {
-        id: "v2", no: 2, title: "2. VAKİT: ÖĞREN", subtitle: "En verimli zamanında öğrenmeye odaklan.",
-        slogan: "Dikkatini topla, bilgin artsın!", icon: "fa-solid fa-lightbulb", iconColor: "text-blue-500",
-        headerBg: "bg-blue-50 text-blue-900 border-blue-200",
-        tasks: [
-          { id: "v2_1", text: "Konu çalış", area: "A" },
-          { id: "v2_2", text: "Soru çöz", area: "A" },
-          { id: "v2_3", text: "Osmanlıca oku / yaz", area: "A" },
-          { id: "v2_4", text: "Kitap oku (dersle ilgili)", area: "A" },
-          { id: "v2_5", text: "Yazı yaz", area: "A" },
-          { id: "v2_6", text: "Notlarını düzenle", area: "A" }
-        ]
-      },
-      {
-        id: "v3", no: 3, title: "3. VAKİT: ÜRET / KEŞFET", subtitle: "Merak et, araştır, üret ve keşfet.",
-        slogan: "Merakın seni ileri taşır!", icon: "fa-solid fa-magnifying-glass", iconColor: "text-emerald-500",
-        headerBg: "bg-emerald-50 text-emerald-900 border-emerald-200",
-        tasks: [
-          { id: "v3_1", text: "Resim yap", area: "B" },
-          { id: "v3_2", text: "Lego ile üret", area: "B" },
-          { id: "v3_3", text: "Araştırma yap", area: "B" },
-          { id: "v3_4", text: "Atölye çalışması yap", area: "B" },
-          { id: "v3_5", text: "Proje çalışması yap", area: "B" },
-          { id: "v3_6", text: "Yeni bir şey dene", area: "B" }
-        ]
-      },
-      {
-        id: "v4", no: 4, title: "4. VAKİT: HAREKET ET", subtitle: "Oyna, hareket et, enerjini at.",
-        slogan: "Hareket et, güçlü ol, mutlu ol!", icon: "fa-solid fa-bicycle", iconColor: "text-orange-500",
-        headerBg: "bg-orange-50 text-orange-900 border-orange-200",
-        tasks: [
-          { id: "v4_1", text: "Bisiklete bin", area: "C" },
-          { id: "v4_2", text: "Havuza git", area: "C" },
-          { id: "v4_3", text: "Bahçede oyna", area: "C" },
-          { id: "v4_4", text: "Akşam yürüyüşü", area: "C" },
-          { id: "v4_5", text: "Serbest oyun", area: "C" },
-          { id: "v4_6", text: "Düzenli spor yap", area: "C" }
-        ]
-      },
-      {
-        id: "v5", no: 5, title: "5. VAKİT: SAKİNLEŞ & OKU", subtitle: "Zihnini dinlendir, okuyarak geliş.",
-        slogan: "Sakinleş, oku, güne güzel nokta koy!", icon: "fa-solid fa-moon", iconColor: "text-purple-500",
-        headerBg: "bg-purple-50 text-purple-900 border-purple-200",
-        tasks: [
-          { id: "v5_1", text: "Kitap oku", area: "A" },
-          { id: "v5_2", text: "Dergi oku", area: "A" },
-          { id: "v5_3", text: "Günlük yaz", area: "A" },
-          { id: "v5_4", text: "Hafif Osmanlıca oku", area: "A" },
-          { id: "v5_5", text: "Günün değerlendirmesini yap", area: "D" }
-        ]
-      }
-    ];
-
-    const WEEKLY_LESSONS_TEMPLATE = [
-      [{ type: "K" }, { type: "S" }, { type: "S" }],
-      [{ type: "K" }, { type: "S" }, { type: "K" }],
-      [{ type: "K" }, { type: "S" }, { type: "S" }],
-      [{ type: "S" }, { type: "K" }, { type: "S" }],
-      [{ type: "K" }, { type: "S" }, { type: "K" }],
-      [{ type: "K" }, { type: "S" }, { type: "S" }],
-      [{ type: "S" }, { type: "K" }, { type: "K" }]
-    ];
-
-    const BADGES = [
-      { id: 'first_step', title: 'İlk Adım 🌱', desc: 'İlk gün görevini tamamla', icon: 'fa-shoe-prints', reqXP: 10 },
-      { id: 'study_pro', title: 'Ders Şampiyonu 📚', desc: 'En az 10 ders tamamla', icon: 'fa-book-open-reader', reqXP: 100 },
-      { id: 'craft_master', title: 'Üretim Mimarı 🎨', desc: 'Üretim alanında 5 görev yap', icon: 'fa-palette', reqXP: 150 },
-      { id: 'sporty', title: 'Sporcu Ruh 🏃', desc: 'Hareket vaktini 5 kez tamamla', icon: 'fa-person-running', reqXP: 200 },
-      { id: 'five_star', title: '5 Yıldızlı Gün ⭐', desc: 'İlk 5 yıldızlı gününü al', icon: 'fa-star', reqXP: 50 },
-      { id: 'legend', title: '16 Gün Efsanesi 🏆', desc: 'Bütün programı tamamla', icon: 'fa-trophy', reqXP: 500 }
-    ];
-
-    const AVATAR_OPTIONS = ['🚀', '🌟', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
+    })();
 
     /* =========================================================================
-       2. AUTHENTICATION & KAREKOD (QR) GİRİŞ SİSTEMİ
+       2. AUTHENTICATION & KAREKOD SİSTEMİ
        ========================================================================= */
-    const AUTH_USERS_KEY = "fen_deneme_auth_users_v3";
-    const CURRENT_SESSION_KEY = "fen_deneme_current_session_v3";
+    const AUTH_USERS_KEY = "fen_deneme_auth_users_v4";
+    const CURRENT_SESSION_KEY = "fen_deneme_current_session_v4";
 
     let authUsers = [];
     let currentSession = null;
-    let authMode = 'login'; // 'login' | 'qr' | 'register'
+    let authMode = 'login';
     let selectedRegAvatar = '🚀';
     let html5QrCodeScanner = null;
     let activeQrTargetUrl = "";
 
+    const AVATAR_OPTIONS = ['🚀', '🌟', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
+
+    // Uygulama Durumu
     let state = {
-      selectedDayId: 1,
-      daysData: {}
+      selectedWeek: 1,
+      selectedDayIndex: 0,
+      weeksData: {}
     };
 
     function getUserDataStorageKey(username) {
-      return "fen_deneme_user_data_" + encodeURIComponent(username.toLowerCase().trim());
+      return "fen_haftalik_data_" + encodeURIComponent(username.toLowerCase().trim());
     }
 
     function generateStudentQRLoginUrl(username, password) {
-      const payload = {
-        u: username,
-        p: password,
-        t: Date.now()
-      };
+      const payload = { u: username, p: password, t: Date.now() };
       const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
       const base = window.location.origin + window.location.pathname;
       return `${base}?qr_auth=${encoded}`;
     }
 
-    function initAuthSystem() {
+    function initAuth() {
       const savedUsers = localStorage.getItem(AUTH_USERS_KEY);
       if (savedUsers) {
         try { authUsers = JSON.parse(savedUsers); } catch(e) { authUsers = []; }
       }
 
       if (!authUsers.some(u => u.username.toLowerCase() === 'admin')) {
-        authUsers.push({ username: "admin", password: "admin123", role: "admin", avatar: "🛡️", title: "Yönetici / Öğretmen", createdAt: "2026-08-29" });
+        authUsers.push({ username: "admin", password: "admin123", role: "admin", avatar: "🛡️", title: "Yönetici / Öğretmen" });
       }
       if (!authUsers.some(u => u.username.toLowerCase() === 'ahmet')) {
-        authUsers.push({ username: "Ahmet", password: "1234", role: "student", avatar: "🚀", title: "Öğrenci", createdAt: "2026-08-29" });
+        authUsers.push({ username: "Ahmet", password: "1234", role: "student", avatar: "🚀", title: "Öğrenci" });
       }
       if (!authUsers.some(u => u.username.toLowerCase() === 'zeynep')) {
-        authUsers.push({ username: "Zeynep", password: "1234", role: "student", avatar: "🌟", title: "Öğrenci", createdAt: "2026-08-29" });
+        authUsers.push({ username: "Zeynep", password: "1234", role: "student", avatar: "🌟", title: "Öğrenci" });
       }
       localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
 
-      seedDemoDataIfEmpty();
+      seedDefaultWeeklyDataIfEmpty();
 
-      // 1. URL'den Karekod (QR) Parametresi Kontrolü
-      if (checkQrLoginFromUrl()) {
-        return;
-      }
+      // URL'den QR Parametresi Var mı?
+      if (checkQrLoginFromUrl()) return;
 
-      // 2. Kayıtlı Oturum Kontrolü
+      // Kayıtlı oturum var mı?
       const savedSession = localStorage.getItem(CURRENT_SESSION_KEY);
       if (savedSession) {
         try {
@@ -1187,86 +911,161 @@
 
     function checkQrLoginFromUrl() {
       const urlParams = new URLSearchParams(window.location.search);
-      const qrAuthToken = urlParams.get('qr_auth');
-      if (!qrAuthToken) return false;
+      const token = urlParams.get('qr_auth');
+      if (!token) return false;
 
       try {
-        const decodedStr = decodeURIComponent(atob(qrAuthToken));
-        const payload = JSON.parse(decodedStr);
+        const payload = JSON.parse(decodeURIComponent(atob(token)));
         if (payload && payload.u && payload.p) {
           let found = authUsers.find(u => u.username.toLowerCase() === payload.u.toLowerCase());
           if (!found) {
-            // Eğer URL'den gelen öğrenci listede yoksa otomatik profili ekle
-            found = {
-              username: payload.u,
-              password: payload.p,
-              role: "student",
-              avatar: "🚀",
-              title: "Öğrenci",
-              createdAt: new Date().toISOString()
-            };
+            found = { username: payload.u, password: payload.p, role: "student", avatar: "🚀", title: "Öğrenci" };
             authUsers.push(found);
             localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
           }
 
           currentSession = found;
           localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
-          
-          // Adres çubuğunu temizle
           window.history.replaceState({}, document.title, window.location.pathname);
-
           applyUserSession(found);
           hideAuthGateModal();
           playChimeSound('success');
-          confetti({ particleCount: 70, spread: 80, origin: { y: 0.5 } });
-          
+          confetti({ particleCount: 70, spread: 80 });
           alert(`🎉 Karekod Okundu! Hoş geldin, ${found.username}!`);
           return true;
         }
-      } catch(e) {
-        console.error("QR Auth Error:", e);
-      }
+      } catch(e) {}
       return false;
     }
 
-    function seedDemoDataIfEmpty() {
+    function seedDefaultWeeklyDataIfEmpty() {
       const ahmetKey = getUserDataStorageKey("Ahmet");
       if (!localStorage.getItem(ahmetKey)) {
-        const ahmetSt = createDefaultStateObj();
-        ahmetSt.daysData[1].tasks["v1_1"] = 'done';
-        ahmetSt.daysData[1].tasks["v2_1"] = 'done';
-        ahmetSt.daysData[1].tasks["v3_2"] = 'done';
-        ahmetSt.daysData[1].lessons[0].done = true;
-        ahmetSt.daysData[1].rating = 5;
-        ahmetSt.daysData[1].note = "Bugün Osmanlıca okudum ve Lego ile kule yaptım.";
-        localStorage.setItem(ahmetKey, JSON.stringify(ahmetSt));
-      }
-      const zeynepKey = getUserDataStorageKey("Zeynep");
-      if (!localStorage.getItem(zeynepKey)) {
-        const zeynepSt = createDefaultStateObj();
-        zeynepSt.daysData[1].tasks["v1_1"] = 'done';
-        zeynepSt.daysData[1].tasks["v4_1"] = 'done';
-        zeynepSt.daysData[1].tasks["v5_1"] = 'done';
-        zeynepSt.daysData[1].lessons[0].done = true;
-        zeynepSt.daysData[1].lessons[1].done = true;
-        zeynepSt.daysData[1].rating = 4;
-        zeynepSt.daysData[1].note = "Yarın soru çözümüne biraz daha erken başlayacağım.";
-        localStorage.setItem(zeynepKey, JSON.stringify(zeynepSt));
+        const d = createDefaultWeekState();
+        // 1. Hafta Pazartesi demo verisi
+        d.weeksData[1].days[0].topics[0].done = true;
+        d.weeksData[1].days[0].topics[1].done = true;
+        d.weeksData[1].days[0].questions[0].count = 35;
+        d.weeksData[1].days[0].questions[1].count = 40;
+        d.weeksData[1].days[0].questions[2].count = 25;
+        // Hafta sonu deneme demo sonucu
+        d.weeksData[1].deneme = {
+          conducted: true,
+          subjects: [
+            { subject: "Türkçe", total: 20, correct: 18, incorrect: 2, empty: 0, net: 17.33 },
+            { subject: "Matematik", total: 20, correct: 16, incorrect: 3, empty: 1, net: 15.00 },
+            { subject: "Fen Bilimleri", total: 20, correct: 19, incorrect: 1, empty: 0, net: 18.67 },
+            { subject: "İnkılap Tarihi", total: 20, correct: 19, incorrect: 1, empty: 0, net: 18.67 },
+            { subject: "Din Kültürü", total: 20, correct: 20, incorrect: 0, empty: 0, net: 20.00 },
+            { subject: "İngilizce", total: 20, correct: 18, incorrect: 2, empty: 0, net: 17.33 }
+          ],
+          note: "İlk denemem gayet başarılı geçti."
+        };
+        d.weeksData[1].weeklyReflection = "Haftalık 100 soru hedefimi aştım, matematikte eksik kalan kazanımlara çalışacağım.";
+        localStorage.setItem(ahmetKey, JSON.stringify(d));
       }
     }
 
-    function createDefaultStateObj() {
-      let st = { selectedDayId: 1, daysData: {} };
-      DAYS_CONFIG.forEach(d => {
-        const template = WEEKLY_LESSONS_TEMPLATE[d.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
-        st.daysData[d.id] = {
-          tasks: {},
-          lessons: [{ type: template[0].type, done: false }, { type: template[1].type, done: false }, { type: template[2].type, done: false }],
-          rating: 0,
-          note: ""
+    function createDefaultWeekState() {
+      return {
+        selectedWeek: 1,
+        selectedDayIndex: 0,
+        weeksData: {}
+      };
+    }
+
+    function getOrCreateWeekData(wNum) {
+      if (!state.weeksData[wNum]) {
+        const daysObj = {};
+        for (let d = 0; d < 7; d++) {
+          daysObj[d] = {
+            topics: [
+              { subject: DEFAULT_SUBJECTS[0], name: "Konu 1", done: false },
+              { subject: DEFAULT_SUBJECTS[1], name: "Konu 2", done: false },
+              { subject: DEFAULT_SUBJECTS[2], name: "Konu 3", done: false }
+            ],
+            questions: [
+              { subject: DEFAULT_SUBJECTS[0], count: 0 },
+              { subject: DEFAULT_SUBJECTS[1], count: 0 },
+              { subject: DEFAULT_SUBJECTS[2], count: 0 }
+            ],
+            rating: 0,
+            note: ""
+          };
+        }
+
+        const denemeSubs = [
+          { subject: "Türkçe", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "Matematik", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "Fen Bilimleri", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "İnkılap Tarihi", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "Din Kültürü", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "İngilizce", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 }
+        ];
+
+        state.weeksData[wNum] = {
+          days: daysObj,
+          deneme: {
+            conducted: false,
+            subjects: denemeSubs,
+            note: ""
+          },
+          weeklyReflection: ""
         };
-      });
-      return st;
+      }
+      return state.weeksData[wNum];
+    }
+
+    function loadUserData(username) {
+      const userKey = getUserDataStorageKey(username);
+      const saved = localStorage.getItem(userKey);
+      if (saved) {
+        try {
+          state = JSON.parse(saved);
+        } catch(e) {
+          state = createDefaultWeekState();
+        }
+      } else {
+        state = createDefaultWeekState();
+      }
+
+      if (!state.selectedWeek) state.selectedWeek = 1;
+      if (typeof state.selectedDayIndex !== 'number') state.selectedDayIndex = 0;
+
+      getOrCreateWeekData(state.selectedWeek);
+      saveState();
+      renderAll();
+    }
+
+    function saveState() {
+      const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
+      localStorage.setItem(getUserDataStorageKey(activeName), JSON.stringify(state));
+      updateSummaryMetrics();
+    }
+
+    function applyUserSession(user) {
+      document.getElementById("headerUserName").textContent = user.username;
+      document.getElementById("headerUserAvatar").textContent = user.avatar;
+      document.getElementById("headerUserRoleBadge").textContent = user.role === 'admin' ? 'Yönetici' : 'Öğrenci';
+      document.getElementById("bannerStudentName").textContent = user.username;
+
+      if (user.role === 'admin') {
+        document.getElementById("headerAdminBtn").classList.remove("hidden");
+        const first = authUsers.find(u => u.role === 'student') || { username: "Ahmet" };
+        loadUserData(first.username);
+      } else {
+        document.getElementById("headerAdminBtn").classList.add("hidden");
+        loadUserData(user.username);
+      }
+    }
+
+    function handleLogout() {
+      if (confirm("Oturumu kapatmak istediğinize emin misiniz?")) {
+        localStorage.removeItem(CURRENT_SESSION_KEY);
+        currentSession = null;
+        showAuthGateModal();
+        playChimeSound('click');
+      }
     }
 
     function showAuthGateModal() {
@@ -1324,204 +1123,139 @@
       });
     }
 
-    function fillSampleLogin(uname, pwd) {
+    function fillSampleLogin(u, p) {
       switchAuthMode('login');
-      document.getElementById("authUsernameInput").value = uname;
-      document.getElementById("authPasswordInput").value = pwd;
+      document.getElementById("authUsernameInput").value = u;
+      document.getElementById("authPasswordInput").value = p;
       handleAuthSubmit();
     }
 
     function handleAuthSubmit() {
-      const usernameInput = document.getElementById("authUsernameInput").value.trim();
-      const passwordInput = document.getElementById("authPasswordInput").value.trim();
+      const u = document.getElementById("authUsernameInput").value.trim();
+      const p = document.getElementById("authPasswordInput").value.trim();
 
-      if (!usernameInput || !passwordInput) {
-        showAuthAlert("Lütfen kullanıcı adı ve şifre alanlarını doldurun.", "error");
+      if (!u || !p) {
+        showAuthAlert("Lütfen kullanıcı adı ve şifre giriniz.");
         return;
       }
 
       if (authMode === 'login') {
-        const found = authUsers.find(u => u.username.toLowerCase() === usernameInput.toLowerCase());
-        if (!found) {
-          showAuthAlert("Bu kullanıcı adı ile kayıtlı hesap bulunamadı! Yeni kayıt sekmesinden oluşturabilirsiniz.", "error");
+        const found = authUsers.find(x => x.username.toLowerCase() === u.toLowerCase());
+        if (!found || found.password !== p) {
+          showAuthAlert("Hatalı kullanıcı adı veya şifre!");
           return;
         }
-
-        if (found.password !== passwordInput) {
-          showAuthAlert("Hatalı şifre girdiniz! Lütfen tekrar deneyin.", "error");
-          return;
-        }
-
         currentSession = found;
         localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
         applyUserSession(found);
         hideAuthGateModal();
         playChimeSound('success');
-
-        if (found.role === 'admin') {
-          openAdminModal();
-        } else {
-          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-        }
-
-      } else if (authMode === 'register') {
-        if (passwordInput.length < 4) {
-          showAuthAlert("Şifre en az 4 karakter uzunluğunda olmalıdır!", "error");
+        if (found.role === 'admin') openAdminModal();
+        else confetti({ particleCount: 50, spread: 60 });
+      } else {
+        if (p.length < 4) {
+          showAuthAlert("Şifre en az 4 karakter olmalıdır.");
           return;
         }
-
-        const existing = authUsers.find(u => u.username.toLowerCase() === usernameInput.toLowerCase());
-        if (existing) {
-          showAuthAlert("Bu kullanıcı adı zaten kullanılıyor! Giriş yapabilirsiniz.", "error");
+        if (authUsers.some(x => x.username.toLowerCase() === u.toLowerCase())) {
+          showAuthAlert("Bu kullanıcı adı zaten mevcut! Giriş yapabilirsiniz.");
           return;
         }
-
-        const newUser = {
-          username: usernameInput,
-          password: passwordInput,
-          role: "student",
-          avatar: selectedRegAvatar,
-          title: "Öğrenci",
-          createdAt: new Date().toISOString()
-        };
-
+        const newUser = { username: u, password: p, role: "student", avatar: selectedRegAvatar, title: "Öğrenci" };
         authUsers.push(newUser);
         localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
-
         currentSession = newUser;
         localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(newUser));
         applyUserSession(newUser);
         hideAuthGateModal();
         playChimeSound('success');
-        confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+        confetti({ particleCount: 60, spread: 70 });
       }
     }
 
-    function showAuthAlert(msg, type = "error") {
-      const alertBox = document.getElementById("authAlertBox");
-      alertBox.textContent = msg;
-      alertBox.className = type === 'error' 
-        ? "p-3 rounded-xl text-xs font-semibold mb-3 bg-rose-50 border border-rose-200 text-rose-700"
-        : "p-3 rounded-xl text-xs font-semibold mb-3 bg-emerald-50 border border-emerald-200 text-emerald-700";
-      alertBox.classList.remove("hidden");
+    function showAuthAlert(msg) {
+      const a = document.getElementById("authAlertBox");
+      a.textContent = msg;
+      a.className = "p-3 rounded-xl text-xs font-semibold mb-3 bg-rose-50 border border-rose-200 text-rose-700";
+      a.classList.remove("hidden");
     }
 
-    /* =========================================================================
-       3. KAREKOD (QR CODE) KAMERA TARAMA İŞLEVLERİ
-       ========================================================================= */
     function startQrScanner() {
-      const statusElem = document.getElementById("qrScannerStatus");
-      statusElem.textContent = "Kamera başlatılıyor...";
-
+      const s = document.getElementById("qrScannerStatus");
+      s.textContent = "Kamera açılıyor...";
       if (typeof Html5Qrcode === 'undefined') {
-        statusElem.textContent = "Kamera tarayıcı yüklenemedi. Lütfen şifre ile giriş yapın.";
+        s.textContent = "Kamera modülü yüklenemedi. Şifre ile giriş yapın.";
         return;
       }
-
       try {
-        if (html5QrCodeScanner) {
-          html5QrCodeScanner.stop().catch(() => {});
-        }
-
+        if (html5QrCodeScanner) html5QrCodeScanner.stop().catch(()=>{});
         html5QrCodeScanner = new Html5Qrcode("qr-reader");
         html5QrCodeScanner.start(
           { facingMode: "environment" },
           { fps: 10, qrbox: { width: 200, height: 200 } },
-          (decodedText) => {
-            handleQrCodeScanned(decodedText);
-          },
-          (errorMessage) => {
-            // Scanning in progress
-          }
-        ).then(() => {
-          statusElem.textContent = "📷 Kartınızı karekod çerçevesine tutun.";
-        }).catch((err) => {
-          statusElem.textContent = "Kamera izni alınamadı veya kamera bulunamadı.";
-        });
-      } catch (err) {
-        statusElem.textContent = "Kamera başlatılırken hata oluştu: " + err.message;
-      }
+          (decoded) => handleQrScanned(decoded),
+          () => {}
+        ).then(() => { s.textContent = "📷 Kartınızı karekoda tutun."; })
+        .catch(() => { s.textContent = "Kamera izni alınamadı."; });
+      } catch(e) { s.textContent = "Kamera başlatılamadı."; }
     }
 
     function stopQrScanner() {
       if (html5QrCodeScanner) {
-        try {
-          html5QrCodeScanner.stop().then(() => {
-            html5QrCodeScanner.clear();
-            html5QrCodeScanner = null;
-          }).catch(() => {});
-        } catch(e) {}
+        html5QrCodeScanner.stop().then(() => { html5QrCodeScanner.clear(); html5QrCodeScanner = null; }).catch(()=>{});
       }
     }
 
-    function handleQrCodeScanned(qrContent) {
+    function handleQrScanned(qrContent) {
       stopQrScanner();
-      
       try {
         let payload = null;
         if (qrContent.includes("qr_auth=")) {
-          const urlParams = new URLSearchParams(qrContent.split('?')[1]);
-          const token = urlParams.get('qr_auth');
-          payload = JSON.parse(decodeURIComponent(atob(token)));
+          const p = new URLSearchParams(qrContent.split('?')[1]);
+          payload = JSON.parse(decodeURIComponent(atob(p.get('qr_auth'))));
         } else {
           payload = JSON.parse(qrContent);
         }
-
         if (payload && payload.u && payload.p) {
-          let found = authUsers.find(u => u.username.toLowerCase() === payload.u.toLowerCase());
+          let found = authUsers.find(x => x.username.toLowerCase() === payload.u.toLowerCase());
           if (!found) {
-            found = {
-              username: payload.u,
-              password: payload.p,
-              role: "student",
-              avatar: "🚀",
-              title: "Öğrenci",
-              createdAt: new Date().toISOString()
-            };
+            found = { username: payload.u, password: payload.p, role: "student", avatar: "🚀", title: "Öğrenci" };
             authUsers.push(found);
             localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
           }
-
           currentSession = found;
           localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
           applyUserSession(found);
           hideAuthGateModal();
           playChimeSound('success');
-          confetti({ particleCount: 70, spread: 80, origin: { y: 0.5 } });
-          alert(`🎉 Karekod Başarıyla Okundu! Hoş geldin, ${found.username}!`);
-          return;
+          confetti({ particleCount: 70, spread: 80 });
+          alert(`🎉 Hoş geldin, ${found.username}!`);
         }
       } catch(e) {
-        showAuthAlert("Geçersiz karekod! Lütfen sistemin verdiği karekod kartını okutun.", "error");
+        showAuthAlert("Geçersiz karekod kartı!");
         switchAuthMode('login');
       }
     }
 
-    /* =========================================================================
-       4. YÖNETİCİ KAREKOD OLUŞTURMA & YAZDIRMA İŞLEVLERİ
-       ========================================================================= */
     function showStudentQR(username) {
-      const user = authUsers.find(u => u.username.toLowerCase() === username.toLowerCase());
-      if (!user) return;
+      const u = authUsers.find(x => x.username.toLowerCase() === username.toLowerCase());
+      if (!u) return;
+      document.getElementById("qrStudentName").textContent = u.username;
+      document.getElementById("qrStudentAvatar").textContent = u.avatar;
 
-      document.getElementById("qrStudentName").textContent = user.username;
-      document.getElementById("qrStudentAvatar").textContent = user.avatar;
-
-      const qrUrl = generateStudentQRLoginUrl(user.username, user.password);
+      const qrUrl = generateStudentQRLoginUrl(u.username, u.password);
       activeQrTargetUrl = qrUrl;
 
-      const qrContainer = document.getElementById("singleQrContainer");
-      qrContainer.innerHTML = "";
-
-      new QRCode(qrContainer, {
+      const container = document.getElementById("singleQrContainer");
+      container.innerHTML = "";
+      new QRCode(container, {
         text: qrUrl,
         width: 160,
         height: 160,
-        colorDark : "#0f172a",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
+        colorDark: "#0f172a",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
       });
-
       document.getElementById("singleQrModal").classList.remove("hidden");
       document.getElementById("singleQrModal").classList.add("flex");
       playChimeSound('click');
@@ -1535,139 +1269,511 @@
     function copyQrLoginUrl() {
       if (!activeQrTargetUrl) return;
       navigator.clipboard.writeText(activeQrTargetUrl).then(() => {
-        const btnText = document.getElementById("copyQrLinkBtnText");
-        btnText.textContent = "Kopyalandı! ✓";
-        playChimeSound('success');
-        setTimeout(() => { btnText.textContent = "Linki Kopyala"; }, 2000);
+        document.getElementById("copyQrLinkBtnText").textContent = "Kopyalandı! ✓";
+        setTimeout(() => { document.getElementById("copyQrLinkBtnText").textContent = "Linki Kopyala"; }, 2000);
       });
-    }
-
-    function printAllStudentQRCards() {
-      const studentUsers = authUsers.filter(u => u.role === 'student');
-      const grid = document.getElementById("allQRCardsGrid");
-      grid.innerHTML = "";
-
-      studentUsers.forEach(st => {
-        const qrUrl = generateStudentQRLoginUrl(st.username, st.password);
-        const card = document.createElement("div");
-        card.className = "p-4 rounded-2xl border-2 border-slate-300 bg-white flex flex-col items-center justify-between text-center space-y-2 break-inside-avoid shadow-sm";
-        
-        const qrId = `qr_print_${st.username}`;
-        card.innerHTML = `
-          <div class="flex items-center gap-2 border-b pb-2 w-full justify-center">
-            <span class="text-2xl">${st.avatar}</span>
-            <div class="text-left leading-tight">
-              <h4 class="font-bold text-sm text-slate-800">${st.username}</h4>
-              <span class="text-[10px] text-slate-500 font-medium">16 Günlük Gelişim Programı</span>
-            </div>
-          </div>
-
-          <div id="${qrId}" class="p-2 bg-white flex items-center justify-center"></div>
-
-          <div class="text-[9px] text-slate-500 font-medium border-t pt-1 w-full">
-            📱 Telefon kamerasıyla okutarak doğrudan giriş yapın
-          </div>
-        `;
-        grid.appendChild(card);
-
-        setTimeout(() => {
-          const container = document.getElementById(qrId);
-          if (container) {
-            new QRCode(container, {
-              text: qrUrl,
-              width: 120,
-              height: 120,
-              colorDark : "#000000",
-              colorLight : "#ffffff",
-              correctLevel : QRCode.CorrectLevel.M
-            });
-          }
-        }, 100);
-      });
-
-      document.getElementById("allQRCardsPrintArea").classList.remove("hidden");
-      setTimeout(() => {
-        window.print();
-        setTimeout(() => {
-          document.getElementById("allQRCardsPrintArea").classList.add("hidden");
-        }, 1000);
-      }, 500);
-    }
-
-    function applyUserSession(user) {
-      document.getElementById("headerUserName").textContent = user.username;
-      document.getElementById("headerUserAvatar").textContent = user.avatar;
-      document.getElementById("headerUserRoleBadge").textContent = user.role === 'admin' ? 'Yönetici' : 'Öğrenci';
-      document.getElementById("bannerStudentName").textContent = user.username;
-
-      if (user.role === 'admin') {
-        document.getElementById("headerAdminBtn").classList.remove("hidden");
-        const firstStudent = authUsers.find(u => u.role === 'student') || { username: "Ahmet" };
-        loadUserData(firstStudent.username);
-      } else {
-        document.getElementById("headerAdminBtn").classList.add("hidden");
-        loadUserData(user.username);
-      }
-    }
-
-    function handleLogout() {
-      if (confirm("Oturumu kapatmak istediğinize emin misiniz?")) {
-        localStorage.removeItem(CURRENT_SESSION_KEY);
-        currentSession = null;
-        document.getElementById("authUsernameInput").value = "";
-        document.getElementById("authPasswordInput").value = "";
-        showAuthGateModal();
-        playChimeSound('click');
-      }
     }
 
     /* =========================================================================
-       5. USER DATA STATE MANAGEMENT
+       3. HAFTALIK VE GÜNLÜK RENDER İŞLEMLERİ
        ========================================================================= */
 
-    function loadUserData(username) {
-      const userKey = getUserDataStorageKey(username);
-      const savedData = localStorage.getItem(userKey);
-      
-      if (savedData) {
-        try {
-          state = JSON.parse(savedData);
-        } catch(e) {
-          state = createDefaultStateObj();
-        }
-      } else {
-        state = createDefaultStateObj();
-      }
-
-      DAYS_CONFIG.forEach(day => {
-        if (!state.daysData[day.id]) {
-          const t = WEEKLY_LESSONS_TEMPLATE[day.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
-          state.daysData[day.id] = {
-            tasks: {},
-            lessons: [{ type: t[0].type, done: false }, { type: t[1].type, done: false }, { type: t[2].type, done: false }],
-            rating: 0,
-            note: ""
-          };
-        }
+    function renderWeeksUI() {
+      // 1. Dropdown
+      const dropdown = document.getElementById("weekSelectDropdown");
+      dropdown.innerHTML = "";
+      ALL_WEEKS.forEach(w => {
+        const opt = document.createElement("option");
+        opt.value = w.weekNumber;
+        opt.textContent = w.label;
+        if (w.weekNumber === state.selectedWeek) opt.selected = true;
+        dropdown.appendChild(opt);
       });
 
+      // 2. Yatay Mini Hafta Butonları
+      const bar = document.getElementById("weeksHorizontalBar");
+      bar.innerHTML = "";
+      ALL_WEEKS.forEach(w => {
+        const isSel = w.weekNumber === state.selectedWeek;
+        const b = document.createElement("button");
+        b.onclick = () => selectWeek(w.weekNumber);
+        b.className = `flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+          isSel ? 'bg-blue-600 text-white shadow-md scale-105' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
+        }`;
+        b.innerHTML = `<span>H${w.weekNumber}</span> <span class="text-[10px] font-normal opacity-80">(${w.startDate.getDate()} ${MONTH_NAMES[w.startDate.getMonth()].substring(0,3)})</span>`;
+        bar.appendChild(b);
+      });
+
+      const currentWeekObj = ALL_WEEKS.find(w => w.weekNumber === state.selectedWeek) || ALL_WEEKS[0];
+      document.getElementById("bannerWeekTitleBadge").textContent = currentWeekObj.label;
+      document.getElementById("currentWeekRangeHeader").textContent = currentWeekObj.label;
+      document.getElementById("weeklyCardTitle").textContent = `${currentWeekObj.shortTitle} Karnesi`;
+    }
+
+    function selectWeek(wNum) {
+      if (wNum < 1 || wNum > 40) return;
+      state.selectedWeek = wNum;
+      getOrCreateWeekData(wNum);
+      playChimeSound('click');
       saveState();
       renderAll();
     }
 
-    function saveState() {
-      const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
-      localStorage.setItem(getUserDataStorageKey(activeName), JSON.stringify(state));
-      updateGamificationAndUI();
+    function changeWeek(delta) {
+      selectWeek(state.selectedWeek + delta);
+    }
+
+    function goToCurrentSystemWeek() {
+      const now = new Date();
+      // Tarihi aralığa göre bul
+      const found = ALL_WEEKS.find(w => now >= w.startDate && now <= w.endDate);
+      if (found) {
+        selectWeek(found.weekNumber);
+      } else {
+        selectWeek(1);
+      }
+    }
+
+    function renderDaysTabBar() {
+      const bar = document.getElementById("daysTabBar");
+      bar.innerHTML = "";
+      const currentWeekObj = ALL_WEEKS.find(w => w.weekNumber === state.selectedWeek) || ALL_WEEKS[0];
+      const wData = getOrCreateWeekData(state.selectedWeek);
+
+      currentWeekObj.days.forEach(d => {
+        const isSel = d.dayIndex === state.selectedDayIndex;
+        const dayRecord = wData.days[d.dayIndex] || { topics: [], questions: [] };
+        
+        const doneTopics = (dayRecord.topics || []).filter(t => t.done).length;
+        const totalQ = (dayRecord.questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
+
+        const btn = document.createElement("button");
+        btn.onclick = () => selectDay(d.dayIndex);
+        btn.className = `p-2.5 rounded-2xl border text-center transition-all flex flex-col items-center justify-between ${
+          isSel 
+            ? 'bg-blue-600 text-white shadow-md scale-102 border-blue-700 ring-2 ring-blue-300' 
+            : (d.isWeekend ? 'bg-indigo-50/60 hover:bg-indigo-100/70 border-indigo-200 text-slate-800' : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700')
+        }`;
+
+        btn.innerHTML = `
+          <div class="text-[10px] font-bold uppercase ${isSel ? 'text-blue-100' : 'text-slate-400'}">${d.dayName.substring(0,3)}</div>
+          <div class="font-fun text-sm font-bold my-0.5">${d.shortDate}</div>
+          <div class="text-[9px] font-semibold flex items-center gap-1 ${isSel ? 'text-amber-200' : 'text-emerald-700'}">
+            <span>${doneTopics}/3K</span> • <span>${totalQ}S</span>
+          </div>
+        `;
+        bar.appendChild(btn);
+      });
+
+      document.getElementById("selectedDayNameText").textContent = DAY_NAMES[state.selectedDayIndex];
+    }
+
+    function selectDay(dIndex) {
+      state.selectedDayIndex = dIndex;
+      playChimeSound('click');
+      saveState();
+      renderDayTasks();
+      renderDaysTabBar();
+    }
+
+    function renderDayTasks() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const dayRecord = wData.days[state.selectedDayIndex];
+
+      // 1. 3 DERS KONU ÇALIŞMA LİSTESİ
+      const topicsList = document.getElementById("dailyTopicsList");
+      topicsList.innerHTML = "";
+      let completedTopicsCount = 0;
+
+      dayRecord.topics.forEach((top, idx) => {
+        if (top.done) completedTopicsCount++;
+
+        const div = document.createElement("div");
+        div.className = `p-3 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+          top.done ? 'bg-white border-emerald-300 shadow-sm' : 'bg-white/80 border-slate-200'
+        }`;
+
+        let subOptions = DEFAULT_SUBJECTS.map(s => `<option value="${s}" ${s === top.subject ? 'selected' : ''}>${s}</option>`).join('');
+
+        div.innerHTML = `
+          <div class="flex items-center gap-2 flex-1">
+            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center">${idx + 1}</span>
+            <select onchange="updateDailyTopicSubject(${idx}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 rounded-xl px-2 py-1 focus:outline-none">
+              ${subOptions}
+            </select>
+            <input type="text" value="${top.name || ''}" placeholder="Konu başlığı (Örn: Çarpanlar)..." onchange="updateDailyTopicName(${idx}, this.value)" class="flex-1 text-xs px-2.5 py-1 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 focus:bg-white focus:outline-none">
+          </div>
+
+          <button onclick="toggleDailyTopicDone(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+            top.done ? 'bg-emerald-600 text-white shadow' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+          }">
+            <i class="fa-solid ${top.done ? 'fa-check' : 'fa-circle'} text-[10px]"></i>
+            <span>${top.done ? 'Çalışıldı' : 'Tamamla'}</span>
+          </button>
+        `;
+        topicsList.appendChild(div);
+      });
+
+      document.getElementById("dailyTopicsProgressBadge").textContent = `${completedTopicsCount} / 3 Konu`;
+
+      // 2. 3 DERS MANUEL SORU ÇÖZÜMÜ LİSTESİ
+      const questionsList = document.getElementById("dailyQuestionsList");
+      questionsList.innerHTML = "";
+      let dailyTotalQ = 0;
+
+      dayRecord.questions.forEach((qItem, idx) => {
+        const count = parseInt(qItem.count) || 0;
+        dailyTotalQ += count;
+
+        const div = document.createElement("div");
+        div.className = "p-3 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-between gap-3";
+
+        let subOptions = DEFAULT_SUBJECTS.map(s => `<option value="${s}" ${s === qItem.subject ? 'selected' : ''}>${s}</option>`).join('');
+
+        div.innerHTML = `
+          <div class="flex items-center gap-2 flex-1">
+            <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center">${idx + 1}</span>
+            <select onchange="updateDailyQuestionSubject(${idx}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 rounded-xl px-2 py-1 focus:outline-none">
+              ${subOptions}
+            </select>
+          </div>
+
+          <!-- Manuel Soru Sayısı Girişi (Input + Hızlı Butonlar) -->
+          <div class="flex items-center gap-1.5">
+            <button onclick="adjustDailyQuestionCount(${idx}, -5)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center">-5</button>
+            <input type="number" min="0" max="500" value="${count}" onchange="updateDailyQuestionCount(${idx}, this.value)" class="w-16 p-1.5 text-center text-xs font-bold text-emerald-950 bg-emerald-50 border border-emerald-300 rounded-xl focus:bg-white focus:outline-none">
+            <button onclick="adjustDailyQuestionCount(${idx}, 5)" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center">+5</button>
+            <span class="text-xs text-slate-400 font-semibold pl-1">Soru</span>
+          </div>
+        `;
+        questionsList.appendChild(div);
+      });
+
+      document.getElementById("dailyQuestionsTotalBadge").textContent = `${dailyTotalQ} Soru Çözüldü`;
+
+      // 3. Günlük Yıldız ve Not
+      const starsC = document.getElementById("dailyStarsContainer");
+      starsC.innerHTML = "";
+      for (let s = 1; s <= 5; s++) {
+        const isFilled = s <= (dayRecord.rating || 0);
+        starsC.innerHTML += `<button onclick="setDailyRating(${s})" class="text-base ${isFilled ? 'text-amber-400' : 'text-slate-300'} hover:text-amber-400 transition-colors">★</button>`;
+      }
+      document.getElementById("dailyShortNoteInput").value = dayRecord.note || "";
+    }
+
+    function updateDailyTopicSubject(idx, val) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      wData.days[state.selectedDayIndex].topics[idx].subject = val;
+      saveState();
+    }
+
+    function updateDailyTopicName(idx, val) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      wData.days[state.selectedDayIndex].topics[idx].name = val;
+      saveState();
+    }
+
+    function toggleDailyTopicDone(idx) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const top = wData.days[state.selectedDayIndex].topics[idx];
+      top.done = !top.done;
+      playChimeSound(top.done ? 'success' : 'click');
+      saveState();
+      renderDayTasks();
+      renderDaysTabBar();
+    }
+
+    function updateDailyQuestionSubject(idx, val) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      wData.days[state.selectedDayIndex].questions[idx].subject = val;
+      saveState();
+    }
+
+    function updateDailyQuestionCount(idx, val) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const num = Math.max(0, parseInt(val) || 0);
+      wData.days[state.selectedDayIndex].questions[idx].count = num;
+      playChimeSound('click');
+      saveState();
+      renderDayTasks();
+      renderDaysTabBar();
+    }
+
+    function adjustDailyQuestionCount(idx, delta) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const cur = parseInt(wData.days[state.selectedDayIndex].questions[idx].count) || 0;
+      const next = Math.max(0, cur + delta);
+      wData.days[state.selectedDayIndex].questions[idx].count = next;
+      playChimeSound('click');
+      saveState();
+      renderDayTasks();
+      renderDaysTabBar();
+    }
+
+    function setDailyRating(r) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      wData.days[state.selectedDayIndex].rating = r;
+      playChimeSound('success');
+      if (r === 5) confetti({ particleCount: 50, spread: 60 });
+      saveState();
+      renderDayTasks();
     }
 
     /* =========================================================================
-       6. ADMIN & SUPERVISOR REPORTING SYSTEM
+       4. HAFTA SONU DENEME SINAVI RENDER VE HESAPLAMA (20'ŞER SORU)
+       ========================================================================= */
+
+    function renderDenemeGrid() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const deneme = wData.deneme || { subjects: [] };
+      const grid = document.getElementById("denemeSubjectsGrid");
+      grid.innerHTML = "";
+
+      let totalCorrect = 0;
+      let totalIncorrect = 0;
+      let totalEmpty = 0;
+      let grandTotalNet = 0;
+
+      deneme.subjects.forEach((sub, idx) => {
+        totalCorrect += sub.correct || 0;
+        totalIncorrect += sub.incorrect || 0;
+        totalEmpty += sub.empty || 0;
+        grandTotalNet += parseFloat(sub.net) || 0;
+
+        const card = document.createElement("div");
+        card.className = "p-4 rounded-2xl bg-slate-50 border border-slate-200/90 shadow-sm space-y-3";
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between border-b pb-2">
+            <h5 class="font-fun font-bold text-sm text-slate-800 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> ${sub.subject}
+            </h5>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200">
+              ${sub.net.toFixed(2)} Net
+            </span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            
+            <div class="bg-white p-2 rounded-xl border border-emerald-200">
+              <span class="text-[10px] font-bold text-emerald-700 block">Doğru (D)</span>
+              <input type="number" min="0" max="20" value="${sub.correct}" onchange="updateDenemeSubjectScore(${idx}, 'correct', this.value)" class="w-full text-center font-bold text-emerald-800 text-sm focus:outline-none">
+            </div>
+
+            <div class="bg-white p-2 rounded-xl border border-rose-200">
+              <span class="text-[10px] font-bold text-rose-700 block">Yanlış (Y)</span>
+              <input type="number" min="0" max="20" value="${sub.incorrect}" onchange="updateDenemeSubjectScore(${idx}, 'incorrect', this.value)" class="w-full text-center font-bold text-rose-800 text-sm focus:outline-none">
+            </div>
+
+            <div class="bg-white p-2 rounded-xl border border-slate-200">
+              <span class="text-[10px] font-bold text-slate-500 block">Boş (B)</span>
+              <span class="font-bold text-slate-700 text-sm block mt-0.5">${sub.empty}</span>
+            </div>
+
+          </div>
+
+          <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-indigo-600 h-full rounded-full transition-all" style="width: ${Math.min(100, Math.max(0, (sub.net / 20) * 100))}%"></div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById("denemeTotalNetDisplay").textContent = `${grandTotalNet.toFixed(2)} Net`;
+      document.getElementById("headerWeekDenemeNet").textContent = `${grandTotalNet.toFixed(2)} Net`;
+      document.getElementById("bannerWeekDenemeScore").textContent = `${grandTotalNet.toFixed(2)} / 120`;
+      document.getElementById("denemeCorrectWrongRatio").textContent = `${totalCorrect} D / ${totalIncorrect} Y / ${totalEmpty} B`;
+      
+      const successPct = Math.round((grandTotalNet / 120) * 100);
+      document.getElementById("denemeSuccessRateBadge").textContent = `%${Math.max(0, successPct)} Başarı`;
+
+      document.getElementById("denemeNoteInput").value = deneme.note || "";
+    }
+
+    function updateDenemeSubjectScore(idx, type, val) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const sub = wData.deneme.subjects[idx];
+      let num = Math.min(20, Math.max(0, parseInt(val) || 0));
+
+      if (type === 'correct') {
+        sub.correct = num;
+        if (sub.correct + sub.incorrect > 20) sub.incorrect = 20 - sub.correct;
+      } else if (type === 'incorrect') {
+        sub.incorrect = num;
+        if (sub.correct + sub.incorrect > 20) sub.correct = 20 - sub.incorrect;
+      }
+
+      sub.empty = Math.max(0, 20 - (sub.correct + sub.incorrect));
+      // Net = D - (Y / 3) (LGS standardı)
+      const rawNet = sub.correct - (sub.incorrect / 3);
+      sub.net = Math.max(0, parseFloat(rawNet.toFixed(2)));
+      wData.deneme.conducted = true;
+
+      playChimeSound('click');
+      saveState();
+      renderDenemeGrid();
+    }
+
+    function saveWeekDenemeResults() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      wData.deneme.note = document.getElementById("denemeNoteInput").value.trim();
+      saveState();
+      playChimeSound('success');
+      confetti({ particleCount: 60, spread: 70 });
+      alert("Hafta sonu deneme sonuçları kaydedildi! 🎉");
+    }
+
+    function saveWeeklyReflection() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      wData.weeklyReflection = document.getElementById("weeklyReflectionText").value.trim();
+      saveState();
+      playChimeSound('success');
+      alert("Haftalık değerlendirmeniz kaydedildi! ✓");
+    }
+
+    /* =========================================================================
+       5. GRAFİK & ANALİTİK HESAPLAMALARI
+       ========================================================================= */
+    let weeklyDailyChartInstance = null;
+    let weeklySubjectChartInstance = null;
+
+    function renderWeeklyCharts() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      
+      // 1. Gün gün soru toplamları
+      const dailyCounts = [];
+      for (let d = 0; d < 7; d++) {
+        const dRec = wData.days[d] || { questions: [] };
+        const qTotal = (dRec.questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
+        dailyCounts.push(qTotal);
+      }
+
+      const ctxDaily = document.getElementById("weeklyDailyQuestionsChart");
+      if (ctxDaily) {
+        if (weeklyDailyChartInstance) {
+          weeklyDailyChartInstance.data.datasets[0].data = dailyCounts;
+          weeklyDailyChartInstance.update();
+        } else {
+          weeklyDailyChartInstance = new Chart(ctxDaily, {
+            type: 'bar',
+            data: {
+              labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+              datasets: [{
+                label: 'Çözülen Soru Sayısı',
+                data: dailyCounts,
+                backgroundColor: 'rgba(2, 132, 199, 0.85)',
+                borderRadius: 8,
+                hoverBackgroundColor: 'rgba(16, 185, 129, 0.9)'
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                x: { grid: { display: false } }
+              }
+            }
+          });
+        }
+      }
+
+      // 2. Ders Bazında Soru Dağılımı
+      const subjectMap = {};
+      DEFAULT_SUBJECTS.forEach(s => { subjectMap[s] = 0; });
+
+      for (let d = 0; d < 7; d++) {
+        const dRec = wData.days[d] || { questions: [] };
+        (dRec.questions || []).forEach(q => {
+          const s = q.subject || DEFAULT_SUBJECTS[0];
+          subjectMap[s] = (subjectMap[s] || 0) + (parseInt(q.count) || 0);
+        });
+      }
+
+      const subLabels = Object.keys(subjectMap);
+      const subData = Object.values(subjectMap);
+
+      const ctxSub = document.getElementById("weeklySubjectShareChart");
+      if (ctxSub) {
+        if (weeklySubjectChartInstance) {
+          weeklySubjectChartInstance.data.datasets[0].data = subData;
+          weeklySubjectChartInstance.update();
+        } else {
+          weeklySubjectChartInstance = new Chart(ctxSub, {
+            type: 'doughnut',
+            data: {
+              labels: subLabels,
+              datasets: [{
+                data: subData,
+                backgroundColor: [
+                  '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4'
+                ]
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 9 } } } }
+            }
+          });
+        }
+      }
+    }
+
+    function updateSummaryMetrics() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      
+      let weekTopicsDone = 0;
+      let weekTotalQ = 0;
+
+      for (let d = 0; d < 7; d++) {
+        const dRec = wData.days[d] || { topics: [], questions: [] };
+        weekTopicsDone += (dRec.topics || []).filter(t => t.done).length;
+        weekTotalQ += (dRec.questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
+      }
+
+      // Hafta sonu deneme sorularını da toplam soruya kat
+      let denemeTotalQ = 0;
+      let grandNet = 0;
+      (wData.deneme.subjects || []).forEach(s => {
+        denemeTotalQ += (s.correct || 0) + (s.incorrect || 0);
+        grandNet += (s.net || 0);
+      });
+
+      const grandTotalQuestionsThisWeek = weekTotalQ + denemeTotalQ;
+
+      document.getElementById("bannerWeekTopicsRatio").textContent = `${weekTopicsDone} / 21`;
+      document.getElementById("bannerWeekTotalQuestions").textContent = `${grandTotalQuestionsThisWeek}`;
+      document.getElementById("headerWeekQuestionCount").textContent = `${grandTotalQuestionsThisWeek} Soru`;
+
+      document.getElementById("karnеTopicsCount").textContent = `${weekTopicsDone} / 21`;
+      document.getElementById("karneQuestionsCount").textContent = `${grandTotalQuestionsThisWeek} Soru`;
+      document.getElementById("karneDenemeNet").textContent = `${grandNet.toFixed(2)} Net`;
+
+      document.getElementById("weeklyReflectionText").value = wData.weeklyReflection || "";
+
+      renderWeeklyCharts();
+    }
+
+    /* =========================================================================
+       6. YÖNETİCİ & ÖĞRETMEN HAFTALIK RAPOR SİSTEMİ
        ========================================================================= */
     let currentAdminTab = 'students';
 
     function openAdminModal() {
-      renderAdminDashboard();
+      // Hafta seçiciyi doldur
+      const sel = document.getElementById("adminWeekSelector");
+      sel.innerHTML = "";
+      ALL_WEEKS.forEach(w => {
+        const opt = document.createElement("option");
+        opt.value = w.weekNumber;
+        opt.textContent = w.label;
+        if (w.weekNumber === state.selectedWeek) opt.selected = true;
+        sel.appendChild(opt);
+      });
+
+      renderAdminDashboard(state.selectedWeek);
       document.getElementById("adminModal").classList.remove("hidden");
       document.getElementById("adminModal").classList.add("flex");
     }
@@ -1677,8 +1783,8 @@
       document.getElementById("adminModal").classList.remove("flex");
     }
 
-    function switchAdminTab(tabId) {
-      currentAdminTab = tabId;
+    function switchAdminTab(tId) {
+      currentAdminTab = tId;
       document.getElementById("adminTab-students").classList.add("hidden");
       document.getElementById("adminTab-reflections").classList.add("hidden");
       document.getElementById("adminTab-tools").classList.add("hidden");
@@ -1687,162 +1793,112 @@
       document.getElementById("adminTabBtn-reflections").className = "pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5";
       document.getElementById("adminTabBtn-tools").className = "pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5";
 
-      document.getElementById(`adminTab-${tabId}`).classList.remove("hidden");
-      document.getElementById(`adminTabBtn-${tabId}`).className = "pb-2 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5 font-bold";
+      document.getElementById(`adminTab-${tId}`).classList.remove("hidden");
+      document.getElementById(`adminTabBtn-${tId}`).className = "pb-2 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5 font-bold";
     }
 
-    function calculateStudentSummary(username) {
+    function calculateStudentWeekSummary(username, weekNum) {
       let uData = null;
       try {
         uData = JSON.parse(localStorage.getItem(getUserDataStorageKey(username)));
       } catch(e) {}
 
-      if (!uData || !uData.daysData) {
-        return {
-          totalXP: 0, completedTasks: 0, completedLessons: 0,
-          streak: 0, avgRating: 0, levelName: "1. Çırak",
-          reflections: [], areaScores: { A:0, B:0, C:0, D:0 }
-        };
+      if (!uData || !uData.weeksData || !uData.weeksData[weekNum]) {
+        return { topicsDone: 0, totalQuestions: 0, denemeNet: 0, reflection: "" };
       }
 
-      let totalXP = 0;
-      let completedTasks = 0;
-      let completedLessons = 0;
-      let streak = 0;
-      let ratingSum = 0;
-      let ratedDaysCount = 0;
-      let reflections = [];
-      let areaScores = { A: 0, B: 0, C: 0, D: 0 };
+      const wRec = uData.weeksData[weekNum];
+      let topicsDone = 0;
+      let totalQuestions = 0;
 
-      DAYS_CONFIG.forEach(d => {
-        const day = uData.daysData[d.id] || { tasks: {}, lessons: [], rating: 0, note: "" };
-        let hasDoneSomething = false;
+      for (let d = 0; d < 7; d++) {
+        const dRec = (wRec.days && wRec.days[d]) || { topics: [], questions: [] };
+        topicsDone += (dRec.topics || []).filter(t => t.done).length;
+        totalQuestions += (dRec.questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
+      }
 
-        Object.entries(day.tasks || {}).forEach(([taskId, st]) => {
-          let taskArea = 'A';
-          DEFAULT_VAKITLER.forEach(v => {
-            const found = v.tasks.find(t => t.id === taskId);
-            if (found) taskArea = found.area;
-          });
-
-          if (st === 'done') {
-            totalXP += 10;
-            completedTasks++;
-            areaScores[taskArea] += 10;
-            hasDoneSomething = true;
-          } else if (st === 'half') {
-            totalXP += 5;
-            areaScores[taskArea] += 5;
-            hasDoneSomething = true;
-          }
+      let denemeNet = 0;
+      if (wRec.deneme && wRec.deneme.subjects) {
+        wRec.deneme.subjects.forEach(s => {
+          denemeNet += (s.net || 0);
+          totalQuestions += (s.correct || 0) + (s.incorrect || 0);
         });
-
-        (day.lessons || []).forEach(l => {
-          if (l.done) {
-            totalXP += 15;
-            completedLessons++;
-            areaScores['A'] += 15;
-            hasDoneSomething = true;
-          }
-        });
-
-        if (day.rating > 0) {
-          totalXP += day.rating * 5;
-          ratingSum += day.rating;
-          ratedDaysCount++;
-        }
-
-        if (day.note && day.note.trim().length > 0) {
-          reflections.push({
-            dayId: d.id,
-            dayText: `${d.dayNumber} ${d.month} ${d.dayName}`,
-            note: day.note.trim()
-          });
-        }
-
-        if (hasDoneSomething) streak++;
-      });
-
-      let levelName = "1. Çırak 🌱";
-      if (totalXP >= 500) levelName = "5. Şampiyon 🏆";
-      else if (totalXP >= 300) levelName = "4. Bilge 💡";
-      else if (totalXP >= 150) levelName = "3. Üretici 🚀";
-      else if (totalXP >= 50) levelName = "2. Yolcu 🌿";
-
-      const avgRating = ratedDaysCount > 0 ? (ratingSum / ratedDaysCount).toFixed(1) : 0;
+      }
 
       return {
-        totalXP, completedTasks, completedLessons,
-        streak, avgRating, levelName, reflections, areaScores
+        topicsDone,
+        totalQuestions,
+        denemeNet: parseFloat(denemeNet.toFixed(2)),
+        reflection: wRec.weeklyReflection || ""
       };
     }
 
-    function renderAdminDashboard() {
+    function renderAdminDashboard(targetWeekNum) {
       const studentUsers = authUsers.filter(u => u.role === 'student');
-      const cardsContainer = document.getElementById("adminMetricsCards");
-      let totalClassXP = 0;
-      let totalClassTasks = 0;
-      let totalClassLessons = 0;
-      let topStudent = { name: "-", xp: -1, avatar: "👤" };
+      let totalClassQuestions = 0;
+      let totalClassTopics = 0;
+      let totalClassDenemeNet = 0;
+      let topStudent = { name: "-", questions: -1, avatar: "👤" };
 
       studentUsers.forEach(p => {
-        const summ = calculateStudentSummary(p.username);
-        totalClassXP += summ.totalXP;
-        totalClassTasks += summ.completedTasks;
-        totalClassLessons += summ.completedLessons;
-        if (summ.totalXP > topStudent.xp) {
-          topStudent = { name: p.username, xp: summ.totalXP, avatar: p.avatar };
+        const summ = calculateStudentWeekSummary(p.username, targetWeekNum);
+        totalClassQuestions += summ.totalQuestions;
+        totalClassTopics += summ.topicsDone;
+        totalClassDenemeNet += summ.denemeNet;
+
+        if (summ.totalQuestions > topStudent.questions) {
+          topStudent = { name: p.username, questions: summ.totalQuestions, avatar: p.avatar };
         }
       });
 
-      const avgCompletionRate = studentUsers.length > 0 
-        ? Math.round((totalClassTasks / (studentUsers.length * 80)) * 100) 
-        : 0;
+      const avgQuestions = studentUsers.length > 0 ? Math.round(totalClassQuestions / studentUsers.length) : 0;
+      const avgDeneme = studentUsers.length > 0 ? (totalClassDenemeNet / studentUsers.length).toFixed(2) : 0;
 
-      cardsContainer.innerHTML = `
+      // Özet Kartlar
+      const mCards = document.getElementById("adminMetricsCards");
+      mCards.innerHTML = `
         <div class="p-3.5 rounded-2xl bg-blue-50 border border-blue-200">
-          <div class="text-[10px] font-bold text-blue-600 uppercase">Kayıtlı Öğrenci</div>
-          <div class="text-xl font-fun font-bold text-blue-950 mt-0.5">${studentUsers.length} Öğrenci</div>
-          <div class="text-[10px] text-blue-500 font-medium">Toplam Sınıf Mevcudu</div>
+          <div class="text-[10px] font-bold text-blue-600 uppercase">Toplam Soru (Haftalık)</div>
+          <div class="text-xl font-fun font-bold text-blue-950 mt-0.5">${totalClassQuestions} Soru</div>
+          <div class="text-[10px] text-blue-500 font-medium">Sınıf Geneli Çözülen</div>
         </div>
 
         <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
-          <div class="text-[10px] font-bold text-emerald-600 uppercase">Sınıf Başarı Oranı</div>
-          <div class="text-xl font-fun font-bold text-emerald-950 mt-0.5">%${Math.min(100, avgCompletionRate)}</div>
-          <div class="text-[10px] text-emerald-500 font-medium">${totalClassTasks} Görev Tamamlandı</div>
-        </div>
-
-        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
-          <div class="text-[10px] font-bold text-amber-600 uppercase">Tamamlanan Ders</div>
-          <div class="text-xl font-fun font-bold text-amber-950 mt-0.5">${totalClassLessons} Ders</div>
-          <div class="text-[10px] text-amber-500 font-medium">K/S Ders Çalışması</div>
+          <div class="text-[10px] font-bold text-emerald-600 uppercase">Öğrenci Başına Ort.</div>
+          <div class="text-xl font-fun font-bold text-emerald-950 mt-0.5">${avgQuestions} Soru</div>
+          <div class="text-[10px] text-emerald-500 font-medium">Haftalık Ortalama</div>
         </div>
 
         <div class="p-3.5 rounded-2xl bg-purple-50 border border-purple-200">
-          <div class="text-[10px] font-bold text-purple-600 uppercase">Lider Öğrenci</div>
-          <div class="text-base font-fun font-bold text-purple-950 truncate mt-0.5 flex items-center gap-1">
+          <div class="text-[10px] font-bold text-purple-600 uppercase">Deneme Ortalaması</div>
+          <div class="text-xl font-fun font-bold text-purple-950 mt-0.5">${avgDeneme} Net</div>
+          <div class="text-[10px] text-purple-500 font-medium">120 Soru Üzerinden</div>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+          <div class="text-[10px] font-bold text-amber-600 uppercase">Haftanın Lideri</div>
+          <div class="text-sm font-fun font-bold text-amber-950 truncate mt-0.5 flex items-center gap-1">
             <span>${topStudent.avatar}</span> <span>${topStudent.name}</span>
           </div>
-          <div class="text-[10px] text-purple-500 font-medium">${Math.max(0, topStudent.xp)} XP ile Zirvede</div>
+          <div class="text-[10px] text-amber-600 font-medium">${Math.max(0, topStudent.questions)} Soru ile Zirvede</div>
         </div>
       `;
 
-      // 2. Öğrenci Tablosu
-      const tableBody = document.getElementById("adminStudentsTableBody");
-      tableBody.innerHTML = "";
+      // Öğrenci Tablosu
+      const tbody = document.getElementById("adminStudentsTableBody");
+      tbody.innerHTML = "";
 
       studentUsers.forEach(p => {
-        const summ = calculateStudentSummary(p.username);
+        const summ = calculateStudentWeekSummary(p.username, targetWeekNum);
         const tr = document.createElement("tr");
         tr.className = "hover:bg-slate-50 transition-colors";
 
-        const taskPercent = Math.min(100, Math.round((summ.completedTasks / 80) * 100));
-        const lessonPercent = Math.min(100, Math.round((summ.completedLessons / 48) * 100));
+        const pct = Math.min(100, Math.round((summ.denemeNet / 120) * 100));
 
         tr.innerHTML = `
           <td class="p-3">
             <div class="flex items-center gap-2">
-              <span class="w-7 h-7 rounded-xl bg-slate-100 border flex items-center justify-center text-sm">${p.avatar}</span>
+              <span class="w-8 h-8 rounded-xl bg-slate-100 border flex items-center justify-center text-sm shadow-xs">${p.avatar}</span>
               <div>
                 <div class="font-bold text-slate-800">${p.username}</div>
                 <div class="text-[10px] text-slate-400">Şifre: <span class="font-mono text-slate-500">${p.password}</span></div>
@@ -1851,85 +1907,57 @@
           </td>
 
           <td class="p-3 text-center">
-            <div class="font-fun font-bold text-amber-600">${summ.totalXP} XP</div>
-            <div class="text-[10px] text-slate-500">${summ.levelName}</div>
+            <span class="font-bold text-slate-700">${summ.topicsDone} / 21</span>
+          </td>
+
+          <td class="p-3 text-center font-bold text-emerald-700">
+            ${summ.totalQuestions} Soru
+          </td>
+
+          <td class="p-3 text-center font-bold text-indigo-700">
+            ${summ.denemeNet} Net
           </td>
 
           <td class="p-3 text-center">
-            <div class="font-bold text-slate-700">${summ.completedTasks} Görev (%${taskPercent})</div>
-            <div class="w-20 bg-slate-200 h-1.5 rounded-full mx-auto mt-1 overflow-hidden">
-              <div class="bg-blue-600 h-full rounded-full" style="width: ${taskPercent}%"></div>
-            </div>
-          </td>
-
-          <td class="p-3 text-center">
-            <div class="font-bold text-slate-700">${summ.completedLessons} / 48 (%${lessonPercent})</div>
-            <div class="w-20 bg-slate-200 h-1.5 rounded-full mx-auto mt-1 overflow-hidden">
-              <div class="bg-emerald-500 h-full rounded-full" style="width: ${lessonPercent}%"></div>
-            </div>
-          </td>
-
-          <td class="p-3 text-center font-bold text-orange-600">
-            🔥 ${summ.streak} Gün
-          </td>
-
-          <td class="p-3 text-center">
-            ${summ.avgRating > 0 ? `<span class="text-amber-500 font-bold">★ ${summ.avgRating}</span>` : '<span class="text-slate-400">-</span>'}
+            <span class="text-xs px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-800 font-bold border border-indigo-200">
+              %${pct}
+            </span>
           </td>
 
           <td class="p-3 text-right">
             <div class="flex items-center justify-end gap-1.5">
-              <button onclick="showStudentQR('${p.username}')" class="px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold hover:bg-purple-100 flex items-center gap-1" title="Öğrenciye özel giriş karekodunu göster">
+              <button onclick="showStudentQR('${p.username}')" class="px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold hover:bg-purple-100" title="Karekod Göster">
                 <i class="fa-solid fa-qrcode"></i> Karekod
               </button>
-              <button onclick="adminInspectStudent('${p.username}')" class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold hover:bg-blue-100" title="Bu öğrencinin paneline geç">
+              <button onclick="adminInspectStudent('${p.username}')" class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold hover:bg-blue-100" title="Öğrenci Paneline Geç">
                 İncele 📋
               </button>
             </div>
           </td>
         `;
-        tableBody.appendChild(tr);
+        tbody.appendChild(tr);
       });
 
-      // 3. Yansıma Notları Akışı
-      const reflectionsContainer = document.getElementById("adminReflectionsContainer");
-      reflectionsContainer.innerHTML = "";
-
-      let allReflections = [];
+      // Yansıma Notları
+      const refBox = document.getElementById("adminReflectionsContainer");
+      refBox.innerHTML = "";
       studentUsers.forEach(p => {
-        const summ = calculateStudentSummary(p.username);
-        summ.reflections.forEach(ref => {
-          allReflections.push({
-            student: p.username,
-            avatar: p.avatar,
-            dayText: ref.dayText,
-            note: ref.note
-          });
-        });
-      });
-
-      if (allReflections.length === 0) {
-        reflectionsContainer.innerHTML = `
-          <div class="p-6 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed">
-            Henüz öğrenci yansıma notu girilmedi.
-          </div>
-        `;
-      } else {
-        allReflections.forEach(item => {
+        const summ = calculateStudentWeekSummary(p.username, targetWeekNum);
+        if (summ.reflection) {
           const div = document.createElement("div");
           div.className = "p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-1";
           div.innerHTML = `
             <div class="flex items-center justify-between text-xs">
-              <div class="flex items-center gap-1.5 font-bold text-slate-800">
-                <span>${item.avatar}</span>
-                <span>${item.student}</span>
-              </div>
-              <span class="text-[10px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md font-semibold">${item.dayText}</span>
+              <span class="font-bold text-slate-800">${p.avatar} ${p.username}</span>
+              <span class="text-[10px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-semibold">${targetWeekNum}. Hafta</span>
             </div>
-            <p class="text-xs text-slate-600 italic">"${item.note}"</p>
+            <p class="text-xs text-slate-600 italic">"${summ.reflection}"</p>
           `;
-          reflectionsContainer.appendChild(div);
-        });
+          refBox.appendChild(div);
+        }
+      });
+      if (refBox.innerHTML === "") {
+        refBox.innerHTML = '<div class="p-4 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed text-xs">Bu hafta için henüz yansıma notu girilmedi.</div>';
       }
     }
 
@@ -1937,7 +1965,7 @@
       state.viewingUser = username;
       loadUserData(username);
       closeAdminModal();
-      document.getElementById("bannerStudentName").textContent = `${username} (Yönetici İncelemesi)`;
+      document.getElementById("bannerStudentName").textContent = `${username} (Öğretmen İncelemesi)`;
       playChimeSound('click');
     }
 
@@ -1963,7 +1991,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(classData, null, 2));
       const a = document.createElement("a");
       a.href = dataStr;
-      a.download = `Sinif_Toplu_Gelisim_Raporu_${new Date().toISOString().slice(0,10)}.json`;
+      a.download = `Sinif_Haftalik_Soru_Takip_Raporu_${new Date().toISOString().slice(0,10)}.json`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -1983,622 +2011,65 @@
             Object.entries(parsed.studentsData).forEach(([uName, uData]) => {
               localStorage.setItem(getUserDataStorageKey(uName), JSON.stringify(uData));
             });
-            initAuthSystem();
-            renderAdminDashboard();
-            alert("Tüm sınıf verisi başarıyla yüklendi! 🎉");
+            initAuth();
+            alert("Sınıf verisi başarıyla yüklendi! 🎉");
             playChimeSound('success');
-          } else {
-            alert("Geçersiz sınıf yedeği formatı!");
           }
         } catch(err) {
-          alert("Dosya okuma hatası: " + err.message);
+          alert("Dosya okuma hatası!");
         }
       };
       reader.readAsText(file);
     }
 
     /* =========================================================================
-       7. SOUND / AUDIO SYNTHESIZER
+       7. SOUND SYNTHESIZER
        ========================================================================= */
     function playChimeSound(type = 'click') {
       try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(ctx.destination);
 
         if (type === 'success') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.15);
-          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.15, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
           osc.start();
-          osc.stop(audioCtx.currentTime + 0.25);
-        } else if (type === 'star') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(659.25, audioCtx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.2);
-          gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-          osc.start();
-          osc.stop(audioCtx.currentTime + 0.3);
+          osc.stop(ctx.currentTime + 0.25);
         } else {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-          gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+          osc.frequency.setValueAtTime(440, ctx.currentTime);
+          gain.gain.setValueAtTime(0.05, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
           osc.start();
-          osc.stop(audioCtx.currentTime + 0.08);
+          osc.stop(ctx.currentTime + 0.08);
         }
       } catch (e) {}
     }
 
     /* =========================================================================
-       8. RENDERERS & UI BUILDERS
-       ========================================================================= */
-
-    function renderDayButtons() {
-      const container = document.getElementById("dayButtonsContainer");
-      container.innerHTML = "";
-
-      DAYS_CONFIG.forEach(day => {
-        const isSelected = day.id === state.selectedDayId;
-        const dayData = state.daysData[day.id] || { tasks: {}, lessons: [], rating: 0 };
-        
-        const taskCount = Object.values(dayData.tasks).filter(v => v === 'done').length;
-        const lessonCount = dayData.lessons.filter(l => l.done).length;
-        const hasActivity = taskCount > 0 || lessonCount > 0 || dayData.rating > 0;
-
-        let phaseBorderColor = "border-emerald-300";
-        if (day.phase === 2) phaseBorderColor = "border-sky-300";
-        if (day.phase === 3) phaseBorderColor = "border-purple-300";
-
-        const btn = document.createElement("button");
-        btn.onclick = () => selectDay(day.id);
-        btn.className = `flex flex-col items-center justify-center p-2 rounded-2xl border transition-all relative ${
-          isSelected 
-            ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105 border-blue-700 z-10' 
-            : 'bg-white hover:bg-slate-50 text-slate-700 ' + phaseBorderColor
-        }`;
-
-        btn.innerHTML = `
-          <span class="text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'text-blue-100' : 'text-slate-400'}">${day.dayName.substring(0,3)}</span>
-          <span class="font-fun text-base font-bold my-0.5">${day.dayNumber}</span>
-          <span class="text-[9px] font-semibold ${isSelected ? 'text-blue-200' : 'text-slate-500'}">${day.month}</span>
-          ${hasActivity ? `
-            <span class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white"></span>
-          ` : ''}
-          ${dayData.rating > 0 ? `
-            <span class="text-[10px] text-amber-400 font-bold mt-0.5">★${dayData.rating}</span>
-          ` : ''}
-        `;
-        container.appendChild(btn);
-      });
-    }
-
-    function renderSelectedDayHeader() {
-      const currentDay = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
-      if (!currentDay) return;
-
-      const phaseInfo = PHASES[currentDay.phase];
-
-      document.getElementById("selectedDayMonth").textContent = currentDay.month;
-      document.getElementById("selectedDayNumber").textContent = currentDay.dayNumber;
-      document.getElementById("selectedDayFullTitle").textContent = `${currentDay.dayNumber} ${currentDay.month === 'AĞU' ? 'Ağustos' : 'Eylül'} ${currentDay.dayName} (${currentDay.id}. Gün)`;
-      
-      const badgeElem = document.getElementById("selectedDayPhaseBadge");
-      badgeElem.className = `text-xs px-2.5 py-0.5 rounded-full font-semibold border ${phaseInfo.class}`;
-      badgeElem.innerHTML = phaseInfo.badge;
-
-      document.getElementById("selectedDayPhaseGoal").innerHTML = phaseInfo.goal;
-      document.getElementById("activePhaseName").textContent = phaseInfo.title.split('(')[0];
-    }
-
-    function renderVakitCards() {
-      const container = document.getElementById("vakitCardsContainer");
-      container.innerHTML = "";
-
-      const dayData = state.daysData[state.selectedDayId] || { tasks: {} };
-
-      DEFAULT_VAKITLER.forEach(vakit => {
-        const card = document.createElement("div");
-        card.className = `bg-slate-50/70 rounded-3xl p-4 border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all`;
-
-        const completedInVakit = vakit.tasks.filter(t => dayData.tasks[t.id] === 'done').length;
-        const halfInVakit = vakit.tasks.filter(t => dayData.tasks[t.id] === 'half').length;
-        const hasMetRule = (completedInVakit + halfInVakit) >= 1;
-
-        let tasksHtml = '';
-        vakit.tasks.forEach(task => {
-          const status = dayData.tasks[task.id] || 'none';
-          
-          let btnClass = "bg-white text-slate-700 border-slate-200 hover:border-blue-300";
-          let iconHtml = `<span class="w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-transparent">✓</span>`;
-
-          if (status === 'done') {
-            btnClass = "bg-emerald-100/90 text-emerald-900 border-emerald-300 font-semibold shadow-sm";
-            iconHtml = `<span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-sm"><i class="fa-solid fa-check"></i></span>`;
-          } else if (status === 'half') {
-            btnClass = "bg-amber-100/90 text-amber-900 border-amber-300 font-semibold shadow-sm";
-            iconHtml = `<span class="w-4 h-4 rounded-full bg-amber-500 text-white flex items-center justify-center text-[9px] shadow-sm"><i class="fa-solid fa-minus"></i></span>`;
-          }
-
-          tasksHtml += `
-            <button onclick="cycleTaskStatus('${task.id}')" class="w-full text-left p-2.5 rounded-2xl border text-xs flex items-center justify-between gap-2 transition-all ${btnClass} group">
-              <span class="flex-1 leading-snug">${task.text}</span>
-              ${iconHtml}
-            </button>
-          `;
-        });
-
-        card.innerHTML = `
-          <div>
-            <div class="flex items-center gap-2 mb-2 p-2 rounded-2xl ${vakit.headerBg} border">
-              <i class="${vakit.icon} ${vakit.iconColor} text-base"></i>
-              <div class="flex-1 min-w-0">
-                <h4 class="font-fun text-xs font-bold truncate">${vakit.title}</h4>
-                <p class="text-[10px] opacity-80 truncate">${vakit.subtitle}</p>
-              </div>
-            </div>
-
-            <div class="text-[10px] font-semibold text-center text-slate-500 bg-white/70 py-1 px-2 rounded-xl mb-3 border border-slate-100">
-              "${vakit.slogan}"
-            </div>
-
-            <div class="space-y-1.5">
-              ${tasksHtml}
-            </div>
-          </div>
-
-          <div class="mt-3 pt-2.5 border-t border-slate-200/80 flex items-center justify-between text-[11px]">
-            <span class="font-medium ${hasMetRule ? 'text-emerald-700' : 'text-slate-400'}">
-              ${hasMetRule ? '<i class="fa-solid fa-circle-check text-emerald-500"></i> Kural Tamam' : '<i class="fa-regular fa-circle text-slate-300"></i> En az 1 seç'}
-            </span>
-            <span class="font-bold text-slate-600">${completedInVakit}/${vakit.tasks.length}</span>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function renderLessonsTrackerTable() {
-      const table = document.getElementById("lessonsTrackerTable");
-      table.innerHTML = "";
-
-      let headerHtml = `
-        <thead>
-          <tr class="bg-slate-100 text-slate-600 font-bold border-b border-slate-200">
-            <th class="py-2.5 px-2 text-left sticky left-0 bg-slate-100 z-10 min-w-[70px]">DERSLER</th>
-      `;
-
-      DAYS_CONFIG.forEach(day => {
-        const isSelected = day.id === state.selectedDayId;
-        headerHtml += `
-          <th onclick="selectDay(${day.id})" class="py-2 px-1 cursor-pointer transition-colors hover:bg-slate-200 ${isSelected ? 'bg-blue-100 text-blue-800' : ''}">
-            <div class="font-bold text-[11px]">${day.dayNumber}</div>
-            <div class="text-[9px] font-medium text-slate-400">${day.dayName.substring(0,3)}</div>
-          </th>
-        `;
-      });
-      headerHtml += `</tr></thead>`;
-
-      let tbodyHtml = `<tbody class="divide-y divide-slate-100 font-medium">`;
-
-      for (let lessonIndex = 0; lessonIndex < 3; lessonIndex++) {
-        tbodyHtml += `
-          <tr>
-            <td class="py-2.5 px-2 text-left font-bold text-slate-700 sticky left-0 bg-white z-10 shadow-sm border-r border-slate-100">
-              ${lessonIndex + 1}. Ders
-            </td>
-        `;
-
-        DAYS_CONFIG.forEach(day => {
-          const dayData = state.daysData[day.id] || { lessons: [] };
-          const lesson = dayData.lessons[lessonIndex] || { type: "K", done: false };
-          const isSelected = day.id === state.selectedDayId;
-
-          const isKonu = lesson.type === "K";
-          const isDone = lesson.done;
-
-          tbodyHtml += `
-            <td class="py-2 px-1 ${isSelected ? 'bg-blue-50/50' : ''}">
-              <div class="flex flex-col items-center gap-1">
-                <button onclick="toggleLessonType(${day.id}, ${lessonIndex})" class="w-6 h-6 rounded-full text-[11px] font-bold flex items-center justify-center transition-all ${
-                  isKonu ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-rose-600 text-white hover:bg-rose-700'
-                }" title="Ders tipi değiştir (Konu / Soru)">
-                  ${lesson.type}
-                </button>
-
-                <button onclick="toggleLessonDone(${day.id}, ${lessonIndex})" class="w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] transition-all ${
-                  isDone 
-                    ? 'bg-emerald-500 border-emerald-600 text-white shadow-sm' 
-                    : 'border-slate-300 hover:border-emerald-400 bg-white'
-                }" title="Dersi tamamlandı olarak işaretle">
-                  ${isDone ? '<i class="fa-solid fa-check"></i>' : ''}
-                </button>
-              </div>
-            </td>
-          `;
-        });
-
-        tbodyHtml += `</tr>`;
-      }
-
-      tbodyHtml += `</tbody>`;
-      table.innerHTML = headerHtml + tbodyHtml;
-
-      let totalLessonsDone = 0;
-      DAYS_CONFIG.forEach(d => {
-        const dData = state.daysData[d.id];
-        if (dData && dData.lessons) {
-          totalLessonsDone += dData.lessons.filter(l => l.done).length;
-        }
-      });
-      document.getElementById("lessonTotalCount").textContent = `${totalLessonsDone} / 48 Ders Tamamlandı`;
-    }
-
-    function renderStarRating() {
-      const dayData = state.daysData[state.selectedDayId] || { rating: 0 };
-      const currentRating = dayData.rating || 0;
-
-      const buttons = document.querySelectorAll(".star-btn");
-      buttons.forEach(btn => {
-        const starVal = parseInt(btn.getAttribute("data-star"));
-        if (starVal <= currentRating) {
-          btn.className = "star-btn text-3xl sm:text-4xl text-yellow-300 scale-110 drop-shadow-md transition-all";
-        } else {
-          btn.className = "star-btn text-3xl sm:text-4xl text-amber-200/40 hover:text-yellow-200 hover:scale-125 transition-all";
-        }
-      });
-
-      const feedbackElem = document.getElementById("starFeedbackText");
-      const feedbackMessages = [
-        "Henüz puan verilmedi",
-        "1 Yıldız: Yarın çok daha iyi başlayacağız! 💪",
-        "2 Yıldız: İyi bir çabaydı, yarın artıracağız! 🌱",
-        "3 Yıldız: Güzel bir gün, dengeli ilerliyoruz! 👍",
-        "4 Yıldız: Harika bir performans, çok başarılı! 🌟",
-        "5 Yıldız: MÜKEMMELSİN! Efsane bir gün geçirdin! 🏆🎉"
-      ];
-      feedbackElem.textContent = feedbackMessages[currentRating];
-    }
-
-    function renderDailyNote() {
-      const dayData = state.daysData[state.selectedDayId] || { note: "" };
-      const input = document.getElementById("dailyNoteInput");
-      input.value = dayData.note || "";
-    }
-
-    function renderBadges(userXP) {
-      const container = document.getElementById("badgesContainer");
-      container.innerHTML = "";
-
-      BADGES.forEach(badge => {
-        const isUnlocked = userXP >= badge.reqXP;
-        const card = document.createElement("div");
-        card.className = `p-3 rounded-2xl border text-center flex flex-col items-center justify-center transition-all ${
-          isUnlocked 
-            ? 'bg-amber-50 border-amber-200 text-amber-900 shadow-sm' 
-            : 'bg-slate-50 border-slate-200 text-slate-400 opacity-60'
-        }`;
-
-        card.innerHTML = `
-          <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg mb-1.5 ${
-            isUnlocked ? 'bg-amber-400 text-white shadow-md' : 'bg-slate-200 text-slate-400'
-          }">
-            <i class="fa-solid ${badge.icon}"></i>
-          </div>
-          <div class="font-fun text-xs font-bold leading-tight">${badge.title}</div>
-          <div class="text-[10px] mt-0.5 ${isUnlocked ? 'text-amber-700' : 'text-slate-400'}">${badge.desc}</div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    /* =========================================================================
-       9. USER ACTIONS & HANDLERS
-       ========================================================================= */
-
-    function selectDay(dayId) {
-      if (dayId < 1 || dayId > 16) return;
-      state.selectedDayId = dayId;
-      playChimeSound('click');
-      saveState();
-      renderAll();
-    }
-
-    function changeSelectedDay(delta) {
-      const nextId = state.selectedDayId + delta;
-      if (nextId >= 1 && nextId <= 16) {
-        selectDay(nextId);
-      }
-    }
-
-    function cycleTaskStatus(taskId) {
-      const dayData = state.daysData[state.selectedDayId];
-      if (!dayData) return;
-
-      const currentStatus = dayData.tasks[taskId] || 'none';
-      let nextStatus = 'done';
-      if (currentStatus === 'done') nextStatus = 'half';
-      else if (currentStatus === 'half') nextStatus = 'none';
-      else nextStatus = 'done';
-
-      dayData.tasks[taskId] = nextStatus;
-      
-      if (nextStatus === 'done') {
-        playChimeSound('success');
-      } else {
-        playChimeSound('click');
-      }
-
-      saveState();
-      renderVakitCards();
-      renderDayButtons();
-    }
-
-    function toggleLessonType(dayId, lessonIndex) {
-      const dayData = state.daysData[dayId];
-      if (!dayData || !dayData.lessons[lessonIndex]) return;
-
-      dayData.lessons[lessonIndex].type = dayData.lessons[lessonIndex].type === 'K' ? 'S' : 'K';
-      playChimeSound('click');
-      saveState();
-      renderLessonsTrackerTable();
-    }
-
-    function toggleLessonDone(dayId, lessonIndex) {
-      const dayData = state.daysData[dayId];
-      if (!dayData || !dayData.lessons[lessonIndex]) return;
-
-      dayData.lessons[lessonIndex].done = !dayData.lessons[lessonIndex].done;
-      if (dayData.lessons[lessonIndex].done) {
-        playChimeSound('success');
-      } else {
-        playChimeSound('click');
-      }
-      saveState();
-      renderLessonsTrackerTable();
-      renderDayButtons();
-    }
-
-    function setDailyRating(rating) {
-      const dayData = state.daysData[state.selectedDayId];
-      if (!dayData) return;
-
-      dayData.rating = rating;
-      playChimeSound('star');
-
-      if (rating === 5) {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.7 }
-        });
-      }
-
-      saveState();
-      renderStarRating();
-      renderDayButtons();
-    }
-
-    function saveDailyNote() {
-      const input = document.getElementById("dailyNoteInput");
-      const dayData = state.daysData[state.selectedDayId];
-      if (!dayData) return;
-
-      dayData.note = input.value.trim();
-      saveState();
-
-      const statusElem = document.getElementById("noteSaveStatus");
-      statusElem.textContent = "Kaydedildi ✓";
-      statusElem.className = "text-xs text-emerald-600 font-bold";
-      playChimeSound('success');
-
-      setTimeout(() => {
-        statusElem.textContent = "Otomatik Kaydedilir";
-        statusElem.className = "text-xs text-slate-400";
-      }, 2000);
-    }
-
-    /* =========================================================================
-       10. GAMIFICATION & ANALYTICS CALCULATIONS
-       ========================================================================= */
-
-    function updateGamificationAndUI() {
-      let totalXP = 0;
-      let totalCompletedTasks = 0;
-      let activeStreak = 0;
-
-      let areaScores = { A: 0, B: 0, C: 0, D: 0 };
-      let dailyCompletionCounts = [];
-
-      DAYS_CONFIG.forEach(day => {
-        const dayData = state.daysData[day.id] || { tasks: {}, lessons: [], rating: 0 };
-        
-        let dayTaskDone = 0;
-        Object.entries(dayData.tasks).forEach(([taskId, status]) => {
-          let taskArea = 'A';
-          DEFAULT_VAKITLER.forEach(v => {
-            const found = v.tasks.find(t => t.id === taskId);
-            if (found) taskArea = found.area;
-          });
-
-          if (status === 'done') {
-            totalXP += 10;
-            totalCompletedTasks += 1;
-            dayTaskDone += 1;
-            areaScores[taskArea] += 10;
-          } else if (status === 'half') {
-            totalXP += 5;
-            areaScores[taskArea] += 5;
-          }
-        });
-
-        (dayData.lessons || []).forEach(l => {
-          if (l.done) {
-            totalXP += 15;
-            areaScores['A'] += 15;
-          }
-        });
-
-        if (dayData.rating > 0) {
-          totalXP += dayData.rating * 5;
-          if (dayData.rating === 5) totalXP += 10;
-        }
-
-        dailyCompletionCounts.push(dayTaskDone);
-
-        if (dayTaskDone >= 1 || (dayData.lessons && dayData.lessons.some(l => l.done))) {
-          activeStreak += 1;
-        }
-      });
-
-      let levelTitle = "1. Seviye: Çırak";
-      let levelProgress = (totalXP % 150) / 1.5;
-      if (totalXP >= 500) {
-        levelTitle = "5. Seviye: Efsane Şampiyon 🏆";
-        levelProgress = 100;
-      } else if (totalXP >= 300) {
-        levelTitle = "4. Seviye: Bilge Kaşif 💡";
-      } else if (totalXP >= 150) {
-        levelTitle = "3. Seviye: Çalışkan Üretici 🚀";
-      } else if (totalXP >= 50) {
-        levelTitle = "2. Seviye: Yolcu 🌱";
-      }
-
-      document.getElementById("userLevelBadge").textContent = levelTitle;
-      document.getElementById("xpText").textContent = `${totalXP} XP`;
-      document.getElementById("xpBarFill").style.width = `${Math.min(100, Math.max(5, levelProgress))}%`;
-      document.getElementById("streakBadge").textContent = `${activeStreak} Gün Aktif`;
-
-      const overallPercent = Math.min(100, Math.round((totalCompletedTasks / 80) * 100));
-      document.getElementById("overallPercentText").textContent = `${overallPercent}%`;
-      document.getElementById("completedTasksRatio").textContent = `${totalCompletedTasks} Görev Tamam`;
-
-      const circle = document.getElementById("overallCircleProgress");
-      if (circle) {
-        const offset = 138 - (138 * overallPercent) / 100;
-        circle.style.strokeDashoffset = offset;
-      }
-
-      renderBadges(totalXP);
-      updateCharts(areaScores, dailyCompletionCounts);
-    }
-
-    /* =========================================================================
-       11. CHART.JS ANALYTICS
-       ========================================================================= */
-    let areasChartInstance = null;
-    let dailyChartInstance = null;
-
-    function updateCharts(areaScores, dailyCounts) {
-      const ctxAreas = document.getElementById("areasChart");
-      if (ctxAreas) {
-        if (areasChartInstance) {
-          areasChartInstance.data.datasets[0].data = [
-            areaScores.A || 0,
-            areaScores.B || 0,
-            areaScores.C || 0,
-            areaScores.D || 0
-          ];
-          areasChartInstance.update();
-        } else {
-          areasChartInstance = new Chart(ctxAreas, {
-            type: 'polarArea',
-            data: {
-              labels: ['Akademik (A)', 'Üretim (B)', 'Fiziksel (C)', 'Yaşam (D)'],
-              datasets: [{
-                data: [areaScores.A || 0, areaScores.B || 0, areaScores.C || 0, areaScores.D || 0],
-                backgroundColor: [
-                  'rgba(59, 130, 246, 0.7)',
-                  'rgba(16, 185, 129, 0.7)',
-                  'rgba(245, 158, 11, 0.7)',
-                  'rgba(139, 92, 246, 0.7)'
-                ],
-                borderWidth: 2,
-                borderColor: '#ffffff'
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
-              },
-              scales: {
-                r: { ticks: { display: false } }
-              }
-            }
-          });
-        }
-      }
-
-      const ctxDaily = document.getElementById("dailyProgressChart");
-      if (ctxDaily) {
-        const labels = DAYS_CONFIG.map(d => `${d.dayNumber} ${d.month}`);
-        if (dailyChartInstance) {
-          dailyChartInstance.data.datasets[0].data = dailyCounts;
-          dailyChartInstance.update();
-        } else {
-          dailyChartInstance = new Chart(ctxDaily, {
-            type: 'bar',
-            data: {
-              labels: labels,
-              datasets: [{
-                label: 'Tamamlanan Görev Sayısı',
-                data: dailyCounts,
-                backgroundColor: 'rgba(2, 132, 199, 0.8)',
-                borderRadius: 8,
-                hoverBackgroundColor: 'rgba(16, 185, 129, 0.9)'
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
-              scales: {
-                y: { beginAtZero: true, max: 10, ticks: { stepSize: 2, font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
-                x: { ticks: { font: { size: 9 } }, grid: { display: false } }
-              }
-            }
-          });
-        }
-      }
-    }
-
-    function refreshCharts() {
-      playChimeSound('click');
-      updateGamificationAndUI();
-    }
-
-    /* =========================================================================
-       12. MASTER RENDER & INIT
+       8. MASTER RENDER
        ========================================================================= */
     function renderAll() {
-      renderDayButtons();
-      renderSelectedDayHeader();
-      renderVakitCards();
-      renderLessonsTrackerTable();
-      renderStarRating();
-      renderDailyNote();
-      updateGamificationAndUI();
+      renderWeeksUI();
+      renderDaysTabBar();
+      renderDayTasks();
+      renderDenemeGrid();
+      updateSummaryMetrics();
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      initAuthSystem();
+      initAuth();
 
-      const noteInput = document.getElementById("dailyNoteInput");
+      const noteInput = document.getElementById("dailyShortNoteInput");
       if (noteInput) {
         noteInput.addEventListener("input", () => {
-          const dayData = state.daysData[state.selectedDayId];
-          if (dayData) {
-            dayData.note = noteInput.value;
-            const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
-            localStorage.setItem(getUserDataStorageKey(activeName), JSON.stringify(state));
-          }
+          const wData = getOrCreateWeekData(state.selectedWeek);
+          wData.days[state.selectedDayIndex].note = noteInput.value;
+          saveState();
         });
       }
     });

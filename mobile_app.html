@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Gelişim Cepte | Karekod (QR) & Yönetici Portalı</title>
+  <title>Gelişim Cepte | Haftalık Soru & Deneme Portalı</title>
   
   <!-- PWA Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -101,7 +101,7 @@
       </div>
     </div>
 
-    <!-- App Header With User Info & Logout Button -->
+    <!-- App Header With User Info & Week Badge -->
     <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white px-4 py-2.5 shrink-0 shadow-md">
       <div class="flex items-center justify-between">
         
@@ -114,20 +114,18 @@
           </div>
         </div>
 
-        <!-- Right: Admin Panel + XP Badge + Logout -->
+        <!-- Right: Admin Panel + Soru Rozeti + Logout -->
         <div class="flex items-center gap-1.5">
-          <!-- Yönetici Paneli Butonu (Admin ise görünür) -->
           <button onclick="openMobileAdminModal()" id="mobileAdminHeaderBtn" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce" title="Yönetici Paneli">
             <i class="fa-solid fa-chart-pie text-sky-300"></i>
-            <span>Yönetici</span>
+            <span>Rapor</span>
           </button>
 
           <div class="bg-white/15 backdrop-blur-md px-2 py-1 rounded-xl text-[11px] font-bold text-amber-300 flex items-center gap-1 border border-white/10">
-            <i class="fa-solid fa-bolt"></i>
-            <span id="mobileXpBadge">0 XP</span>
+            <i class="fa-solid fa-pen-nib"></i>
+            <span id="mobileWeekQuestionBadge">0 Soru</span>
           </div>
 
-          <!-- Çıkış Butonu -->
           <button onclick="handleMobileLogout()" class="bg-rose-500/80 hover:bg-rose-600 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm tap-bounce" title="Çıkış Yap">
             <i class="fa-solid fa-right-from-bracket"></i>
           </button>
@@ -135,265 +133,189 @@
       </div>
     </header>
 
-    <!-- 16 Günlük Yatay Story Çizelgesi -->
-    <div class="bg-white border-b border-slate-200 py-2.5 px-3 shrink-0">
-      <div class="flex gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1" id="mobileDaysContainer">
-        <!-- JS ile 16 gün çemberi -->
+    <!-- 40 Haftalık Hızlı Hafta Seçim Barı -->
+    <div class="bg-white border-b border-slate-200 py-2 px-3 shrink-0 flex items-center justify-between gap-2">
+      <button onclick="changeMobileWeek(-1)" class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs text-slate-600 tap-bounce"><i class="fa-solid fa-chevron-left"></i></button>
+      
+      <div class="flex gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1" id="mobileWeeksBar">
+        <!-- JS ile 40 hafta hap butonu -->
+      </div>
+
+      <button onclick="changeMobileWeek(1)" class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs text-slate-600 tap-bounce"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <!-- 7 Günlük Tab Çubuğu (Pzt - Paz) -->
+    <div class="bg-slate-50 border-b border-slate-200/80 px-2 py-1.5 shrink-0">
+      <div class="grid grid-cols-7 gap-1" id="mobileDaysTabBar">
+        <!-- JS ile 7 gün butonu -->
       </div>
     </div>
 
     <!-- ================= SCROLLABLE CONTENT BODY ================= -->
     <div class="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar" id="tabContentArea">
       
-      <!-- ================= TAB 1: BUGÜN ================= -->
-      <section id="tab-today" class="tab-page space-y-4">
+      <!-- ================= TAB 1: GÜNLÜK GÖREVLER (3 DERS KONU & 3 DERS SORU) ================= -->
+      <section id="tab-today" class="tab-page space-y-3.5">
         
-        <!-- Gün Bannerı -->
-        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-3.5 text-white shadow-card-sm flex items-center justify-between">
+        <!-- Günlük Başlık & Özet -->
+        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-3.5 text-white shadow-card-sm flex items-center justify-between">
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-wider text-sky-200" id="todayMonthText">29 AĞUSTOS CUMARTESİ</div>
-            <h2 class="font-fun text-lg font-bold" id="todayDayTitle">1. Gün Görevlerin 🚀</h2>
-            <p class="text-[11px] text-sky-100 mt-0.5 line-clamp-1" id="todayGoalText">Her vakitten en az 1 görev seç!</p>
+            <div class="text-[10px] font-bold uppercase tracking-wider text-sky-200" id="mobileDayTitleText">1. HAFTA • PAZARTESİ</div>
+            <h2 class="font-fun text-base font-bold">Günlük 3 Konu & 3 Soru</h2>
+            <p class="text-[11px] text-sky-100 mt-0.5">Soru sayılarını manuel yazabilirsin ✍️</p>
           </div>
           <div class="text-right">
-            <span class="text-2xl font-fun font-bold text-amber-300" id="todayCompletedRatio">0/5</span>
-            <div class="text-[9px] text-sky-200">Vakit Hazır</div>
+            <span class="text-xl font-fun font-bold text-amber-300" id="mobileDailyQuestionTotalText">0 Soru</span>
+            <div class="text-[9px] text-sky-200" id="mobileDailyTopicsProgressText">0/3 Konu</div>
           </div>
         </div>
 
-        <!-- 5 VAKİT LİSTESİ -->
-        <div class="space-y-3" id="mobileVakitlerList">
-          <!-- JS ile doldurulacak -->
-        </div>
-
-        <!-- GÜN SONU YILDIZI & NOT KARTI -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-card-sm space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-star text-amber-400"></i> Gün Sonu Öz Değerlendirme
-            </h3>
-            <span class="text-[11px] font-bold text-amber-600" id="mobileStarText">Yıldız Ver</span>
-          </div>
-
-          <div class="flex justify-center items-center gap-3 py-1 bg-amber-50 rounded-xl border border-amber-200/60" id="mobileStarsContainer">
-            <button onclick="setMobileRating(1)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="1"><i class="fa-solid fa-star"></i></button>
-            <button onclick="setMobileRating(2)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="2"><i class="fa-solid fa-star"></i></button>
-            <button onclick="setMobileRating(3)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="3"><i class="fa-solid fa-star"></i></button>
-            <button onclick="setMobileRating(4)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="4"><i class="fa-solid fa-star"></i></button>
-            <button onclick="setMobileRating(5)" class="m-star text-2xl text-amber-200 tap-bounce" data-val="5"><i class="fa-solid fa-star"></i></button>
-          </div>
-
-          <div>
-            <label class="block text-[11px] font-bold text-slate-600 mb-1">"Yarın neyi daha iyi yapabilirim?"</label>
-            <textarea id="mobileDailyNote" rows="2" placeholder="Bugün neler öğrendin, yarın neye odaklanacaksın?..." class="w-full p-2.5 text-xs rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:outline-none transition-all resize-none"></textarea>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ================= TAB 2: DERSLER ================= -->
-      <section id="tab-lessons" class="tab-page hidden space-y-4">
-        
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-book-open text-blue-600"></i> Bugünün 3 Dersi
-            </h3>
-            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200" id="currentDayLessonsProgress">
-              0/3 Tamam
-            </span>
-          </div>
-          <p class="text-[11px] text-slate-500 mb-3">
-            Günün derslerini işaretle (K: Konu Çalışması, S: Soru Çözümü):
-          </p>
-
-          <div class="space-y-2" id="todayLessonsList">
-            <!-- JS ile bugünün 3 dersi -->
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
-          <div class="flex items-center justify-between">
-            <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-table-cells text-indigo-600"></i> 16 Günlük Ders Matrisi
+        <!-- 3 DERS KONU ÇALIŞMASI KARTI -->
+        <div class="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-card-sm space-y-2.5">
+          <div class="flex items-center justify-between border-b pb-1.5">
+            <h4 class="font-fun text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-book-bookmark text-blue-600"></i> 3 Ders Konu Çalışması
             </h4>
-            <span class="text-[10px] text-slate-400">48 Ders</span>
+            <span class="text-[10px] text-slate-400">Her gün 3 ders</span>
           </div>
 
-          <div class="overflow-x-auto pb-1 no-scrollbar">
-            <table class="w-full text-center text-xs border-collapse min-w-[340px]" id="mobileLessonsMatrix">
-              <!-- JS ile mini matris -->
-            </table>
-          </div>
-
-          <div class="flex items-center justify-between text-[10px] text-slate-500 bg-slate-50 p-2 rounded-xl border">
-            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-600"></span> K: Konu</span>
-            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-600"></span> S: Soru</span>
-            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> ✓: Yapıldı</span>
-          </div>
-        </div>
-
-        <div class="bg-blue-50/70 rounded-2xl p-3 border border-blue-200/80 text-[11px] text-blue-900 space-y-1">
-          <div class="font-bold flex items-center gap-1"><i class="fa-solid fa-circle-info text-blue-600"></i> Planımın Kuralları:</div>
-          <div>• Her gün en az 3 ders çalışırım.</div>
-          <div>• En az 1 Konu (K) ve 1 Soru (S) tamamlarım.</div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 3: AKILLI AI KOÇ ================= -->
-      <section id="tab-ai" class="tab-page hidden space-y-4">
-        
-        <div class="bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden">
-          <div class="absolute -right-4 -bottom-4 text-white/10 text-8xl pointer-events-none">
-            <i class="fa-solid fa-brain"></i>
-          </div>
-          <div class="relative z-10 space-y-2">
-            <div class="inline-flex items-center gap-1 bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase">
-              <i class="fa-solid fa-sparkles text-amber-300"></i> Akıllı Gelişim Koçu
-            </div>
-            <h3 class="font-fun text-lg font-bold leading-tight">
-              16 Günlük AI Gelişim Asistanı
-            </h3>
-            <p class="text-xs text-purple-100 leading-relaxed">
-              Günlük ilerlemeni analiz ettirebilir, Osmanlıca kelime pratiği yapabilir ve yaratıcı projeler üretebilirsin.
-            </p>
-
-            <div class="pt-2">
-              <button onclick="copyAiPromptTemplate()" class="w-full bg-white/20 hover:bg-white/30 text-white font-fun font-semibold text-xs py-2.5 px-3 rounded-xl border border-white/30 flex items-center justify-center gap-1.5 transition-all tap-bounce">
-                <i class="fa-regular fa-copy"></i>
-                <span id="copyPromptBtnText">Günün Gelişim Raporunu Kopyala</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Chat Arayüzü -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
-          <div class="flex items-center justify-between border-b pb-2">
-            <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-robot text-purple-600"></i> Hızlı AI Koç Analizi
-            </h4>
-            <span class="text-[10px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full font-bold border border-purple-200">Gemini 2.0 / 1.5</span>
-          </div>
-
-          <div class="h-44 overflow-y-auto space-y-2 p-2 bg-slate-50 rounded-xl border text-xs no-scrollbar" id="aiChatMessages">
-            <div class="bg-purple-100/70 text-purple-900 p-2.5 rounded-xl max-w-[90%] leading-relaxed">
-              👋 <strong>Merhaba <span id="chatStudentName">Öğrenci</span>!</strong> 16 günlük gelişim yolculuğunda sana koçluk etmek için buradayım. "Günümü Değerlendir" butonuna basarak bugünkü ilerlemen hakkında anında geri bildirim alabilirsin!
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2 text-[11px]">
-            <button onclick="requestAiAction('evaluate_day')" class="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
-              <i class="fa-solid fa-chart-line text-purple-600"></i> Günümü Değerlendir
-            </button>
-            <button onclick="requestAiAction('ottoman_quiz')" class="p-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
-              <i class="fa-solid fa-scroll text-blue-600"></i> Osmanlıca Kelime Sor
-            </button>
-            <button onclick="requestAiAction('project_idea')" class="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
-              <i class="fa-solid fa-lightbulb text-emerald-600"></i> Proje / Üretim Fikri
-            </button>
-            <button onclick="requestAiAction('motivation')" class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-semibold text-left flex items-center gap-1.5 tap-bounce">
-              <i class="fa-solid fa-fire text-amber-600"></i> Motivasyon Ver ⚡
-            </button>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ================= TAB 4: ROZETLER & ANALİTİK ================= -->
-      <section id="tab-badges" class="tab-page hidden space-y-4">
-        
-        <div class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-4 text-white shadow-card-sm space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-amber-100">Gelişim Seviyesi</span>
-            <span class="font-fun text-sm font-bold text-yellow-200" id="badgeTabLevelTitle">1. Seviye: Çırak</span>
-          </div>
-          <div class="w-full bg-black/20 h-3 rounded-full overflow-hidden p-0.5">
-            <div id="badgeTabXpBar" class="bg-yellow-300 h-full rounded-full transition-all duration-500" style="width: 20%"></div>
-          </div>
-          <div class="flex justify-between text-[11px] text-amber-100">
-            <span id="badgeTabXpText">0 XP</span>
-            <span>Hedef: 500 XP (Şampiyon)</span>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-2">
-          <h4 class="font-fun text-xs font-bold text-slate-700 uppercase tracking-wider">4 Gelişim Alanı Dengesi</h4>
-          <div class="w-full h-48 relative flex items-center justify-center">
-            <canvas id="mobileAreasChart"></canvas>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
-          <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
-            <i class="fa-solid fa-trophy text-amber-500"></i> Başarı Rozetleri
-          </h4>
-          <div class="grid grid-cols-3 gap-2" id="mobileBadgesGrid">
+          <div class="space-y-2" id="mobileTopicsList">
             <!-- JS ile doldurulacak -->
           </div>
         </div>
 
-      </section>
-
-      <!-- ================= TAB 5: AYARLAR & PROFİL ================= -->
-      <section id="tab-settings" class="tab-page hidden space-y-4">
-        
-        <!-- Kullanıcı Profil Kartı -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <span class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm" id="settingsUserAvatar">🚀</span>
-            <div>
-              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="settingsUserRole">Aktif Öğrenci</div>
-              <h3 class="font-fun text-base font-bold text-slate-800" id="settingsUserName">Ahmet</h3>
-            </div>
+        <!-- 3 DERS SORU ÇÖZÜMÜ & MANUEL SORU SAYISI KARTI -->
+        <div class="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-card-sm space-y-2.5">
+          <div class="flex items-center justify-between border-b pb-1.5">
+            <h4 class="font-fun text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-pen-to-square text-emerald-600"></i> 3 Ders Soru Çözümü (Manuel)
+            </h4>
+            <span class="text-[10px] text-emerald-600 font-bold" id="mobileDaySumBadge">0 Soru</span>
           </div>
 
-          <button onclick="handleMobileLogout()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200 tap-bounce">
+          <div class="space-y-2" id="mobileQuestionsList">
+            <!-- JS ile doldurulacak -->
+          </div>
+        </div>
+
+        <!-- GÜNLÜK NOT & PUAN -->
+        <div class="bg-white rounded-2xl p-3 border border-slate-200 shadow-card-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-700">Günün Puanı:</span>
+            <div class="flex gap-1" id="mDailyStars"></div>
+          </div>
+          <input type="text" id="mDailyNote" placeholder="Günün kısa notu..." class="w-full p-2 text-xs rounded-xl bg-slate-50 border focus:bg-white focus:outline-none">
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 2: HAFTA SONU DENEME SINAVI (20'ŞER SORU) ================= -->
+      <section id="tab-deneme" class="tab-page hidden space-y-3.5">
+        
+        <div class="bg-gradient-to-br from-indigo-700 via-purple-700 to-indigo-900 rounded-2xl p-4 text-white shadow-card-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-purple-200">Hafta Sonu Genel Deneme</span>
+            <span class="text-xs font-fun font-bold text-yellow-300" id="mDenemeScoreBadge">0.00 Net</span>
+          </div>
+          <h3 class="font-fun text-base font-bold">Tüm Branşlar (20'şer Soru)</h3>
+          <p class="text-[11px] text-purple-100">
+            Türkçe, Matematik, Fen, İnkılap, Din ve İngilizce'den 20'şer soruluk sınav sonuçlarını gir!
+          </p>
+        </div>
+
+        <div class="space-y-2" id="mobileDenemeList">
+          <!-- JS ile 6 dersin 20'şer soru dökümü -->
+        </div>
+
+        <div class="bg-white rounded-2xl p-3 border border-slate-200 space-y-2">
+          <label class="text-[11px] font-bold text-slate-700">Deneme Notu & Analizin:</label>
+          <input type="text" id="mDenemeNote" placeholder="Örn: Fen denemesinde netim çok iyiydi..." class="w-full p-2 text-xs rounded-xl bg-slate-50 border focus:bg-white focus:outline-none">
+          <button onclick="saveMobileDenemeResults()" class="w-full py-2 rounded-xl bg-indigo-600 text-white font-fun font-bold text-xs shadow tap-bounce">
+            Deneme Sonuçlarını Kaydet
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 3: HAFTALIK RAPOR & GRAFİKLER ================= -->
+      <section id="tab-report" class="tab-page hidden space-y-3.5">
+        
+        <!-- Haftalık Karne Özeti -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h4 class="font-fun text-sm font-bold text-slate-800" id="mReportTitle">1. Hafta Karnesi</h4>
+            <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-full">Haftalık Rapor</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center">
+            <div class="p-2 rounded-xl bg-blue-50 border border-blue-100">
+              <span class="text-[9px] text-blue-600 font-bold block">Konu</span>
+              <strong class="font-fun text-sm text-blue-950" id="mReportTopics">0/21</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-emerald-50 border border-emerald-100">
+              <span class="text-[9px] text-emerald-600 font-bold block">Soru</span>
+              <strong class="font-fun text-sm text-emerald-950" id="mReportQuestions">0</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-amber-50 border border-amber-100">
+              <span class="text-[9px] text-amber-600 font-bold block">Deneme</span>
+              <strong class="font-fun text-sm text-amber-950" id="mReportDeneme">0.00</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-2">
+          <h4 class="font-fun text-xs font-bold text-slate-700 uppercase tracking-wider">Günlük Soru Dağılımı</h4>
+          <div class="w-full h-44">
+            <canvas id="mobileDailyQChart"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-amber-50/70 rounded-2xl p-3.5 border border-amber-200 space-y-2">
+          <label class="text-[11px] font-bold text-amber-900 block">Haftalık Öz Değerlendirme:</label>
+          <textarea id="mWeeklyReflection" rows="2" placeholder="Bu hafta nasıldı, gelecek hafta hedefin ne?..." class="w-full p-2 text-xs rounded-xl bg-white border border-amber-200 focus:outline-none resize-none"></textarea>
+          <button onclick="saveMobileReflection()" class="w-full py-1.5 rounded-xl bg-amber-600 text-white font-fun font-bold text-xs tap-bounce">
+            Yansımayı Kaydet
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 4: AYARLAR & PROFİL ================= -->
+      <section id="tab-settings" class="tab-page hidden space-y-3.5">
+        
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm" id="mSettingsAvatar">🚀</span>
+            <div>
+              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="mSettingsRole">Öğrenci</div>
+              <h3 class="font-fun text-base font-bold text-slate-800" id="mSettingsName">Ahmet</h3>
+            </div>
+          </div>
+          <button onclick="handleMobileLogout()" class="px-3 py-1.5 rounded-xl bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200 tap-bounce">
             Çıkış Yap
           </button>
         </div>
 
-        <!-- Yönetici Paneli Hızlı Giriş Kartı -->
-        <div class="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-2xl p-4 text-white shadow-md flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-white/20 text-sky-300 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-chart-pie"></i>
-            </div>
-            <div>
-              <h4 class="font-fun text-sm font-bold">Yönetici Kontrol Paneli</h4>
-              <p class="text-[10px] text-purple-200">Karekodlar ve öğrenci karneleri</p>
-            </div>
+        <!-- Yönetici Paneli Hızlı Buton -->
+        <div class="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-2xl p-4 text-white shadow flex items-center justify-between">
+          <div>
+            <h4 class="font-fun text-sm font-bold">Haftalık Sınıf Raporu</h4>
+            <p class="text-[10px] text-purple-200">Sınıfın soru ortalaması ve deneme karneleri</p>
           </div>
-          <button onclick="openMobileAdminModal()" class="px-3 py-1.5 rounded-xl bg-white text-indigo-900 text-xs font-bold font-fun shadow tap-bounce">
+          <button onclick="openMobileAdminModal()" class="px-3 py-1.5 rounded-xl bg-white text-indigo-900 text-xs font-bold font-fun tap-bounce">
             Aç 📊
           </button>
         </div>
 
-        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-3">
-          <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1.5">
-            <i class="fa-solid fa-sliders text-slate-600"></i> Uygulama Seçenekleri
-          </h3>
-
-          <div class="space-y-2 text-xs">
-            <a href="index.html" class="w-full p-3 rounded-xl bg-slate-50 hover:bg-blue-50 border text-slate-700 font-semibold flex items-center justify-between transition-colors">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-desktop text-blue-600"></i> Masaüstü Web Portalı</span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
-            </a>
-
-            <button onclick="exportMobileData()" class="w-full p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border text-slate-700 font-semibold flex items-center justify-between transition-colors">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-download text-emerald-600"></i> Bu Kullanıcının Verilerini İndir</span>
-              <i class="fa-solid fa-arrow-down text-slate-400 text-xs"></i>
-            </button>
-
-            <button onclick="resetMobileData()" class="w-full p-3 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-semibold flex items-center justify-between transition-colors">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-trash-can text-rose-600"></i> Bu Kullanıcı Verisini Sıfırla</span>
-              <i class="fa-solid fa-triangle-exclamation text-rose-400 text-xs"></i>
-            </button>
-          </div>
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-2 text-xs">
+          <a href="index.html" class="w-full p-3 rounded-xl bg-slate-50 border text-slate-700 font-semibold flex items-center justify-between">
+            <span><i class="fa-solid fa-desktop text-blue-600 mr-2"></i> Masaüstü Web Portalı</span>
+            <i class="fa-solid fa-chevron-right text-slate-400"></i>
+          </a>
         </div>
 
         <div class="text-center text-[10px] text-slate-400 py-2">
-          Gelişim Cepte • Karekod (QR) & Yönetici Paneli v3.5
+          Haftalık Gelişim & Soru Portalı • 2026-2027 v4.0
         </div>
 
       </section>
@@ -403,22 +325,18 @@
     <!-- ================= BOTTOM NAVIGATION BAR ================= -->
     <nav class="bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2 flex items-center justify-around shadow-mobile-nav shrink-0 safe-bottom">
       <button onclick="switchTab('today')" id="nav-btn-today" class="nav-tab-btn flex flex-col items-center gap-0.5 text-blue-600 font-bold transition-all tap-bounce">
-        <i class="fa-solid fa-sun text-lg"></i>
-        <span class="text-[10px]">Bugün</span>
+        <i class="fa-solid fa-calendar-day text-lg"></i>
+        <span class="text-[10px]">Günlük</span>
       </button>
 
-      <button onclick="switchTab('lessons')" id="nav-btn-lessons" class="nav-tab-btn flex flex-col items-center gap-0.5 text-slate-400 font-medium transition-all tap-bounce">
-        <i class="fa-solid fa-book-open text-lg"></i>
-        <span class="text-[10px]">Dersler</span>
+      <button onclick="switchTab('deneme')" id="nav-btn-deneme" class="nav-tab-btn flex flex-col items-center gap-0.5 text-slate-400 font-medium transition-all tap-bounce">
+        <i class="fa-solid fa-file-signature text-lg"></i>
+        <span class="text-[10px]">Deneme</span>
       </button>
 
-      <button onclick="switchTab('ai')" id="nav-btn-ai" class="flex flex-col items-center justify-center -mt-5 w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-600 to-blue-600 text-white shadow-floating border-2 border-white tap-bounce">
-        <i class="fa-solid fa-sparkles text-lg animate-pulse"></i>
-      </button>
-
-      <button onclick="switchTab('badges')" id="nav-btn-badges" class="nav-tab-btn flex flex-col items-center gap-0.5 text-slate-400 font-medium transition-all tap-bounce">
-        <i class="fa-solid fa-trophy text-lg"></i>
-        <span class="text-[10px]">Rozetler</span>
+      <button onclick="switchTab('report')" id="nav-btn-report" class="nav-tab-btn flex flex-col items-center gap-0.5 text-slate-400 font-medium transition-all tap-bounce">
+        <i class="fa-solid fa-chart-pie text-lg"></i>
+        <span class="text-[10px]">Rapor</span>
       </button>
 
       <button onclick="switchTab('settings')" id="nav-btn-settings" class="nav-tab-btn flex flex-col items-center gap-0.5 text-slate-400 font-medium transition-all tap-bounce">
@@ -427,272 +345,132 @@
       </button>
     </nav>
 
-    <!-- ================= MOBİL ANA GİRİŞ KAPISI MODALI ================= -->
+    <!-- ================= MOBİL GİRİŞ MODALI ================= -->
     <div id="mobileAuthModal" class="absolute inset-0 z-50 bg-slate-900/90 backdrop-blur-md flex flex-col justify-end p-0">
       <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[92%] overflow-y-auto">
         <div class="flex items-center gap-2 border-b pb-2">
           <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow">
-            <i class="fa-solid fa-lock"></i>
+            <i class="fa-solid fa-graduation-cap"></i>
           </div>
           <div>
-            <h3 class="font-fun text-base font-bold text-slate-800">Gelişim Cepte Girişi</h3>
-            <p class="text-[10px] text-slate-500">Şifre veya Karekod ile giriş yapın</p>
+            <h3 class="font-fun text-base font-bold text-slate-800">Gelişim Portalı Girişi</h3>
+            <p class="text-[10px] text-slate-500">Haftalık soru & deneme takip sistemi</p>
           </div>
         </div>
 
-        <!-- Sekmeler -->
         <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-bold">
-          <button onclick="switchMobileAuthTab('login')" id="mAuthTab-login" class="flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm">
-            Giriş Yap
-          </button>
-          <button onclick="switchMobileAuthTab('register')" id="mAuthTab-register" class="flex-1 py-1.5 rounded-lg text-slate-500">
-            Yeni Kayıt
-          </button>
+          <button onclick="switchMobileAuthTab('login')" id="mAuthTab-login" class="flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm">Giriş Yap</button>
+          <button onclick="switchMobileAuthTab('register')" id="mAuthTab-register" class="flex-1 py-1.5 rounded-lg text-slate-500">Yeni Kayıt</button>
         </div>
 
-        <div id="mobileAuthAlert" class="hidden p-2.5 rounded-xl text-xs font-semibold"></div>
+        <div id="mobileAuthAlert" class="hidden p-2 rounded-xl text-xs font-semibold"></div>
 
         <div class="space-y-2.5">
-          <input type="text" id="mAuthUsername" placeholder="Kullanıcı Adı..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:bg-white focus:outline-none">
-          <input type="password" id="mAuthPassword" placeholder="Şifre..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:bg-white focus:outline-none">
+          <input type="text" id="mAuthUsername" placeholder="Kullanıcı Adı..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:outline-none">
+          <input type="password" id="mAuthPassword" placeholder="Şifre..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:outline-none">
 
-          <div id="mRegisterAvatarBox" class="hidden space-y-1">
+          <div id="mRegAvatarBox" class="hidden space-y-1">
             <label class="block text-[10px] font-bold text-slate-500">Avatar Seç:</label>
-            <div class="flex flex-wrap gap-1.5" id="mAvatarPickerBox">
-              <!-- JS avatarlar -->
-            </div>
+            <div class="flex flex-wrap gap-1.5" id="mRegAvatarPicker"></div>
           </div>
 
-          <button onclick="handleMobileAuthSubmit()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs shadow-md tap-bounce">
-            <span id="mAuthBtnText">Giriş Yap ve Başla</span>
+          <button onclick="handleMobileAuthSubmit()" class="w-full py-2.5 rounded-xl bg-blue-600 text-white font-fun font-bold text-xs shadow tap-bounce">
+            Giriş Yap ve Başla
           </button>
         </div>
 
-        <!-- Hızlı Örnek Girişler -->
-        <div class="pt-2 border-t space-y-1.5 text-[10px]">
-          <div class="font-bold text-slate-600 uppercase">Örnek Girişler:</div>
+        <div class="pt-2 border-t space-y-1 text-[10px]">
+          <div class="font-bold text-slate-600">Örnek Girişler:</div>
           <div class="grid grid-cols-3 gap-1">
-            <button onclick="fillMobileSample('admin', 'admin123')" class="p-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-900 font-bold text-center">
-              🛡️ admin<br><span class="text-[9px] font-normal font-mono">admin123</span>
-            </button>
-            <button onclick="fillMobileSample('Ahmet', '1234')" class="p-1.5 rounded-lg bg-sky-50 border border-sky-200 text-sky-900 font-bold text-center">
-              🚀 Ahmet<br><span class="text-[9px] font-normal font-mono">1234</span>
-            </button>
-            <button onclick="fillMobileSample('Zeynep', '1234')" class="p-1.5 rounded-lg bg-purple-50 border border-purple-200 text-purple-900 font-bold text-center">
-              🌟 Zeynep<br><span class="text-[9px] font-normal font-mono">1234</span>
-            </button>
+            <button onclick="fillMobileSample('admin', 'admin123')" class="p-1 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-900 font-bold">🛡️ admin</button>
+            <button onclick="fillMobileSample('Ahmet', '1234')" class="p-1 rounded-lg bg-sky-50 border border-sky-200 text-sky-900 font-bold">🚀 Ahmet</button>
+            <button onclick="fillMobileSample('Zeynep', '1234')" class="p-1 rounded-lg bg-purple-50 border border-purple-200 text-purple-900 font-bold">🌟 Zeynep</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ================= MOBİL YÖNETİCİ RAPOR MODALI ================= -->
-    <div id="mobileAdminModal" class="absolute inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex-col justify-end p-0">
-      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[90%] overflow-y-auto">
+    <!-- ================= MOBİL YÖNETİCİ MODALI ================= -->
+    <div id="mobileAdminModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
+      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-3.5 max-h-[90%] overflow-y-auto">
         <div class="flex items-center justify-between border-b pb-2">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow">
-              <i class="fa-solid fa-chart-pie"></i>
-            </div>
-            <div>
-              <h3 class="font-fun text-base font-bold text-slate-800">Yönetici Kontrol Paneli</h3>
-              <p class="text-[10px] text-slate-400">Sınıf genel performansı ve karekodlar</p>
-            </div>
+            <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-chart-pie"></i></span>
+            <h3 class="font-fun text-sm font-bold text-slate-800">Haftalık Sınıf Karnesi</h3>
           </div>
-          <button onclick="closeMobileAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
+          <button onclick="closeMobileAdminModal()" class="text-slate-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
-        <div class="grid grid-cols-2 gap-2" id="mobileAdminMetrics">
-          <!-- JS ile doldurulacak -->
+        <div class="grid grid-cols-2 gap-2" id="mAdminMetrics"></div>
+
+        <div class="space-y-1.5">
+          <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Soru & Deneme Dökümü:</label>
+          <div id="mAdminStudentList" class="space-y-2 max-h-56 overflow-y-auto"></div>
         </div>
 
-        <div class="space-y-2">
-          <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Karneleri & Karekod:</label>
-          <div id="mobileAdminStudentList" class="space-y-2 max-h-60 overflow-y-auto pr-0.5">
-            <!-- JS ile öğrenci kartları -->
-          </div>
-        </div>
-
-        <div class="pt-2 border-t flex gap-2">
-          <button onclick="closeMobileAdminModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">
-            Kapat
-          </button>
-        </div>
+        <button onclick="closeMobileAdminModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">Kapat</button>
       </div>
     </div>
 
-    <!-- ================= MOBİL TEK KAREKOD MODALI ================= -->
+    <!-- ================= MOBİL KAREKOD MODALI ================= -->
     <div id="mobileSingleQrModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
-      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 text-center">
-        <div class="flex items-center justify-between border-b pb-2">
-          <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-1">
-            <i class="fa-solid fa-qrcode text-blue-600"></i> Öğrenci Giriş Karekodu
-          </h4>
-          <button onclick="closeMobileSingleQrModal()" class="text-slate-400 text-lg">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
-        <div class="flex items-center justify-center gap-2 p-2 bg-blue-50 rounded-xl">
-          <span class="text-xl" id="mQrAvatar">🚀</span>
-          <span class="font-bold text-xs text-slate-800" id="mQrName">Ahmet</span>
-        </div>
-
-        <div class="bg-white p-3 rounded-2xl border inline-block shadow-inner">
-          <div id="mobileQrCanvasContainer" class="flex items-center justify-center min-h-[140px] min-w-[140px]"></div>
-        </div>
-
-        <p class="text-[11px] text-slate-500 leading-snug">
-          Telefon kameranızla bu karekodu okuttuğunuzda anında sisteme giriş yapılır.
-        </p>
-
-        <button onclick="closeMobileSingleQrModal()" class="w-full py-2.5 rounded-xl bg-blue-600 text-white font-fun font-bold text-xs tap-bounce">
-          Kapat
-        </button>
+      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-3 text-center">
+        <h4 class="font-fun text-sm font-bold text-slate-800" id="mSingleQrTitle">Giriş Karekodu</h4>
+        <div id="mSingleQrBox" class="p-2 inline-block bg-white border rounded-xl"></div>
+        <p class="text-[10px] text-slate-500">Telefon kamerasıyla okutarak doğrudan bağlanın.</p>
+        <button onclick="document.getElementById('mobileSingleQrModal').classList.add('hidden')" class="w-full py-2 rounded-xl bg-blue-600 text-white font-fun font-bold text-xs tap-bounce">Kapat</button>
       </div>
     </div>
 
   </div>
 
-  <!-- ================= JAVASCRIPT APP LOGIC ================= -->
+  <!-- ================= JAVASCRIPT MASTER LOGIC ================= -->
   <script>
-    const DAYS_CONFIG = [
-      { id: 1, dateStr: "29 AĞU", dayName: "Cumartesi", dayNumber: 29, month: "AĞU", phase: 1, weekDayIndex: 5 },
-      { id: 2, dateStr: "30 AĞU", dayName: "Pazar", dayNumber: 30, month: "AĞU", phase: 1, weekDayIndex: 6 },
-      { id: 3, dateStr: "31 AĞU", dayName: "Pazartesi", dayNumber: 31, month: "AĞU", phase: 1, weekDayIndex: 0 },
-      { id: 4, dateStr: "1 EYL", dayName: "Salı", dayNumber: 1, month: "EYL", phase: 1, weekDayIndex: 1 },
-      { id: 5, dateStr: "2 EYL", dayName: "Çarşamba", dayNumber: 2, month: "EYL", phase: 1, weekDayIndex: 2 },
-      { id: 6, dateStr: "3 EYL", dayName: "Perşembe", dayNumber: 3, month: "EYL", phase: 2, weekDayIndex: 3 },
-      { id: 7, dateStr: "4 EYL", dayName: "Cuma", dayNumber: 4, month: "EYL", phase: 2, weekDayIndex: 4 },
-      { id: 8, dateStr: "5 EYL", dayName: "Cumartesi", dayNumber: 5, month: "EYL", phase: 2, weekDayIndex: 5 },
-      { id: 9, dateStr: "6 EYL", dayName: "Pazar", dayNumber: 6, month: "EYL", phase: 2, weekDayIndex: 6 },
-      { id: 10, dateStr: "7 EYL", dayName: "Pazartesi", dayNumber: 7, month: "EYL", phase: 2, weekDayIndex: 0 },
-      { id: 11, dateStr: "8 EYL", dayName: "Salı", dayNumber: 8, month: "EYL", phase: 2, weekDayIndex: 1 },
-      { id: 12, dateStr: "9 EYL", dayName: "Çarşamba", dayNumber: 9, month: "EYL", phase: 3, weekDayIndex: 2 },
-      { id: 13, dateStr: "10 EYL", dayName: "Perşembe", dayNumber: 10, month: "EYL", phase: 3, weekDayIndex: 3 },
-      { id: 14, dateStr: "11 EYL", dayName: "Cuma", dayNumber: 11, month: "EYL", phase: 3, weekDayIndex: 4 },
-      { id: 15, dateStr: "12 EYL", dayName: "Cumartesi", dayNumber: 12, month: "EYL", phase: 3, weekDayIndex: 5 },
-      { id: 16, dateStr: "13 EYL", dayName: "Pazar", dayNumber: 13, month: "EYL", phase: 3, weekDayIndex: 6 },
-    ];
+    const MONTH_NAMES = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    const DAY_NAMES = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
+    const DEFAULT_SUBJECTS = ["Matematik", "Fen Bilimleri", "Türkçe", "İnkılap Tarihi", "Din Kültürü", "İngilizce"];
 
-    const PHASES = {
-      1: { name: "1. Aşama: Alışma", range: "29 Ağu - 2 Eyl", icon: "🌱", goal: "Programa alışırım, basit görevlerle başlarım." },
-      2: { name: "2. Aşama: Gelişme", range: "3 - 8 Eyl", icon: "🚀", goal: "Akademik çalışmaları artırır, Osmanlıca ve proje yaparım." },
-      3: { name: "3. Aşama: Tamamlama", range: "9 - 13 Eyl", icon: "🎯", goal: "Eksikleri giderir, somut proje çıkarır, değerlendiririm." }
-    };
+    // 40 Haftalık Takvim
+    const ALL_WEEKS = [];
+    (function generate40Weeks() {
+      let cur = new Date(2026, 8, 28);
+      for (let w = 1; w <= 40; w++) {
+        let start = new Date(cur);
+        let end = new Date(cur);
+        end.setDate(end.getDate() + 6);
+        if (w === 40) end = new Date(2027, 5, 30);
 
-    const DEFAULT_VAKITLER = [
-      {
-        id: "v1", no: 1, title: "1. Güne Başla", subtitle: "Bedeni & zihni hazırla",
-        icon: "fa-sun", color: "text-amber-500", bg: "bg-amber-500", lightBg: "bg-amber-50",
-        tasks: [
-          { id: "v1_1", text: "Sabah sporu", area: "C" },
-          { id: "v1_2", text: "Kahvaltıya yardım", area: "D" },
-          { id: "v1_3", text: "Çiçekleri kontrol et / bakım", area: "D" },
-          { id: "v1_4", text: "Odanı topla", area: "D" },
-          { id: "v1_5", text: "Günün planını gözden geçir", area: "D" },
-          { id: "v1_6", text: "Nefes egzersizi yap", area: "C" }
-        ]
-      },
-      {
-        id: "v2", no: 2, title: "2. Öğren", subtitle: "Odaklan ve çalış",
-        icon: "fa-lightbulb", color: "text-blue-500", bg: "bg-blue-500", lightBg: "bg-blue-50",
-        tasks: [
-          { id: "v2_1", text: "Konu çalış", area: "A" },
-          { id: "v2_2", text: "Soru çöz", area: "A" },
-          { id: "v2_3", text: "Osmanlıca oku / yaz", area: "A" },
-          { id: "v2_4", text: "Kitap oku (dersle ilgili)", area: "A" },
-          { id: "v2_5", text: "Yazı yaz", area: "A" },
-          { id: "v2_6", text: "Notlarını düzenle", area: "A" }
-        ]
-      },
-      {
-        id: "v3", no: 3, title: "3. Üret / Keşfet", subtitle: "Merak et, tasarla",
-        icon: "fa-magnifying-glass", color: "text-emerald-500", bg: "bg-emerald-500", lightBg: "bg-emerald-50",
-        tasks: [
-          { id: "v3_1", text: "Resim yap", area: "B" },
-          { id: "v3_2", text: "Lego ile üret", area: "B" },
-          { id: "v3_3", text: "Araştırma yap", area: "B" },
-          { id: "v3_4", text: "Atölye çalışması yap", area: "B" },
-          { id: "v3_5", text: "Proje çalışması yap", area: "B" },
-          { id: "v3_6", text: "Yeni bir şey dene", area: "B" }
-        ]
-      },
-      {
-        id: "v4", no: 4, title: "4. Hareket Et", subtitle: "Oyna, enerjini at",
-        icon: "fa-bicycle", color: "text-orange-500", bg: "bg-orange-500", lightBg: "bg-orange-50",
-        tasks: [
-          { id: "v4_1", text: "Bisiklete bin", area: "C" },
-          { id: "v4_2", text: "Havuza git", area: "C" },
-          { id: "v4_3", text: "Bahçede oyna", area: "C" },
-          { id: "v4_4", text: "Akşam yürüyüşü", area: "C" },
-          { id: "v4_5", text: "Serbest oyun", area: "C" },
-          { id: "v4_6", text: "Düzenli spor yap", area: "C" }
-        ]
-      },
-      {
-        id: "v5", no: 5, title: "5. Sakinleş & Oku", subtitle: "Dinlendir, oku",
-        icon: "fa-moon", color: "text-purple-500", bg: "bg-purple-500", lightBg: "bg-purple-50",
-        tasks: [
-          { id: "v5_1", text: "Kitap oku", area: "A" },
-          { id: "v5_2", text: "Dergi oku", area: "A" },
-          { id: "v5_3", text: "Günlük yaz", area: "A" },
-          { id: "v5_4", text: "Hafif Osmanlıca oku", area: "A" },
-          { id: "v5_5", text: "Günün değerlendirmesini yap", area: "D" }
-        ]
+        ALL_WEEKS.push({
+          weekNumber: w,
+          startDate: start,
+          endDate: end,
+          label: `${w}. Hafta (${start.getDate()} ${MONTH_NAMES[start.getMonth()].substring(0,3)} – ${end.getDate()} ${MONTH_NAMES[end.getMonth()].substring(0,3)})`,
+          shortTitle: `${w}. Hafta`
+        });
+        cur.setDate(cur.getDate() + 7);
       }
-    ];
+    })();
 
-    const WEEKLY_LESSONS_TEMPLATE = [
-      [{ type: "K" }, { type: "S" }, { type: "S" }],
-      [{ type: "K" }, { type: "S" }, { type: "K" }],
-      [{ type: "K" }, { type: "S" }, { type: "S" }],
-      [{ type: "S" }, { type: "K" }, { type: "S" }],
-      [{ type: "K" }, { type: "S" }, { type: "K" }],
-      [{ type: "K" }, { type: "S" }, { type: "S" }],
-      [{ type: "S" }, { type: "K" }, { type: "K" }]
-    ];
-
-    const BADGES = [
-      { id: 'first_step', title: 'İlk Adım 🌱', desc: 'İlk gün görevini yap', icon: 'fa-shoe-prints', reqXP: 10 },
-      { id: 'study_pro', title: 'Ders Yıldızı 📚', desc: '10 ders tamamla', icon: 'fa-book-open-reader', reqXP: 100 },
-      { id: 'craft_master', title: 'Üretici 🎨', desc: '5 üretim görevi', icon: 'fa-palette', reqXP: 150 },
-      { id: 'sporty', title: 'Sporcu 🏃', desc: '5 hareket görevi', icon: 'fa-person-running', reqXP: 200 },
-      { id: 'five_star', title: '5 Yıldız ⭐', desc: '5 yıldızlı gün', icon: 'fa-star', reqXP: 50 },
-      { id: 'legend', title: 'Şampiyon 🏆', desc: 'Tüm program', icon: 'fa-trophy', reqXP: 500 }
-    ];
-
+    const AUTH_USERS_KEY = "fen_deneme_auth_users_v4";
+    const CURRENT_SESSION_KEY = "fen_deneme_current_session_v4";
     const AVATAR_OPTIONS = ['🚀', '🌟', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
-
-    /* 2. AUTH SYSTEM */
-    const AUTH_USERS_KEY = "fen_deneme_auth_users_v3";
-    const CURRENT_SESSION_KEY = "fen_deneme_current_session_v3";
 
     let authUsers = [];
     let currentSession = null;
-    let mobileAuthMode = 'login';
-    let selectedMobileRegAvatar = '🚀';
+    let selectedRegAvatar = '🚀';
 
     let state = {
-      selectedDayId: 1,
+      selectedWeek: 1,
+      selectedDayIndex: 0,
       activeTab: 'today',
-      daysData: {}
+      weeksData: {}
     };
 
-    function getUserStorageKey(username) {
-      return "fen_deneme_user_data_" + encodeURIComponent(username.toLowerCase().trim());
+    function getUserStorageKey(u) {
+      return "fen_haftalik_data_" + encodeURIComponent(u.toLowerCase().trim());
     }
 
-    function generateQRLoginUrl(username, password) {
-      const payload = { u: username, p: password, t: Date.now() };
-      const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
-      const base = window.location.origin + window.location.pathname;
-      return `${base}?qr_auth=${encoded}`;
-    }
-
-    function initMobileAuth() {
+    function initMobile() {
       const savedUsers = localStorage.getItem(AUTH_USERS_KEY);
       if (savedUsers) {
         try { authUsers = JSON.parse(savedUsers); } catch(e) { authUsers = []; }
@@ -708,7 +486,7 @@
       }
       localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
 
-      // URL'den QR ile otomatik giriş kontrolü
+      // QR Url Giriş Kontrolü
       const urlParams = new URLSearchParams(window.location.search);
       const qrAuth = urlParams.get('qr_auth');
       if (qrAuth) {
@@ -717,79 +495,62 @@
           if (payload && payload.u && payload.p) {
             let found = authUsers.find(x => x.username.toLowerCase() === payload.u.toLowerCase());
             if (!found) {
-              found = { username: payload.u, password: payload.p, role: "student", avatar: "🚀", title: "Öğrenci" };
+              found = { username: payload.u, password: payload.p, role: "student", avatar: "🚀" };
               authUsers.push(found);
               localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
             }
             currentSession = found;
             localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
             window.history.replaceState({}, document.title, window.location.pathname);
-            applyMobileSession(found);
+            applySession(found);
             playChime('done');
-            confetti({ particleCount: 60, spread: 70 });
-            alert(`🎉 Hoş geldin, ${found.username}!`);
+            confetti({ particleCount: 50 });
             return;
           }
         } catch(e) {}
       }
 
-      const savedSession = localStorage.getItem(CURRENT_SESSION_KEY);
-      if (savedSession) {
+      const savedSess = localStorage.getItem(CURRENT_SESSION_KEY);
+      if (savedSess) {
         try {
-          currentSession = JSON.parse(savedSession);
-          const found = authUsers.find(u => u.username.toLowerCase() === currentSession.username.toLowerCase());
+          currentSession = JSON.parse(savedSess);
+          const found = authUsers.find(x => x.username.toLowerCase() === currentSession.username.toLowerCase());
           if (found && found.password === currentSession.password) {
-            applyMobileSession(found);
+            applySession(found);
             return;
           }
         } catch(e) {}
       }
 
-      showMobileAuthModal();
+      showAuthModal();
     }
 
-    function showMobileAuthModal() {
-      renderMobileAuthAvatarPicker();
-      document.getElementById("mobileAuthModal").classList.remove("hidden");
-      document.getElementById("mobileAuthModal").classList.add("flex");
-    }
-
-    function hideMobileAuthModal() {
-      document.getElementById("mobileAuthModal").classList.add("hidden");
-      document.getElementById("mobileAuthModal").classList.remove("flex");
-    }
-
-    function switchMobileAuthTab(mode) {
-      mobileAuthMode = mode;
-      document.getElementById("mobileAuthAlert").classList.add("hidden");
-      if (mode === 'login') {
-        document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
-        document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg text-slate-500";
-        document.getElementById("mRegisterAvatarBox").classList.add("hidden");
-        document.getElementById("mAuthBtnText").textContent = "Giriş Yap ve Başla";
-      } else {
-        document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
-        document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg text-slate-500";
-        document.getElementById("mRegisterAvatarBox").classList.remove("hidden");
-        document.getElementById("mAuthBtnText").textContent = "Kayıt Ol ve Başla";
-      }
-    }
-
-    function renderMobileAuthAvatarPicker() {
-      const c = document.getElementById("mAvatarPickerBox");
+    function showAuthModal() {
+      const c = document.getElementById("mRegAvatarPicker");
       c.innerHTML = "";
       AVATAR_OPTIONS.forEach(em => {
-        const isSel = em === selectedMobileRegAvatar;
         const b = document.createElement("button");
-        b.onclick = () => { selectedMobileRegAvatar = em; renderMobileAuthAvatarPicker(); };
-        b.className = `w-7 h-7 rounded-lg text-sm flex items-center justify-center ${isSel ? 'bg-blue-600 text-white scale-110 shadow' : 'bg-slate-100'}`;
+        b.onclick = () => { selectedRegAvatar = em; };
+        b.className = "w-6 h-6 rounded text-xs bg-slate-100 flex items-center justify-center";
         b.textContent = em;
         c.appendChild(b);
       });
+      document.getElementById("mobileAuthModal").classList.remove("hidden");
+    }
+
+    function switchMobileAuthTab(mode) {
+      if (mode === 'login') {
+        document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
+        document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg text-slate-500";
+        document.getElementById("mRegAvatarBox").classList.add("hidden");
+      } else {
+        document.getElementById("mAuthTab-register").className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm";
+        document.getElementById("mAuthTab-login").className = "flex-1 py-1.5 rounded-lg text-slate-500";
+        document.getElementById("mRegAvatarBox").classList.remove("hidden");
+      }
     }
 
     function fillMobileSample(u, p) {
-      switchMobileAuthTab('login');
       document.getElementById("mAuthUsername").value = u;
       document.getElementById("mAuthPassword").value = p;
       handleMobileAuthSubmit();
@@ -802,126 +563,384 @@
 
       if (!u || !p) {
         alertBox.textContent = "Kullanıcı adı ve şifre girin.";
-        alertBox.className = "p-2.5 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700";
-        alertBox.classList.remove("hidden");
+        alertBox.className = "p-2 rounded-xl text-xs bg-rose-50 text-rose-700 block";
         return;
       }
 
-      if (mobileAuthMode === 'login') {
-        const found = authUsers.find(x => x.username.toLowerCase() === u.toLowerCase());
-        if (!found || found.password !== p) {
-          alertBox.textContent = "Hatalı kullanıcı adı veya şifre!";
-          alertBox.className = "p-2.5 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700";
-          alertBox.classList.remove("hidden");
+      let found = authUsers.find(x => x.username.toLowerCase() === u.toLowerCase());
+      if (found) {
+        if (found.password !== p) {
+          alertBox.textContent = "Hatalı şifre!";
+          alertBox.className = "p-2 rounded-xl text-xs bg-rose-50 text-rose-700 block";
           return;
         }
-        currentSession = found;
-        localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
-        applyMobileSession(found);
-        hideMobileAuthModal();
-        playChime('done');
       } else {
-        if (p.length < 4) {
-          alertBox.textContent = "Şifre en az 4 karakter olmalıdır.";
-          alertBox.className = "p-2.5 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700";
-          alertBox.classList.remove("hidden");
-          return;
-        }
-        const newUser = { username: u, password: p, role: "student", avatar: selectedMobileRegAvatar, title: "Öğrenci" };
-        authUsers.push(newUser);
+        found = { username: u, password: p, role: "student", avatar: selectedRegAvatar };
+        authUsers.push(found);
         localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
-        currentSession = newUser;
-        localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(newUser));
-        applyMobileSession(newUser);
-        hideMobileAuthModal();
-        playChime('done');
       }
+
+      currentSession = found;
+      localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(found));
+      applySession(found);
+      document.getElementById("mobileAuthModal").classList.add("hidden");
+      playChime('done');
     }
 
-    function applyMobileSession(user) {
+    function applySession(user) {
       document.getElementById("mobileUserName").textContent = user.username;
       document.getElementById("mobileUserAvatar").textContent = user.avatar;
       document.getElementById("mobileUserRoleBadge").textContent = user.role === 'admin' ? 'Yönetici' : 'Öğrenci';
-      document.getElementById("settingsUserName").textContent = user.username;
-      document.getElementById("settingsUserAvatar").textContent = user.avatar;
-      document.getElementById("settingsUserRole").textContent = user.role === 'admin' ? 'Yönetici / Öğretmen' : 'Aktif Öğrenci';
-      document.getElementById("chatStudentName").textContent = user.username;
+      document.getElementById("mSettingsName").textContent = user.username;
+      document.getElementById("mSettingsAvatar").textContent = user.avatar;
 
       if (user.role === 'admin') {
         document.getElementById("mobileAdminHeaderBtn").classList.remove("hidden");
-        const first = authUsers.find(x => x.role === 'student') || { username: "Ahmet" };
-        loadMobileUserData(first.username);
+        const f = authUsers.find(x => x.role === 'student') || { username: "Ahmet" };
+        loadUserData(f.username);
       } else {
         document.getElementById("mobileAdminHeaderBtn").classList.add("hidden");
-        loadMobileUserData(user.username);
+        loadUserData(user.username);
       }
     }
 
     function handleMobileLogout() {
-      if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
+      if (confirm("Çıkış yapılsın mı?")) {
         localStorage.removeItem(CURRENT_SESSION_KEY);
         currentSession = null;
-        document.getElementById("mAuthUsername").value = "";
-        document.getElementById("mAuthPassword").value = "";
-        showMobileAuthModal();
+        showAuthModal();
       }
     }
 
-    function loadMobileUserData(username) {
-      const userKey = getUserStorageKey(username);
-      const saved = localStorage.getItem(userKey);
-
-      if (saved) {
-        try {
-          state.daysData = JSON.parse(saved).daysData || {};
-          state.selectedDayId = JSON.parse(saved).selectedDayId || 1;
-        } catch(e) {
-          createDefaultState();
-        }
-      } else {
-        createDefaultState();
-      }
-
-      DAYS_CONFIG.forEach(d => {
-        if (!state.daysData[d.id]) {
-          const t = WEEKLY_LESSONS_TEMPLATE[d.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
-          state.daysData[d.id] = {
-            tasks: {},
-            lessons: [{ type: t[0].type, done: false }, { type: t[1].type, done: false }, { type: t[2].type, done: false }],
-            rating: 0,
-            note: ""
+    function getOrCreateWeekData(wNum) {
+      if (!state.weeksData[wNum]) {
+        const daysObj = {};
+        for (let d = 0; d < 7; d++) {
+          daysObj[d] = {
+            topics: [
+              { subject: DEFAULT_SUBJECTS[0], name: "Konu 1", done: false },
+              { subject: DEFAULT_SUBJECTS[1], name: "Konu 2", done: false },
+              { subject: DEFAULT_SUBJECTS[2], name: "Konu 3", done: false }
+            ],
+            questions: [
+              { subject: DEFAULT_SUBJECTS[0], count: 0 },
+              { subject: DEFAULT_SUBJECTS[1], count: 0 },
+              { subject: DEFAULT_SUBJECTS[2], count: 0 }
+            ],
+            rating: 0, note: ""
           };
         }
-      });
-
-      saveState();
-      renderDaysStoryBar();
-      renderTodayView();
-      renderGlobalStats();
+        const denemeSubs = [
+          { subject: "Türkçe", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "Matematik", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "Fen Bilimleri", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "İnkılap Tarihi", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "Din Kültürü", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
+          { subject: "İngilizce", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 }
+        ];
+        state.weeksData[wNum] = { days: daysObj, deneme: { subjects: denemeSubs, note: "" }, weeklyReflection: "" };
+      }
+      return state.weeksData[wNum];
     }
 
-    function createDefaultState() {
-      state.daysData = {};
-      DAYS_CONFIG.forEach(d => {
-        const t = WEEKLY_LESSONS_TEMPLATE[d.weekDayIndex] || [{type:"K"},{type:"S"},{type:"S"}];
-        state.daysData[d.id] = {
-          tasks: {},
-          lessons: [{ type: t[0].type, done: false }, { type: t[1].type, done: false }, { type: t[2].type, done: false }],
-          rating: 0,
-          note: ""
-        };
-      });
+    function loadUserData(uname) {
+      const saved = localStorage.getItem(getUserStorageKey(uname));
+      if (saved) {
+        try { state = JSON.parse(saved); } catch(e) { state = { selectedWeek: 1, selectedDayIndex: 0, weeksData: {} }; }
+      } else {
+        state = { selectedWeek: 1, selectedDayIndex: 0, weeksData: {} };
+      }
+      if (!state.selectedWeek) state.selectedWeek = 1;
+      if (typeof state.selectedDayIndex !== 'number') state.selectedDayIndex = 0;
+      getOrCreateWeekData(state.selectedWeek);
+      saveState();
+      renderAll();
     }
 
     function saveState() {
-      const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
-      localStorage.setItem(getUserStorageKey(activeName), JSON.stringify(state));
-      renderGlobalStats();
+      const uname = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
+      localStorage.setItem(getUserStorageKey(uname), JSON.stringify(state));
+      updateMetrics();
     }
 
-    /* 3. MOBİL YÖNETİCİ RAPORU MODALI */
+    /* RENDER FLOW */
+    function renderWeeksBar() {
+      const bar = document.getElementById("mobileWeeksBar");
+      bar.innerHTML = "";
+      ALL_WEEKS.forEach(w => {
+        const isSel = w.weekNumber === state.selectedWeek;
+        const b = document.createElement("button");
+        b.onclick = () => selectMobileWeek(w.weekNumber);
+        b.className = `flex-shrink-0 px-2.5 py-1 rounded-xl text-[11px] font-bold transition-all tap-bounce ${
+          isSel ? 'bg-blue-600 text-white shadow' : 'bg-slate-100 text-slate-700'
+        }`;
+        b.textContent = `H${w.weekNumber}`;
+        bar.appendChild(b);
+      });
+    }
+
+    function selectMobileWeek(wNum) {
+      if (wNum < 1 || wNum > 40) return;
+      state.selectedWeek = wNum;
+      getOrCreateWeekData(wNum);
+      playChime('click');
+      saveState();
+      renderAll();
+    }
+
+    function changeMobileWeek(delta) {
+      selectMobileWeek(state.selectedWeek + delta);
+    }
+
+    function renderDaysTabBar() {
+      const bar = document.getElementById("mobileDaysTabBar");
+      bar.innerHTML = "";
+      const wData = getOrCreateWeekData(state.selectedWeek);
+
+      for (let d = 0; d < 7; d++) {
+        const isSel = d === state.selectedDayIndex;
+        const dayRec = wData.days[d];
+        const doneT = (dayRec.topics || []).filter(t => t.done).length;
+        const totalQ = (dayRec.questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
+
+        const b = document.createElement("button");
+        b.onclick = () => { state.selectedDayIndex = d; playChime('click'); saveState(); renderDayTasks(); renderDaysTabBar(); };
+        b.className = `p-1 rounded-xl text-center flex flex-col items-center justify-center transition-all ${
+          isSel ? 'bg-blue-600 text-white font-bold shadow' : 'bg-white border text-slate-700'
+        }`;
+        b.innerHTML = `
+          <span class="text-[9px] uppercase ${isSel ? 'text-blue-100' : 'text-slate-400'}">${DAY_NAMES[d].substring(0,3)}</span>
+          <span class="text-[8px] font-semibold">${doneT}K•${totalQ}S</span>
+        `;
+        bar.appendChild(b);
+      }
+
+      document.getElementById("mobileDayTitleText").textContent = `${state.selectedWeek}. HAFTA • ${DAY_NAMES[state.selectedDayIndex].toUpperCase()}`;
+    }
+
+    function renderDayTasks() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const dayRec = wData.days[state.selectedDayIndex];
+
+      // 1. Konular
+      const topList = document.getElementById("mobileTopicsList");
+      topList.innerHTML = "";
+      let doneCount = 0;
+
+      dayRec.topics.forEach((t, idx) => {
+        if (t.done) doneCount++;
+        const div = document.createElement("div");
+        div.className = `p-2 rounded-xl border flex items-center justify-between gap-1.5 ${t.done ? 'bg-emerald-50 border-emerald-300' : 'bg-slate-50'}`;
+        
+        let subOpts = DEFAULT_SUBJECTS.map(s => `<option value="${s}" ${s === t.subject ? 'selected' : ''}>${s}</option>`).join('');
+        div.innerHTML = `
+          <div class="flex items-center gap-1.5 flex-1 min-w-0">
+            <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px] flex items-center justify-center">${idx+1}</span>
+            <select onchange="updateMTopicSub(${idx}, this.value)" class="text-[11px] font-bold bg-white border rounded-lg p-1 max-w-[90px]">${subOpts}</select>
+            <input type="text" value="${t.name || ''}" placeholder="Konu..." onchange="updateMTopicName(${idx}, this.value)" class="text-[11px] p-1 bg-white border rounded-lg flex-1 min-w-0">
+          </div>
+          <button onclick="toggleMTopic(${idx})" class="px-2 py-1 rounded-lg text-[10px] font-bold ${t.done ? 'bg-emerald-600 text-white' : 'bg-white border text-slate-600'} tap-bounce">
+            ${t.done ? '✓' : 'Yap'}
+          </button>
+        `;
+        topList.appendChild(div);
+      });
+
+      document.getElementById("mobileDailyTopicsProgressText").textContent = `${doneCount}/3 Konu`;
+
+      // 2. Sorular (Manuel)
+      const qList = document.getElementById("mobileQuestionsList");
+      qList.innerHTML = "";
+      let dayQTotal = 0;
+
+      dayRec.questions.forEach((q, idx) => {
+        const count = parseInt(q.count) || 0;
+        dayQTotal += count;
+        const div = document.createElement("div");
+        div.className = "p-2 rounded-xl bg-slate-50 border flex items-center justify-between gap-2";
+
+        let subOpts = DEFAULT_SUBJECTS.map(s => `<option value="${s}" ${s === q.subject ? 'selected' : ''}>${s}</option>`).join('');
+        div.innerHTML = `
+          <div class="flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px] flex items-center justify-center">${idx+1}</span>
+            <select onchange="updateMQSub(${idx}, this.value)" class="text-[11px] font-bold bg-white border rounded-lg p-1">${subOpts}</select>
+          </div>
+          <div class="flex items-center gap-1">
+            <button onclick="adjustMQ(${idx}, -5)" class="w-6 h-6 rounded bg-white border text-[10px] font-bold">-5</button>
+            <input type="number" min="0" value="${count}" onchange="updateMQCount(${idx}, this.value)" class="w-12 p-1 text-center font-bold text-xs bg-white border rounded-lg">
+            <button onclick="adjustMQ(${idx}, 5)" class="w-6 h-6 rounded bg-white border text-[10px] font-bold">+5</button>
+            <span class="text-[10px] text-slate-400">S</span>
+          </div>
+        `;
+        qList.appendChild(div);
+      });
+
+      document.getElementById("mobileDailyQuestionTotalText").textContent = `${dayQTotal} Soru`;
+      document.getElementById("mobileDaySumBadge").textContent = `${dayQTotal} Soru`;
+
+      // Yıldızlar
+      const sBox = document.getElementById("mDailyStars");
+      sBox.innerHTML = "";
+      for (let s = 1; s <= 5; s++) {
+        sBox.innerHTML += `<button onclick="setMDailyRating(${s})" class="text-sm ${s <= (dayRec.rating || 0) ? 'text-amber-400' : 'text-slate-300'}">★</button>`;
+      }
+      document.getElementById("mDailyNote").value = dayRec.note || "";
+    }
+
+    function updateMTopicSub(idx, val) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].topics[idx].subject = val; saveState(); }
+    function updateMTopicName(idx, val) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].topics[idx].name = val; saveState(); }
+    function toggleMTopic(idx) { const wData = getOrCreateWeekData(state.selectedWeek); const t = wData.days[state.selectedDayIndex].topics[idx]; t.done = !t.done; playChime('click'); saveState(); renderDayTasks(); renderDaysTabBar(); }
+    function updateMQSub(idx, val) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].questions[idx].subject = val; saveState(); }
+    function updateMQCount(idx, val) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].questions[idx].count = Math.max(0, parseInt(val) || 0); playChime('click'); saveState(); renderDayTasks(); renderDaysTabBar(); }
+    function adjustMQ(idx, delta) { const wData = getOrCreateWeekData(state.selectedWeek); const c = parseInt(wData.days[state.selectedDayIndex].questions[idx].count) || 0; wData.days[state.selectedDayIndex].questions[idx].count = Math.max(0, c + delta); playChime('click'); saveState(); renderDayTasks(); renderDaysTabBar(); }
+    function setMDailyRating(r) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].rating = r; playChime('done'); saveState(); renderDayTasks(); }
+
+    /* DENEME RENDERING */
+    function renderDenemeView() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const list = document.getElementById("mobileDenemeList");
+      list.innerHTML = "";
+      let grandNet = 0;
+
+      (wData.deneme.subjects || []).forEach((s, idx) => {
+        grandNet += (s.net || 0);
+        const card = document.createElement("div");
+        card.className = "p-3 rounded-2xl bg-white border space-y-2 shadow-card-sm";
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-slate-800">${s.subject} (20 S)</span>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg">${s.net.toFixed(2)} Net</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            <div class="bg-emerald-50 p-1.5 rounded-xl border border-emerald-200">
+              <span class="text-[9px] font-bold text-emerald-800 block">D</span>
+              <input type="number" min="0" max="20" value="${s.correct}" onchange="updateMDeneme(${idx}, 'correct', this.value)" class="w-full text-center font-bold text-emerald-900 bg-transparent">
+            </div>
+            <div class="bg-rose-50 p-1.5 rounded-xl border border-rose-200">
+              <span class="text-[9px] font-bold text-rose-800 block">Y</span>
+              <input type="number" min="0" max="20" value="${s.incorrect}" onchange="updateMDeneme(${idx}, 'incorrect', this.value)" class="w-full text-center font-bold text-rose-900 bg-transparent">
+            </div>
+            <div class="bg-slate-50 p-1.5 rounded-xl border">
+              <span class="text-[9px] font-bold text-slate-500 block">B</span>
+              <span class="font-bold text-slate-700 block mt-0.5">${s.empty}</span>
+            </div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      document.getElementById("mDenemeScoreBadge").textContent = `${grandNet.toFixed(2)} Net`;
+      document.getElementById("mDenemeNote").value = wData.deneme.note || "";
+    }
+
+    function updateMDeneme(idx, type, val) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const s = wData.deneme.subjects[idx];
+      let num = Math.min(20, Math.max(0, parseInt(val) || 0));
+
+      if (type === 'correct') {
+        s.correct = num;
+        if (s.correct + s.incorrect > 20) s.incorrect = 20 - s.correct;
+      } else {
+        s.incorrect = num;
+        if (s.correct + s.incorrect > 20) s.correct = 20 - s.incorrect;
+      }
+      s.empty = Math.max(0, 20 - (s.correct + s.incorrect));
+      s.net = Math.max(0, parseFloat((s.correct - (s.incorrect / 3)).toFixed(2)));
+      playChime('click');
+      saveState();
+      renderDenemeView();
+    }
+
+    function saveMobileDenemeResults() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      wData.deneme.note = document.getElementById("mDenemeNote").value;
+      saveState();
+      playChime('done');
+      alert("Deneme sonuçları kaydedildi! 🎉");
+    }
+
+    function saveMobileReflection() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      wData.weeklyReflection = document.getElementById("mWeeklyReflection").value;
+      saveState();
+      playChime('done');
+      alert("Haftalık yansıma kaydedildi! ✓");
+    }
+
+    /* CHART & METRICS */
+    let mDailyChart = null;
+    function updateMetrics() {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      let weekTopics = 0;
+      let weekQ = 0;
+      const dailyCounts = [];
+
+      for (let d = 0; d < 7; d++) {
+        const dRec = wData.days[d];
+        weekTopics += (dRec.topics || []).filter(t => t.done).length;
+        const qSum = (dRec.questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
+        weekQ += qSum;
+        dailyCounts.push(qSum);
+      }
+
+      let denemeNet = 0;
+      (wData.deneme.subjects || []).forEach(s => { denemeNet += (s.net || 0); weekQ += (s.correct || 0) + (s.incorrect || 0); });
+
+      document.getElementById("mobileWeekQuestionBadge").textContent = `${weekQ} Soru`;
+      document.getElementById("mReportTitle").textContent = `${state.selectedWeek}. Hafta Karnesi`;
+      document.getElementById("mReportTopics").textContent = `${weekTopics}/21`;
+      document.getElementById("mReportQuestions").textContent = `${weekQ} S`;
+      document.getElementById("mReportDeneme").textContent = `${denemeNet.toFixed(2)}`;
+      document.getElementById("mWeeklyReflection").value = wData.weeklyReflection || "";
+
+      const ctx = document.getElementById("mobileDailyQChart");
+      if (ctx) {
+        if (mDailyChart) {
+          mDailyChart.data.datasets[0].data = dailyCounts;
+          mDailyChart.update();
+        } else {
+          mDailyChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+              datasets: [{ data: dailyCounts, backgroundColor: 'rgba(2, 132, 199, 0.85)', borderRadius: 6 }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: true } }
+            }
+          });
+        }
+      }
+    }
+
+    function switchTab(tId) {
+      state.activeTab = tId;
+      playChime('click');
+      document.querySelectorAll(".tab-page").forEach(p => p.classList.add("hidden"));
+      const target = document.getElementById(`tab-${tId}`);
+      if (target) target.classList.remove("hidden");
+
+      document.querySelectorAll(".nav-tab-btn").forEach(b => {
+        b.classList.remove("text-blue-600", "font-bold");
+        b.classList.add("text-slate-400", "font-medium");
+      });
+      const activeBtn = document.getElementById(`nav-btn-${tId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove("text-slate-400", "font-medium");
+        activeBtn.classList.add("text-blue-600", "font-bold");
+      }
+
+      if (tId === 'deneme') renderDenemeView();
+      if (tId === 'report') updateMetrics();
+    }
+
+    /* MOBİL ADMIN MODAL */
     function openMobileAdminModal() {
-      renderMobileAdminView();
+      renderMobileAdmin();
       document.getElementById("mobileAdminModal").classList.remove("hidden");
       document.getElementById("mobileAdminModal").classList.add("flex");
     }
@@ -931,661 +950,113 @@
       document.getElementById("mobileAdminModal").classList.remove("flex");
     }
 
-    function renderMobileAdminView() {
-      const studentUsers = authUsers.filter(x => x.role === 'student');
-      const metricsContainer = document.getElementById("mobileAdminMetrics");
-      let totalTasks = 0;
-      let totalLessons = 0;
-      let topStudent = { name: "-", xp: -1, avatar: "👤" };
+    function renderMobileAdmin() {
+      const studentUsers = authUsers.filter(u => u.role === 'student');
+      let classQ = 0;
+      let classDeneme = 0;
 
       studentUsers.forEach(p => {
         let uData = null;
         try { uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username))); } catch(e) {}
-        if (uData && uData.daysData) {
-          let uXP = 0;
-          Object.values(uData.daysData).forEach(d => {
-            Object.values(d.tasks || {}).forEach(st => {
-              if (st === 'done') { totalTasks++; uXP += 10; }
-              else if (st === 'half') { uXP += 5; }
-            });
-            (d.lessons || []).forEach(l => { if (l.done) { totalLessons++; uXP += 15; } });
-            if (d.rating) uXP += d.rating * 5;
-          });
-          if (uXP > topStudent.xp) {
-            topStudent = { name: p.username, xp: uXP, avatar: p.avatar };
+        if (uData && uData.weeksData && uData.weeksData[state.selectedWeek]) {
+          const w = uData.weeksData[state.selectedWeek];
+          for (let d = 0; d < 7; d++) {
+            classQ += (w.days[d].questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
           }
+          (w.deneme.subjects || []).forEach(s => { classDeneme += (s.net || 0); classQ += (s.correct || 0) + (s.incorrect || 0); });
         }
       });
 
-      const avgSuccess = studentUsers.length > 0 ? Math.round((totalTasks / (studentUsers.length * 80)) * 100) : 0;
-
-      metricsContainer.innerHTML = `
+      const mBox = document.getElementById("mAdminMetrics");
+      mBox.innerHTML = `
         <div class="p-2.5 rounded-xl bg-blue-50 border border-blue-200">
-          <div class="text-[9px] font-bold text-blue-600 uppercase">Mevcut</div>
-          <div class="text-base font-fun font-bold text-blue-950">${studentUsers.length} Öğrenci</div>
-          <div class="text-[9px] text-blue-500">Kayıtlı Profil</div>
+          <span class="text-[9px] font-bold text-blue-600 block uppercase">Haftalık Soru</span>
+          <strong class="font-fun text-sm text-blue-950">${classQ} Soru</strong>
         </div>
-
-        <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200">
-          <div class="text-[9px] font-bold text-emerald-600 uppercase">Sınıf Başarısı</div>
-          <div class="text-base font-fun font-bold text-emerald-950">%${Math.min(100, avgSuccess)}</div>
-          <div class="text-[9px] text-emerald-500">${totalTasks} Görev Yapıldı</div>
-        </div>
-
-        <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200">
-          <div class="text-[9px] font-bold text-amber-600 uppercase">Dersler</div>
-          <div class="text-base font-fun font-bold text-amber-950">${totalLessons} Ders</div>
-          <div class="text-[9px] text-amber-500">K/S Tamamlandı</div>
-        </div>
-
         <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200">
-          <div class="text-[9px] font-bold text-purple-600 uppercase">Lider</div>
-          <div class="text-xs font-fun font-bold text-purple-950 truncate">${topStudent.avatar} ${topStudent.name}</div>
-          <div class="text-[9px] text-purple-500">${Math.max(0, topStudent.xp)} XP</div>
+          <span class="text-[9px] font-bold text-purple-600 block uppercase">Deneme Ort.</span>
+          <strong class="font-fun text-sm text-purple-950">${studentUsers.length > 0 ? (classDeneme/studentUsers.length).toFixed(1) : 0} Net</strong>
         </div>
       `;
 
-      const listContainer = document.getElementById("mobileAdminStudentList");
-      listContainer.innerHTML = "";
-
+      const list = document.getElementById("mAdminStudentList");
+      list.innerHTML = "";
       studentUsers.forEach(p => {
         let uData = null;
+        let pQ = 0;
+        let pNet = 0;
         try { uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username))); } catch(e) {}
-        
-        let uXP = 0;
-        let uTasks = 0;
-        let uLessons = 0;
-        let uStreak = 0;
-        let lastNote = "";
-
-        if (uData && uData.daysData) {
-          DAYS_CONFIG.forEach(d => {
-            const day = uData.daysData[d.id] || { tasks: {}, lessons: [], rating: 0, note: "" };
-            let hasDone = false;
-            Object.values(day.tasks || {}).forEach(st => {
-              if (st === 'done') { uXP += 10; uTasks++; hasDone = true; }
-              else if (st === 'half') { uXP += 5; hasDone = true; }
-            });
-            (day.lessons || []).forEach(l => { if (l.done) { uXP += 15; uLessons++; hasDone = true; } });
-            if (day.rating) uXP += day.rating * 5;
-            if (day.note) lastNote = day.note;
-            if (hasDone) uStreak++;
-          });
+        if (uData && uData.weeksData && uData.weeksData[state.selectedWeek]) {
+          const w = uData.weeksData[state.selectedWeek];
+          for (let d = 0; d < 7; d++) {
+            pQ += (w.days[d].questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
+          }
+          (w.deneme.subjects || []).forEach(s => { pNet += (s.net || 0); pQ += (s.correct || 0) + (s.incorrect || 0); });
         }
 
-        const taskPct = Math.min(100, Math.round((uTasks / 80) * 100));
-
-        const card = document.createElement("div");
-        card.className = "p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-2";
-        card.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="w-8 h-8 rounded-xl bg-white border flex items-center justify-center text-sm shadow-xs">${p.avatar}</span>
-              <div>
-                <h5 class="font-fun font-bold text-xs text-slate-800">${p.username}</h5>
-                <span class="text-[10px] text-amber-600 font-bold">${uXP} XP • 🔥 ${uStreak} Gün</span>
-              </div>
-            </div>
-            <div class="flex items-center gap-1">
-              <button onclick="showMobileSingleQr('${p.username}')" class="px-2 py-1 rounded-xl bg-purple-100 text-purple-800 text-[10px] font-bold tap-bounce">
-                <i class="fa-solid fa-qrcode"></i> QR
-              </button>
-              <button onclick="mobileInspectStudent('${p.username}')" class="px-2 py-1 rounded-xl bg-blue-600 text-white text-[10px] font-bold tap-bounce">
-                İncele
-              </button>
+        const div = document.createElement("div");
+        div.className = "p-2.5 rounded-xl bg-slate-50 border flex items-center justify-between text-xs";
+        div.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-white border flex items-center justify-center">${p.avatar}</span>
+            <div>
+              <strong class="block">${p.username}</strong>
+              <span class="text-[10px] text-slate-500">${pQ} Soru • ${pNet.toFixed(1)} Net</span>
             </div>
           </div>
-
-          <div class="grid grid-cols-2 gap-1.5 text-[10px] bg-white p-2 rounded-xl border text-slate-600">
-            <div><strong>Görev:</strong> ${uTasks}/80 (%${taskPct})</div>
-            <div><strong>Ders:</strong> ${uLessons}/48</div>
+          <div class="flex items-center gap-1">
+            <button onclick="showMobileQR('${p.username}', '${p.password}')" class="px-2 py-1 rounded-lg bg-purple-100 text-purple-800 text-[10px] font-bold">QR</button>
+            <button onclick="mobileInspect('${p.username}')" class="px-2 py-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold">İncele</button>
           </div>
         `;
-        listContainer.appendChild(card);
+        list.appendChild(div);
       });
     }
 
-    function showMobileSingleQr(username) {
-      const user = authUsers.find(x => x.username.toLowerCase() === username.toLowerCase());
-      if (!user) return;
-
-      document.getElementById("mQrName").textContent = user.username;
-      document.getElementById("mQrAvatar").textContent = user.avatar;
-
-      const container = document.getElementById("mobileQrCanvasContainer");
-      container.innerHTML = "";
-
-      const qrUrl = generateQRLoginUrl(user.username, user.password);
-      new QRCode(container, {
-        text: qrUrl,
-        width: 140,
-        height: 140,
-        colorDark : "#0f172a",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.M
-      });
-
+    function showMobileQR(u, p) {
+      document.getElementById("mSingleQrTitle").textContent = `${u} - Giriş Karekodu`;
+      const box = document.getElementById("mSingleQrBox");
+      box.innerHTML = "";
+      const payload = { u: u, p: p, t: Date.now() };
+      const url = `${window.location.origin + window.location.pathname}?qr_auth=${btoa(encodeURIComponent(JSON.stringify(payload)))}`;
+      new QRCode(box, { text: url, width: 140, height: 140 });
       document.getElementById("mobileSingleQrModal").classList.remove("hidden");
-      document.getElementById("mobileSingleQrModal").classList.add("flex");
     }
 
-    function closeMobileSingleQrModal() {
-      document.getElementById("mobileSingleQrModal").classList.add("hidden");
-      document.getElementById("mobileSingleQrModal").classList.remove("flex");
-    }
-
-    function mobileInspectStudent(username) {
-      state.viewingUser = username;
-      loadMobileUserData(username);
+    function mobileInspect(u) {
+      state.viewingUser = u;
+      loadUserData(u);
       closeMobileAdminModal();
-      playChime('click');
     }
 
-    /* 4. SOUND & RENDER LOGIC */
-    function playChime(type = 'click') {
+    function playChime(t) {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        if (type === 'done') {
-          osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
-          gain.gain.setValueAtTime(0.12, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.25);
-        } else {
-          osc.frequency.setValueAtTime(440, ctx.currentTime);
-          gain.gain.setValueAtTime(0.04, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.06);
-        }
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.setValueAtTime(t === 'done' ? 587 : 440, ctx.currentTime);
+        g.gain.setValueAtTime(0.08, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        o.start(); o.stop(ctx.currentTime + 0.15);
       } catch(e) {}
     }
 
-    function renderDaysStoryBar() {
-      const container = document.getElementById("mobileDaysContainer");
-      container.innerHTML = "";
-
-      DAYS_CONFIG.forEach(d => {
-        const isSelected = d.id === state.selectedDayId;
-        const dData = state.daysData[d.id] || { tasks: {}, lessons: [], rating: 0 };
-        const hasDone = Object.values(dData.tasks).some(v => v === 'done') || dData.lessons.some(l => l.done);
-
-        const btn = document.createElement("button");
-        btn.onclick = () => selectMobileDay(d.id);
-        btn.className = `flex-shrink-0 flex flex-col items-center justify-center w-12 h-14 rounded-2xl transition-all tap-bounce ${
-          isSelected 
-            ? 'bg-blue-600 text-white shadow-md scale-105 ring-2 ring-blue-300 font-bold' 
-            : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80'
-        }`;
-
-        btn.innerHTML = `
-          <span class="text-[9px] uppercase tracking-tighter ${isSelected ? 'text-blue-200' : 'text-slate-400'}">${d.dayName.substring(0,2)}</span>
-          <span class="font-fun text-sm font-bold leading-tight">${d.dayNumber}</span>
-          ${hasDone ? `<span class="w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-amber-300' : 'bg-emerald-500'} mt-0.5"></span>` : '<span class="w-1.5 h-1.5"></span>'}
-        `;
-        container.appendChild(btn);
-      });
-    }
-
-    function renderTodayView() {
-      const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId) || DAYS_CONFIG[0];
-      const pInfo = PHASES[cur.phase];
-      const dData = state.daysData[state.selectedDayId] || { tasks: {}, rating: 0, note: "" };
-
-      document.getElementById("todayMonthText").textContent = `${cur.dayNumber} ${cur.month === 'AĞU' ? 'AĞUSTOS' : 'EYLÜL'} ${cur.dayName.toUpperCase()}`;
-      document.getElementById("todayDayTitle").textContent = `${cur.id}. Gün Görevlerin ${pInfo.icon}`;
-      document.getElementById("todayGoalText").textContent = pInfo.goal;
-
-      const listContainer = document.getElementById("mobileVakitlerList");
-      listContainer.innerHTML = "";
-
-      let completedVakitCount = 0;
-
-      DEFAULT_VAKITLER.forEach(v => {
-        const cDone = v.tasks.filter(t => dData.tasks[t.id] === 'done').length;
-        const cHalf = v.tasks.filter(t => dData.tasks[t.id] === 'half').length;
-        const isVakitMet = (cDone + cHalf) >= 1;
-        if (isVakitMet) completedVakitCount++;
-
-        const card = document.createElement("div");
-        card.className = "bg-white rounded-2xl p-3.5 border border-slate-200 shadow-card-sm space-y-2.5";
-
-        let tasksHtml = '';
-        v.tasks.forEach(t => {
-          const st = dData.tasks[t.id] || 'none';
-          let iconHtml = '<span class="w-4 h-4 rounded-full border border-slate-300"></span>';
-          let btnClass = 'bg-slate-50 text-slate-700 border-slate-200';
-
-          if (st === 'done') {
-            iconHtml = '<span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></span>';
-            btnClass = 'bg-emerald-50 text-emerald-900 border-emerald-300 font-semibold';
-          } else if (st === 'half') {
-            iconHtml = '<span class="w-4 h-4 rounded-full bg-amber-500 text-white flex items-center justify-center text-[9px]"><i class="fa-solid fa-minus"></i></span>';
-            btnClass = 'bg-amber-50 text-amber-900 border-amber-300 font-semibold';
-          }
-
-          tasksHtml += `
-            <button onclick="toggleMobileTask('${t.id}')" class="w-full p-2 rounded-xl border text-xs flex items-center justify-between gap-2 transition-all ${btnClass} tap-bounce">
-              <span class="truncate">${t.text}</span>
-              ${iconHtml}
-            </button>
-          `;
-        });
-
-        card.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-lg ${v.lightBg} ${v.color} flex items-center justify-center text-sm">
-                <i class="fa-solid ${v.icon}"></i>
-              </div>
-              <div>
-                <h4 class="font-fun text-xs font-bold text-slate-800">${v.title}</h4>
-                <p class="text-[9px] text-slate-400">${v.subtitle}</p>
-              </div>
-            </div>
-            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${isVakitMet ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'}">
-              ${isVakitMet ? '✓ Tamam' : 'En az 1 seç'}
-            </span>
-          </div>
-
-          <div class="grid grid-cols-1 gap-1.5">
-            ${tasksHtml}
-          </div>
-        `;
-        listContainer.appendChild(card);
-      });
-
-      document.getElementById("todayCompletedRatio").textContent = `${completedVakitCount}/5`;
-
-      const stars = document.querySelectorAll(".m-star");
-      stars.forEach(s => {
-        const val = parseInt(s.getAttribute("data-val"));
-        if (val <= (dData.rating || 0)) {
-          s.className = "m-star text-2xl text-amber-400 tap-bounce scale-110 drop-shadow";
-        } else {
-          s.className = "m-star text-2xl text-amber-200/60 tap-bounce";
-        }
-      });
-      document.getElementById("mobileStarText").textContent = dData.rating > 0 ? `${dData.rating} Yıldız Verildi` : "Puanını Seç";
-
-      const noteElem = document.getElementById("mobileDailyNote");
-      noteElem.value = dData.note || "";
-    }
-
-    function renderLessonsView() {
-      const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
-      const dData = state.daysData[state.selectedDayId] || { lessons: [] };
-
-      const listElem = document.getElementById("todayLessonsList");
-      listElem.innerHTML = "";
-
-      let doneCount = 0;
-      (dData.lessons || []).forEach((l, idx) => {
-        if (l.done) doneCount++;
-        const isK = l.type === 'K';
-
-        const row = document.createElement("div");
-        row.className = "p-2.5 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between";
-        row.innerHTML = `
-          <div class="flex items-center gap-2">
-            <button onclick="toggleMobileLessonType(${state.selectedDayId}, ${idx})" class="w-7 h-7 rounded-full font-bold text-xs text-white flex items-center justify-center ${isK ? 'bg-blue-600' : 'bg-rose-600'} shadow-sm tap-bounce" title="Konu/Soru Değiştir">
-              ${l.type}
-            </button>
-            <span class="text-xs font-bold text-slate-700">${idx + 1}. Ders (${isK ? 'Konu Çalışması' : 'Soru Çözümü'})</span>
-          </div>
-
-          <button onclick="toggleMobileLessonDone(${state.selectedDayId}, ${idx})" class="px-3 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
-            l.done ? 'bg-emerald-500 text-white shadow-sm' : 'bg-white border border-slate-300 text-slate-500'
-          } tap-bounce">
-            ${l.done ? '<i class="fa-solid fa-check"></i> Tamamlandı' : 'Tamamla'}
-          </button>
-        `;
-        listElem.appendChild(row);
-      });
-
-      document.getElementById("currentDayLessonsProgress").textContent = `${doneCount}/3 Tamam`;
-
-      const matrixElem = document.getElementById("mobileLessonsMatrix");
-      let header = '<tr class="bg-slate-100 text-slate-600 font-bold border-b"><th class="p-1 text-left">Ders</th>';
-      DAYS_CONFIG.forEach(d => {
-        header += `<th class="p-1 cursor-pointer ${d.id === state.selectedDayId ? 'text-blue-600 font-bold' : ''}" onclick="selectMobileDay(${d.id})">${d.dayNumber}</th>`;
-      });
-      header += '</tr>';
-
-      let rows = '';
-      for (let lIdx = 0; lIdx < 3; lIdx++) {
-        rows += `<tr><td class="p-1 font-bold text-slate-600 text-left">${lIdx+1}.D</td>`;
-        DAYS_CONFIG.forEach(d => {
-          const lData = (state.daysData[d.id] && state.daysData[d.id].lessons[lIdx]) || { type: 'K', done: false };
-          rows += `
-            <td class="p-1">
-              <span onclick="toggleMobileLessonDone(${d.id}, ${lIdx})" class="w-4 h-4 rounded-full text-[9px] font-bold inline-flex items-center justify-center cursor-pointer ${
-                lData.done ? 'bg-emerald-500 text-white' : (lData.type === 'K' ? 'bg-blue-100 text-blue-800' : 'bg-rose-100 text-rose-800')
-              }">
-                ${lData.done ? '✓' : lData.type}
-              </span>
-            </td>
-          `;
-        });
-        rows += '</tr>';
-      }
-      matrixElem.innerHTML = header + rows;
-    }
-
-    function renderBadgesView(totalXP) {
-      document.getElementById("badgeTabXpText").textContent = `${totalXP} XP`;
-      const fillPct = Math.min(100, Math.max(5, (totalXP / 500) * 100));
-      document.getElementById("badgeTabXpBar").style.width = `${fillPct}%`;
-
-      const grid = document.getElementById("mobileBadgesGrid");
-      grid.innerHTML = "";
-
-      BADGES.forEach(b => {
-        const unlocked = totalXP >= b.reqXP;
-        const col = document.createElement("div");
-        col.className = `p-2.5 rounded-xl border text-center flex flex-col items-center justify-center ${
-          unlocked ? 'bg-amber-50 border-amber-200 text-amber-900 shadow-sm' : 'bg-slate-50 border-slate-200 text-slate-400 opacity-60'
-        }`;
-        col.innerHTML = `
-          <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm mb-1 ${unlocked ? 'bg-amber-400 text-white' : 'bg-slate-200 text-slate-400'}">
-            <i class="fa-solid ${b.icon}"></i>
-          </div>
-          <div class="font-fun text-[11px] font-bold leading-tight">${b.title}</div>
-          <div class="text-[9px] text-slate-400 mt-0.5">${b.reqXP} XP</div>
-        `;
-        grid.appendChild(col);
-      });
-    }
-
-    let mobileChartInstance = null;
-    function renderGlobalStats() {
-      let totalXP = 0;
-      let areaScores = { A: 0, B: 0, C: 0, D: 0 };
-      let streak = 0;
-
-      DAYS_CONFIG.forEach(d => {
-        const dData = state.daysData[d.id] || { tasks: {}, lessons: [], rating: 0 };
-        let doneAny = false;
-
-        Object.entries(dData.tasks).forEach(([tId, status]) => {
-          let a = 'A';
-          DEFAULT_VAKITLER.forEach(v => {
-            const f = v.tasks.find(x => x.id === tId);
-            if (f) a = f.area;
-          });
-
-          if (status === 'done') {
-            totalXP += 10;
-            areaScores[a] += 10;
-            doneAny = true;
-          } else if (status === 'half') {
-            totalXP += 5;
-            areaScores[a] += 5;
-            doneAny = true;
-          }
-        });
-
-        (dData.lessons || []).forEach(l => {
-          if (l.done) {
-            totalXP += 15;
-            areaScores['A'] += 15;
-            doneAny = true;
-          }
-        });
-
-        if (dData.rating > 0) {
-          totalXP += dData.rating * 5;
-        }
-
-        if (doneAny) streak++;
-      });
-
-      document.getElementById("mobileXpBadge").textContent = `${totalXP} XP`;
-
-      let lvlName = "1. Çırak 🌱";
-      if (totalXP >= 500) lvlName = "5. Efsane Şampiyon 🏆";
-      else if (totalXP >= 300) lvlName = "4. Bilge Kaşif 💡";
-      else if (totalXP >= 150) lvlName = "3. Çalışkan Üretici 🚀";
-      else if (totalXP >= 50) lvlName = "2. Yolcu 🌿";
-
-      document.getElementById("badgeTabLevelTitle").textContent = lvlName;
-
-      renderBadgesView(totalXP);
-
-      const ctx = document.getElementById("mobileAreasChart");
-      if (ctx) {
-        if (mobileChartInstance) {
-          mobileChartInstance.data.datasets[0].data = [areaScores.A, areaScores.B, areaScores.C, areaScores.D];
-          mobileChartInstance.update();
-        } else {
-          mobileChartInstance = new Chart(ctx, {
-            type: 'polarArea',
-            data: {
-              labels: ['Akademik', 'Üretim', 'Fiziksel', 'Yaşam'],
-              datasets: [{
-                data: [areaScores.A, areaScores.B, areaScores.C, areaScores.D],
-                backgroundColor: [
-                  'rgba(59, 130, 246, 0.75)',
-                  'rgba(16, 185, 129, 0.75)',
-                  'rgba(245, 158, 11, 0.75)',
-                  'rgba(139, 92, 246, 0.75)'
-                ]
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 9 } } } },
-              scales: { r: { ticks: { display: false } } }
-            }
-          });
-        }
-      }
-    }
-
-    function selectMobileDay(dayId) {
-      state.selectedDayId = dayId;
-      playChime('click');
-      saveState();
-      renderDaysStoryBar();
-      renderTodayView();
-      renderLessonsView();
-    }
-
-    function toggleMobileTask(taskId) {
-      const dData = state.daysData[state.selectedDayId];
-      if (!dData) return;
-
-      const cur = dData.tasks[taskId] || 'none';
-      let next = 'done';
-      if (cur === 'done') next = 'half';
-      else if (cur === 'half') next = 'none';
-      else next = 'done';
-
-      dData.tasks[taskId] = next;
-      playChime(next === 'done' ? 'done' : 'click');
-      saveState();
-      renderTodayView();
-      renderDaysStoryBar();
-    }
-
-    function toggleMobileLessonType(dayId, idx) {
-      const dData = state.daysData[dayId];
-      if (!dData || !dData.lessons[idx]) return;
-      dData.lessons[idx].type = dData.lessons[idx].type === 'K' ? 'S' : 'K';
-      playChime('click');
-      saveState();
-      renderLessonsView();
-    }
-
-    function toggleMobileLessonDone(dayId, idx) {
-      const dData = state.daysData[dayId];
-      if (!dData || !dData.lessons[idx]) return;
-      dData.lessons[idx].done = !dData.lessons[idx].done;
-      playChime(dData.lessons[idx].done ? 'done' : 'click');
-      saveState();
-      renderLessonsView();
-      renderDaysStoryBar();
-    }
-
-    function setMobileRating(r) {
-      const dData = state.daysData[state.selectedDayId];
-      if (!dData) return;
-      dData.rating = r;
-      playChime('done');
-      if (r === 5) {
-        confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-      }
-      saveState();
-      renderTodayView();
-      renderDaysStoryBar();
-    }
-
-    function switchTab(tabId) {
-      state.activeTab = tabId;
-      playChime('click');
-
-      document.querySelectorAll(".tab-page").forEach(p => p.classList.add("hidden"));
-      const target = document.getElementById(`tab-${tabId}`);
-      if (target) target.classList.remove("hidden");
-
-      document.querySelectorAll(".nav-tab-btn").forEach(b => {
-        b.classList.remove("text-blue-600", "font-bold");
-        b.classList.add("text-slate-400", "font-medium");
-      });
-
-      const activeNavBtn = document.getElementById(`nav-btn-${tabId}`);
-      if (activeNavBtn) {
-        activeNavBtn.classList.remove("text-slate-400", "font-medium");
-        activeNavBtn.classList.add("text-blue-600", "font-bold");
-      }
-
-      if (tabId === 'lessons') renderLessonsView();
-      if (tabId === 'badges') renderGlobalStats();
-    }
-
-    const AI_SYSTEM_PROMPT = `Sen "16 Günlük Gelişim Programı" için özel olarak tasarlanmış eğlenceli, motive edici, pedagojik bir AI Gelişim Koçusun.
-Öğrencinin 4 gelişim alanını (A: Akademik & Bilişsel, B: Üretim, C: Fiziksel, D: Sorumluluk & Yaşam Becerileri) ve 5 vakit rutinini takip edip ona rehberlik ediyorsun.`;
-
-    function copyAiPromptTemplate() {
-      const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
-      const dData = state.daysData[state.selectedDayId] || { tasks: {}, lessons: [], rating: 0, note: "" };
-      const studentName = currentSession ? currentSession.username : 'Öğrenci';
-
-      const fullPrompt = `${AI_SYSTEM_PROMPT}
-
-Öğrenci İsmi: ${studentName}
-Durum:
-- Gün: ${cur.id}. Gün (${cur.dayNumber} ${cur.month}) - ${PHASES[cur.phase].name}
-- Tamamlanan Görevler: ${JSON.stringify(dData.tasks)}
-- 3 Ders Durumu: ${JSON.stringify(dData.lessons)}
-- Gün Sonu Yıldızı: ${dData.rating}/5
-- Öğrencinin Notu: "${dData.note || 'Henüz not girilmedi'}"
-
-Soru/İstek: Lütfen benim bugünkü performansımı analiz et, 1 övgü, 1 küçük gelişim tavsiyesi ve yarın için heyecan verici bir Osmanlıca kelime öğret!`;
-
-      navigator.clipboard.writeText(fullPrompt).then(() => {
-        const btnText = document.getElementById("copyPromptBtnText");
-        btnText.textContent = "Kopyalandı! ✓";
-        playChime('done');
-        setTimeout(() => { btnText.textContent = "Günün Gelişim Raporunu Kopyala"; }, 2000);
-      });
-    }
-
-    function appendAiMessage(sender, text) {
-      const msgBox = document.getElementById("aiChatMessages");
-      const div = document.createElement("div");
-      div.className = sender === 'user' 
-        ? "bg-blue-600 text-white p-2.5 rounded-xl ml-auto max-w-[85%] leading-relaxed" 
-        : "bg-purple-100/90 text-purple-950 p-2.5 rounded-xl max-w-[90%] leading-relaxed border border-purple-200";
-      div.innerHTML = text;
-      msgBox.appendChild(div);
-      msgBox.scrollTop = msgBox.scrollHeight;
-    }
-
-    async function requestAiAction(action) {
-      const cur = DAYS_CONFIG.find(d => d.id === state.selectedDayId);
-      const dData = state.daysData[state.selectedDayId] || { tasks: {}, lessons: [], rating: 0 };
-      const studentName = currentSession ? currentSession.username : 'Öğrenci';
-
-      playChime('click');
-
-      let userQuery = "";
-      if (action === 'evaluate_day') userQuery = "Bugünkü 5 vakit ve 3 ders performansımı değerlendirir misin?";
-      else if (action === 'ottoman_quiz') userQuery = "Bana bugünün Osmanlıca kelimesini ve eğlenceli anlamını öğret!";
-      else if (action === 'project_idea') userQuery = "3. Vakit için bana harika bir proje/üretim fikri ver!";
-      else if (action === 'motivation') userQuery = "Bana ilham verici bir motivasyon sözü söyle!";
-
-      appendAiMessage('user', userQuery);
-
-      setTimeout(() => {
-        let mockReply = "";
-        if (action === 'evaluate_day') {
-          mockReply = `🌟 <strong>Tebrikler ${studentName}! (${cur.dayNumber} ${cur.month}):</strong><br>• 5 vakit ritmini sürdürmen mükemmel bir disiplin örneği.<br>• <strong>Koç Tavsiyesi:</strong> Yarın Konu (K) ve Soru (S) dengesini koruyarak tempoyu bir tık artırabilirsin! 🚀`;
-        } else if (action === 'ottoman_quiz') {
-          const words = [
-            { w: "Gayret (غيرت)", m: "Çaba göstermek, azimle çalışmak. 'Gayret bizden, muvaffakiyet Allah'tan!'" },
-            { w: "Muvaffakiyet (موفقيت)", m: "Başarı, hedefe ulaşma sevinci." },
-            { w: "Hikmet (حكمت)", m: "Derin bilgi, eşyanın hakikatini anlama." }
-          ];
-          const chosen = words[Math.floor(Math.random() * words.length)];
-          mockReply = `📜 <strong>Günün Osmanlıca Kelimesi:</strong><br><strong>${chosen.w}</strong><br><em>Anlamı:</em> ${chosen.m}`;
-        } else if (action === 'project_idea') {
-          mockReply = `💡 <strong>3. Vakit Üretim Fikri:</strong><br>• Evdeki legolar veya malzemelerle 16 günlük hedeflerini temsil eden bir 'Başarı Kulesi' inşa et!`;
-        } else {
-          mockReply = `⚡ <em>"Bugün küçük adımlar, yarın büyük başarılar getirir!"</em><br>Harika gidiyorsun ${studentName}, asla pes etme! 🏆`;
-        }
-        appendAiMessage('ai', mockReply);
-        playChime('done');
-      }, 500);
-    }
-
-    function exportMobileData() {
-      const username = currentSession ? currentSession.username : 'Gelisim_Plani';
-      const exportPayload = {
-        profile: currentSession,
-        state: state,
-        exportedAt: new Date().toISOString()
-      };
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportPayload, null, 2));
-      const a = document.createElement("a");
-      a.href = dataStr;
-      a.download = `${username}_Gelisim_Cepte_${new Date().toISOString().slice(0,10)}.json`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      playChime('done');
-    }
-
-    function resetMobileData() {
-      if (confirm(`"${currentSession ? currentSession.username : 'Öğrenci'}" kullanıcısının verileri sıfırlansın mı?`)) {
-        createDefaultState();
-        saveState();
-        renderDaysStoryBar();
-        renderTodayView();
-        renderLessonsView();
-        alert("Sıfırlandı.");
-      }
+    function renderAll() {
+      renderWeeksBar();
+      renderDaysTabBar();
+      renderDayTasks();
+      updateMetrics();
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      initMobileAuth();
-
-      const noteElem = document.getElementById("mobileDailyNote");
-      if (noteElem) {
-        noteElem.addEventListener("input", () => {
-          const dData = state.daysData[state.selectedDayId];
-          if (dData) {
-            dData.note = noteElem.value;
-            const activeName = (currentSession && currentSession.role === 'student') ? currentSession.username : (state.viewingUser || "Ahmet");
-            localStorage.setItem(getUserStorageKey(activeName), JSON.stringify(state));
-          }
+      initMobile();
+      const n = document.getElementById("mDailyNote");
+      if (n) {
+        n.addEventListener("input", () => {
+          const wData = getOrCreateWeekData(state.selectedWeek);
+          wData.days[state.selectedDayIndex].note = n.value;
+          saveState();
         });
       }
     });
