@@ -143,20 +143,20 @@
         <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-3.5 text-white shadow-card-sm flex items-center justify-between">
           <div>
             <div class="text-[10px] font-bold uppercase tracking-wider text-sky-200" id="mobileDayTitleText">1. HAFTA • PAZARTESİ</div>
-            <h2 class="font-fun text-base font-bold">7. Sınıf Günlük 3 Konu & 3 Soru</h2>
+            <h2 class="font-fun text-base font-bold">7. Sınıf Günlük 6 Konu & 6 Soru</h2>
             <p class="text-[11px] text-sky-100 mt-0.5">Açılır pencereden 7. sınıf konusu seçebilirsin 📚</p>
           </div>
           <div class="text-right">
             <span class="text-xl font-fun font-bold text-amber-300" id="mobileDailyQuestionTotalText">0 Soru</span>
-            <div class="text-[9px] text-sky-200" id="mobileDailyTopicsProgressText">0/3 Konu</div>
+            <div class="text-[9px] text-sky-200" id="mobileDailyTopicsProgressText">0/6 Konu</div>
           </div>
         </div>
 
-        <!-- 3 DERS 7. SINIF KONU ÇALIŞMASI KARTI -->
+        <!-- 6 DERS 7. SINIF KONU ÇALIŞMASI KARTI -->
         <div class="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-card-sm space-y-2.5">
           <div class="flex items-center justify-between border-b pb-1.5">
             <h4 class="font-fun text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-book-bookmark text-blue-600"></i> 7. Sınıf Konu Çalışması
+              <i class="fa-solid fa-book-bookmark text-blue-600"></i> 7. Sınıf Konu Çalışması (6 Ders)
             </h4>
             <span class="text-[10px] text-slate-400">Açılır pencere destekli</span>
           </div>
@@ -166,11 +166,11 @@
           </div>
         </div>
 
-        <!-- 3 DERS SORU ÇÖZÜMÜ & MANUEL SORU SAYISI KARTI -->
+        <!-- 6 DERS SORU ÇÖZÜMÜ & MANUEL SORU SAYISI KARTI -->
         <div class="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-card-sm space-y-2.5">
           <div class="flex items-center justify-between border-b pb-1.5">
             <h4 class="font-fun text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-pen-to-square text-emerald-600"></i> 3 Ders Soru Çözümü (Manuel)
+              <i class="fa-solid fa-pen-to-square text-emerald-600"></i> 6 Ders Soru Çözümü (Manuel)
             </h4>
             <span class="text-[10px] text-emerald-600 font-bold" id="mobileDaySumBadge">0 Soru</span>
           </div>
@@ -230,7 +230,7 @@
           <div class="grid grid-cols-3 gap-2 text-center">
             <div class="p-2 rounded-xl bg-blue-50 border border-blue-100">
               <span class="text-[9px] text-blue-600 font-bold block">7. Sınıf Konu</span>
-              <strong class="font-fun text-sm text-blue-950" id="mReportTopics">0/21</strong>
+              <strong class="font-fun text-sm text-blue-950" id="mReportTopics">0/42</strong>
             </div>
             <div class="p-2 rounded-xl bg-emerald-50 border border-emerald-100">
               <span class="text-[9px] text-emerald-600 font-bold block">Soru</span>
@@ -1158,6 +1158,29 @@
       alert("Yönetici oturumu kapatıldı.");
     }
 
+    function ensureSixSubjects(dayRecord) {
+      if (!dayRecord) return;
+      if (!Array.isArray(dayRecord.topics)) dayRecord.topics = [];
+      if (!Array.isArray(dayRecord.questions)) dayRecord.questions = [];
+
+      const subjectsOrder = ["Matematik", "Fen Bilimleri", "Türkçe", "Sosyal Bilgiler", "Din Kültürü", "İngilizce"];
+      
+      while (dayRecord.topics.length < 6) {
+        const nextIdx = dayRecord.topics.length;
+        const subName = subjectsOrder[nextIdx] || "Matematik";
+        const defaultTopic = (GRADE7_CURRICULUM[subName] && GRADE7_CURRICULUM[subName][0]) 
+          ? GRADE7_CURRICULUM[subName][0].topic 
+          : "1. Konu";
+        dayRecord.topics.push({ subject: subName, name: defaultTopic, done: false });
+      }
+
+      while (dayRecord.questions.length < 6) {
+        const nextIdx = dayRecord.questions.length;
+        const subName = subjectsOrder[nextIdx] || "Matematik";
+        dayRecord.questions.push({ subject: subName, count: 0 });
+      }
+    }
+
     function getOrCreateWeekData(wNum) {
       if (!state.weeksData[wNum]) {
         const daysObj = {};
@@ -1166,12 +1189,18 @@
             topics: [
               { subject: "Matematik", name: GRADE7_CURRICULUM["Matematik"][0].topic, done: false },
               { subject: "Fen Bilimleri", name: GRADE7_CURRICULUM["Fen Bilimleri"][0].topic, done: false },
-              { subject: "Türkçe", name: GRADE7_CURRICULUM["Türkçe"][0].topic, done: false }
+              { subject: "Türkçe", name: GRADE7_CURRICULUM["Türkçe"][0].topic, done: false },
+              { subject: "Sosyal Bilgiler", name: GRADE7_CURRICULUM["Sosyal Bilgiler"][0].topic, done: false },
+              { subject: "Din Kültürü", name: GRADE7_CURRICULUM["Din Kültürü"][0].topic, done: false },
+              { subject: "İngilizce", name: GRADE7_CURRICULUM["İngilizce"][0].topic, done: false }
             ],
             questions: [
               { subject: "Matematik", count: 0 },
               { subject: "Fen Bilimleri", count: 0 },
-              { subject: "Türkçe", count: 0 }
+              { subject: "Türkçe", count: 0 },
+              { subject: "Sosyal Bilgiler", count: 0 },
+              { subject: "Din Kültürü", count: 0 },
+              { subject: "İngilizce", count: 0 }
             ],
             rating: 0, note: ""
           };
@@ -1185,6 +1214,13 @@
           { subject: "İngilizce", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 }
         ];
         state.weeksData[wNum] = { days: daysObj, deneme: { subjects: denemeSubs, note: "" }, weeklyReflection: "" };
+      } else {
+        const wData = state.weeksData[wNum];
+        if (wData.days) {
+          for (let d = 0; d < 7; d++) {
+            if (wData.days[d]) ensureSixSubjects(wData.days[d]);
+          }
+        }
       }
       return state.weeksData[wNum];
     }
@@ -1192,7 +1228,18 @@
     function loadUserData(uname) {
       const saved = localStorage.getItem(getUserStorageKey(uname));
       if (saved) {
-        try { state = JSON.parse(saved); } catch(e) { state = { selectedWeek: 1, selectedDayIndex: 0, weeksData: {} }; }
+        try { 
+          state = JSON.parse(saved); 
+          if (state && state.weeksData) {
+            Object.values(state.weeksData).forEach(w => {
+              if (w && w.days) {
+                for (let d = 0; d < 7; d++) {
+                  if (w.days[d]) ensureSixSubjects(w.days[d]);
+                }
+              }
+            });
+          }
+        } catch(e) { state = { selectedWeek: 1, selectedDayIndex: 0, weeksData: {} }; }
       } else {
         state = { selectedWeek: 1, selectedDayIndex: 0, weeksData: {} };
       }
@@ -1334,6 +1381,7 @@
     function renderDayTasks() {
       const wData = getOrCreateWeekData(state.selectedWeek);
       const dayRec = wData.days[state.selectedDayIndex];
+      ensureSixSubjects(dayRec);
 
       // 1. Konular
       const topList = document.getElementById("mobileTopicsList");
@@ -1387,7 +1435,7 @@
         topList.appendChild(div);
       });
 
-      document.getElementById("mobileDailyTopicsProgressText").textContent = `${doneCount}/3 Konu`;
+      document.getElementById("mobileDailyTopicsProgressText").textContent = `${doneCount}/6 Konu`;
 
       // 2. Sorular (Manuel)
       const qList = document.getElementById("mobileQuestionsList");
@@ -1572,7 +1620,7 @@
 
       document.getElementById("mobileWeekQuestionBadge").textContent = `${weekQ} Soru`;
       document.getElementById("mReportTitle").textContent = `${state.selectedWeek}. Hafta Karnesi`;
-      document.getElementById("mReportTopics").textContent = `${weekTopics}/21`;
+      document.getElementById("mReportTopics").textContent = `${weekTopics}/42`;
       document.getElementById("mReportQuestions").textContent = `${weekQ} S`;
       document.getElementById("mReportDeneme").textContent = `${denemeNet.toFixed(2)}`;
       document.getElementById("mWeeklyReflection").value = wData.weeklyReflection || "";
@@ -2680,6 +2728,15 @@
       const res = await fetchStudentFromSupabase(STUDENT_NAME);
       if (res.success && res.data) {
         state = res.data;
+        if (state && state.weeksData) {
+          Object.values(state.weeksData).forEach(w => {
+            if (w && w.days) {
+              for (let d = 0; d < 7; d++) {
+                if (w.days[d]) ensureSixSubjects(w.days[d]);
+              }
+            }
+          });
+        }
         localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
         renderAll();
         updateSupabaseStatusBadge("connected", "Bulut: Canlı (Supabase)");
@@ -2692,6 +2749,15 @@
 
       setupSupabaseRealtime(STUDENT_NAME, (remoteState) => {
         state = remoteState;
+        if (state && state.weeksData) {
+          Object.values(state.weeksData).forEach(w => {
+            if (w && w.days) {
+              for (let d = 0; d < 7; d++) {
+                if (w.days[d]) ensureSixSubjects(w.days[d]);
+              }
+            }
+          });
+        }
         localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
         renderAll();
         playChime('done');

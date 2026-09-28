@@ -243,8 +243,8 @@
         
         <div class="p-2 rounded-xl bg-white/10 border border-white/10">
           <div class="text-[10px] text-sky-200 font-bold uppercase">7. Sınıf Konuları</div>
-          <div class="text-lg font-fun font-bold text-amber-300 mt-0.5" id="bannerWeekTopicsRatio">0/21</div>
-          <div class="text-[9px] text-sky-100">3 Ders x 7 Gün</div>
+          <div class="text-lg font-fun font-bold text-amber-300 mt-0.5" id="bannerWeekTopicsRatio">0/42</div>
+          <div class="text-[9px] text-sky-100">6 Ders x 7 Gün</div>
         </div>
 
         <div class="p-2 rounded-xl bg-white/10 border border-white/10">
@@ -347,7 +347,7 @@
             <h3 class="font-fun text-lg font-bold text-slate-800" id="currentWeekRangeHeader">
               1. Hafta: 28 Eylül – 4 Ekim 2026
             </h3>
-            <span class="text-xs text-slate-500">Günlük 3 Ders 7. Sınıf Konu Çalışması ve 3 Ders Soru Girişi</span>
+            <span class="text-xs text-slate-500">Günlük 6 Ders 7. Sınıf Konu Çalışması ve 6 Ders Soru Girişi</span>
           </div>
         </div>
 
@@ -364,7 +364,7 @@
       <!-- SEÇİLİ GÜNÜN GÖREV PANELİ -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <!-- SOL: 3 DERS 7. SINIF KONU ÇALIŞMA PANELİ (AÇILIR PENCERE DESTEKLİ) -->
+        <!-- SOL: 6 DERS 7. SINIF KONU ÇALIŞMA PANELİ (AÇILIR PENCERE DESTEKLİ) -->
         <div class="lg:col-span-6 bg-gradient-to-br from-blue-50/60 to-indigo-50/60 rounded-3xl p-5 border border-blue-200/70 space-y-4">
           <div class="flex items-center justify-between border-b border-blue-200/60 pb-3">
             <div class="flex items-center gap-2">
@@ -372,17 +372,17 @@
                 <i class="fa-solid fa-book-bookmark"></i>
               </span>
               <div>
-                <h4 class="font-fun text-base font-bold text-slate-800">1. Günlük 3 Ders Konu Çalışması</h4>
+                <h4 class="font-fun text-base font-bold text-slate-800">1. Günlük 6 Ders Konu Çalışması</h4>
                 <p class="text-[11px] text-slate-500">Her dersin yanındaki listeden 7. sınıf konusunu seç ve tamamla</p>
               </div>
             </div>
             <span class="text-xs font-bold px-2.5 py-1 rounded-xl bg-white border border-blue-200 text-blue-700 shadow-sm" id="dailyTopicsProgressBadge">
-              0 / 3 Konu
+              0 / 6 Konu
             </span>
           </div>
 
           <div class="space-y-3" id="dailyTopicsList">
-            <!-- JS ile 3 Konu Çalışma Kartı -->
+            <!-- JS ile 6 Konu Çalışma Kartı -->
           </div>
 
           <div class="text-[11px] text-blue-900 bg-white/80 p-2.5 rounded-2xl border border-blue-200/60 flex items-center gap-2">
@@ -391,7 +391,7 @@
           </div>
         </div>
 
-        <!-- SAĞ: 3 DERS SORU ÇÖZÜMÜ & MANUEL SORU SAYISI GİRİŞİ -->
+        <!-- SAĞ: 6 DERS SORU ÇÖZÜMÜ & MANUEL SORU SAYISI GİRİŞİ -->
         <div class="lg:col-span-6 bg-gradient-to-br from-emerald-50/60 to-teal-50/60 rounded-3xl p-5 border border-emerald-200/70 space-y-4">
           <div class="flex items-center justify-between border-b border-emerald-200/60 pb-3">
             <div class="flex items-center gap-2">
@@ -399,7 +399,7 @@
                 <i class="fa-solid fa-pen-to-square"></i>
               </span>
               <div>
-                <h4 class="font-fun text-base font-bold text-slate-800">2. Günlük 3 Ders Soru Çözümü</h4>
+                <h4 class="font-fun text-base font-bold text-slate-800">2. Günlük 6 Ders Soru Çözümü</h4>
                 <p class="text-[11px] text-slate-500">Çözdüğün soru sayısını manuel olarak kutulara yaz</p>
               </div>
             </div>
@@ -411,7 +411,7 @@
           </div>
 
           <div class="space-y-3" id="dailyQuestionsList">
-            <!-- JS ile 3 Ders Manuel Soru Giriş Kartı -->
+            <!-- JS ile 6 Ders Manuel Soru Giriş Kartı -->
           </div>
 
           <!-- Günlük Puan & Not -->
@@ -534,7 +534,7 @@
             <span class="text-[10px] uppercase font-bold text-purple-200">Haftalık Karne Özeti</span>
             <h5 class="font-fun text-base font-bold mt-1 text-white" id="weeklyCardTitle">1. Hafta Karnesi</h5>
             <div class="mt-2 space-y-1 text-xs text-purple-100">
-              <div class="flex justify-between"><span>7. Sınıf Konu:</span> <strong id="karnеTopicsCount">0 / 21</strong></div>
+              <div class="flex justify-between"><span>7. Sınıf Konu:</span> <strong id="karnеTopicsCount">0 / 42</strong></div>
               <div class="flex justify-between"><span>Haftalık Soru:</span> <strong id="karneQuestionsCount">0 Soru</strong></div>
               <div class="flex justify-between"><span>Hafta Sonu Denemesi:</span> <strong id="karneDenemeNet">0.00 Net</strong></div>
             </div>
@@ -1098,7 +1098,7 @@
                   </label>
                   <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
                     <input type="checkbox" id="bulkResetOptTopics" checked class="rounded text-amber-600 focus:ring-amber-500">
-                    <span>Günlük 3 Ders Konu Çalışması (Tikler)</span>
+                    <span>Günlük 6 Ders Konu Çalışması (Tikler)</span>
                   </label>
                   <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
                     <input type="checkbox" id="bulkResetOptDeneme" checked class="rounded text-amber-600 focus:ring-amber-500">
@@ -1524,19 +1524,50 @@
       }
     }
 
+    function ensureSixSubjects(dayRecord) {
+      if (!dayRecord) return;
+      if (!Array.isArray(dayRecord.topics)) dayRecord.topics = [];
+      if (!Array.isArray(dayRecord.questions)) dayRecord.questions = [];
+
+      const subjectsOrder = ["Matematik", "Fen Bilimleri", "Türkçe", "Sosyal Bilgiler", "Din Kültürü", "İngilizce"];
+      
+      // Eksik konu varsa tamamla (6 derse çıkar)
+      while (dayRecord.topics.length < 6) {
+        const nextIdx = dayRecord.topics.length;
+        const subName = subjectsOrder[nextIdx] || "Matematik";
+        const defaultTopic = (GRADE7_CURRICULUM[subName] && GRADE7_CURRICULUM[subName][0]) 
+          ? GRADE7_CURRICULUM[subName][0].topic 
+          : "1. Konu";
+        dayRecord.topics.push({ subject: subName, name: defaultTopic, done: false });
+      }
+
+      // Eksik soru alanı varsa tamamla (6 derse çıkar)
+      while (dayRecord.questions.length < 6) {
+        const nextIdx = dayRecord.questions.length;
+        const subName = subjectsOrder[nextIdx] || "Matematik";
+        dayRecord.questions.push({ subject: subName, count: 0 });
+      }
+    }
+
     function createCleanWeekData() {
       const daysObj = {};
       for (let d = 0; d < 7; d++) {
         daysObj[d] = {
           topics: [
-            { subject: GRADE7_SUBJECTS[0], name: GRADE7_CURRICULUM["Matematik"][0].topic, done: false },
-            { subject: GRADE7_SUBJECTS[1], name: GRADE7_CURRICULUM["Fen Bilimleri"][0].topic, done: false },
-            { subject: GRADE7_SUBJECTS[2], name: GRADE7_CURRICULUM["Türkçe"][0].topic, done: false }
+            { subject: "Matematik", name: GRADE7_CURRICULUM["Matematik"][0].topic, done: false },
+            { subject: "Fen Bilimleri", name: GRADE7_CURRICULUM["Fen Bilimleri"][0].topic, done: false },
+            { subject: "Türkçe", name: GRADE7_CURRICULUM["Türkçe"][0].topic, done: false },
+            { subject: "Sosyal Bilgiler", name: GRADE7_CURRICULUM["Sosyal Bilgiler"][0].topic, done: false },
+            { subject: "Din Kültürü", name: GRADE7_CURRICULUM["Din Kültürü"][0].topic, done: false },
+            { subject: "İngilizce", name: GRADE7_CURRICULUM["İngilizce"][0].topic, done: false }
           ],
           questions: [
-            { subject: GRADE7_SUBJECTS[0], count: 0 },
-            { subject: GRADE7_SUBJECTS[1], count: 0 },
-            { subject: GRADE7_SUBJECTS[2], count: 0 }
+            { subject: "Matematik", count: 0 },
+            { subject: "Fen Bilimleri", count: 0 },
+            { subject: "Türkçe", count: 0 },
+            { subject: "Sosyal Bilgiler", count: 0 },
+            { subject: "Din Kültürü", count: 0 },
+            { subject: "İngilizce", count: 0 }
           ],
           rating: 0,
           note: ""
@@ -1569,38 +1600,16 @@
 
     function getOrCreateWeekData(wNum) {
       if (!state.weeksData[wNum]) {
-        const daysObj = {};
-        for (let d = 0; d < 7; d++) {
-          daysObj[d] = {
-            topics: [
-              { subject: GRADE7_SUBJECTS[0], name: GRADE7_CURRICULUM["Matematik"][0].topic, done: false },
-              { subject: GRADE7_SUBJECTS[1], name: GRADE7_CURRICULUM["Fen Bilimleri"][0].topic, done: false },
-              { subject: GRADE7_SUBJECTS[2], name: GRADE7_CURRICULUM["Türkçe"][0].topic, done: false }
-            ],
-            questions: [
-              { subject: GRADE7_SUBJECTS[0], count: 0 },
-              { subject: GRADE7_SUBJECTS[1], count: 0 },
-              { subject: GRADE7_SUBJECTS[2], count: 0 }
-            ],
-            rating: 0,
-            note: ""
-          };
+        state.weeksData[wNum] = createCleanWeekData();
+      } else {
+        const wData = state.weeksData[wNum];
+        if (wData.days) {
+          for (let d = 0; d < 7; d++) {
+            if (wData.days[d]) {
+              ensureSixSubjects(wData.days[d]);
+            }
+          }
         }
-
-        const denemeSubs = [
-          { subject: "Türkçe", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "Matematik", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "Fen Bilimleri", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "Sosyal Bilgiler", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 },
-          { subject: "Din Kültürü", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 },
-          { subject: "İngilizce", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 }
-        ];
-
-        state.weeksData[wNum] = {
-          days: daysObj,
-          deneme: { conducted: false, subjects: denemeSubs, note: "" },
-          weeklyReflection: ""
-        };
       }
       return state.weeksData[wNum];
     }
@@ -1608,7 +1617,18 @@
     function loadUserData(username) {
       const saved = localStorage.getItem(getUserDataStorageKey(username));
       if (saved) {
-        try { state = JSON.parse(saved); } catch(e) { state = createDefaultWeekState(); }
+        try { 
+          state = JSON.parse(saved); 
+          if (state && state.weeksData) {
+            Object.values(state.weeksData).forEach(w => {
+              if (w && w.days) {
+                for (let d = 0; d < 7; d++) {
+                  if (w.days[d]) ensureSixSubjects(w.days[d]);
+                }
+              }
+            });
+          }
+        } catch(e) { state = createDefaultWeekState(); }
       } else {
         state = createDefaultWeekState();
       }
@@ -2032,7 +2052,7 @@
           <div class="text-[10px] font-bold uppercase ${isSel ? 'text-blue-100' : 'text-slate-400'}">${d.dayName.substring(0,3)}</div>
           <div class="font-fun text-sm font-bold my-0.5">${d.shortDate}</div>
           <div class="text-[9px] font-semibold flex items-center gap-1 ${isSel ? 'text-amber-200' : 'text-emerald-700'}">
-            <span>${doneTopics}/3K</span> • <span>${totalQ}S</span>
+            <span>${doneTopics}/6K</span> • <span>${totalQ}S</span>
           </div>
         `;
         bar.appendChild(btn);
@@ -2052,8 +2072,9 @@
     function renderDayTasks() {
       const wData = getOrCreateWeekData(state.selectedWeek);
       const dayRecord = wData.days[state.selectedDayIndex];
+      ensureSixSubjects(dayRecord);
 
-      // 1. 3 DERS KONU ÇALIŞMASI (HER DERS YANINDA KONU SEÇİMİ)
+      // 1. 6 DERS KONU ÇALIŞMASI (HER DERS YANINDA KONU SEÇİMİ)
       const topicsList = document.getElementById("dailyTopicsList");
       topicsList.innerHTML = "";
       let completedTopicsCount = 0;
@@ -2116,9 +2137,9 @@
         topicsList.appendChild(div);
       });
 
-      document.getElementById("dailyTopicsProgressBadge").textContent = `${completedTopicsCount} / 3 Konu`;
+      document.getElementById("dailyTopicsProgressBadge").textContent = `${completedTopicsCount} / 6 Konu`;
 
-      // 2. 3 DERS MANUEL SORU ÇÖZÜMÜ
+      // 2. 6 DERS MANUEL SORU ÇÖZÜMÜ
       const questionsList = document.getElementById("dailyQuestionsList");
       questionsList.innerHTML = "";
       let dailyTotalQ = 0;
@@ -2466,14 +2487,14 @@
 
       const grandTotalQuestionsThisWeek = weekTotalQ + denemeTotalQ;
 
-      document.getElementById("bannerWeekTopicsRatio").textContent = `${weekTopicsDone} / 21`;
+      document.getElementById("bannerWeekTopicsRatio").textContent = `${weekTopicsDone} / 42`;
       document.getElementById("bannerWeekTotalQuestions").textContent = `${grandTotalQuestionsThisWeek}`;
       const hwQ = document.getElementById("headerWeekQuestionCount");
       if (hwQ) hwQ.textContent = `${grandTotalQuestionsThisWeek} Soru`;
       const hwN = document.getElementById("headerWeekDenemeNet");
       if (hwN) hwN.textContent = `${grandNet.toFixed(2)} Net`;
 
-      document.getElementById("karnеTopicsCount").textContent = `${weekTopicsDone} / 21`;
+      document.getElementById("karnеTopicsCount").textContent = `${weekTopicsDone} / 42`;
       document.getElementById("karneQuestionsCount").textContent = `${grandTotalQuestionsThisWeek} Soru`;
       document.getElementById("karneDenemeNet").textContent = `${grandNet.toFixed(2)} Net`;
       document.getElementById("weeklyReflectionText").value = wData.weeklyReflection || "";
@@ -2599,7 +2620,7 @@
         </div>
         <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
           <div class="text-[10px] font-bold text-emerald-600 uppercase">Tamamlanan Konu</div>
-          <div class="text-xl font-fun font-bold text-emerald-950 mt-0.5">${activeSumm.topicsDone} / 21</div>
+          <div class="text-xl font-fun font-bold text-emerald-950 mt-0.5">${activeSumm.topicsDone} / 42</div>
           <div class="text-[10px] text-emerald-500 font-medium">7. Sınıf Konu Hedefi</div>
         </div>
         <div class="p-3.5 rounded-2xl bg-purple-50 border border-purple-200">
@@ -2639,7 +2660,7 @@
               </div>
             </div>
           </td>
-          <td class="p-3 text-center font-bold text-slate-700">${summ.topicsDone} / 21</td>
+          <td class="p-3 text-center font-bold text-slate-700">${summ.topicsDone} / 42</td>
           <td class="p-3 text-center font-bold text-emerald-700">${summ.totalQuestions} Soru</td>
           <td class="p-3 text-center font-bold text-indigo-700">${summ.denemeNet} Net</td>
           <td class="p-3 text-center"><span class="text-xs px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-800 font-bold border border-indigo-200">%${pct}</span></td>
@@ -3673,6 +3694,15 @@
       const res = await fetchStudentFromSupabase(STUDENT_NAME);
       if (res.success && res.data) {
         state = res.data;
+        if (state && state.weeksData) {
+          Object.values(state.weeksData).forEach(w => {
+            if (w && w.days) {
+              for (let d = 0; d < 7; d++) {
+                if (w.days[d]) ensureSixSubjects(w.days[d]);
+              }
+            }
+          });
+        }
         localStorage.setItem(getUserDataStorageKey(STUDENT_NAME), JSON.stringify(state));
         renderAll();
         updateSupabaseStatusBadge("connected", "Bulut: Canlı (Supabase)");
@@ -3685,6 +3715,15 @@
 
       setupSupabaseRealtime(STUDENT_NAME, (remoteState) => {
         state = remoteState;
+        if (state && state.weeksData) {
+          Object.values(state.weeksData).forEach(w => {
+            if (w && w.days) {
+              for (let d = 0; d < 7; d++) {
+                if (w.days[d]) ensureSixSubjects(w.days[d]);
+              }
+            }
+          });
+        }
         localStorage.setItem(getUserDataStorageKey(STUDENT_NAME), JSON.stringify(state));
         renderAll();
         playChimeSound('success');
