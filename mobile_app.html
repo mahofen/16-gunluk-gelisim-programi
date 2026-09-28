@@ -1135,8 +1135,9 @@
       const u = (document.getElementById("mAdminAuthUsername")?.value || "").trim();
       const p = (document.getElementById("mAdminAuthPassword")?.value || "").trim();
       const alertBox = document.getElementById("mAdminAuthAlert");
+      const creds = (typeof getAdminCredentials === "function") ? getAdminCredentials() : ADMIN_CREDENTIALS;
 
-      if (u === ADMIN_CREDENTIALS.username && p === ADMIN_CREDENTIALS.password) {
+      if (u === creds.username && p === creds.password) {
         sessionStorage.setItem("admin_authenticated", "true");
         closeMobileAdminAuthModal();
         playChime('done');

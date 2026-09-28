@@ -318,6 +318,213 @@ function updateSupabaseStatusBadge(status, customMsg) {
   });
 }
 
+const CENTRAL_STUDENTS_RECORD_NAME = "__central_registered_students__";
+const ADMIN_STORAGE_USER_KEY = "fen_admin_username";
+const ADMIN_STORAGE_PASS_KEY = "fen_admin_password";
+
+/**
+ * Yönetici kullanıcı adı ve şifresini yerel depolamadan getirir.
+ */
+function getAdminCredentials() {
+  return {
+    username: localStorage.getItem(ADMIN_STORAGE_USER_KEY) || "admin",
+    password: localStorage.getItem(ADMIN_STORAGE_PASS_KEY) || "admin123"
+  };
+}
+
+/**
+ * Yönetici kullanıcı adı ve şifresini günceller.
+ */
+function saveAdminCredentials(username, password) {
+  if (username && username.trim()) {
+    localStorage.setItem(ADMIN_STORAGE_USER_KEY, username.trim());
+  }
+  if (password && password.trim()) {
+    localStorage.setItem(ADMIN_STORAGE_PASS_KEY, password.trim());
+  }
+}
+
+/**
+ * Supabase Merkezi Havuz: Buluttaki kayıtlı öğrencileri ve şifrelerini çeker.
+ */
+async function fetchCentralStudentsFromSupabase() {
+  const cfg = getSupabaseConfig();
+  if (!cfg.url || !cfg.anonKey) return { success: false, error: "Supabase bağlı değil" };
+
+  // 1. JS Client ile dene
+  const client = getSupabaseClient();
+  if (client) {
+    try {
+      const { data, error } = await client
+        .from('student_records')
+        .select('student_name, state_data, updated_at')
+        .eq('student_name', CENTRAL_STUDENTS_RECORD_NAME)
+        .maybeSingle();
+
+      if (!error && data && data.state_data && Array.isArray(data.state_data.students)) {
+        return { success: true, students: data.state_data.students, updatedAt: data.updated_at };
+      }
+    } catch (e) {
+      console.warn("[Supabase] Central students fetch SDK hatası:", e);
+    }
+  }
+
+  // 2. REST API ile dene
+  try {
+    const encName = encodeURIComponent(CENTRAL_STUDENTS_RECORD_NAME);
+    const res = await fetch(`${cfg.url}/rest/v1/student_records?student_name=eq.${encName}&select=student_name,state_data,updated_at`, {
+      method: 'GET',
+      headers: {
+        'apikey': cfg.anonKey,
+        'Authorization': `Bearer ${cfg.anonKey}`
+      }
+    });
+    if (res.ok) {
+      const rows = await res.json();
+      if (rows && rows.length > 0 && rows[0].state_data && Array.isArray(rows[0].state_data.students)) {
+        return { success: true, students: rows[0].state_data.students, updatedAt: rows[0].updated_at };
+      }
+      return { success: true, notFound: true, students: [] };
+    }
+  } catch (err) {
+    console.warn("[Supabase] Central students fetch REST hatası:", err);
+  }
+
+  return { success: false, error: "Buluttan veri alınamadı" };
+}
+
+/**
+ * Supabase Merkezi Havuz: Kayıtlı öğrencilerin ve şifrelerinin listesini buluta kaydeder.
+ */
+async function saveCentralStudentsToSupabase(studentsList) {
+  const cfg = getSupabaseConfig();
+  if (!cfg.url || !cfg.anonKey || !Array.isArray(studentsList)) return { success: false };
+
+  // Her öğrencinin username ve password'e sahip olduğundan emin ol
+  const sanitizedList = studentsList.map(st => ({
+    id: st.id || ('std_' + (Date.now() + Math.random().toString(36).substr(2, 4))),
+    name: (st.name || '').trim(),
+    username: (st.username || st.name || '').trim(),
+    password: (st.password || '1234').trim(),
+    sube: st.sube || '7. Sınıf',
+    avatar: st.avatar || '🌟',
+    target: st.target || '',
+    title: st.title || `${st.sube || '7. Sınıf'} Öğrencisi`,
+    registeredAt: st.registeredAt || new Date().toLocaleDateString('tr-TR')
+  }));
+
+  const payload = {
+    student_name: CENTRAL_STUDENTS_RECORD_NAME,
+    state_data: {
+      students: sanitizedList,
+      version: 5,
+      updated_at: new Date().toISOString()
+    },
+    updated_at: new Date().toISOString()
+  };
+
+  // 1. JS Client ile dene
+  const client = getSupabaseClient();
+  if (client) {
+    try {
+      const { error } = await client
+        .from('student_records')
+        .upsert(payload, { onConflict: 'student_name' });
+      if (!error) return { success: true };
+    } catch(e) {}
+  }
+
+  // 2. REST API ile dene
+  try {
+    const res = await fetch(`${cfg.url}/rest/v1/student_records`, {
+      method: 'POST',
+      headers: {
+        'apikey': cfg.anonKey,
+        'Authorization': `Bearer ${cfg.anonKey}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify(payload)
+    });
+    return { success: (res.ok || res.status === 201 || res.status === 204) };
+  } catch(e) {
+    return { success: false, error: e.message };
+  }
+}
+
+/**
+ * Merkezi Havuzu Yerel ve Bulut Arasında Çift Yönlü Senkronize Eder.
+ */
+async function syncCentralStudentsWithCloud(localStudentsList = null) {
+  const STORAGE_KEY = "fen_deneme_registered_students_v5";
+  let localList = localStudentsList;
+  if (!Array.isArray(localList)) {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      localList = raw ? JSON.parse(raw) : [];
+    } catch(e) {
+      localList = [];
+    }
+  }
+
+  // Buluttan öğrencileri çek
+  const cloudRes = await fetchCentralStudentsFromSupabase();
+  if (cloudRes.success && Array.isArray(cloudRes.students)) {
+    const cloudStudents = cloudRes.students;
+    
+    // Birleştirme: Hem yerel hem buluttaki öğrencileri birleştir (username ve isme göre eşleştir)
+    const map = new Map();
+    // Önce buluttakileri ekle
+    cloudStudents.forEach(st => {
+      const key = (st.name || '').toLocaleLowerCase('tr-TR').trim();
+      if (key) {
+        if (!st.username) st.username = st.name;
+        if (!st.password) st.password = "1234";
+        map.set(key, st);
+      }
+    });
+
+    // Sonra yereldekileri ekle / güncelle
+    localList.forEach(st => {
+      const key = (st.name || '').toLocaleLowerCase('tr-TR').trim();
+      if (key) {
+        const existing = map.get(key);
+        if (existing) {
+          // Yerelde şifre veya kullanıcı adı güncellenmişse yerelinki öncelikli olsun
+          if (st.password && st.password !== "1234") existing.password = st.password;
+          if (st.username && st.username !== existing.name) existing.username = st.username;
+          if (st.sube) existing.sube = st.sube;
+          if (st.avatar) existing.avatar = st.avatar;
+          if (st.target) existing.target = st.target;
+        } else {
+          if (!st.username) st.username = st.name;
+          if (!st.password) st.password = "1234";
+          map.set(key, st);
+        }
+      }
+    });
+
+    const merged = Array.from(map.values());
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+    
+    // Eğer yerelde bulutta olmayan yeni öğrenciler varsa buluta geri gönder
+    if (merged.length > cloudStudents.length) {
+      saveCentralStudentsToSupabase(merged);
+    }
+
+    return merged;
+  } else {
+    // Buluta erişilemezse yereldeki her öğrenciye varsayılan şifre ve kullanıcı adı tanımla
+    const sanitized = (localList || []).map(st => ({
+      ...st,
+      username: st.username || st.name,
+      password: st.password || "1234"
+    }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+    return sanitized;
+  }
+}
+
 /**
  * Supabase SQL Kurulum Komutları
  */

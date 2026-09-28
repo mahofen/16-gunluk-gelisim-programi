@@ -808,6 +808,10 @@
           <i class="fa-solid fa-qrcode text-sm"></i>
           <span>📱 Karekod</span>
         </button>
+        <button onclick="switchAdminTab('users')" id="adminTabBtn-users" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0">
+          <i class="fa-solid fa-user-shield text-sm text-indigo-600"></i>
+          <span>👤 Hesap & Şifre Yönetimi</span>
+        </button>
       </div>
 
       <!-- Sekme İçerikleri (Scrollable Body) -->
@@ -1164,6 +1168,73 @@
             <p class="text-xs text-slate-600 leading-relaxed">
               Telefon veya tabletinizin kamerasını bu karekoda tutarak uygulamayı anında açabilir ve çalışmaya devam edebilirsiniz.
             </p>
+          </div>
+        </div>
+
+        <!-- SEKME 7: HESAPLAR & ŞİFRE YÖNETİMİ -->
+        <div id="adminTab-users" class="hidden space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Yönetici Bilgileri -->
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+              <div class="flex items-center gap-2 border-b pb-2">
+                <i class="fa-solid fa-lock text-indigo-600"></i>
+                <h4 class="font-fun text-sm font-bold text-slate-800">Yönetici Giriş Bilgileri</h4>
+              </div>
+              <div class="space-y-2 text-xs">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-0.5">Yönetici Kullanıcı Adı:</label>
+                  <input type="text" id="ogrenciAdminNewUser" class="w-full p-2 rounded-xl bg-slate-50 border text-xs font-semibold text-slate-800">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-0.5">Yeni Yönetici Şifresi:</label>
+                  <input type="password" id="ogrenciAdminNewPass" placeholder="Yeni şifre..." class="w-full p-2 rounded-xl bg-slate-50 border text-xs font-semibold text-slate-800">
+                </div>
+                <button type="button" onclick="handleOgrenciAdminChangeCreds()" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-fun font-bold text-xs shadow-xs cursor-pointer">
+                  Yönetici Bilgilerini Güncelle
+                </button>
+              </div>
+            </div>
+
+            <!-- Merkezi Havuz Özeti & Yönetici Paneline Git -->
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-900 to-slate-900 text-white shadow-xs space-y-3 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-amber-300 font-bold uppercase">Merkezi Havuz</span>
+                <h4 class="font-fun text-sm font-bold text-white mt-1">Gelişmiş Yönetici & Şifre Kontrolü</h4>
+                <p class="text-xs text-indigo-200 leading-relaxed mt-1">
+                  Tüm öğrencilerin şifrelerini görmek, düzenlemek, tek tıkla 1234'e sıfırlamak veya yeni öğrenci eklemek için tam donanımlı Yönetici Paneli'ni kullanabilirsiniz.
+                </p>
+              </div>
+              <a href="admin.html" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-fun font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+                <span>Tam Yönetici Paneline Git (admin.html)</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Öğrenci Şifre Listesi -->
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h4 class="font-fun text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <i class="fa-solid fa-users text-blue-600"></i>
+                <span>Kayıtlı Öğrenci Hesapları ve Hızlı Şifre Sıfırlama</span>
+              </h4>
+              <span class="text-[10px] text-slate-400">Merkezi Havuz (Supabase Eşitli)</span>
+            </div>
+            <div class="overflow-x-auto max-h-60 overflow-y-auto">
+              <table class="w-full text-xs text-left">
+                <thead>
+                  <tr class="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b">
+                    <th class="p-2">Öğrenci</th>
+                    <th class="p-2">Kullanıcı Adı</th>
+                    <th class="p-2">Şifre</th>
+                    <th class="p-2 text-right">Eylem</th>
+                  </tr>
+                </thead>
+                <tbody id="ogrenciAdminUsersTableBody" class="divide-y divide-slate-100 font-medium"></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -1781,8 +1852,9 @@
       const u = (document.getElementById("adminAuthUsername")?.value || "").trim();
       const p = (document.getElementById("adminAuthPassword")?.value || "").trim();
       const alertBox = document.getElementById("adminAuthAlert");
+      const creds = (typeof getAdminCredentials === "function") ? getAdminCredentials() : ADMIN_CREDENTIALS;
 
-      if (u === ADMIN_CREDENTIALS.username && p === ADMIN_CREDENTIALS.password) {
+      if (u === creds.username && p === creds.password) {
         sessionStorage.setItem("admin_authenticated", "true");
         closeAdminAuthModal();
         playChimeSound('success');
@@ -2552,7 +2624,7 @@
     }
 
     function switchAdminTab(tId) {
-      const tabs = ['students', 'aicoach', 'tools', 'supabase', 'reflections', 'qr'];
+      const tabs = ['students', 'aicoach', 'tools', 'supabase', 'reflections', 'qr', 'users'];
       tabs.forEach(tab => {
         const tabEl = document.getElementById(`adminTab-${tab}`);
         const tabBtn = document.getElementById(`adminTabBtn-${tab}`);
@@ -2571,6 +2643,83 @@
         initBulkResetOptions();
       } else if (tId === 'supabase') {
         testAndDisplaySupabaseConnection(false);
+      } else if (tId === 'users') {
+        renderOgrenciAdminUsersTab();
+      }
+    }
+
+    function renderOgrenciAdminUsersTab() {
+      const creds = (typeof getAdminCredentials === "function") ? getAdminCredentials() : ADMIN_CREDENTIALS;
+      const uInp = document.getElementById("ogrenciAdminNewUser");
+      if (uInp) uInp.value = creds.username;
+
+      const tbody = document.getElementById("ogrenciAdminUsersTableBody");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      let students = [];
+      try {
+        const raw = localStorage.getItem("fen_deneme_registered_students_v5");
+        if (raw) students = JSON.parse(raw);
+      } catch(e) {}
+
+      if (students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Kayıtlı öğrenci hesabı bulunmuyor.</td></tr>`;
+        return;
+      }
+
+      students.forEach(st => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50";
+        tr.innerHTML = `
+          <td class="p-2 font-bold text-slate-800">
+            <span class="mr-1">${st.avatar || '🌟'}</span>
+            <span>${st.name}</span>
+          </td>
+          <td class="p-2 font-mono text-indigo-700">${st.username || st.name}</td>
+          <td class="p-2 font-mono font-bold text-slate-700">${st.password || '1234'}</td>
+          <td class="p-2 text-right">
+            <button type="button" onclick="quickResetStudentPasswordFromOgrenci('${st.name.replace(/'/g, "\\'")}')" class="px-2 py-0.5 rounded bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 text-[10px] font-bold cursor-pointer">
+              Şifreyi 1234 Yap
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function handleOgrenciAdminChangeCreds() {
+      const u = (document.getElementById("ogrenciAdminNewUser")?.value || "").trim();
+      const p = (document.getElementById("ogrenciAdminNewPass")?.value || "").trim();
+      if (!u) { alert("Kullanıcı adı boş olamaz."); return; }
+      if (!p) { alert("Lütfen yeni bir şifre giriniz."); return; }
+
+      if (typeof saveAdminCredentials === "function") {
+        saveAdminCredentials(u, p);
+      } else {
+        localStorage.setItem("fen_admin_username", u);
+        localStorage.setItem("fen_admin_password", p);
+      }
+      alert(`Yönetici giriş bilgileri güncellendi! Yeni Kullanıcı Adı: ${u}`);
+      document.getElementById("ogrenciAdminNewPass").value = "";
+    }
+
+    function quickResetStudentPasswordFromOgrenci(name) {
+      if (!confirm(`"${name}" adlı öğrencinin şifresini "1234" yapmak istiyor musunuz?`)) return;
+      let students = [];
+      try {
+        const raw = localStorage.getItem("fen_deneme_registered_students_v5");
+        if (raw) students = JSON.parse(raw);
+      } catch(e) {}
+      const st = students.find(s => s.name.toLocaleLowerCase('tr-TR') === name.toLocaleLowerCase('tr-TR'));
+      if (st) {
+        st.password = "1234";
+        localStorage.setItem("fen_deneme_registered_students_v5", JSON.stringify(students));
+        if (typeof saveCentralStudentsToSupabase === "function") {
+          saveCentralStudentsToSupabase(students);
+        }
+        renderOgrenciAdminUsersTab();
+        alert(`"${name}" şifresi 1234 olarak sıfırlandı.`);
       }
     }
 
