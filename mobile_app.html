@@ -194,9 +194,9 @@
             <span class="text-[10px] font-bold uppercase tracking-wider text-purple-200">7. Sınıf Hafta Sonu Denemesi</span>
             <span class="text-xs font-fun font-bold text-yellow-300" id="mDenemeScoreBadge">0.00 Net</span>
           </div>
-          <h3 class="font-fun text-base font-bold">6 Branş (20'şer Soru / 120 Soru)</h3>
+          <h3 class="font-fun text-base font-bold">6 Branş (Toplam 90 Soru)</h3>
           <p class="text-[11px] text-purple-100">
-            Türkçe, Matematik, Fen, Sosyal Bilgiler, Din Kültürü ve İngilizce sınav sonuçlarını gir!
+            Türkçe, Mat, Fen (20 Soru) & Sosyal, Din, İngilizce (10 Soru) deneme sonuçlarını gir!
           </p>
         </div>
 
@@ -585,9 +585,9 @@
           { subject: "Türkçe", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
           { subject: "Matematik", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
           { subject: "Fen Bilimleri", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "Sosyal Bilgiler", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "Din Kültürü", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "İngilizce", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 }
+          { subject: "Sosyal Bilgiler", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 },
+          { subject: "Din Kültürü", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 },
+          { subject: "İngilizce", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 }
         ];
         state.weeksData[wNum] = { days: daysObj, deneme: { subjects: denemeSubs, note: "" }, weeklyReflection: "" };
       }
@@ -858,6 +858,13 @@
     function adjustMQ(idx, delta) { const wData = getOrCreateWeekData(state.selectedWeek); const c = parseInt(wData.days[state.selectedDayIndex].questions[idx].count) || 0; wData.days[state.selectedDayIndex].questions[idx].count = Math.max(0, c + delta); playChime('click'); saveState(); renderDayTasks(); renderDaysTabBar(); }
     function setMDailyRating(r) { const wData = getOrCreateWeekData(state.selectedWeek); wData.days[state.selectedDayIndex].rating = r; playChime('done'); saveState(); renderDayTasks(); }
 
+    function getSubjectMaxQuestions(subjectName) {
+      if (subjectName === "Sosyal Bilgiler" || subjectName === "Din Kültürü" || subjectName === "İngilizce") {
+        return 10;
+      }
+      return 20;
+    }
+
     function renderDenemeView() {
       const wData = getOrCreateWeekData(state.selectedWeek);
       const list = document.getElementById("mobileDenemeList");
@@ -865,22 +872,32 @@
       let grandNet = 0;
 
       (wData.deneme.subjects || []).forEach((s, idx) => {
+        const maxQ = getSubjectMaxQuestions(s.subject);
+        s.total = maxQ;
+        if ((s.correct || 0) + (s.incorrect || 0) > maxQ) {
+          s.correct = Math.min(maxQ, s.correct || 0);
+          s.incorrect = Math.min(maxQ - s.correct, s.incorrect || 0);
+        }
+        s.empty = Math.max(0, maxQ - ((s.correct || 0) + (s.incorrect || 0)));
+        const rawNet = (s.correct || 0) - ((s.incorrect || 0) / 3);
+        s.net = Math.max(0, parseFloat(rawNet.toFixed(2)));
+
         grandNet += (s.net || 0);
         const card = document.createElement("div");
         card.className = "p-3 rounded-2xl bg-white border space-y-2 shadow-card-sm";
         card.innerHTML = `
           <div class="flex items-center justify-between">
-            <span class="font-bold text-xs text-slate-800">${s.subject} (20 Soru)</span>
+            <span class="font-bold text-xs text-slate-800">${s.subject} (${maxQ} Soru)</span>
             <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg">${s.net.toFixed(2)} Net</span>
           </div>
           <div class="grid grid-cols-3 gap-2 text-center text-xs">
             <div class="bg-emerald-50 p-1.5 rounded-xl border border-emerald-200">
               <span class="text-[9px] font-bold text-emerald-800 block">D</span>
-              <input type="number" min="0" max="20" value="${s.correct}" onchange="updateMDeneme(${idx}, 'correct', this.value)" class="w-full text-center font-bold text-emerald-900 bg-transparent">
+              <input type="number" min="0" max="${maxQ}" value="${s.correct}" onchange="updateMDeneme(${idx}, 'correct', this.value)" class="w-full text-center font-bold text-emerald-900 bg-transparent">
             </div>
             <div class="bg-rose-50 p-1.5 rounded-xl border border-rose-200">
               <span class="text-[9px] font-bold text-rose-800 block">Y</span>
-              <input type="number" min="0" max="20" value="${s.incorrect}" onchange="updateMDeneme(${idx}, 'incorrect', this.value)" class="w-full text-center font-bold text-rose-900 bg-transparent">
+              <input type="number" min="0" max="${maxQ}" value="${s.incorrect}" onchange="updateMDeneme(${idx}, 'incorrect', this.value)" class="w-full text-center font-bold text-rose-900 bg-transparent">
             </div>
             <div class="bg-slate-50 p-1.5 rounded-xl border">
               <span class="text-[9px] font-bold text-slate-500 block">B</span>
@@ -891,22 +908,23 @@
         list.appendChild(card);
       });
 
-      document.getElementById("mDenemeScoreBadge").textContent = `${grandNet.toFixed(2)} Net`;
+      document.getElementById("mDenemeScoreBadge").textContent = `${grandNet.toFixed(2)} / 90 Net`;
       document.getElementById("mDenemeNote").value = wData.deneme.note || "";
     }
 
     function updateMDeneme(idx, type, val) {
       const wData = getOrCreateWeekData(state.selectedWeek);
       const s = wData.deneme.subjects[idx];
-      let num = Math.min(20, Math.max(0, parseInt(val) || 0));
+      const maxQ = getSubjectMaxQuestions(s.subject);
+      let num = Math.min(maxQ, Math.max(0, parseInt(val) || 0));
       if (type === 'correct') {
         s.correct = num;
-        if (s.correct + s.incorrect > 20) s.incorrect = 20 - s.correct;
+        if (s.correct + s.incorrect > maxQ) s.incorrect = maxQ - s.correct;
       } else {
         s.incorrect = num;
-        if (s.correct + s.incorrect > 20) s.correct = 20 - s.incorrect;
+        if (s.correct + s.incorrect > maxQ) s.correct = maxQ - s.incorrect;
       }
-      s.empty = Math.max(0, 20 - (s.correct + s.incorrect));
+      s.empty = Math.max(0, maxQ - (s.correct + s.incorrect));
       s.net = Math.max(0, parseFloat((s.correct - (s.incorrect / 3)).toFixed(2)));
       playChime('click');
       saveState();

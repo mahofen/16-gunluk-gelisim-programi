@@ -220,7 +220,7 @@
 
         <div class="p-2 rounded-xl bg-white/10 border border-white/10">
           <div class="text-[10px] text-sky-200 font-bold uppercase">Deneme Neti</div>
-          <div class="text-lg font-fun font-bold text-yellow-300 mt-0.5" id="bannerWeekDenemeScore">0 / 120</div>
+          <div class="text-lg font-fun font-bold text-yellow-300 mt-0.5" id="bannerWeekDenemeScore">0 / 90</div>
           <div class="text-[9px] text-sky-100">Hafta Sonu Sınavı</div>
         </div>
 
@@ -376,10 +376,10 @@
             <i class="fa-solid fa-file-signature text-indigo-600"></i> 7. SINIF HAFTA SONU GENEL DENEME SINAVI
           </div>
           <h3 class="font-fun text-2xl font-bold text-slate-800">
-            6 Temel Branştan 20'şer Soruluk Deneme Sınavı
+            Hafta Sonu 7. Sınıf Deneme Sınavı (Toplam 90 Soru)
           </h3>
           <p class="text-xs text-slate-500 mt-0.5">
-            Türkçe, Matematik, Fen Bilimleri, Sosyal Bilgiler, Din Kültürü ve İngilizce (20'şer Soru / Toplam 120 Soru).
+            Türkçe, Matematik, Fen Bilimleri (20'şer Soru) & Sosyal Bilgiler, Din Kültürü, İngilizce (10'ar Soru / Toplam 90 Soru).
           </p>
         </div>
 
@@ -388,7 +388,7 @@
           <div>
             <div class="text-[10px] text-purple-200 uppercase font-bold tracking-wider">Haftalık Deneme Skoru</div>
             <div class="text-2xl font-fun font-bold text-yellow-300" id="denemeTotalNetDisplay">0.00 Net</div>
-            <div class="text-[10px] text-purple-300">Toplam 120 Soru Üzerinden</div>
+            <div class="text-[10px] text-purple-300">Toplam 90 Soru Üzerinden</div>
           </div>
           <div class="text-right">
             <span class="text-xs px-2.5 py-1 rounded-xl bg-white/20 text-white font-bold" id="denemeSuccessRateBadge">%0 Başarı</span>
@@ -713,7 +713,7 @@
                   <th class="p-3">ÖĞRENCİ</th>
                   <th class="p-3 text-center">7. SINIF KONU</th>
                   <th class="p-3 text-center">ÇÖZÜLEN SORU</th>
-                  <th class="p-3 text-center">DENEME (120 S)</th>
+                  <th class="p-3 text-center">DENEME (90 S)</th>
                   <th class="p-3 text-center">BAŞARI</th>
                   <th class="p-3 text-right">KAREKOD & İNCELE</th>
                 </tr>
@@ -1000,9 +1000,9 @@
             { subject: "Türkçe", total: 20, correct: 18, incorrect: 2, empty: 0, net: 17.33 },
             { subject: "Matematik", total: 20, correct: 16, incorrect: 3, empty: 1, net: 15.00 },
             { subject: "Fen Bilimleri", total: 20, correct: 19, incorrect: 1, empty: 0, net: 18.67 },
-            { subject: "Sosyal Bilgiler", total: 20, correct: 19, incorrect: 1, empty: 0, net: 18.67 },
-            { unit: "", subject: "Din Kültürü", total: 20, correct: 20, incorrect: 0, empty: 0, net: 20.00 },
-            { subject: "İngilizce", total: 20, correct: 18, incorrect: 2, empty: 0, net: 17.33 }
+            { subject: "Sosyal Bilgiler", total: 10, correct: 9, incorrect: 1, empty: 0, net: 8.67 },
+            { subject: "Din Kültürü", total: 10, correct: 10, incorrect: 0, empty: 0, net: 10.00 },
+            { subject: "İngilizce", total: 10, correct: 9, incorrect: 1, empty: 0, net: 8.67 }
           ],
           note: "İlk denemem 7. sınıf konularında çok başarılıydı."
         };
@@ -1043,9 +1043,9 @@
           { subject: "Türkçe", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
           { subject: "Matematik", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
           { subject: "Fen Bilimleri", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "Sosyal Bilgiler", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "Din Kültürü", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 },
-          { subject: "İngilizce", total: 20, correct: 0, incorrect: 0, empty: 20, net: 0.00 }
+          { subject: "Sosyal Bilgiler", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 },
+          { subject: "Din Kültürü", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 },
+          { subject: "İngilizce", total: 10, correct: 0, incorrect: 0, empty: 10, net: 0.00 }
         ];
 
         state.weeksData[wNum] = {
@@ -1674,6 +1674,13 @@
        5. 7. SINIF HAFTA SONU DENEME SINAVI RENDER VE HESAPLAMA (20'ŞER SORU)
        ========================================================================= */
 
+    function getSubjectMaxQuestions(subjectName) {
+      if (subjectName === "Sosyal Bilgiler" || subjectName === "Din Kültürü" || subjectName === "İngilizce") {
+        return 10;
+      }
+      return 20;
+    }
+
     function renderDenemeGrid() {
       const wData = getOrCreateWeekData(state.selectedWeek);
       const deneme = wData.deneme || { subjects: [] };
@@ -1686,6 +1693,16 @@
       let grandTotalNet = 0;
 
       deneme.subjects.forEach((sub, idx) => {
+        const maxQ = getSubjectMaxQuestions(sub.subject);
+        sub.total = maxQ;
+        if ((sub.correct || 0) + (sub.incorrect || 0) > maxQ) {
+          sub.correct = Math.min(maxQ, sub.correct || 0);
+          sub.incorrect = Math.min(maxQ - sub.correct, sub.incorrect || 0);
+        }
+        sub.empty = Math.max(0, maxQ - ((sub.correct || 0) + (sub.incorrect || 0)));
+        const rawNet = (sub.correct || 0) - ((sub.incorrect || 0) / 3);
+        sub.net = Math.max(0, parseFloat(rawNet.toFixed(2)));
+
         totalCorrect += sub.correct || 0;
         totalIncorrect += sub.incorrect || 0;
         totalEmpty += sub.empty || 0;
@@ -1697,7 +1714,7 @@
         card.innerHTML = `
           <div class="flex items-center justify-between border-b pb-2">
             <h5 class="font-fun font-bold text-sm text-slate-800 flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> ${sub.subject} (20 Soru)
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> ${sub.subject} (${maxQ} Soru)
             </h5>
             <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200">
               ${sub.net.toFixed(2)} Net
@@ -1708,12 +1725,12 @@
             
             <div class="bg-white p-2 rounded-xl border border-emerald-200">
               <span class="text-[10px] font-bold text-emerald-700 block">Doğru (D)</span>
-              <input type="number" min="0" max="20" value="${sub.correct}" onchange="updateDenemeSubjectScore(${idx}, 'correct', this.value)" class="w-full text-center font-bold text-emerald-800 text-sm focus:outline-none">
+              <input type="number" min="0" max="${maxQ}" value="${sub.correct}" onchange="updateDenemeSubjectScore(${idx}, 'correct', this.value)" class="w-full text-center font-bold text-emerald-800 text-sm focus:outline-none">
             </div>
 
             <div class="bg-white p-2 rounded-xl border border-rose-200">
               <span class="text-[10px] font-bold text-rose-700 block">Yanlış (Y)</span>
-              <input type="number" min="0" max="20" value="${sub.incorrect}" onchange="updateDenemeSubjectScore(${idx}, 'incorrect', this.value)" class="w-full text-center font-bold text-rose-800 text-sm focus:outline-none">
+              <input type="number" min="0" max="${maxQ}" value="${sub.incorrect}" onchange="updateDenemeSubjectScore(${idx}, 'incorrect', this.value)" class="w-full text-center font-bold text-rose-800 text-sm focus:outline-none">
             </div>
 
             <div class="bg-white p-2 rounded-xl border border-slate-200">
@@ -1724,7 +1741,7 @@
           </div>
 
           <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-            <div class="bg-indigo-600 h-full rounded-full transition-all" style="width: ${Math.min(100, Math.max(0, (sub.net / 20) * 100))}%"></div>
+            <div class="bg-indigo-600 h-full rounded-full transition-all" style="width: ${Math.min(100, Math.max(0, (sub.net / maxQ) * 100))}%"></div>
           </div>
         `;
         grid.appendChild(card);
@@ -1732,10 +1749,10 @@
 
       document.getElementById("denemeTotalNetDisplay").textContent = `${grandTotalNet.toFixed(2)} Net`;
       document.getElementById("headerWeekDenemeNet").textContent = `${grandTotalNet.toFixed(2)} Net`;
-      document.getElementById("bannerWeekDenemeScore").textContent = `${grandTotalNet.toFixed(2)} / 120`;
+      document.getElementById("bannerWeekDenemeScore").textContent = `${grandTotalNet.toFixed(2)} / 90`;
       document.getElementById("denemeCorrectWrongRatio").textContent = `${totalCorrect} D / ${totalIncorrect} Y / ${totalEmpty} B`;
       
-      const successPct = Math.round((grandTotalNet / 120) * 100);
+      const successPct = Math.round((grandTotalNet / 90) * 100);
       document.getElementById("denemeSuccessRateBadge").textContent = `%${Math.max(0, successPct)} Başarı`;
 
       document.getElementById("denemeNoteInput").value = deneme.note || "";
@@ -1744,17 +1761,18 @@
     function updateDenemeSubjectScore(idx, type, val) {
       const wData = getOrCreateWeekData(state.selectedWeek);
       const sub = wData.deneme.subjects[idx];
-      let num = Math.min(20, Math.max(0, parseInt(val) || 0));
+      const maxQ = getSubjectMaxQuestions(sub.subject);
+      let num = Math.min(maxQ, Math.max(0, parseInt(val) || 0));
 
       if (type === 'correct') {
         sub.correct = num;
-        if (sub.correct + sub.incorrect > 20) sub.incorrect = 20 - sub.correct;
+        if (sub.correct + sub.incorrect > maxQ) sub.incorrect = maxQ - sub.correct;
       } else if (type === 'incorrect') {
         sub.incorrect = num;
-        if (sub.correct + sub.incorrect > 20) sub.correct = 20 - sub.incorrect;
+        if (sub.correct + sub.incorrect > maxQ) sub.correct = maxQ - sub.incorrect;
       }
 
-      sub.empty = Math.max(0, 20 - (sub.correct + sub.incorrect));
+      sub.empty = Math.max(0, maxQ - (sub.correct + sub.incorrect));
       const rawNet = sub.correct - (sub.incorrect / 3);
       sub.net = Math.max(0, parseFloat(rawNet.toFixed(2)));
       wData.deneme.conducted = true;
@@ -1985,18 +2003,18 @@
         <div class="p-3.5 rounded-2xl bg-purple-50 border border-purple-200">
           <div class="text-[10px] font-bold text-purple-600 uppercase">Hafta Sonu Denemesi</div>
           <div class="text-xl font-fun font-bold text-purple-950 mt-0.5">${summ.denemeNet} Net</div>
-          <div class="text-[10px] text-purple-500 font-medium">120 Soru Üzerinden</div>
+          <div class="text-[10px] text-purple-500 font-medium">90 Soru Üzerinden</div>
         </div>
         <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
           <div class="text-[10px] font-bold text-amber-600 uppercase">Genel Başarı Oranı</div>
-          <div class="text-xl font-fun font-bold text-amber-950 mt-0.5">%${Math.min(100, Math.round((summ.denemeNet / 120) * 100))}</div>
+          <div class="text-xl font-fun font-bold text-amber-950 mt-0.5">%${Math.min(100, Math.round((summ.denemeNet / 90) * 100))}</div>
           <div class="text-[10px] text-amber-600 font-medium">Deneme Başarısı</div>
         </div>
       `;
 
       const tbody = document.getElementById("adminStudentsTableBody");
       tbody.innerHTML = "";
-      const pct = Math.min(100, Math.round((summ.denemeNet / 120) * 100));
+      const pct = Math.min(100, Math.round((summ.denemeNet / 90) * 100));
       const tr = document.createElement("tr");
       tr.className = "hover:bg-slate-50 transition-colors";
 
