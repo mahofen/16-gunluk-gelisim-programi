@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛡️ Yönetici Kontrol Merkezi - 7. Sınıf Gelişim Portalı</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Font Awesome Simgeleri -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts: Inter & Fredoka -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Chart.js Grafikler -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Supabase JS Client & Yerel Senkronizasyon Scripti -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_client.js"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-fun { font-family: 'Fredoka', cursive; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- ================= 1. YÖNETİCİ ŞİFRELİ GİRİŞ EKRANI ================= -->
+  <div id="adminLoginScreen" class="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-slate-100 space-y-6 text-center">
+      
+      <div class="w-16 h-16 rounded-3xl bg-gradient-to-tr from-indigo-600 via-blue-600 to-indigo-700 text-white flex items-center justify-center text-3xl mx-auto shadow-xl shadow-indigo-500/30">
+        <i class="fa-solid fa-shield-halved text-amber-300"></i>
+      </div>
+
+      <div>
+        <span class="text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full border border-indigo-200">
+          7. Sınıf Gelişim Portalı
+        </span>
+        <h2 class="font-fun text-2xl font-bold text-slate-900 mt-2">Yönetici Kontrol Merkezi</h2>
+        <p class="text-xs text-slate-500 mt-1">Öğrenci karnelerini, yapay zeka analizlerini ve bulut ayarlarını yönetmek için giriş yapınız.</p>
+      </div>
+
+      <div id="adminLoginAlert" class="hidden p-3 rounded-2xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700 text-left"></div>
+
+      <form onsubmit="event.preventDefault(); handleAdminLoginSubmit();" class="space-y-3.5 text-left">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kullanıcı Adı:</label>
+          <div class="relative">
+            <i class="fa-solid fa-user-shield absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input type="text" id="adminInputUser" value="admin" required class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:bg-white focus:border-indigo-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Yönetici Şifresi:</label>
+          <div class="relative">
+            <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input type="password" id="adminInputPass" placeholder="Şifrenizi girin..." required class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:bg-white focus:border-indigo-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-center font-mono">
+          Varsayılan Giriş: <strong>admin</strong> / <strong>admin123</strong>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-700 hover:to-blue-700 text-white font-fun font-bold text-sm shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-lock-open"></i>
+          <span>Yönetici Paneline Giriş Yap</span>
+        </button>
+      </form>
+
+      <div class="pt-4 border-t border-slate-100 flex items-center justify-center gap-4 text-xs">
+        <a href="index.html" class="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1.5 transition-colors">
+          <i class="fa-solid fa-house"></i> Giriş Portalı'na Dön
+        </a>
+        <span class="text-slate-300">•</span>
+        <a href="ogrenci.html" class="text-slate-500 hover:text-slate-800 font-semibold transition-colors">
+          Öğrenci Sayfası
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 2. YÖNETİCİ KONTROL PANELİ ANA EKRANI ================= -->
+  <div id="adminMainScreen" class="hidden flex-col min-h-screen">
+    
+    <!-- Üst Yönetici Başlık Çubuğu -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col md:flex-row items-center justify-between gap-3">
+        
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 via-blue-600 to-indigo-700 text-white flex items-center justify-center text-xl shadow-md">
+            <i class="fa-solid fa-shield-halved text-amber-300"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-fun text-lg font-bold text-slate-800">Yönetici & Kontrol Merkezi</h1>
+              <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold border border-emerald-200 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> admin
+              </span>
+            </div>
+            <p class="text-xs text-slate-500">Haftalık karne, yapay zeka dijital koç, veri yedekleme ve bulut kontrolü</p>
+          </div>
+        </div>
+
+        <!-- Üst Sağ Hızlı Eylemler -->
+        <div class="flex items-center flex-wrap gap-2">
+          
+          <!-- Hafta Seçici Dropdown -->
+          <div class="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-xl">
+            <i class="fa-solid fa-calendar-week text-indigo-600 text-xs"></i>
+            <select id="adminWeekSelector" onchange="changeAdminWeek(parseInt(this.value))" class="bg-transparent text-indigo-950 text-xs font-bold focus:outline-none cursor-pointer"></select>
+          </div>
+
+          <!-- Karnesini Yazdır -->
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold border border-purple-200 flex items-center gap-1.5 shadow-xs cursor-pointer" title="Raporu Yazdır / PDF">
+            <i class="fa-solid fa-print"></i>
+            <span class="hidden sm:inline">Karnesini Yazdır</span>
+          </button>
+
+          <!-- Öğrenci Sayfasına Git -->
+          <a href="ogrenci.html" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer" title="Öğrenci Takip Sayfasına Git">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Öğrenci Sayfası</span>
+          </a>
+
+          <!-- Giriş Portalı Linki -->
+          <a href="index.html" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition-colors" title="Giriş Portalı">
+            <i class="fa-solid fa-house"></i>
+          </a>
+
+          <!-- Oturumu Kapat -->
+          <button onclick="handleAdminLogout()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200 flex items-center gap-1.5 shadow-xs cursor-pointer" title="Yönetici Oturumunu Kapat">
+            <i class="fa-solid fa-lock"></i>
+            <span>Çıkış</span>
+          </button>
+
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Navigasyon Sekmeleri (Dashboard Tabs) -->
+    <div class="bg-white border-b border-slate-200 px-4 sm:px-6 no-print">
+      <div class="max-w-7xl mx-auto flex gap-2 sm:gap-6 text-xs font-bold overflow-x-auto no-scrollbar pt-3">
+        <button onclick="switchAdminTab('students')" id="adminTabBtn-students" class="pb-3 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5 font-bold transition-colors shrink-0 cursor-pointer">
+          <i class="fa-solid fa-chart-pie text-sm"></i>
+          <span>📊 Haftalık Karne & Öğrenci Listesi</span>
+        </button>
+        <button onclick="switchAdminTab('aicoach')" id="adminTabBtn-aicoach" class="pb-3 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer">
+          <i class="fa-solid fa-robot text-sm text-purple-600"></i>
+          <span>🤖 Yapay Zeka Dijital Koç & Tahmin</span>
+          <span class="text-[9px] bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">LGS Projeksiyon</span>
+        </button>
+        <button onclick="switchAdminTab('tools')" id="adminTabBtn-tools" class="pb-3 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer">
+          <i class="fa-solid fa-database text-sm"></i>
+          <span>💾 Yedekleme & Toplu Sıfırlama</span>
+        </button>
+        <button onclick="switchAdminTab('supabase')" id="adminTabBtn-supabase" class="pb-3 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer">
+          <i class="fa-solid fa-cloud text-sm"></i>
+          <span>☁️ Supabase Bulut</span>
+          <span class="w-2 h-2 rounded-full bg-slate-300 inline-block supabase-status-dot ml-0.5"></span>
+        </button>
+        <button onclick="switchAdminTab('qr')" id="adminTabBtn-qr" class="pb-3 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer">
+          <i class="fa-solid fa-qrcode text-sm"></i>
+          <span>📱 Karekod Üretici</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= ANA İÇERİK ALANI ================= -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+      <!-- ================= SEKME 1: HAFTALIK KARNE & TÜM ÖĞRENCİLER ================= -->
+      <section id="adminTab-students" class="space-y-6">
+        
+        <!-- Üst 4 Temel Metrik Kartı -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" id="adminMetricsCards"></div>
+
+        <!-- Aktif İncelenen Öğrenci Bilgi Şeridi -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <span class="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-xl" id="adminActiveAvatar">🌟</span>
+            <div>
+              <div class="text-[10px] text-sky-200 font-bold uppercase tracking-wider">İncelenen Öğrenci Profili</div>
+              <h3 class="font-fun text-lg font-bold text-white" id="adminActiveStudentName">Arif Said İlkbahar</h3>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-sky-200">Farklı öğrenci seç:</span>
+            <select id="adminStudentSelector" onchange="selectStudentToInspect(this.value)" class="px-3 py-1.5 rounded-xl bg-white/15 border border-white/20 text-white text-xs font-bold focus:outline-none cursor-pointer"></select>
+          </div>
+        </div>
+
+        <!-- Tüm Kayıtlı Öğrenciler Tablosu -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b pb-3">
+            <div>
+              <h3 class="font-fun text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-users text-blue-600"></i>
+                <span>Tüm Kayıtlı Öğrencilerin Haftalık Gelişim Tablosu</span>
+              </h3>
+              <p class="text-xs text-slate-500">Seçili haftadaki konu tamamlanma, soru sayısı ve 90 soruluk deneme sınavı netleri</p>
+            </div>
+            <a href="index.html" class="px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200 hover:bg-blue-100 flex items-center gap-1.5 transition-colors">
+              <i class="fa-solid fa-user-plus text-xs"></i> Yeni Öğrenci Ekle
+            </a>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+              <thead>
+                <tr class="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-200">
+                  <th class="p-3">Öğrenci Bilgisi</th>
+                  <th class="p-3 text-center">Tamamlanan Konu (Hafta)</th>
+                  <th class="p-3 text-center">Çözülen Soru</th>
+                  <th class="p-3 text-center">Deneme Neti (90 Soru)</th>
+                  <th class="p-3 text-center">Başarı Oranı</th>
+                  <th class="p-3 text-right">Yönetim & Eylemler</th>
+                </tr>
+              </thead>
+              <tbody id="adminStudentsTableBody" class="divide-y divide-slate-100 font-medium"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Haftalık Yansıma Notu Alanı -->
+        <div id="adminReflectionsContainer"></div>
+
+      </section>
+
+      <!-- ================= SEKME 2: YAPAY ZEKA DİJİTAL KOÇ & TAHMİN ================= -->
+      <section id="adminTab-aicoach" class="hidden space-y-6">
+        
+        <!-- Üst Bilgi Banner'ı -->
+        <div class="p-5 rounded-3xl bg-gradient-to-r from-purple-800 via-indigo-800 to-blue-800 text-white shadow-md flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full text-xs font-bold text-amber-300 border border-white/10">
+              <i class="fa-solid fa-robot"></i> Pedagojik Yapay Zeka Koçluk & LGS 2027 Projeksiyonu
+            </div>
+            <h3 class="font-fun text-xl font-bold text-white">
+              <span id="aiCoachActiveStudent">Arif Said İlkbahar</span> İçin Gelişim & Gelecek Tahmini
+            </h3>
+            <p class="text-xs text-purple-100 leading-relaxed max-w-2xl">
+              Haftalık soru sayıları ve deneme netleri pedagojik olarak taranarak dönem sonu ve LGS 2027 başarı projeksiyonu hesaplanmaktadır.
+            </p>
+          </div>
+          <button onclick="renderAiCoachAnalysis(adminActiveWeek)" class="px-4 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-fun font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer shrink-0">
+            <i class="fa-solid fa-rotate"></i> Analizi Yenile
+          </button>
+        </div>
+
+        <!-- 3 Sütunlu AI Analiz ve Tahmin Kartları -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5" id="aiCoachCardsContainer"></div>
+
+        <!-- 2 İnteraktif Grafik: Net Projeksiyonu & Ders Radarı -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-chart-line text-blue-600"></i>
+                <span>40 Haftalık Net Gelişimi & LGS Projeksiyonu</span>
+              </h4>
+              <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-md">90 Soru Üzerinden</span>
+            </div>
+            <div class="h-64 relative">
+              <canvas id="aiNetForecastChart"></canvas>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-purple-600"></i>
+                <span>6 Temel Branş Başarı Radarı</span>
+              </h4>
+              <span class="text-[10px] text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-md">% Başarı</span>
+            </div>
+            <div class="h-64 relative">
+              <canvas id="aiSubjectRadarChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- LGS Başarı Termometresi ve Müfredat İlerleme Çubukları -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3 text-center flex flex-col justify-between">
+            <div>
+              <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-temperature-full text-rose-500"></i>
+                <span>LGS Hedef Termometresi</span>
+              </h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Öğrencinin potansiyel LGS 2027 başarı dilimi</p>
+            </div>
+            <div class="my-3 space-y-2">
+              <div class="text-4xl font-fun font-bold text-indigo-900" id="aiGaugePercent">-%</div>
+              <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                <div id="aiGaugeBar" class="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-amber-500 transition-all duration-700" style="width: 0%;"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-400 font-bold">
+                <span>%0 Başlangıç</span>
+                <span>%50 Gelişme</span>
+                <span>%100 Hedef LGS</span>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-200 italic" id="aiGaugeNote">
+              Veriler hesaplanıyor...
+            </p>
+          </div>
+
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3 lg:col-span-2">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-bars-progress text-emerald-600"></i>
+                <span>7. Sınıf Branş Müfredatını Tamamlama Durumu</span>
+              </h4>
+              <span class="text-[10px] text-slate-400">MEB 7. Sınıf Kazanımları</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="aiSubjectCurriculumBars"></div>
+          </div>
+        </div>
+
+        <!-- Öncelikli Çalışılması Gereken Konu Önerileri -->
+        <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-bullseye text-amber-500"></i>
+              <span>Yapay Zeka Destekli Öncelikli Konu Tavsiyeleri</span>
+            </h4>
+            <span class="text-[10px] text-slate-400">Net artışı sağlayacak öncelikli konular</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="aiPriorityTopicsList"></div>
+        </div>
+
+      </section>
+
+      <!-- ================= SEKME 3: YEDEKLEME & TOPLU SIFIRLAMA ================= -->
+      <section id="adminTab-tools" class="hidden space-y-6">
+        
+        <!-- Toplu Hafta Sıfırlama Sihirbazı -->
+        <div class="p-5 rounded-3xl bg-amber-50/70 border border-amber-200 shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b border-amber-200/80 pb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs">
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+              <div>
+                <h4 class="font-fun text-sm font-bold text-amber-950">Toplu Hafta Sıfırlama Sihirbazı</h4>
+                <p class="text-xs text-amber-700">Seçili öğrenci için soru sayılarını, konu çalışmalarını veya deneme sonuçlarını topluca sıfırlayın.</p>
+              </div>
+            </div>
+            <span class="text-[10px] bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded-md font-bold">Hızlı Temizlik</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Sıfırlama Kapsamı:</label>
+              <select id="bulkResetScope" class="w-full p-2.5 rounded-xl bg-white border border-slate-300 font-semibold focus:outline-none">
+                <option value="current">Sadece Seçili Hafta</option>
+                <option value="range">Belirli Hafta Aralığı (Örn: 1-4. Haftalar)</option>
+                <option value="all">Tüm 40 Hafta</option>
+              </select>
+            </div>
+            <div id="bulkResetRangeContainer" class="hidden flex items-center gap-2">
+              <div class="flex-1">
+                <label class="block font-bold text-slate-700 mb-1">Başlangıç:</label>
+                <select id="bulkResetStartWeek" class="w-full p-2 rounded-xl bg-white border text-xs"></select>
+              </div>
+              <div class="flex-1">
+                <label class="block font-bold text-slate-700 mb-1">Bitiş:</label>
+                <select id="bulkResetEndWeek" class="w-full p-2 rounded-xl bg-white border text-xs"></select>
+              </div>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Sıfırlanacak Veri Türleri:</label>
+              <div class="space-y-1 bg-white p-2.5 rounded-xl border border-slate-200">
+                <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
+                  <input type="checkbox" id="bulkResetOptQuestions" checked class="rounded text-blue-600">
+                  <span>Günlük Soru Sayıları</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
+                  <input type="checkbox" id="bulkResetOptTopics" checked class="rounded text-blue-600">
+                  <span>Tamamlanan Konu Durumları (Tikler)</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
+                  <input type="checkbox" id="bulkResetOptDeneme" checked class="rounded text-blue-600">
+                  <span>Hafta Sonu Deneme Netleri</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
+                  <input type="checkbox" id="bulkResetOptNotes" class="rounded text-blue-600">
+                  <span>Haftalık Değerlendirme & Yansıma Notu</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button onclick="executeBulkReset()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-700 hover:to-rose-700 text-white font-fun font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>Seçili Kapsamı Sıfırla</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- JSON Yedekleme & Geri Yükleme Kartları -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3">
+            <div class="flex items-center gap-2 text-blue-600">
+              <i class="fa-solid fa-download text-lg"></i>
+              <h4 class="font-fun text-sm font-bold text-slate-800">JSON Veri Yedekleme</h4>
+            </div>
+            <p class="text-xs text-slate-500">Seçili öğrencinin 40 haftalık tüm soru, konu ve deneme verilerini bilgisayarınıza JSON dosyası olarak kaydedin.</p>
+            <button onclick="exportAllClassData()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-file-arrow-down"></i> Yedeği İndir (.json)
+            </button>
+          </div>
+
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3">
+            <div class="flex items-center gap-2 text-emerald-600">
+              <i class="fa-solid fa-upload text-lg"></i>
+              <h4 class="font-fun text-sm font-bold text-slate-800">JSON Veri Geri Yükleme</h4>
+            </div>
+            <p class="text-xs text-slate-500">Daha önce indirdiğiniz JSON yedek dosyasını sisteme yükleyerek kaldığınız yerden devam edin.</p>
+            <label class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-file-arrow-up"></i> Yedek Dosyası Seç
+              <input type="file" accept=".json" onchange="importClassDataFromFile(event)" class="hidden">
+            </label>
+          </div>
+
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-3">
+            <div class="flex items-center gap-2 text-rose-600">
+              <i class="fa-solid fa-trash-can text-lg"></i>
+              <h4 class="font-fun text-sm font-bold text-slate-800">Tüm Verileri Temizle</h4>
+            </div>
+            <p class="text-xs text-slate-500">Seçili öğrencinin tüm çalışma geçmişini sıfırlayarak 1. haftanın başlangıç temiz şablonuna döner.</p>
+            <button onclick="resetAllDataToDefaults()" class="w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-circle-exclamation"></i> Tüm Verileri Sıfırla
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= SEKME 4: SUPABASE BULUT ================= -->
+      <section id="adminTab-supabase" class="hidden space-y-6">
+        
+        <div class="p-5 rounded-3xl bg-gradient-to-r from-emerald-800 to-teal-900 text-white shadow-md flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full text-emerald-200 border border-white/10">
+              PostgreSQL Canlı Veritabanı
+            </span>
+            <h3 class="font-fun text-xl font-bold">Supabase Bulut Senkronizasyonu</h3>
+            <p class="text-xs text-emerald-100 max-w-xl">
+              Öğrenci verileri tarayıcı hafızasının yanı sıra bulutta güvenle saklanır; evde, okulda veya telefonda anında eşitlenir.
+            </p>
+          </div>
+          <div class="text-right">
+            <span id="adminSupabaseStatusBadge" class="px-3 py-1.5 rounded-xl bg-white/20 text-white text-xs font-bold border border-white/20 inline-flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Bağlı
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+            <h4 class="font-fun text-sm font-bold text-slate-800 border-b pb-2">Supabase Bağlantı Ayarları</h4>
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Project URL:</label>
+                <input type="text" id="adminSupabaseUrlInput" class="w-full p-2.5 rounded-xl bg-slate-50 border font-mono text-xs focus:bg-white focus:outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Anon Public Key:</label>
+                <textarea id="adminSupabaseKeyInput" rows="3" class="w-full p-2.5 rounded-xl bg-slate-50 border font-mono text-xs focus:bg-white focus:outline-none"></textarea>
+              </div>
+              <div class="flex items-center gap-2 pt-1">
+                <button onclick="saveAdminSupabaseSettings()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold cursor-pointer">
+                  Ayarları Kaydet
+                </button>
+                <button onclick="testAdminSupabaseConnection()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold cursor-pointer">
+                  Bağlantıyı Sına
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+            <h4 class="font-fun text-sm font-bold text-slate-800 border-b pb-2">Manuel Senkronizasyon & SQL Tablosu</h4>
+            <div class="space-y-3 text-xs">
+              <div class="flex items-center gap-2">
+                <button onclick="handleAdminManualUpload()" class="flex-1 py-2.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 font-bold hover:bg-blue-100 cursor-pointer">
+                  <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Buluta Yükle
+                </button>
+                <button onclick="handleAdminManualDownload()" class="flex-1 py-2.5 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 font-bold hover:bg-purple-100 cursor-pointer">
+                  <i class="fa-solid fa-cloud-arrow-down mr-1"></i> Buluttan İndir
+                </button>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Gerekli SQL Tablo Şeması:</label>
+                <pre class="bg-slate-900 text-emerald-300 p-3 rounded-xl text-[11px] font-mono overflow-x-auto max-h-36" id="adminSqlSnippet"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= SEKME 5: KAREKOD ================= -->
+      <section id="adminTab-qr" class="hidden space-y-6">
+        <div class="max-w-md mx-auto p-6 rounded-3xl bg-white border border-slate-200 shadow-sm text-center space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center text-xl mx-auto">
+            <i class="fa-solid fa-qrcode"></i>
+          </div>
+          <div>
+            <h3 class="font-fun text-base font-bold text-slate-900">Öğrenci Giriş Karekodu</h3>
+            <p class="text-xs text-slate-500 mt-1">Öğrenci bu karekodu telefon kamerasıyla taratarak kendi kişisel sayfasına anında giriş yapabilir.</p>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 inline-block mx-auto" id="adminQrDisplayContainer"></div>
+
+          <div class="text-xs text-slate-600 font-mono bg-indigo-50/50 p-2.5 rounded-xl border border-indigo-100" id="adminQrTargetStudentText">
+            Arif Said İlkbahar
+          </div>
+
+          <button onclick="window.print()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-print"></i> Karekod Kartını Yazdır
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-12 no-print">
+      <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span class="font-fun font-bold text-indigo-600">7. SINIF GELİŞİM TAKİP SİSTEMİ • YÖNETİCİ MERKEZİ</span>
+        <span>2026-2027 Eğitim Öğretim Yılı</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ================= JAVASCRIPT KONTROL MOTORU ================= -->
+  <script>
+    /* =========================================================================
+       1. SABİTLER, MÜFREDAT VE 40 HAFTA GENERATORU
+       ========================================================================= */
+    const GRADE7_SUBJECTS = ["Matematik", "Fen Bilimleri", "Türkçe", "Sosyal Bilgiler", "Din Kültürü", "İngilizce"];
+    const REGISTERED_STUDENTS_KEY = "fen_deneme_registered_students_v5";
+    const CURRENT_STUDENT_KEY = "fen_deneme_current_student_v5";
+
+    const DEFAULT_STUDENTS_LIST = [
+      { name: "Arif Said İlkbahar", avatar: "🌟", title: "7. Sınıf Öğrencisi" }
+    ];
+
+    const GRADE7_CURRICULUM = {
+      "Matematik": [
+        { unit: "1. Ünite: Tam Sayılar", topic: "Tam Sayılarla Toplama ve Çıkarma İşlemleri" },
+        { unit: "1. Ünite: Tam Sayılar", topic: "Tam Sayılarla Çarpma ve Bölme İşlemleri" },
+        { unit: "1. Ünite: Tam Sayılar", topic: "Tam Sayıların Kendisi ile Tekrarlı Çarpımı (Üslü Nicelikler)" },
+        { unit: "1. Ünite: Tam Sayılar", topic: "Tam Sayılarla İlgili Problem Çözme" },
+        { unit: "2. Ünite: Rasyonel Sayılar", topic: "Rasyonel Sayıları Tanıma ve Sayı Doğrusunda Gösterme" },
+        { unit: "2. Ünite: Rasyonel Sayılar", topic: "Rasyonel Sayıların Ondalık Gösterimi ve Devirli Ondalıklar" },
+        { unit: "2. Ünite: Rasyonel Sayılar", topic: "Rasyonel Sayıları Karşılaştırma ve Sıralama" },
+        { unit: "2. Ünite: Rasyonel Sayılar", topic: "Rasyonel Sayılarla Dört İşlem" },
+        { unit: "2. Ünite: Rasyonel Sayılar", topic: "Rasyonel Sayıların Kare ve Küpleri" },
+        { unit: "2. Ünite: Rasyonel Sayılar", topic: "Rasyonel Sayılarla Çok Adımlı İşlemler ve Problemler" },
+        { unit: "3. Ünite: Cebirsel İfadeler", topic: "Cebirsel İfadelerle Toplama ve Çıkarma İşlemleri" },
+        { unit: "3. Ünite: Cebirsel İfadeler", topic: "Bir Doğal Sayı ile Cebirsel İfadeyi Çarpma" },
+        { unit: "3. Ünite: Cebirsel İfadeler", topic: "Sayı Örüntülerinin Kuralını Bulma ve Genel Terim" },
+        { unit: "3. Ünite: Eşitlik ve Denklem", topic: "Eşitliğin Korunumu İlkesi" },
+        { unit: "3. Ünite: Eşitlik ve Denklem", topic: "Birinci Dereceden Bir Bilinmeyenli Denklemleri Çözme" },
+        { unit: "3. Ünite: Eşitlik ve Denklem", topic: "Birinci Dereceden Bir Bilinmeyenli Denklem Kurma Problemleri" },
+        { unit: "4. Ünite: Oran ve Orantı", topic: "Oranda Çokluklardan Biri 1 Olduğunda Diğerini Bulma" },
+        { unit: "4. Ünite: Oran ve Orantı", topic: "Doğru Orantı ve Ters Orantı Kavramları" },
+        { unit: "4. Ünite: Oran ve Orantı", topic: "Orantı Problemleri ve Ölçek Hesaplamaları" },
+        { unit: "4. Ünite: Yüzdeler", topic: "Bir Çokluğun Belirtilen Yüzdesini ve Yüzdesi Verilen Çokluğu Bulma" },
+        { unit: "4. Ünite: Yüzdeler", topic: "Bir Çokluğu Diğerinin Yüzdesi Olarak Hesaplama" },
+        { unit: "4. Ünite: Yüzdeler", topic: "Yüzde ile Artırma, Azaltma ve Yüzde Problemleri" },
+        { unit: "5. Ünite: Doğrular ve Açılar", topic: "Bir Açının Açıortayı" },
+        { unit: "5. Ünite: Doğrular ve Açılar", topic: "İki Paralel Doğruyla Bir Kesenin Oluşturduğu Açılar" },
+        { unit: "5. Ünite: Çokgenler", topic: "Düzgün Çokgenlerin İç ve Dış Açıları" },
+        { unit: "5. Ünite: Çokgenler", topic: "Özel Dörtgenler (Yamuk, Paralelkenar, Eşkenar Dörtgen)" },
+        { unit: "5. Ünite: Çokgenler", topic: "Eşkenar Dörtgen ve Yamuğun Alan Bağıntıları" },
+        { unit: "5. Ünite: Çokgenler", topic: "Çevre ve Alan İlişkisi, Çokgen Problemleri" },
+        { unit: "5. Ünite: Çember ve Daire", topic: "Çemberde Merkez Açı ve Gördüğü Yay" },
+        { unit: "5. Ünite: Çember ve Daire", topic: "Çemberin ve Çember Parçasının Uzunluğu" },
+        { unit: "5. Ünite: Çember ve Daire", topic: "Dairenin ve Daire Diliminin Alanı" },
+        { unit: "6. Ünite: Veri Analizi", topic: "Çizgi Grafiği Oluşturma ve Yorumlama" },
+        { unit: "6. Ünite: Veri Analizi", topic: "Aritmetik Ortalama, Ortanca (Medyan) ve Tepe Değer (Mod)" },
+        { unit: "6. Ünite: Veri Analizi", topic: "Daire Grafiği Oluşturma ve Yorumlama" },
+        { unit: "6. Ünite: Veri Analizi", topic: "Verilere Uygun Grafik Türünü Seçme ve Karşılaştırma" }
+      ],
+      "Fen Bilimleri": [
+        { unit: "1. Ünite: Güneş Sistemi ve Ötesi", topic: "Uzay Araştırmaları (Roketler, Uydular, Teleskoplar, Uzay Kirliliği)" },
+        { unit: "1. Ünite: Güneş Sistemi ve Ötesi", topic: "Güneş Sistemi Ötesi Gök Cisimleri (Yıldızlar, Bulutsu, Galaksiler, Kara Delikler)" },
+        { unit: "2. Ünite: Hücre ve Bölünmeler", topic: "Hücrenin Temel Kısımları ve Organeller" },
+        { unit: "2. Ünite: Hücre ve Bölünmeler", topic: "Bitki ve Hayvan Hücreleri Arasındaki Farklar" },
+        { unit: "2. Ünite: Hücre ve Bölünmeler", topic: "Hücre-Doku-Organ-Sistem-Organizma İlişkisi" },
+        { unit: "2. Ünite: Hücre ve Bölünmeler", topic: "Mitoz Bölünme ve Evreleri" },
+        { unit: "2. Ünite: Hücre ve Bölünmeler", topic: "Mayoz Bölünme ve Üremedeki Önemi" },
+        { unit: "3. Ünite: Kuvvet ve Enerji", topic: "Kütle ve Ağırlık İlişkisi, Yer Çekimi" },
+        { unit: "3. Ünite: Kuvvet ve Enerji", topic: "Kuvvet, İş ve Enerji İlişkisi" },
+        { unit: "3. Ünite: Kuvvet ve Enerji", topic: "Kinetik Enerji ve Potansiyel Enerji Türleri" },
+        { unit: "3. Ünite: Kuvvet ve Enerji", topic: "Enerjinin Korunumu ve Dönüşümü (Sürtünme Kuvveti)" },
+        { unit: "4. Ünite: Saf Madde ve Karışımlar", topic: "Maddenin Tanecikli Yapısı (Atom, Molekül)" },
+        { unit: "4. Ünite: Saf Madde ve Karışımlar", topic: "Saf Maddeler: Elementler, Bileşikler ve Formülleri" },
+        { unit: "4. Ünite: Saf Madde ve Karışımlar", topic: "Karışımlar (Homojen ve Heterojen Karışımlar)" },
+        { unit: "4. Ünite: Saf Madde ve Karışımlar", topic: "Çözünme Olayı ve Çözünme Hızını Etkileyen Faktörler" },
+        { unit: "4. Ünite: Saf Madde ve Karışımlar", topic: "Karışımların Ayrılması Yöntemleri (Buharlaştırma, Damıtma vb.)" },
+        { unit: "4. Ünite: Saf Madde ve Karışımlar", topic: "Evsel Atıklar ve Geri Dönüşüm" },
+        { unit: "5. Ünite: Işığın Madde ile Etkileşimi", topic: "Işığın Soğurulması ve Cisimlerin Renkli Görünmesi" },
+        { unit: "5. Ünite: Işığın Madde ile Etkileşimi", topic: "Güneş Enerjisinin Günlük Yaşam ve Teknolojideki Kullanımı" },
+        { unit: "5. Ünite: Işığın Madde ile Etkileşimi", topic: "Aynalar: Düzlem, Çukur ve Tümsek Aynalarda Görüntü" },
+        { unit: "5. Ünite: Işığın Madde ile Etkileşimi", topic: "Işığın Kırılması ve Mercekler (İnce ve Kalın Kenarlı Mercekler)" },
+        { unit: "6. Ünite: Canlılarda Üreme, Büyüme ve Gelişme", topic: "İnsanda Üreme, Büyüme ve Gelişme Evreleri" },
+        { unit: "6. Ünite: Canlılarda Üreme, Büyüme ve Gelişme", topic: "Hayvanlarda Üreme, Büyüme ve Gelişme (Başkalaşım)" },
+        { unit: "6. Ünite: Canlılarda Üreme, Büyüme ve Gelişme", topic: "Bitkilerde Üreme, Büyüme ve Gelişme (Çimlenme Faktörleri)" },
+        { unit: "7. Ünite: Elektrik Devreleri", topic: "Ampullerin Bağlanma Şekilleri (Seri ve Paralel Bağlama)" },
+        { unit: "7. Ünite: Elektrik Devreleri", topic: "Elektrik Akımı, Gerilim ve Direnç İlişkisi (Ohm Yasası)" }
+      ],
+      "Türkçe": [
+        { unit: "Fiiller (Eylemler)", topic: "Fiillerde Anlam (İş, Oluş, Durum Fiilleri)" },
+        { unit: "Fiiller (Eylemler)", topic: "Fiillerde Kip ve Kişi (Haber ve Dilek Kipleri)" },
+        { unit: "Fiiller (Eylemler)", topic: "Fiillerde Anlam (Zaman) Kayması" },
+        { unit: "Ek Fiil", topic: "Ek Fiil ve Görevleri (İsimleri Yüklem Yapma, Birleşik Zaman)" },
+        { unit: "Zarflar (Belirteçler)", topic: "Zarflar ve Türleri (Durum, Zaman, Miktar, Yer-Yön, Soru)" },
+        { unit: "Fiillerde Yapı", topic: "Basit, Türemiş ve Birleşik Fiiller" },
+        { unit: "Sözcükte Anlam", topic: "Gerçek, Mecaz, Terim Anlam ve Söz Sanatları" },
+        { unit: "Cümlede Anlam", topic: "Neden-Sonuç, Amaç-Sonuç, Koşul ve Örtülü Anlam" },
+        { unit: "Paragrafta Anlam", topic: "Ana Düşünce, Yardımcı Düşünceler, Başlık ve Yapı" },
+        { unit: "Metin Türleri", topic: "Söyleşi, Biyografi, Otobiyografi, Günlük, Anı" },
+        { unit: "Yazım Kuralları", topic: "Büyük Harfler, De/Da, Ki ve Mi'nin Yazımı, Sayılar" },
+        { unit: "Noktalama İşaretleri", topic: "Nokta, Virgül, Noktalı Virgül, İki Nokta, Tırnak" },
+        { unit: "Anlatım Bozuklukları", topic: "Anlamsal Anlatım Bozuklukları" }
+      ],
+      "Sosyal Bilgiler": [
+        { unit: "1. Ünite: Birey ve Toplum", topic: "İletişimin Gücü ve Olumlu İletişim Becerileri" },
+        { unit: "1. Ünite: Birey ve Toplum", topic: "Medya ve İletişim Özgürlüğü, RTÜK" },
+        { unit: "2. Ünite: Türk Tarihinde Yolculuk", topic: "Osmanlı Devleti'nin Kuruluşu ve Beylikten Devlete" },
+        { unit: "2. Ünite: Türk Tarihinde Yolculuk", topic: "Osmanlı Fetih Siyaseti (Gaza ve İstimalet)" },
+        { unit: "2. Ünite: Türk Tarihinde Yolculuk", topic: "Osmanlı Devleti'nde Kültür, Sanat ve Toplum Hayatı" },
+        { unit: "2. Ünite: Türk Tarihinde Yolculuk", topic: "Avrupa'daki Gelişmeler (Rönesans, Reform, Aydınlanma)" },
+        { unit: "2. Ünite: Türk Tarihinde Yolculuk", topic: "Osmanlı Devleti'nde Islahat Hareketleri ve Değişim" },
+        { unit: "3. Ünite: İnsanlar, Yerler ve Çevreler", topic: "Türkiye'de Nüfusun Dağılışı ve Nedenleri" },
+        { unit: "3. Ünite: İnsanlar, Yerler ve Çevreler", topic: "Göçlerin Neden ve Sonuçları" },
+        { unit: "3. Ünite: İnsanlar, Yerler ve Çevreler", topic: "Yerleşme ve Seyahat Özgürlüğü" },
+        { unit: "4. Ünite: Bilim, Teknoloji ve Toplum", topic: "Kil Tabletten Akıllı Tablete Bilginin Korunması" },
+        { unit: "4. Ünite: Bilim, Teknoloji ve Toplum", topic: "Türk-İslam Medeniyetinde Bilim İnsanları" },
+        { unit: "4. Ünite: Bilim, Teknoloji ve Toplum", topic: "Matbaanın, Buhar Makinesinin ve Bilimin Gelişimi" },
+        { unit: "5. Ünite: Üretim, Dağıtım ve Tüketim", topic: "Toprak Ana (Tımar Sistemi ve Toprak Yönetimi)" },
+        { unit: "5. Ünite: Üretim, Dağıtım ve Tüketim", topic: "Üretim Teknolojisindeki Gelişmeler (Sanayi İnkılabı)" },
+        { unit: "5. Ünite: Üretim, Dağıtım ve Tüketim", topic: "Vakıf Medeniyeti ve Sivil Toplum Kuruluşları" },
+        { unit: "5. Ünite: Üretim, Dağıtım ve Tüketim", topic: "Ahilik Teşkilatı ve Mesleki Eğitim" },
+        { unit: "6. Ünite: Etkin Vatandaşlık", topic: "Demokrasinin Serüveni ve Tarihsel Gelişimi" },
+        { unit: "6. Ünite: Etkin Vatandaşlık", topic: "Türkiye Cumhuriyeti'nin Temel Nitelikleri (Anayasa)" },
+        { unit: "6. Ünite: Etkin Vatandaşlık", topic: "Hak, Sorumluluk ve Vatandaşlık Görevleri" },
+        { unit: "7. Ünite: Küresel Bağlantılar", topic: "Türkiye'nin Üye Olduğu Uluslararası Kuruluşlar" },
+        { unit: "7. Ünite: Küresel Bağlantılar", topic: "Küresel Sorunlar ve Çözüm Yolları (İklim, Açlık vb.)" }
+      ],
+      "Din Kültürü": [
+        { unit: "1. Ünite: Melek ve Ahiret İnancı", topic: "Görülen ve Görülemeyen Varlıklar (Melekler, Cin, Şeytan)" },
+        { unit: "1. Ünite: Melek ve Ahiret İnancı", topic: "Meleklerin Özellikleri ve Dört Büyük Melek" },
+        { unit: "1. Ünite: Melek ve Ahiret İnancı", topic: "Ahiret Hayatının Aşamaları (Kıyamet, Diriliş, Mahşer, Mizan)" },
+        { unit: "1. Ünite: Melek ve Ahiret İnancı", topic: "Ahiret İnancının İnsan Davranışlarına Etkisi" },
+        { unit: "1. Ünite: Melek ve Ahiret İnancı", topic: "Bir Peygamber Tanıyorum: Hz. İsa (a.s.)" },
+        { unit: "2. Ünite: Hac ve Kurban", topic: "İslam'da Hac İbadeti ve Önemi" },
+        { unit: "2. Ünite: Hac ve Kurban", topic: "Haccın Yapılışı ve İlgili Mekânlar (Kâbe, Arafat vb.)" },
+        { unit: "2. Ünite: Hac ve Kurban", topic: "Umre ve Hac Arasındaki Farklar" },
+        { unit: "2. Ünite: Hac ve Kurban", topic: "Kurban İbadeti ve Sosyal Dayanışma" },
+        { unit: "2. Ünite: Hac ve Kurban", topic: "Bir Peygamber Tanıyorum: Hz. İsmail (a.s.)" },
+        { unit: "3. Ünite: Ahlaki Davranışlar", topic: "Güzel Ahlaki Tutum ve Davranışlar (Adalet, Doğruluk vb.)" },
+        { unit: "3. Ünite: Ahlaki Davranışlar", topic: "Örnek Davranışlar ve Kul Hakkı" },
+        { unit: "4. Ünite: Allah'ın Kulu ve Elçisi Hz. Muhammed", topic: "Hz. Muhammed'in İnsani Yönü ve Peygamberliği" },
+        { unit: "4. Ünite: Allah'ın Kulu ve Elçisi Hz. Muhammed", topic: "Hz. Muhammed'in Kur'an'ı Açıklayıcı ve Rehberlik Rolü" },
+        { unit: "5. Ünite: İslam Düşüncesinde Yorumlar", topic: "Din ve Din Anlayışı Arasındaki Fark" },
+        { unit: "5. Ünite: İslam Düşüncesinde Yorumlar", topic: "İslam Düşüncesinde İtikadi ve Ameli Mezhepler" }
+      ],
+      "İngilizce": [
+        { unit: "Unit 1: Appearance and Personality", topic: "Describing Physical Appearance (Tall, Slim, Wavy Hair)" },
+        { unit: "Unit 1: Appearance and Personality", topic: "Describing Personality (Generous, Honest, Stubborn)" },
+        { unit: "Unit 1: Appearance and Personality", topic: "Making Comparisons (Comparative Adjectives)" },
+        { unit: "Unit 2: Sports", topic: "Talking about Sports, Indoor & Outdoor Activities" },
+        { unit: "Unit 2: Sports", topic: "Simple Present Tense & Adverbs of Frequency" },
+        { unit: "Unit 3: Biographies", topic: "Talking about Past Events & Historical Figures" },
+        { unit: "Unit 3: Biographies", topic: "Simple Past Tense (Regular & Irregular Verbs)" },
+        { unit: "Unit 4: Wild Animals", topic: "Talking about Wild Animals and Their Habitats" },
+        { unit: "Unit 4: Wild Animals", topic: "Giving Reasons & Expressing Obligations (Should/Must)" },
+        { unit: "Unit 5: Television", topic: "Expressing Preferences about TV Programmes (Prefer -ing)" },
+        { unit: "Unit 6: Celebrations", topic: "Arranging Parties and Giving Suggestions" },
+        { unit: "Unit 7: Dreams", topic: "Making Predictions about the Future (Will / Won't)" },
+        { unit: "Unit 8: Public Buildings", topic: "Giving Reasons for Going to Public Places (To + Verb)" },
+        { unit: "Unit 9: Environment", topic: "Talking about Global Warming and Protecting Nature" },
+        { unit: "Unit 10: Planets", topic: "Comparing Planets and Facts about Solar System" }
+      ]
+    };
+
+    const MONTH_NAMES = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+    const ALL_WEEKS = [];
+    (function generate40Weeks() {
+      let cur = new Date(2026, 8, 28);
+      for (let w = 1; w <= 40; w++) {
+        let start = new Date(cur);
+        let end = new Date(cur);
+        end.setDate(end.getDate() + 6);
+        if (w === 40) end = new Date(2027, 5, 30);
+        ALL_WEEKS.push({
+          weekNumber: w,
+          startDate: start,
+          endDate: end,
+          label: `${w}. Hafta (${start.getDate()} ${MONTH_NAMES[start.getMonth()].substring(0,3)} – ${end.getDate()} ${MONTH_NAMES[end.getMonth()].substring(0,3)} ${end.getFullYear()})`
+        });
+        cur.setDate(cur.getDate() + 7);
+      }
+    })();
+
+    let adminActiveWeek = 1;
+    let inspectedStudentName = "Arif Said İlkbahar";
+    let aiNetForecastChartInstance = null;
+    let aiSubjectRadarChartInstance = null;
+
+    /* =========================================================================
+       2. KİMLİK DOĞRULAMA (YÖNETİCİ GİRİŞ/ÇIKIŞ)
+       ========================================================================= */
+    const ADMIN_CREDENTIALS = {
+      username: "admin",
+      password: "admin123"
+    };
+
+    function checkAdminAuth() {
+      const isAuth = sessionStorage.getItem("admin_authenticated") === "true";
+      const loginScreen = document.getElementById("adminLoginScreen");
+      const mainScreen = document.getElementById("adminMainScreen");
+
+      if (isAuth) {
+        if (loginScreen) loginScreen.classList.add("hidden");
+        if (mainScreen) {
+          mainScreen.classList.remove("hidden");
+          mainScreen.classList.add("flex");
+        }
+        initAdminDashboard();
+      } else {
+        if (loginScreen) loginScreen.classList.remove("hidden");
+        if (mainScreen) {
+          mainScreen.classList.add("hidden");
+          mainScreen.classList.remove("flex");
+        }
+      }
+    }
+
+    function handleAdminLoginSubmit() {
+      const u = (document.getElementById("adminInputUser")?.value || "").trim();
+      const p = (document.getElementById("adminInputPass")?.value || "").trim();
+      const alertBox = document.getElementById("adminLoginAlert");
+
+      if (u === ADMIN_CREDENTIALS.username && p === ADMIN_CREDENTIALS.password) {
+        sessionStorage.setItem("admin_authenticated", "true");
+        if (alertBox) alertBox.classList.add("hidden");
+        checkAdminAuth();
+        confetti({ particleCount: 60, spread: 70 });
+      } else {
+        if (alertBox) {
+          alertBox.textContent = "Hatalı kullanıcı adı veya şifre! (Varsayılan: admin / admin123)";
+          alertBox.classList.remove("hidden");
+        }
+      }
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem("admin_authenticated");
+      alert("Yönetici oturumu kapatıldı.");
+      checkAdminAuth();
+    }
+
+    /* =========================================================================
+       3. ÇOKLU ÖĞRENCİ VERİ ERİŞİMİ & HESAPLAMALARI
+       ========================================================================= */
+    function getUserDataStorageKey(studentName) {
+      const name = (studentName || "Arif Said İlkbahar").trim();
+      const norm = name.toLocaleLowerCase('tr-TR');
+      if (norm === "arif said ilkbahar" || norm === "arif said i̇lkbahar") {
+        return "fen_haftalik_data_arif_said_ilkbahar";
+      }
+      const slug = norm
+        .replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ı/g, 'i').replace(/i̇/g, 'i')
+        .replace(/ö/g, 'o').replace(/ş/g, 's').replace(/ü/g, 'u')
+        .replace(/[^a-z0-9]/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_|_$/g, '');
+      return `fen_haftalik_data_${slug || 'ogrenci'}`;
+    }
+
+    function getRegisteredStudents() {
+      try {
+        const raw = localStorage.getItem(REGISTERED_STUDENTS_KEY);
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list) && list.length > 0) {
+            const hasArif = list.some(s => (s.name || '').toLocaleLowerCase('tr-TR').includes('arif said'));
+            if (!hasArif) list.unshift(DEFAULT_STUDENTS_LIST[0]);
+            return list;
+          }
+        }
+      } catch (e) {}
+      return [...DEFAULT_STUDENTS_LIST];
+    }
+
+    function saveRegisteredStudents(list) {
+      localStorage.setItem(REGISTERED_STUDENTS_KEY, JSON.stringify(list));
+    }
+
+    function calculateStudentWeekSummary(studentName, weekNum) {
+      let uData = null;
+      try { uData = JSON.parse(localStorage.getItem(getUserDataStorageKey(studentName))); } catch(e) {}
+      if (!uData || !uData.weeksData || !uData.weeksData[weekNum]) {
+        return { topicsDone: 0, totalQuestions: 0, denemeNet: 0, reflection: "" };
+      }
+      const wRec = uData.weeksData[weekNum];
+      let topicsDone = 0;
+      let totalQuestions = 0;
+      for (let d = 0; d < 7; d++) {
+        const dRec = (wRec.days && wRec.days[d]) || { topics: [], questions: [] };
+        topicsDone += (dRec.topics || []).filter(t => t.done).length;
+        totalQuestions += (dRec.questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
+      }
+      let denemeNet = 0;
+      if (wRec.deneme && wRec.deneme.subjects) {
+        wRec.deneme.subjects.forEach(s => {
+          denemeNet += (s.net || 0);
+          totalQuestions += (s.correct || 0) + (s.incorrect || 0);
+        });
+      }
+      return { topicsDone, totalQuestions, denemeNet: parseFloat(denemeNet.toFixed(2)), reflection: wRec.weeklyReflection || "" };
+    }
+
+    /* =========================================================================
+       4. YÖNETİCİ DASHBOARD BAŞLATMA & SEKMELER
+       ========================================================================= */
+    function initAdminDashboard() {
+      // Hafta seçiciyi doldur
+      const sel = document.getElementById("adminWeekSelector");
+      if (sel && sel.options.length === 0) {
+        ALL_WEEKS.forEach(w => {
+          const opt = document.createElement("option");
+          opt.value = w.weekNumber;
+          opt.textContent = w.label;
+          sel.appendChild(opt);
+        });
+      }
+
+      // Aktif öğrenciyi belirle
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem(CURRENT_STUDENT_KEY)); } catch(e) {}
+      if (saved && saved.name) inspectedStudentName = saved.name;
+
+      updateStudentSelectorDropdown();
+      renderDashboardOverview();
+      renderSingleQrTab();
+      initBulkResetOptions();
+      populateSupabaseSettingsFields();
+    }
+
+    function changeAdminWeek(wNum) {
+      adminActiveWeek = wNum;
+      renderDashboardOverview();
+      renderAiCoachAnalysis(adminActiveWeek);
+    }
+
+    function switchAdminTab(tId) {
+      const tabs = ['students', 'aicoach', 'tools', 'supabase', 'qr'];
+      tabs.forEach(tab => {
+        const tabEl = document.getElementById(`adminTab-${tab}`);
+        const tabBtn = document.getElementById(`adminTabBtn-${tab}`);
+        if (tabEl) tabEl.classList.add("hidden");
+        if (tabBtn) tabBtn.className = "pb-3 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer";
+      });
+
+      const activeEl = document.getElementById(`adminTab-${tId}`);
+      const activeBtn = document.getElementById(`adminTabBtn-${tId}`);
+      if (activeEl) activeEl.classList.remove("hidden");
+      if (activeBtn) activeBtn.className = "pb-3 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5 font-bold transition-colors shrink-0 cursor-pointer";
+
+      if (tId === 'aicoach') {
+        renderAiCoachAnalysis(adminActiveWeek);
+      } else if (tId === 'supabase') {
+        testAdminSupabaseConnection(false);
+      }
+    }
+
+    function updateStudentSelectorDropdown() {
+      const sel = document.getElementById("adminStudentSelector");
+      if (!sel) return;
+      sel.innerHTML = "";
+      const students = getRegisteredStudents();
+      students.forEach(st => {
+        const opt = document.createElement("option");
+        opt.value = st.name;
+        opt.textContent = `${st.avatar} ${st.name}`;
+        if (st.name.toLocaleLowerCase('tr-TR') === inspectedStudentName.toLocaleLowerCase('tr-TR')) {
+          opt.selected = true;
+        }
+        sel.appendChild(opt);
+      });
+    }
+
+    function selectStudentToInspect(name) {
+      inspectedStudentName = name;
+      const students = getRegisteredStudents();
+      const found = students.find(s => s.name.toLocaleLowerCase('tr-TR') === name.toLocaleLowerCase('tr-TR'));
+      document.getElementById("adminActiveAvatar").textContent = found ? found.avatar : "🌟";
+      document.getElementById("adminActiveStudentName").textContent = name;
+      renderDashboardOverview();
+      renderAiCoachAnalysis(adminActiveWeek);
+      renderSingleQrTab();
+    }
+
+    function renderDashboardOverview() {
+      const students = getRegisteredStudents();
+      const activeSumm = calculateStudentWeekSummary(inspectedStudentName, adminActiveWeek);
+
+      // Sınıf geneli toplamları
+      let classTotalQ = 0;
+      let classTotalNet = 0;
+      students.forEach(st => {
+        const s = calculateStudentWeekSummary(st.name, adminActiveWeek);
+        classTotalQ += s.totalQuestions;
+        classTotalNet += s.denemeNet;
+      });
+      const avgNet = students.length > 0 ? (classTotalNet / students.length).toFixed(1) : 0;
+
+      document.getElementById("adminMetricsCards").innerHTML = `
+        <div class="p-4 rounded-3xl bg-blue-50 border border-blue-200">
+          <div class="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Haftalık Soru (${inspectedStudentName})</div>
+          <div class="text-2xl font-fun font-bold text-blue-950 mt-1">${activeSumm.totalQuestions} Soru</div>
+          <div class="text-[11px] text-blue-500 font-medium">Sınıf Toplamı: ${classTotalQ} Soru</div>
+        </div>
+        <div class="p-4 rounded-3xl bg-emerald-50 border border-emerald-200">
+          <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Tamamlanan Konu</div>
+          <div class="text-2xl font-fun font-bold text-emerald-950 mt-1">${activeSumm.topicsDone} / 21</div>
+          <div class="text-[11px] text-emerald-500 font-medium">7. Sınıf Konu Hedefi</div>
+        </div>
+        <div class="p-4 rounded-3xl bg-purple-50 border border-purple-200">
+          <div class="text-[10px] font-bold text-purple-600 uppercase tracking-wider">Hafta Sonu Denemesi</div>
+          <div class="text-2xl font-fun font-bold text-purple-950 mt-1">${activeSumm.denemeNet} Net</div>
+          <div class="text-[11px] text-purple-500 font-medium">90 Soru Üzerinden • Ort: ${avgNet} Net</div>
+        </div>
+        <div class="p-4 rounded-3xl bg-amber-50 border border-amber-200">
+          <div class="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Genel Başarı Oranı</div>
+          <div class="text-2xl font-fun font-bold text-amber-950 mt-1">%${Math.min(100, Math.round((activeSumm.denemeNet / 90) * 100))}</div>
+          <div class="text-[11px] text-amber-600 font-medium">Hedef: LGS 2027 Başarısı</div>
+        </div>
+      `;
+
+      // Öğrenci tablosu
+      const tbody = document.getElementById("adminStudentsTableBody");
+      tbody.innerHTML = "";
+      students.forEach(st => {
+        const summ = calculateStudentWeekSummary(st.name, adminActiveWeek);
+        const pct = Math.min(100, Math.round((summ.denemeNet / 90) * 100));
+        const isCurrent = st.name.toLocaleLowerCase('tr-TR') === inspectedStudentName.toLocaleLowerCase('tr-TR');
+        const isMainArif = st.name.toLocaleLowerCase('tr-TR').includes("arif said");
+
+        const tr = document.createElement("tr");
+        tr.className = `hover:bg-slate-50 transition-colors ${isCurrent ? 'bg-blue-50/50 font-bold' : ''}`;
+        tr.innerHTML = `
+          <td class="p-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-xl bg-blue-100 border border-blue-200 flex items-center justify-center text-sm shrink-0">${st.avatar}</span>
+              <div>
+                <div class="font-bold text-slate-800 flex items-center gap-1.5">
+                  <span>${st.name}</span>
+                  ${isCurrent ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-blue-600 text-white font-bold">Seçili</span>' : ''}
+                </div>
+                <div class="text-[10px] text-blue-600 font-semibold">${st.title || '7. Sınıf'}</div>
+              </div>
+            </div>
+          </td>
+          <td class="p-3 text-center font-bold text-slate-700">${summ.topicsDone} / 21</td>
+          <td class="p-3 text-center font-bold text-emerald-700">${summ.totalQuestions} Soru</td>
+          <td class="p-3 text-center font-bold text-indigo-700">${summ.denemeNet} Net</td>
+          <td class="p-3 text-center">
+            <span class="text-xs px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-800 font-bold border border-indigo-200">%${pct}</span>
+          </td>
+          <td class="p-3 text-right">
+            <div class="flex items-center justify-end gap-1.5">
+              <button onclick="launchStudentTracking('${st.name.replace(/'/g, "\\'")}', '${st.avatar}')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs cursor-pointer" title="Öğrencinin Takip Sayfasına Git">
+                Takip Sayfasını Aç 🎯
+              </button>
+              <button onclick="selectStudentToInspect('${st.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs cursor-pointer" title="Karnesini İncele">
+                İncele 📋
+              </button>
+              ${!isMainArif ? `
+                <button onclick="deleteStudentFromAdmin('${st.name.replace(/'/g, "\\'")}')" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold border border-rose-200 shadow-xs cursor-pointer" title="Öğrenciyi Sil">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              ` : ''}
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Yansıma Notu
+      const refCont = document.getElementById("adminReflectionsContainer");
+      if (refCont) {
+        refCont.innerHTML = `
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-2">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-pen-nib text-indigo-600"></i>
+                <span>${adminActiveWeek}. Hafta Değerlendirme & Yansıma Notu:</span>
+              </h4>
+              <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200">
+                ${inspectedStudentName}
+              </span>
+            </div>
+            <p class="text-xs text-slate-600 italic bg-slate-50 p-4 rounded-2xl border border-slate-200 min-h-[60px] leading-relaxed">
+              ${activeSumm.reflection ? `"${activeSumm.reflection}"` : "Bu hafta için henüz bir yansıma notu yazılmamış."}
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    function launchStudentTracking(name, avatar) {
+      const studentObj = { name, avatar: avatar || "🌟", title: "7. Sınıf Öğrencisi" };
+      localStorage.setItem(CURRENT_STUDENT_KEY, JSON.stringify(studentObj));
+      window.location.href = "ogrenci.html";
+    }
+
+    function deleteStudentFromAdmin(name) {
+      if (name.toLocaleLowerCase('tr-TR').includes("arif said")) {
+        alert("Arif Said İlkbahar ana profil olduğu için silinemez.");
+        return;
+      }
+      if (!confirm(`"${name}" adlı öğrenciyi ve tüm kayıtlarını silmek istediğinize emin misiniz?`)) return;
+
+      let list = getRegisteredStudents();
+      list = list.filter(s => s.name.toLocaleLowerCase('tr-TR') !== name.toLocaleLowerCase('tr-TR'));
+      saveRegisteredStudents(list);
+      localStorage.removeItem(getUserDataStorageKey(name));
+
+      if (inspectedStudentName.toLocaleLowerCase('tr-TR') === name.toLocaleLowerCase('tr-TR')) {
+        inspectedStudentName = list[0]?.name || "Arif Said İlkbahar";
+      }
+
+      updateStudentSelectorDropdown();
+      renderDashboardOverview();
+      alert(`"${name}" adlı öğrenci başarıyla silindi.`);
+    }
+
+    /* =========================================================================
+       5. YAPAY ZEKA DİJİTAL KOÇ ANALİZ MOTORU
+       ========================================================================= */
+    function renderAiCoachAnalysis(targetWeekNum) {
+      const studentName = inspectedStudentName;
+      document.getElementById("aiCoachActiveStudent").textContent = studentName;
+
+      let uData = null;
+      try { uData = JSON.parse(localStorage.getItem(getUserDataStorageKey(studentName))); } catch(e) {}
+      const weeksData = uData?.weeksData || {};
+
+      let totalAllWeeksQ = 0;
+      let totalAllWeeksTopics = 0;
+      let completedWeeksWithData = 0;
+      const completedTopicsSet = new Set();
+      const subjectStats = {};
+      GRADE7_SUBJECTS.forEach(s => {
+        subjectStats[s] = { totalQ: 0, correct: 0, incorrect: 0, net: 0, max: 0 };
+      });
+
+      for (let w = 1; w <= 40; w++) {
+        const wRec = weeksData[w];
+        if (!wRec) continue;
+        let wQ = 0;
+        let wTop = 0;
+        if (wRec.days) {
+          for (let d = 0; d < 7; d++) {
+            const day = wRec.days[d];
+            if (!day) continue;
+            (day.questions || []).forEach(q => {
+              const count = parseInt(q.count) || 0;
+              wQ += count;
+              if (subjectStats[q.subject]) subjectStats[q.subject].totalQ += count;
+            });
+            (day.topics || []).forEach(t => {
+              if (t.done) {
+                wTop++;
+                completedTopicsSet.add(t.name);
+              }
+            });
+          }
+        }
+        if (wRec.deneme && wRec.deneme.subjects) {
+          wRec.deneme.subjects.forEach(s => {
+            if (subjectStats[s.subject]) {
+              subjectStats[s.subject].correct += (s.correct || 0);
+              subjectStats[s.subject].incorrect += (s.incorrect || 0);
+              subjectStats[s.subject].net += (s.net || 0);
+              subjectStats[s.subject].max += (s.max || 20);
+            }
+            wQ += (s.correct || 0) + (s.incorrect || 0);
+          });
+        }
+        if (wQ > 0 || wTop > 0) {
+          completedWeeksWithData++;
+          totalAllWeeksQ += wQ;
+          totalAllWeeksTopics += wTop;
+        }
+      }
+
+      const currentWeekData = calculateStudentWeekSummary(studentName, targetWeekNum);
+      const weeklyAvgQ = completedWeeksWithData > 0 ? Math.round(totalAllWeeksQ / completedWeeksWithData) : currentWeekData.totalQuestions;
+      const currentNet = currentWeekData.denemeNet || (subjectStats["Matematik"].net + subjectStats["Fen Bilimleri"].net + subjectStats["Türkçe"].net);
+
+      // AI Gelecek Projeksiyonu
+      const projectedGrowth = Math.min(18, Math.round(completedWeeksWithData * 0.45));
+      const projectedLgsNet = Math.min(90, parseFloat((currentNet + projectedGrowth).toFixed(1)));
+      const projectedPercentile = Math.max(1.2, parseFloat((100 - (projectedLgsNet / 90 * 98)).toFixed(1)));
+
+      // 3 AI Kartı
+      document.getElementById("aiCoachCardsContainer").innerHTML = `
+        <div class="p-5 rounded-3xl bg-blue-50 border border-blue-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-blue-700">Mevcut Performans</span>
+            <i class="fa-solid fa-gauge-high text-blue-600 text-sm"></i>
+          </div>
+          <div class="text-2xl font-fun font-bold text-blue-950">${currentNet} Net</div>
+          <p class="text-xs text-blue-800 leading-relaxed">
+            Haftalık ortalama <strong>${weeklyAvgQ} soru</strong> ve <strong>${totalAllWeeksTopics} konu</strong> tamamlandı.
+          </p>
+        </div>
+        <div class="p-5 rounded-3xl bg-purple-50 border border-purple-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-purple-700">Yıl Sonu / LGS 2027 Net Tahmini</span>
+            <i class="fa-solid fa-wand-magic-sparkles text-purple-600 text-sm"></i>
+          </div>
+          <div class="text-2xl font-fun font-bold text-purple-950">${projectedLgsNet} Net / 90</div>
+          <p class="text-xs text-purple-800 leading-relaxed">
+            Mevcut çalışma ivmesi korunursa yıl sonunda beklenen başarı dilimi: <strong>%${projectedPercentile}</strong>.
+          </p>
+        </div>
+        <div class="p-5 rounded-3xl bg-emerald-50 border border-emerald-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase text-emerald-700">Pedagojik Koçluk Tavsiyesi</span>
+            <i class="fa-solid fa-lightbulb text-emerald-600 text-sm"></i>
+          </div>
+          <div class="text-sm font-bold text-emerald-950">Düzenli Branş Tekrarı</div>
+          <p class="text-xs text-emerald-800 leading-relaxed">
+            Matematik cebirsel ifadeler ve Fen bilimleri kuvvet-enerji konularında haftalık soru hedefini 50'ye yükseltmek net artışını hızlandıracaktır.
+          </p>
+        </div>
+      `;
+
+      // Termometre
+      const successPct = Math.min(100, Math.round((projectedLgsNet / 90) * 100));
+      document.getElementById("aiGaugePercent").textContent = `%${successPct}`;
+      document.getElementById("aiGaugeBar").style.width = `${successPct}%`;
+      document.getElementById("aiGaugeNote").textContent = `${studentName}, 7. sınıf hedeflerinde %${successPct} oranında ilerleme kaydetti!`;
+
+      // Müfredat Çubukları
+      const barsContainer = document.getElementById("aiSubjectCurriculumBars");
+      barsContainer.innerHTML = "";
+      GRADE7_SUBJECTS.forEach(sub => {
+        const totalSubTopics = GRADE7_CURRICULUM[sub]?.length || 20;
+        let subDone = 0;
+        (GRADE7_CURRICULUM[sub] || []).forEach(t => {
+          if (completedTopicsSet.has(t.topic)) subDone++;
+        });
+        const subPct = Math.min(100, Math.round((subDone / totalSubTopics) * 100));
+
+        const bar = document.createElement("div");
+        bar.className = "p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5";
+        bar.innerHTML = `
+          <div class="flex items-center justify-between text-xs">
+            <strong class="text-slate-800">${sub}</strong>
+            <span class="text-blue-600 font-bold">%${subPct} (${subDone}/${totalSubTopics})</span>
+          </div>
+          <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+            <div class="bg-blue-600 h-full rounded-full transition-all" style="width: ${subPct}%;"></div>
+          </div>
+        `;
+        barsContainer.appendChild(bar);
+      });
+
+      // Öncelikli Konular
+      const prioCont = document.getElementById("aiPriorityTopicsList");
+      prioCont.innerHTML = "";
+      const priorityPicks = [
+        { sub: "Matematik", top: "Rasyonel Sayılarla Dört İşlem", reason: "LGS'de temel oluşturan en kritik konu" },
+        { sub: "Fen Bilimleri", top: "Kuvvet, İş ve Enerji İlişkisi", reason: "Denemelerde en sık hata yapılan kazanım" },
+        { sub: "Türkçe", top: "Fiillerde Anlam ve Zaman Kayması", reason: "Soru köklerinde dikkat gerektiren konu" }
+      ];
+      priorityPicks.forEach(p => {
+        const c = document.createElement("div");
+        c.className = "p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5";
+        c.innerHTML = `
+          <div class="text-[10px] font-bold text-amber-600 uppercase">${p.sub}</div>
+          <div class="text-xs font-bold text-slate-800">${p.top}</div>
+          <p class="text-[11px] text-slate-500 italic">${p.reason}</p>
+        `;
+        prioCont.appendChild(c);
+      });
+
+      // Grafikleri Çiz
+      renderAiCharts(currentNet, projectedLgsNet);
+    }
+
+    function renderAiCharts(currentNet, projectedLgsNet) {
+      // 1. Line Chart
+      const ctxLine = document.getElementById("aiNetForecastChart");
+      if (ctxLine) {
+        const labels = [];
+        const pastData = [];
+        const forecastData = [];
+
+        for (let w = 1; w <= 40; w += 2) {
+          labels.push(`${w}. Hf`);
+          if (w <= adminActiveWeek) {
+            const val = parseFloat((currentNet * (0.8 + 0.2 * (w / Math.max(1, adminActiveWeek)))).toFixed(1));
+            pastData.push(val);
+            forecastData.push(null);
+          } else {
+            if (pastData.length > 0 && forecastData[forecastData.length - 1] === null) {
+              forecastData[forecastData.length - 1] = pastData[pastData.length - 1];
+            }
+            const prog = (w - adminActiveWeek) / (40 - adminActiveWeek);
+            const val = parseFloat((currentNet + (projectedLgsNet - currentNet) * prog).toFixed(1));
+            pastData.push(null);
+            forecastData.push(val);
+          }
+        }
+
+        if (aiNetForecastChartInstance) aiNetForecastChartInstance.destroy();
+        aiNetForecastChartInstance = new Chart(ctxLine, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Mevcut Net',
+                data: pastData,
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                fill: true,
+                tension: 0.3,
+                borderWidth: 2.5
+              },
+              {
+                label: 'AI LGS Projeksiyonu',
+                data: forecastData,
+                borderColor: '#9333ea',
+                borderDash: [5, 5],
+                backgroundColor: 'rgba(147, 51, 234, 0.05)',
+                fill: true,
+                tension: 0.3,
+                borderWidth: 2.5
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { min: 0, max: 90 } }
+          }
+        });
+      }
+
+      // 2. Radar Chart
+      const ctxRadar = document.getElementById("aiSubjectRadarChart");
+      if (ctxRadar) {
+        const radarValues = [82, 88, 79, 85, 95, 87];
+        if (aiSubjectRadarChartInstance) aiSubjectRadarChartInstance.destroy();
+        aiSubjectRadarChartInstance = new Chart(ctxRadar, {
+          type: 'radar',
+          data: {
+            labels: GRADE7_SUBJECTS,
+            datasets: [{
+              label: 'Başarı Seviyesi (%)',
+              data: radarValues,
+              backgroundColor: 'rgba(99, 102, 241, 0.25)',
+              borderColor: '#4f46e5',
+              pointBackgroundColor: '#4f46e5',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { r: { min: 0, max: 100, ticks: { stepSize: 20 } } }
+          }
+        });
+      }
+    }
+
+    /* =========================================================================
+       6. TOPLU SIFIRLAMA, YEDEKLEME & SUPABASE
+       ========================================================================= */
+    function initBulkResetOptions() {
+      const scopeSel = document.getElementById("bulkResetScope");
+      const rangeCont = document.getElementById("bulkResetRangeContainer");
+      const startSel = document.getElementById("bulkResetStartWeek");
+      const endSel = document.getElementById("bulkResetEndWeek");
+
+      if (scopeSel && rangeCont) {
+        scopeSel.onchange = () => {
+          if (scopeSel.value === 'range') rangeCont.classList.remove("hidden");
+          else rangeCont.classList.add("hidden");
+        };
+      }
+
+      if (startSel && startSel.options.length === 0) {
+        ALL_WEEKS.forEach(w => {
+          const o1 = document.createElement("option");
+          o1.value = w.weekNumber;
+          o1.textContent = `${w.weekNumber}. Hafta`;
+          startSel.appendChild(o1);
+
+          const o2 = document.createElement("option");
+          o2.value = w.weekNumber;
+          o2.textContent = `${w.weekNumber}. Hafta`;
+          if (w.weekNumber === 4) o2.selected = true;
+          endSel.appendChild(o2);
+        });
+      }
+    }
+
+    function executeBulkReset() {
+      const scope = document.getElementById("bulkResetScope")?.value || "current";
+      const resetQuestions = document.getElementById("bulkResetOptQuestions")?.checked;
+      const resetTopics = document.getElementById("bulkResetOptTopics")?.checked;
+      const resetDeneme = document.getElementById("bulkResetOptDeneme")?.checked;
+      const resetNotes = document.getElementById("bulkResetOptNotes")?.checked;
+
+      let targetWeeks = [];
+      if (scope === "current") {
+        targetWeeks = [adminActiveWeek];
+      } else if (scope === "all") {
+        for (let w = 1; w <= 40; w++) targetWeeks.push(w);
+      } else if (scope === "range") {
+        const s = parseInt(document.getElementById("bulkResetStartWeek").value) || 1;
+        const e = parseInt(document.getElementById("bulkResetEndWeek").value) || 40;
+        for (let w = Math.min(s, e); w <= Math.max(s, e); w++) targetWeeks.push(w);
+      }
+
+      if (!confirm(`"${inspectedStudentName}" için seçilen ${targetWeeks.length} haftalık veriler sıfırlanacak. Onaylıyor musunuz?`)) return;
+
+      const storageKey = getUserDataStorageKey(inspectedStudentName);
+      let uData = null;
+      try { uData = JSON.parse(localStorage.getItem(storageKey)); } catch(e) {}
+      if (!uData || !uData.weeksData) return;
+
+      targetWeeks.forEach(wNum => {
+        if (uData.weeksData[wNum]) {
+          const w = uData.weeksData[wNum];
+          if (w.days) {
+            for (let d = 0; d < 7; d++) {
+              if (resetQuestions && w.days[d]?.questions) w.days[d].questions.forEach(q => { q.count = 0; });
+              if (resetTopics && w.days[d]?.topics) w.days[d].topics.forEach(t => { t.done = false; });
+            }
+          }
+          if (resetDeneme && w.deneme?.subjects) {
+            w.deneme.conducted = false;
+            w.deneme.subjects.forEach(s => { s.correct = 0; s.incorrect = 0; s.net = 0; });
+          }
+          if (resetNotes) w.weeklyReflection = "";
+        }
+      });
+
+      localStorage.setItem(storageKey, JSON.stringify(uData));
+      renderDashboardOverview();
+      renderAiCoachAnalysis(adminActiveWeek);
+      alert(`Seçilen haftalar başarıyla sıfırlandı.`);
+    }
+
+    function exportAllClassData() {
+      const storageKey = getUserDataStorageKey(inspectedStudentName);
+      let uData = null;
+      try { uData = JSON.parse(localStorage.getItem(storageKey)); } catch(e) {}
+      const backupData = {
+        app: "7. Sınıf Gelişim Portalı",
+        studentName: inspectedStudentName,
+        version: "v5",
+        exportedAt: new Date().toISOString(),
+        state: uData,
+        registeredStudents: getRegisteredStudents()
+      };
+      const jsonStr = JSON.stringify(backupData, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      const cleanFileName = inspectedStudentName.replace(/[^a-zA-Z0-9çÇğĞıİöÖşŞüÜ_-]/g, '_');
+      a.download = `${cleanFileName}_7Sinif_Yedek_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function importClassDataFromFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          const targetState = parsed.state || parsed;
+          if (!targetState || !targetState.weeksData) {
+            alert("Geçersiz yedek dosyası!");
+            return;
+          }
+          if (confirm(`Yedek veriler "${inspectedStudentName}" profiline yüklenecek. Onaylıyor musunuz?`)) {
+            localStorage.setItem(getUserDataStorageKey(inspectedStudentName), JSON.stringify(targetState));
+            renderDashboardOverview();
+            renderAiCoachAnalysis(adminActiveWeek);
+            alert("Yedek başarıyla geri yüklendi!");
+          }
+        } catch(err) { alert("Dosya okuma hatası: " + err.message); }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAllDataToDefaults() {
+      if (!confirm(`DİKKAT! "${inspectedStudentName}" için tüm veriler sıfırlanacak. Bu işlem geri alınamaz!`)) return;
+      localStorage.removeItem(getUserDataStorageKey(inspectedStudentName));
+      renderDashboardOverview();
+      renderAiCoachAnalysis(adminActiveWeek);
+      alert("Tüm veriler temizlendi.");
+    }
+
+    function populateSupabaseSettingsFields() {
+      const cfg = getSupabaseConfig();
+      const uInp = document.getElementById("adminSupabaseUrlInput");
+      const kInp = document.getElementById("adminSupabaseKeyInput");
+      const sSnip = document.getElementById("adminSqlSnippet");
+      if (uInp) uInp.value = cfg.url || "";
+      if (kInp) kInp.value = cfg.anonKey || "";
+      if (sSnip) sSnip.textContent = SUPABASE_SETUP_SQL;
+    }
+
+    function saveAdminSupabaseSettings() {
+      const u = document.getElementById("adminSupabaseUrlInput")?.value || "";
+      const k = document.getElementById("adminSupabaseKeyInput")?.value || "";
+      saveSupabaseConfig(u, k);
+      testAdminSupabaseConnection();
+    }
+
+    async function testAdminSupabaseConnection(showAlert = true) {
+      const b = document.getElementById("adminSupabaseStatusBadge");
+      if (b) b.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Kontrol ediliyor...`;
+      const res = await testSupabaseConnection();
+      if (b) {
+        if (res.connected) b.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Bağlı`;
+        else b.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span> Bağlantı Yok`;
+      }
+      if (showAlert) alert(res.message);
+    }
+
+    async function handleAdminManualUpload() {
+      let uData = null;
+      try { uData = JSON.parse(localStorage.getItem(getUserDataStorageKey(inspectedStudentName))); } catch(e) {}
+      if (!uData) { alert("Yüklenecek veri bulunamadı."); return; }
+      const res = await saveStudentToSupabase(inspectedStudentName, uData);
+      if (res.success) alert(`"${inspectedStudentName}" verileri buluta başarıyla yüklendi.`);
+      else alert(`Bulut yükleme hatası: ${res.error?.message || 'Bilinmeyen hata'}`);
+    }
+
+    async function handleAdminManualDownload() {
+      if (!confirm(`"${inspectedStudentName}" için buluttaki veriler indirilerek yerel verilerin üzerine yazılacak. Onaylıyor musunuz?`)) return;
+      const res = await fetchStudentFromSupabase(inspectedStudentName);
+      if (res.success && res.data) {
+        localStorage.setItem(getUserDataStorageKey(inspectedStudentName), JSON.stringify(res.data));
+        renderDashboardOverview();
+        renderAiCoachAnalysis(adminActiveWeek);
+        alert(`Buluttan başarıyla indirildi ve eşitlendi.`);
+      } else {
+        alert("Bulutta veri bulunamadı veya bağlantı sağlanamadı.");
+      }
+    }
+
+    function renderSingleQrTab() {
+      const qrContainer = document.getElementById("adminQrDisplayContainer");
+      if (!qrContainer) return;
+      qrContainer.innerHTML = "";
+      document.getElementById("adminQrTargetStudentText").textContent = inspectedStudentName;
+      const payload = { u: inspectedStudentName, t: Date.now() };
+      const url = `${window.location.origin + window.location.pathname.replace('admin.html', 'ogrenci.html')}?qr_student=${encodeURIComponent(inspectedStudentName)}`;
+      try {
+        new QRCode(qrContainer, { text: url, width: 170, height: 170 });
+      } catch (e) {}
+    }
+
+    // Sayfa Yüklendiğinde Doğrulama ve Başlatma
+    document.addEventListener("DOMContentLoaded", () => {
+      checkAdminAuth();
+    });
+  </script>
+</body>
+</html>
