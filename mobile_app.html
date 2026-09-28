@@ -1286,6 +1286,11 @@
           isSel ? 'bg-blue-600 text-white shadow' : 'bg-slate-100 text-slate-700'
         }`;
         b.textContent = `H${w.weekNumber}`;
+        if (isSel) {
+          setTimeout(() => {
+            b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }, 60);
+        }
         bar.appendChild(b);
       });
     }

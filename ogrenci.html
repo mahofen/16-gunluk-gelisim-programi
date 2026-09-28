@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>7. Sınıf Haftalık Gelişim, Soru & Deneme Portalı (2026 - 2027)</title>
+  <title>7. Sınıf Dijital Koç Takip Sistemi (2026 - 2027)</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -94,6 +94,41 @@
     .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
+    }
+
+    /* 40 Hafta Belirgin Yatay Kaydırma Çubuğu (Scrollbar) */
+    .custom-weeks-scrollbar {
+      overflow-x: auto !important;
+      overflow-y: hidden;
+      scrollbar-width: auto !important; /* Firefox için görünür çubuk */
+      scrollbar-color: #2563eb #e2e8f0 !important; /* Firefox: Başparmak mavi, zemin gri */
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+    .custom-weeks-scrollbar::-webkit-scrollbar {
+      height: 12px !important; /* Belirgin ve kolay sürüklenebilir çubuk yüksekliği */
+      display: block !important;
+    }
+    .custom-weeks-scrollbar::-webkit-scrollbar-track {
+      background: #e2e8f0 !important;
+      border-radius: 9999px;
+      margin: 0 4px;
+      border: 1px solid #cbd5e1;
+    }
+    .custom-weeks-scrollbar::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, #3b82f6, #2563eb) !important;
+      border-radius: 9999px;
+      border: 2px solid #e2e8f0;
+      cursor: grab;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    }
+    .custom-weeks-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(90deg, #2563eb, #1d4ed8) !important;
+    }
+    .custom-weeks-scrollbar::-webkit-scrollbar-thumb:active {
+      cursor: grabbing;
+      background: #1e3a8a !important;
     }
 
     @media print {
@@ -187,7 +222,7 @@
           <span id="bannerWeekTitleBadge">1. Hafta (28 Eylül – 4 Ekim 2026)</span>
         </div>
         <h2 class="text-xl sm:text-2xl font-fun font-bold text-white tracking-wide">
-          "7. Sınıf Konularını Tamamla, Soru Çöz, Denemede Fark Yarat! 🎯"
+          7. SINIF DİJİTAL KOÇ TAKİP SİSTEMİ
         </h2>
         <p class="text-xs sm:text-sm text-sky-100 mt-1 max-w-2xl">
           Sevgili <strong class="text-amber-300" id="bannerStudentName">Öğrenci</strong>, açılır pencereden 7. sınıf konularını seç, günlük soru sayılarını gir ve hafta sonu 20'şer soruluk branş denemelerinde netlerini gör!
@@ -265,9 +300,38 @@
         </div>
       </div>
 
-      <!-- 40 Haftalık Hızlı Seçim Şeridi -->
-      <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar" id="weeksHorizontalBar">
-        <!-- JS ile 40 adet mini hafta butonu -->
+      <!-- 40 Haftalık Hızlı Seçim Şeridi ve Belirgin Kaydırma Çubuğu -->
+      <div class="bg-slate-50/90 rounded-2xl p-3.5 border border-slate-200 space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2 text-slate-700 font-semibold">
+            <span class="w-6 h-6 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-arrows-left-right"></i>
+            </span>
+            <span>40 Haftanın Tamamı (Mavi kaydırma çubuğunu sürükleyebilir veya ok butonlarıyla haftaları gezebilirsiniz):</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-lg bg-blue-100/80 border border-blue-200 text-blue-800 font-bold text-[11px]" id="weeksIndicatorText">
+              1 / 40. Hafta
+            </span>
+          </div>
+        </div>
+
+        <div class="relative flex items-center gap-2">
+          <!-- Sol Kaydırma Butonu -->
+          <button type="button" onclick="scrollWeeksBar(-350)" class="w-9 h-11 shrink-0 rounded-xl bg-white hover:bg-blue-600 hover:text-white border border-slate-200 text-slate-600 shadow-xs flex items-center justify-center transition-all cursor-pointer" title="Haftaları Sola Kaydır">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+          </button>
+
+          <!-- 40 Hafta Kaydırılabilir Kapsayıcı (Görünür Scrollbar) -->
+          <div class="custom-weeks-scrollbar flex-1 flex gap-2 overflow-x-auto py-2 px-1 scroll-smooth" id="weeksHorizontalBar">
+            <!-- JS ile 40 adet hafta butonu -->
+          </div>
+
+          <!-- Sağ Kaydırma Butonu -->
+          <button type="button" onclick="scrollWeeksBar(350)" class="w-9 h-11 shrink-0 rounded-xl bg-white hover:bg-blue-600 hover:text-white border border-slate-200 text-slate-600 shadow-xs flex items-center justify-center transition-all cursor-pointer" title="Haftaları Sağa Kaydır">
+            <i class="fa-solid fa-chevron-right text-sm"></i>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -1877,17 +1941,50 @@
         const isSel = w.weekNumber === state.selectedWeek;
         const b = document.createElement("button");
         b.onclick = () => selectWeek(w.weekNumber);
-        b.className = `flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-          isSel ? 'bg-blue-600 text-white shadow-md scale-105' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
+        b.className = `flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+          isSel 
+            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md ring-2 ring-blue-300 scale-105' 
+            : 'bg-white hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 hover:border-blue-300 shadow-2xs'
         }`;
-        b.innerHTML = `<span>H${w.weekNumber}</span> <span class="text-[10px] font-normal opacity-80">(${w.startDate.getDate()} ${MONTH_NAMES[w.startDate.getMonth()].substring(0,3)})</span>`;
+        b.innerHTML = `<span class="font-fun">${w.weekNumber}. Hafta</span> <span class="text-[10px] font-normal ${isSel ? 'text-blue-100' : 'text-slate-400'}">(${w.startDate.getDate()} ${MONTH_NAMES[w.startDate.getMonth()].substring(0,3)})</span>`;
+        if (isSel) {
+          setTimeout(() => {
+            b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }, 60);
+        }
         bar.appendChild(b);
       });
+
+      const indicator = document.getElementById("weeksIndicatorText");
+      if (indicator) {
+        indicator.textContent = `${state.selectedWeek}. Hafta / 40`;
+      }
+
+      initWeeksHorizontalWheel();
 
       const currentWeekObj = ALL_WEEKS.find(w => w.weekNumber === state.selectedWeek) || ALL_WEEKS[0];
       document.getElementById("bannerWeekTitleBadge").textContent = currentWeekObj.label;
       document.getElementById("currentWeekRangeHeader").textContent = currentWeekObj.label;
       document.getElementById("weeklyCardTitle").textContent = `${currentWeekObj.shortTitle} Karnesi`;
+    }
+
+    function scrollWeeksBar(offset) {
+      const bar = document.getElementById("weeksHorizontalBar");
+      if (bar) {
+        bar.scrollBy({ left: offset, behavior: 'smooth' });
+      }
+    }
+
+    function initWeeksHorizontalWheel() {
+      const bar = document.getElementById("weeksHorizontalBar");
+      if (!bar || bar.dataset.wheelBound) return;
+      bar.dataset.wheelBound = "true";
+      bar.addEventListener("wheel", (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          bar.scrollLeft += e.deltaY * 1.5;
+        }
+      }, { passive: false });
     }
 
     function selectWeek(wNum) {
