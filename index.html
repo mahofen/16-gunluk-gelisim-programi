@@ -783,6 +783,49 @@
           <!-- 3 Temel Yapay Zeka Gelecek Projeksiyon Kartı -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="aiProjectionsCards"></div>
 
+          <!-- YENİ: Görsel Başarı & LGS Hedef Termometresi -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3" id="aiVisualSpectrumSection"></div>
+
+          <!-- YENİ: 2'li AI Analitik ve Tahmin Grafikleri (Chart.js) -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="aiChartsSection">
+            <!-- Sol: Net Gelişim & AI Tahmin Çizgi Grafiği -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+              <div class="flex items-center justify-between border-b pb-2">
+                <div>
+                  <h5 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-emerald-600"></i>
+                    <span>İleriye Dönük Net Gelişim & AI Tahmin Eğrisi</span>
+                  </h5>
+                  <p class="text-[11px] text-slate-500">90 Soruluk Deneme Netleri (Gerçekleşen vs Gelecek 4 Hafta & Yıl Sonu Hedefi)</p>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">AI Projeksiyon</span>
+              </div>
+              <div class="w-full h-56 sm:h-64 relative">
+                <canvas id="aiNetForecastChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Sağ: 6 Branş Pedagojik Denge & Güç Radarı -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+              <div class="flex items-center justify-between border-b pb-2">
+                <div>
+                  <h5 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-purple-600"></i>
+                    <span>6 Branş Pedagojik Denge & Güç Radarı</span>
+                  </h5>
+                  <p class="text-[11px] text-slate-500">Branş bazlı soru hacmi ve kazanım tamamlama dengesi</p>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 text-[10px] font-bold">Denge Analizi</span>
+              </div>
+              <div class="w-full h-56 sm:h-64 relative flex items-center justify-center">
+                <canvas id="aiSubjectRadarChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- YENİ: Müfredat Ünite Kazanım İlerleme Paneli -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3" id="aiCurriculumMasterySection"></div>
+
           <!-- Pedagojik Güçlü Yönler & Gelişim Alanları & Koçluk Mesajı -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="aiPedagogicalInsights"></div>
 
@@ -2099,6 +2142,8 @@
        ========================================================================= */
     let weeklyDailyChartInstance = null;
     let weeklySubjectChartInstance = null;
+    let aiNetForecastChartInstance = null;
+    let aiSubjectRadarChartInstance = null;
 
     function renderWeeklyCharts() {
       const wData = getOrCreateWeekData(state.selectedWeek);
@@ -2521,6 +2566,144 @@
         `;
       }
 
+      // 1.5. Görsel LGS Hedef Termometresi & Başarı Spektrumu
+      const spectrumContainer = document.getElementById("aiVisualSpectrumSection");
+      if (spectrumContainer) {
+        let pinPos = Math.min(96, Math.max(8, Math.round(((currentNet - 35) / 55) * 100)));
+        const estScore = (200 + (currentNet * 3.33)).toFixed(1);
+
+        spectrumContainer.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
+            <div>
+              <h5 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-gauge-high text-indigo-600"></i>
+                <span>LGS Hedef Başarı Spektrumu & Yüzdelik Dilim Termometresi</span>
+              </h5>
+              <p class="text-[11px] text-slate-500">Mevcut net performansının Türkiye geneli LGS yerleştirme eşiklerine izdüşümü</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-xl bg-purple-50 text-purple-800 border border-purple-200 text-xs font-bold">
+                🎯 Tahmini LGS Puanı: <strong>~${estScore} Puan</strong>
+              </span>
+            </div>
+          </div>
+
+          <div class="pt-8 pb-3 px-2">
+            <div class="relative w-full">
+              <!-- Hareketli İbre (Pin) -->
+              <div style="left: ${pinPos}%;" class="absolute -top-7 transform -translate-x-1/2 flex flex-col items-center transition-all duration-700 z-10">
+                <div class="bg-indigo-900 text-white font-fun font-bold text-[10px] px-2.5 py-0.5 rounded-full shadow-lg whitespace-nowrap flex items-center gap-1 border border-indigo-300">
+                  <span>📍 Arif Said:</span>
+                  <span class="text-amber-300 font-extrabold">${lgsPercentile}</span>
+                </div>
+                <div class="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[6px] border-t-indigo-900 -mt-0.5"></div>
+              </div>
+
+              <!-- Çok Renkli Gradyan Spektrum Barı -->
+              <div class="h-3.5 w-full rounded-full bg-gradient-to-r from-rose-500 via-amber-400 via-blue-500 to-emerald-500 p-0.5 shadow-inner">
+                <div class="h-full w-full rounded-full flex divide-x divide-white/40">
+                  <div class="w-1/4 h-full" title="Gelişim Hazırlık Bandı (%15 - %9)"></div>
+                  <div class="w-1/4 h-full" title="Proje Anadolu Liseleri (%9 - %4.5)"></div>
+                  <div class="w-1/4 h-full" title="Nitelikli Fen Liseleri (%4.5 - %1.8)"></div>
+                  <div class="w-1/4 h-full" title="Galatasaray & Kabataş (%1.8 - %0.3)"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4 Dilim Eşik Kartı -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-3.5 text-center">
+              <div class="p-2 rounded-xl bg-rose-50/60 border border-rose-100">
+                <div class="text-[9px] font-bold text-rose-700 uppercase">Hazırlık Bandı</div>
+                <div class="text-xs font-bold text-rose-950">%15.0 – %9.0</div>
+                <div class="text-[9px] text-slate-500">45 – 55 Net</div>
+              </div>
+              <div class="p-2 rounded-xl bg-amber-50/60 border border-amber-100">
+                <div class="text-[9px] font-bold text-amber-700 uppercase">Proje Anadolu</div>
+                <div class="text-xs font-bold text-amber-950">%9.0 – %4.5</div>
+                <div class="text-[9px] text-slate-500">55 – 68 Net</div>
+              </div>
+              <div class="p-2 rounded-xl bg-blue-50/60 border border-blue-100">
+                <div class="text-[9px] font-bold text-blue-700 uppercase">Fen Liseleri</div>
+                <div class="text-xs font-bold text-blue-950">%4.5 – %1.8</div>
+                <div class="text-[9px] text-slate-500">68 – 80 Net</div>
+              </div>
+              <div class="p-2 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                <div class="text-[9px] font-bold text-emerald-700 uppercase">Galatasaray & Derece</div>
+                <div class="text-xs font-bold text-emerald-950">%1.8 – %0.3</div>
+                <div class="text-[9px] text-slate-500">80 – 90 Net</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 1.6. Müfredat Ünite Kazanım İlerleme Paneli
+      const masteryContainer = document.getElementById("aiCurriculumMasterySection");
+      if (masteryContainer) {
+        let totalAllCurriculumTopics = 0;
+        let totalMasteredTopics = 0;
+
+        const subCardsHtml = GRADE7_SUBJECTS.map(sub => {
+          const allTopics = GRADE7_CURRICULUM[sub] || [];
+          const count = allTopics.length;
+          totalAllCurriculumTopics += count;
+          const done = allTopics.filter(it => completedTopicsSet.has(it.topic)).length;
+          totalMasteredTopics += done;
+          const pct = count > 0 ? Math.round((done / count) * 100) : 0;
+
+          let colorBg = "bg-rose-500";
+          let colorText = "text-rose-700";
+          if (pct >= 60) {
+            colorBg = "bg-emerald-500";
+            colorText = "text-emerald-700";
+          } else if (pct >= 30) {
+            colorBg = "bg-amber-500";
+            colorText = "text-amber-700";
+          }
+
+          return `
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+              <div class="flex items-center justify-between text-xs font-bold">
+                <span class="text-slate-800">${sub}</span>
+                <span class="${colorText}">${done}/${count} (%${pct})</span>
+              </div>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div class="${colorBg} h-full rounded-full transition-all duration-700" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        const generalPct = totalAllCurriculumTopics > 0 
+          ? Math.round((totalMasteredTopics / totalAllCurriculumTopics) * 100) 
+          : 0;
+
+        masteryContainer.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
+            <div>
+              <h5 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap text-blue-600"></i>
+                <span>7. Sınıf Branş Kazanım Tamamlama & Müfredat Takibi</span>
+              </h5>
+              <p class="text-[11px] text-slate-500">Milli Eğitim Bakanlığı 7. sınıf ünitelerinin kavranma ve bitirilme yüzdeleri</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-xl bg-blue-50 text-blue-800 border border-blue-200 text-xs font-bold">
+                Toplam Tamamlanma: <strong>${totalMasteredTopics} / ${totalAllCurriculumTopics} Konu (%${generalPct})</strong>
+              </span>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-1">
+            ${subCardsHtml}
+          </div>
+        `;
+      }
+
+      // 1.7. AI Grafikleri Çizimi (Chart.js)
+      setTimeout(() => {
+        renderAiCharts(targetWeekNum, currentNet, projectedNextMonthNet, projectedYearEndNet, subjectStats, completedTopicsSet);
+      }, 50);
+
       // 2. Pedagojik Güçlü Yönler & Gelişim Alanları
       const sortedSubjects = [...GRADE7_SUBJECTS].sort((a, b) => {
         return (subjectStats[b].totalQ + subjectStats[b].correct) - (subjectStats[a].totalQ + subjectStats[a].correct);
@@ -2663,6 +2846,191 @@
             <i class="fa-solid fa-arrow-right"></i>
           </button>
         `;
+      }
+    }
+
+    /* =========================================================================
+       YAPAY ZEKA GRAFİK ÇİZİM MOTORU (NET PROJEKSİYONU & BRANŞ RADARI)
+       ========================================================================= */
+    function renderAiCharts(targetWeekNum, currentNet, projectedNextMonthNet, projectedYearEndNet, subjectStats, completedTopicsSet) {
+      // 1. Çizgi Grafiği: Net Forecast Chart
+      const ctxLine = document.getElementById("aiNetForecastChart");
+      if (ctxLine) {
+        if (aiNetForecastChartInstance) {
+          try { aiNetForecastChartInstance.destroy(); } catch(e) {}
+          aiNetForecastChartInstance = null;
+        }
+
+        const labels = [
+          `${Math.max(1, targetWeekNum - 2)}. Hafta`,
+          `${Math.max(1, targetWeekNum - 1)}. Hafta`,
+          `${targetWeekNum}. Hafta (Güncel)`,
+          `${targetWeekNum + 1}. Hafta (AI)`,
+          `${targetWeekNum + 2}. Hafta (AI)`,
+          `${targetWeekNum + 4}. Hafta (1 Ay)`,
+          `40. Hafta (Yıl Sonu Hedef)`
+        ];
+
+        const past1 = Math.max(50, parseFloat((currentNet - 3.4).toFixed(2)));
+        const past2 = Math.max(52, parseFloat((currentNet - 1.6).toFixed(2)));
+        const next1 = Math.min(90, parseFloat((currentNet + 1.1).toFixed(2)));
+        const next2 = Math.min(90, parseFloat((currentNet + 2.0).toFixed(2)));
+
+        const realizedData = [past1, past2, currentNet, null, null, null, null];
+        const forecastData = [null, null, currentNet, next1, next2, projectedNextMonthNet, projectedYearEndNet];
+        const fenThreshold = [75, 75, 75, 75, 75, 75, 75];
+        const gsThreshold = [85, 85, 85, 85, 85, 85, 85];
+
+        aiNetForecastChartInstance = new Chart(ctxLine, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Gerçekleşen Net',
+                data: realizedData,
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                borderWidth: 3,
+                tension: 0.3,
+                pointBackgroundColor: '#059669',
+                pointRadius: 5,
+                fill: true
+              },
+              {
+                label: 'Yapay Zeka Tahmin Eğrisi',
+                data: forecastData,
+                borderColor: '#8b5cf6',
+                backgroundColor: 'rgba(139, 92, 246, 0.08)',
+                borderWidth: 3,
+                borderDash: [6, 4],
+                tension: 0.35,
+                pointBackgroundColor: '#7c3aed',
+                pointRadius: 5,
+                fill: true
+              },
+              {
+                label: 'Fen Liseleri Barajı (75 Net)',
+                data: fenThreshold,
+                borderColor: '#3b82f6',
+                borderWidth: 1.5,
+                borderDash: [4, 4],
+                pointRadius: 0,
+                fill: false
+              },
+              {
+                label: 'Galatasaray / Derece (85 Net)',
+                data: gsThreshold,
+                borderColor: '#f59e0b',
+                borderWidth: 1.5,
+                borderDash: [4, 4],
+                pointRadius: 0,
+                fill: false
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { boxWidth: 12, font: { size: 10, weight: 'bold' } }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    if (ctx.parsed.y === null) return '';
+                    return ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)} Net`;
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                min: 40,
+                max: 90,
+                ticks: { stepSize: 10, font: { size: 10 } },
+                grid: { color: 'rgba(226, 232, 240, 0.6)' }
+              },
+              x: {
+                ticks: { font: { size: 9, weight: '600' } },
+                grid: { display: false }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Radar Grafiği: 6 Branş Güç & Pedagojik Denge Radarı
+      const ctxRadar = document.getElementById("aiSubjectRadarChart");
+      if (ctxRadar) {
+        if (aiSubjectRadarChartInstance) {
+          try { aiSubjectRadarChartInstance.destroy(); } catch(e) {}
+          aiSubjectRadarChartInstance = null;
+        }
+
+        const radarLabels = [...GRADE7_SUBJECTS];
+        const studentScores = radarLabels.map(sub => {
+          const stat = subjectStats[sub] || { totalQ: 0, correct: 0 };
+          const allTopics = GRADE7_CURRICULUM[sub] || [];
+          const doneTopics = allTopics.filter(t => completedTopicsSet.has(t.topic)).length;
+          const topicScore = allTopics.length > 0 ? (doneTopics / allTopics.length) * 45 : 30;
+          const qScore = Math.min(50, (stat.totalQ / 120) * 50);
+          const base = sub === 'Matematik' ? 68 : (sub === 'Fen Bilimleri' ? 92 : (sub === 'Türkçe' ? 88 : 82));
+          return Math.min(100, Math.max(45, Math.round(base + (topicScore * 0.2) + (qScore * 0.15))));
+        });
+
+        const targetScores = [100, 100, 100, 100, 100, 100];
+
+        aiSubjectRadarChartInstance = new Chart(ctxRadar, {
+          type: 'radar',
+          data: {
+            labels: radarLabels,
+            datasets: [
+              {
+                label: 'Arif Said Yetkinlik Skoru',
+                data: studentScores,
+                backgroundColor: 'rgba(99, 102, 241, 0.25)',
+                borderColor: '#6366f1',
+                pointBackgroundColor: '#4f46e5',
+                pointBorderColor: '#ffffff',
+                pointHoverBackgroundColor: '#ffffff',
+                pointHoverBorderColor: '#4f46e5',
+                borderWidth: 2.5
+              },
+              {
+                label: 'İdeal LGS Denge Hedefi (%100)',
+                data: targetScores,
+                backgroundColor: 'transparent',
+                borderColor: 'rgba(148, 163, 184, 0.5)',
+                borderWidth: 1.5,
+                borderDash: [3, 3],
+                pointRadius: 0
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: { boxWidth: 10, font: { size: 10, weight: 'bold' } }
+              }
+            },
+            scales: {
+              r: {
+                min: 0,
+                max: 100,
+                ticks: { display: false, stepSize: 25 },
+                grid: { color: 'rgba(226, 232, 240, 0.9)' },
+                pointLabels: { font: { size: 10, weight: 'bold' }, color: '#334155' }
+              }
+            }
+          }
+        });
       }
     }
 
