@@ -30,6 +30,10 @@
   <!-- QRCode.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
+  <!-- Supabase JS Client & Sync Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_client.js"></script>
+
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -100,6 +104,11 @@
         </div>
 
         <div class="flex items-center gap-1.5">
+          <button onclick="openSupabaseModal()" id="mobileSupabaseBtn" class="bg-emerald-600/80 hover:bg-emerald-700 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-emerald-300/40 shadow-sm tap-bounce" title="Supabase Bulut">
+            <span class="w-2 h-2 rounded-full bg-slate-300 inline-block supabase-status-dot"></span>
+            <i class="fa-solid fa-cloud"></i>
+          </button>
+
           <button onclick="openMobileAdminModal()" id="mobileAdminHeaderBtn" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce">
             <i class="fa-solid fa-chart-pie text-sky-300"></i>
             <span>Karne</span>
@@ -280,6 +289,14 @@
         </div>
 
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-card-sm space-y-2 text-xs">
+          <button onclick="openSupabaseModal()" class="w-full p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 font-bold flex items-center justify-between tap-bounce">
+            <span class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block supabase-status-dot"></span>
+              <i class="fa-solid fa-cloud text-emerald-600"></i>
+              <span class="supabase-status-text">Supabase Bulut Bağlantısı</span>
+            </span>
+            <i class="fa-solid fa-chevron-right text-emerald-500"></i>
+          </button>
           <a href="index.html" class="w-full p-3 rounded-xl bg-slate-50 border text-slate-700 font-semibold flex items-center justify-between">
             <span><i class="fa-solid fa-desktop text-blue-600 mr-2"></i> Masaüstü Web Portalı</span>
             <i class="fa-solid fa-chevron-right text-slate-400"></i>
@@ -392,6 +409,81 @@
           <div id="mAdminStudentList" class="space-y-2 max-h-56 overflow-y-auto"></div>
         </div>
         <button onclick="closeMobileAdminModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">Kapat</button>
+      </div>
+    </div>
+
+    <!-- ================= SUPABASE BULUT BAĞLANTISI MODALI (MOBİL) ================= -->
+    <div id="supabaseModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
+      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[92%] overflow-y-auto">
+        <div class="flex items-center justify-between border-b pb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow">
+              <i class="fa-solid fa-cloud"></i>
+            </span>
+            <div>
+              <h3 class="font-fun text-sm font-bold text-slate-800">Supabase Bulut Bağlantısı</h3>
+              <p class="text-[10px] text-slate-500">Cihazlar arası otomatik veri senkronizasyonu</p>
+            </div>
+          </div>
+          <button onclick="closeSupabaseModal()" class="text-slate-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Durum Rozeti -->
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block supabase-status-dot"></span>
+            <span class="font-bold text-xs text-slate-800 supabase-status-text">Bulut: Ayarlanmadı</span>
+          </div>
+          <button onclick="testAndDisplaySupabaseConnection()" class="px-2.5 py-1 rounded-lg bg-slate-200 font-bold text-[10px] text-slate-700 tap-bounce">
+            Test Et ⚡
+          </button>
+        </div>
+
+        <!-- Form Alanları -->
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5 text-[11px]">Supabase Proje URL:</label>
+            <input type="text" id="supabaseUrlInput" placeholder="https://xxxx.supabase.co" class="w-full p-2 rounded-xl bg-slate-50 border text-xs font-mono focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-0.5 text-[11px]">Supabase Anon Key:</label>
+            <textarea id="supabaseKeyInput" rows="2" placeholder="eyJhbGciOi..." class="w-full p-2 rounded-xl bg-slate-50 border text-xs font-mono focus:outline-none resize-none"></textarea>
+          </div>
+          <button onclick="handleSaveSupabaseConfig()" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-fun font-bold text-xs shadow tap-bounce">
+            Ayarları Kaydet & Bağlan
+          </button>
+        </div>
+
+        <!-- Manuel Eşitleme -->
+        <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+          <div class="text-[11px] font-bold text-emerald-900">Manuel Eşitleme:</div>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="handleManualUploadToSupabase()" class="py-1.5 px-2 rounded-lg bg-white border border-emerald-300 font-bold text-[10px] text-emerald-800 tap-bounce flex items-center justify-center gap-1">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Buluta Yükle
+            </button>
+            <button onclick="handleManualDownloadFromSupabase()" class="py-1.5 px-2 rounded-lg bg-white border border-emerald-300 font-bold text-[10px] text-emerald-800 tap-bounce flex items-center justify-center gap-1">
+              <i class="fa-solid fa-cloud-arrow-down"></i> Buluttan İndir
+            </button>
+          </div>
+        </div>
+
+        <!-- SQL Gösterimi -->
+        <div class="border rounded-xl overflow-hidden text-xs">
+          <button onclick="toggleSupabaseSqlAccordion()" class="w-full p-2.5 bg-slate-50 font-bold text-[11px] text-slate-700 flex items-center justify-between">
+            <span><i class="fa-solid fa-database text-blue-600 mr-1"></i> Supabase SQL Kodu</span>
+            <i class="fa-solid fa-chevron-down text-slate-400" id="supabaseSqlAccordionIcon"></i>
+          </button>
+          <div id="supabaseSqlAccordionContent" class="hidden p-2.5 bg-slate-900 text-slate-200 space-y-1.5">
+            <pre class="text-[9px] font-mono p-2 rounded bg-black/40 text-emerald-400 max-h-24 overflow-x-auto" id="supabaseSqlSnippet"></pre>
+            <button onclick="copySupabaseSql()" class="w-full py-1 rounded bg-emerald-600 text-white font-bold text-[10px] tap-bounce">
+              SQL Kodunu Kopyala
+            </button>
+          </div>
+        </div>
+
+        <button onclick="closeSupabaseModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">
+          Kapat
+        </button>
       </div>
     </div>
 
@@ -611,6 +703,9 @@
     function saveState() {
       localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
       updateMetrics();
+      if (typeof queueSupabaseSave === "function") {
+        queueSupabaseSave(STUDENT_NAME, state);
+      }
     }
 
     /* 7. SINIF AÇILIR PENCERE (POPUP) SEÇİCİ */
@@ -1112,6 +1207,132 @@
       updateMetrics();
     }
 
+    /* ================= SUPABASE BULUT FONKSİYONLARI ================= */
+    function openSupabaseModal() {
+      const cfg = getSupabaseConfig();
+      document.getElementById("supabaseUrlInput").value = cfg.url || "";
+      document.getElementById("supabaseKeyInput").value = cfg.anonKey || "";
+      document.getElementById("supabaseSqlSnippet").textContent = SUPABASE_SETUP_SQL;
+      
+      const modal = document.getElementById("supabaseModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      testAndDisplaySupabaseConnection(false);
+    }
+
+    function closeSupabaseModal() {
+      const modal = document.getElementById("supabaseModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    async function handleSaveSupabaseConfig() {
+      const url = document.getElementById("supabaseUrlInput").value.trim();
+      const key = document.getElementById("supabaseKeyInput").value.trim();
+      if (!url || !key) {
+        alert("Lütfen hem Supabase Proje URL hem de Anon Key bilgilerini girin.");
+        return;
+      }
+      saveSupabaseConfig(url, key);
+      await testAndDisplaySupabaseConnection(true);
+      syncInitialDataFromSupabase();
+    }
+
+    async function testAndDisplaySupabaseConnection(showAlert = true) {
+      updateSupabaseStatusBadge("syncing", "Bağlantı test ediliyor...");
+      const res = await testSupabaseConnection();
+      if (res.success) {
+        updateSupabaseStatusBadge("connected", "Bulut: Bağlantı Başarılı ✓");
+        if (showAlert) alert("Tebrikler! Supabase veritabanına başarıyla bağlanıldı. 🎉");
+      } else {
+        updateSupabaseStatusBadge("error", "Bağlantı Başarısız");
+        if (showAlert) alert(res.message);
+      }
+    }
+
+    async function handleManualUploadToSupabase() {
+      updateSupabaseStatusBadge("syncing", "Buluta yükleniyor...");
+      const res = await saveStudentToSupabase(STUDENT_NAME, state);
+      if (res.success) {
+        playChime('done');
+        confetti({ particleCount: 50, spread: 60 });
+        alert("Arif Said İlkbahar'ın tüm verileri Supabase buluta aktarıldı! ☁️✓");
+      } else {
+        alert("Yükleme başarısız: " + (res.error || "Bilinmeyen hata"));
+      }
+    }
+
+    async function handleManualDownloadFromSupabase() {
+      if (!confirm("Buluttaki veriler indirilerek telefonunuzdaki verilerin üzerine yazılacak. Onaylıyor musunuz?")) return;
+      updateSupabaseStatusBadge("syncing", "Buluttan indiriliyor...");
+      const res = await fetchStudentFromSupabase(STUDENT_NAME);
+      if (res.success && res.data) {
+        state = res.data;
+        localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
+        renderAll();
+        playChime('done');
+        alert("Buluttaki güncel veriler başarıyla yüklendi! ☁️📥");
+      } else if (res.success && res.notFound) {
+        alert("Bulutta henüz kayıt bulunamadı. Önce 'Buluta Yükle' butonuna basabilirsiniz.");
+      } else {
+        alert("İndirme başarısız: " + (res.error || "Bilinmeyen hata"));
+      }
+    }
+
+    function toggleSupabaseSqlAccordion() {
+      const content = document.getElementById("supabaseSqlAccordionContent");
+      const icon = document.getElementById("supabaseSqlAccordionIcon");
+      if (content.classList.contains("hidden")) {
+        content.classList.remove("hidden");
+        icon.className = "fa-solid fa-chevron-up text-slate-400";
+      } else {
+        content.classList.add("hidden");
+        icon.className = "fa-solid fa-chevron-down text-slate-400";
+      }
+    }
+
+    function copySupabaseSql() {
+      navigator.clipboard.writeText(SUPABASE_SETUP_SQL).then(() => {
+        alert("SQL kodu kopyalandı!");
+      }).catch(() => {
+        const ta = document.createElement("textarea");
+        ta.value = SUPABASE_SETUP_SQL;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        alert("SQL kodu kopyalandı!");
+      });
+    }
+
+    async function syncInitialDataFromSupabase() {
+      const cfg = getSupabaseConfig();
+      if (!cfg.url || !cfg.anonKey) {
+        updateSupabaseStatusBadge("unconfigured");
+        return;
+      }
+      updateSupabaseStatusBadge("syncing", "Buluttan kontrol ediliyor...");
+      const res = await fetchStudentFromSupabase(STUDENT_NAME);
+      if (res.success && res.data) {
+        state = res.data;
+        localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
+        renderAll();
+        updateSupabaseStatusBadge("connected", "Bulut: Canlı (Supabase)");
+      } else if (res.success && res.notFound) {
+        saveStudentToSupabase(STUDENT_NAME, state);
+        updateSupabaseStatusBadge("connected", "Bulut: Senkronize");
+      } else {
+        updateSupabaseStatusBadge("error", "Bulut: Çevrimdışı");
+      }
+
+      setupSupabaseRealtime(STUDENT_NAME, (remoteState) => {
+        state = remoteState;
+        localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
+        renderAll();
+        playChime('done');
+      });
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       initMobile();
       const n = document.getElementById("mDailyNote");
@@ -1122,6 +1343,8 @@
           saveState();
         });
       }
+      // Supabase bulut senkronizasyonu başlat
+      syncInitialDataFromSupabase();
     });
   </script>
 </body>
