@@ -878,6 +878,7 @@
       renderSingleQrTab();
       initBulkResetOptions();
       populateSupabaseSettingsFields();
+      testAdminSupabaseConnection(false);
     }
 
     function changeAdminWeek(wNum) {
@@ -1482,11 +1483,19 @@
 
     async function testAdminSupabaseConnection(showAlert = true) {
       const b = document.getElementById("adminSupabaseStatusBadge");
-      if (b) b.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Kontrol ediliyor...`;
+      if (b) {
+        b.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> Kontrol ediliyor...`;
+        b.className = "px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-200 text-xs font-bold border border-amber-400/30 inline-flex items-center gap-1.5";
+      }
       const res = await testSupabaseConnection();
       if (b) {
-        if (res.connected) b.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Bağlı`;
-        else b.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span> Bağlantı Yok`;
+        if (res.success || res.connected) {
+          b.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Bağlı (Canlı)`;
+          b.className = "px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-200 text-xs font-bold border border-emerald-400/30 inline-flex items-center gap-1.5";
+        } else {
+          b.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span> Bağlantı Yok`;
+          b.className = "px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-200 text-xs font-bold border border-rose-400/30 inline-flex items-center gap-1.5";
+        }
       }
       if (showAlert) alert(res.message);
     }

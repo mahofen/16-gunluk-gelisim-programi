@@ -25,11 +25,19 @@ let _isRealtimeSubscribed = false;
  * Mevcut kayıtlı Supabase yapılandırmasını döndürür.
  */
 function getSupabaseConfig() {
-  const storedUrl = localStorage.getItem(SUPABASE_STORAGE_URL_KEY) || localStorage.getItem("arif_said_supabase_url");
-  const storedKey = localStorage.getItem(SUPABASE_STORAGE_KEY_KEY) || localStorage.getItem("arif_said_supabase_anon_key");
+  let storedUrl = localStorage.getItem(SUPABASE_STORAGE_URL_KEY) || localStorage.getItem("arif_said_supabase_url");
+  let storedKey = localStorage.getItem(SUPABASE_STORAGE_KEY_KEY) || localStorage.getItem("arif_said_supabase_anon_key");
+
+  if (!storedUrl || typeof storedUrl !== 'string' || !storedUrl.startsWith("http")) {
+    storedUrl = DEFAULT_SUPABASE_CONFIG.url;
+  }
+  if (!storedKey || typeof storedKey !== 'string' || storedKey.length < 20) {
+    storedKey = DEFAULT_SUPABASE_CONFIG.anonKey;
+  }
+
   return {
-    url: (storedUrl && storedUrl.trim()) ? storedUrl.trim() : DEFAULT_SUPABASE_CONFIG.url,
-    anonKey: (storedKey && storedKey.trim()) ? storedKey.trim() : DEFAULT_SUPABASE_CONFIG.anonKey
+    url: storedUrl.trim(),
+    anonKey: storedKey.trim()
   };
 }
 
@@ -50,14 +58,14 @@ function saveSupabaseConfig(url, anonKey) {
 function getSupabaseClient() {
   if (_supabaseClientInstance) return _supabaseClientInstance;
   const cfg = getSupabaseConfig();
-  if (cfg.url && cfg.anonKey && window.supabase) {
+  if (cfg.url && cfg.anonKey && window.supabase && typeof window.supabase.createClient === "function") {
     try {
       _supabaseClientInstance = window.supabase.createClient(cfg.url, cfg.anonKey, {
         auth: { persistSession: false }
       });
       return _supabaseClientInstance;
     } catch (e) {
-      console.warn("[Supabase] Başlatma hatası:", e);
+      console.warn("[Supabase] JS SDK Başlatma Hatası:", e);
       return null;
     }
   }
@@ -66,85 +74,166 @@ function getSupabaseClient() {
 
 /**
  * Supabase bağlantısının geçerli olup olmadığını test eder.
+ * Hem Supabase JS SDK hem de doğrudan yerel REST API (fetch) ile test eder.
  */
 async function testSupabaseConnection() {
-  const client = getSupabaseClient();
-  if (!client) {
-    return { success: false, message: "Supabase URL veya Anon Key eksik ya da kütüphane yüklenemedi." };
+  const cfg = getSupabaseConfig();
+  if (!cfg.url || !cfg.anonKey) {
+    return { success: false, connected: false, message: "Supabase URL veya Anon Key eksik." };
   }
-  try {
-    const { data, error } = await client
-      .from('student_records')
-      .select('student_name, updated_at')
-      .limit(1);
 
-    if (error) {
-      // Tablo yoksa özel açıklama
-      if (error.code === '42P01') {
+  // 1. Supabase JS Client ile dene
+  const client = getSupabaseClient();
+  if (client) {
+    try {
+      const { data, error } = await client
+        .from('student_records')
+        .select('student_name, updated_at')
+        .limit(1);
+
+      if (!error) {
+        return { success: true, connected: true, message: "Supabase bulut bağlantısı başarılı! Tablo ve yetkiler çalışıyor. ✓" };
+      }
+      if (error && error.code === '42P01') {
         return { 
           success: false, 
+          connected: false,
           message: "Bağlantı sağlandı ancak 'student_records' tablosu bulunamadı. Lütfen SQL kurulum scriptini çalıştırın.", 
           code: 'TABLE_NOT_FOUND' 
         };
       }
-      return { success: false, message: `Supabase Hatası (${error.code || ''}): ${error.message}` };
+    } catch (e) {
+      console.warn("[Supabase JS Client Test Hatası, REST API denenecek]:", e);
     }
-    return { success: true, message: "Supabase bağlantısı başarılı! Tablo ve yetkiler çalışıyor." };
+  }
+
+  // 2. Doğrudan PostgREST REST API ile dene (SDK'sız hızlı ve bağımsız)
+  try {
+    const res = await fetch(`${cfg.url}/rest/v1/student_records?select=student_name,updated_at&limit=1`, {
+      method: 'GET',
+      headers: {
+        'apikey': cfg.anonKey,
+        'Authorization': `Bearer ${cfg.anonKey}`
+      }
+    });
+
+    if (res.ok) {
+      return { success: true, connected: true, message: "Supabase bulut bağlantısı başarılı! Tablo ve yetkiler çalışıyor. ✓" };
+    }
+    const errText = await res.text();
+    return { success: false, connected: false, message: `Supabase Bağlantı Hatası (${res.status}): ${errText}` };
   } catch (err) {
-    return { success: false, message: "Ağ veya bağlantı hatası: " + (err.message || err) };
+    return { success: false, connected: false, message: "Ağ veya bağlantı hatası: " + (err.message || err) };
   }
 }
 
 /**
- * Buluttan öğrenci verisini çeker.
+ * Buluttan öğrenci verisini çeker (SDK + REST Fallback).
  */
 async function fetchStudentFromSupabase(studentName) {
+  const cfg = getSupabaseConfig();
+  if (!cfg.url || !cfg.anonKey) return { success: false, error: "Supabase bağlı değil" };
+
+  // 1. JS Client ile dene
   const client = getSupabaseClient();
-  if (!client) return { success: false, error: "Supabase bağlı değil" };
+  if (client) {
+    try {
+      const { data, error } = await client
+        .from('student_records')
+        .select('student_name, state_data, updated_at')
+        .eq('student_name', studentName)
+        .maybeSingle();
 
+      if (!error) {
+        if (!data) return { success: true, notFound: true, data: null };
+        return { 
+          success: true, 
+          data: data.state_data, 
+          updatedAt: data.updated_at 
+        };
+      }
+    } catch (err) {
+      console.warn("[Supabase Fetch SDK Hatası, REST deneniyor]:", err);
+    }
+  }
+
+  // 2. REST API fallback
   try {
-    const { data, error } = await client
-      .from('student_records')
-      .select('student_name, state_data, updated_at')
-      .eq('student_name', studentName)
-      .maybeSingle();
-
-    if (error) throw error;
-    if (!data) return { success: true, notFound: true, data: null };
-
-    return { 
-      success: true, 
-      data: data.state_data, 
-      updatedAt: data.updated_at 
-    };
+    const encName = encodeURIComponent(studentName);
+    const res = await fetch(`${cfg.url}/rest/v1/student_records?student_name=eq.${encName}&select=student_name,state_data,updated_at`, {
+      method: 'GET',
+      headers: {
+        'apikey': cfg.anonKey,
+        'Authorization': `Bearer ${cfg.anonKey}`
+      }
+    });
+    if (res.ok) {
+      const rows = await res.json();
+      if (!rows || rows.length === 0) return { success: true, notFound: true, data: null };
+      return { success: true, data: rows[0].state_data, updatedAt: rows[0].updated_at };
+    }
+    return { success: false, error: `HTTP ${res.status}` };
   } catch (err) {
-    console.error("[Supabase Fetch Error]:", err);
+    console.error("[Supabase Fetch REST Hatası]:", err);
     return { success: false, error: err.message };
   }
 }
 
 /**
- * Öğrenci verisini Supabase PostgreSQL tablosuna kaydeder (Upsert).
+ * Öğrenci verisini Supabase PostgreSQL tablosuna kaydeder (Upsert: SDK + REST Fallback).
  */
 async function saveStudentToSupabase(studentName, stateData) {
-  const client = getSupabaseClient();
-  if (!client) return { success: false, error: "Supabase bağlı değil" };
+  const cfg = getSupabaseConfig();
+  if (!cfg.url || !cfg.anonKey) return { success: false, error: "Supabase bağlı değil" };
 
+  updateSupabaseStatusBadge("syncing");
+
+  // 1. JS Client ile dene
+  const client = getSupabaseClient();
+  if (client) {
+    try {
+      const { data, error } = await client
+        .from('student_records')
+        .upsert({
+          student_name: studentName,
+          state_data: stateData,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'student_name' });
+
+      if (!error) {
+        updateSupabaseStatusBadge("synced");
+        return { success: true };
+      }
+    } catch (err) {
+      console.warn("[Supabase Save SDK Hatası, REST deneniyor]:", err);
+    }
+  }
+
+  // 2. REST API fallback
   try {
-    updateSupabaseStatusBadge("syncing");
-    const { data, error } = await client
-      .from('student_records')
-      .upsert({
+    const res = await fetch(`${cfg.url}/rest/v1/student_records`, {
+      method: 'POST',
+      headers: {
+        'apikey': cfg.anonKey,
+        'Authorization': `Bearer ${cfg.anonKey}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({
         student_name: studentName,
         state_data: stateData,
         updated_at: new Date().toISOString()
-      }, { onConflict: 'student_name' });
-
-    if (error) throw error;
-    updateSupabaseStatusBadge("synced");
-    return { success: true };
+      })
+    });
+    if (res.ok || res.status === 201 || res.status === 204) {
+      updateSupabaseStatusBadge("synced");
+      return { success: true };
+    }
+    const errText = await res.text();
+    updateSupabaseStatusBadge("error");
+    return { success: false, error: errText };
   } catch (err) {
-    console.error("[Supabase Save Error]:", err);
+    console.error("[Supabase Save REST Hatası]:", err);
     updateSupabaseStatusBadge("error");
     return { success: false, error: err.message };
   }

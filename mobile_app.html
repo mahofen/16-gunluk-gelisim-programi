@@ -2601,7 +2601,7 @@
     async function testAndDisplaySupabaseConnection(showAlert = true) {
       updateSupabaseStatusBadge("syncing", "Bağlantı test ediliyor...");
       const res = await testSupabaseConnection();
-      if (res.success) {
+      if (res.success || res.connected) {
         updateSupabaseStatusBadge("connected", "Bulut: Bağlantı Başarılı ✓");
         if (showAlert) alert("Tebrikler! Supabase veritabanına başarıyla bağlanıldı. 🎉");
       } else {
