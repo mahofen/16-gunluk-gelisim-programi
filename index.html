@@ -309,7 +309,7 @@
               </span>
               <div>
                 <h4 class="font-fun text-base font-bold text-slate-800">1. Günlük 3 Ders Konu Çalışması</h4>
-                <p class="text-[11px] text-slate-500">Açılır pencereden 7. sınıf MEB konularını tek tıkla seçin</p>
+                <p class="text-[11px] text-slate-500">Çalıştığın 3 dersi seç ve tamamlandığında işaretle</p>
               </div>
             </div>
             <span class="text-xs font-bold px-2.5 py-1 rounded-xl bg-white border border-blue-200 text-blue-700 shadow-sm" id="dailyTopicsProgressBadge">
@@ -318,17 +318,12 @@
           </div>
 
           <div class="space-y-3" id="dailyTopicsList">
-            <!-- JS ile 3 Konu Çalışma Kartı (Açılır pencere butonlu) -->
+            <!-- JS ile 3 Konu Çalışma Kartı -->
           </div>
 
-          <div class="text-[11px] text-blue-900 bg-white/90 p-3 rounded-2xl border border-blue-200/60 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-window-restore text-blue-600 text-sm"></i>
-              <span>Tüm 7. sınıf ünite ve konularını açılır pencerede incelemek için:</span>
-            </div>
-            <button onclick="openTopicPickerModal(0)" class="px-2.5 py-1 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-sm hover:bg-blue-700 transition-colors">
-              Konu Havuzunu Aç 📋
-            </button>
+          <div class="text-[11px] text-blue-900 bg-white/80 p-2.5 rounded-2xl border border-blue-200/60 flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-blue-600"></i>
+            <span>Ders adını ve çalıştığın konu başlığını özgürce değiştirebilirsin.</span>
           </div>
         </div>
 
@@ -1499,53 +1494,22 @@
         if (top.done) completedTopicsCount++;
 
         const div = document.createElement("div");
-        const curSubjectTopics = GRADE7_CURRICULUM[top.subject] || [];
-        const groups = {};
-        curSubjectTopics.forEach(it => {
-          if (!groups[it.unit]) groups[it.unit] = [];
-          groups[it.unit].push(it.topic);
-        });
+        div.className = `p-3 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+          top.done ? 'bg-white border-emerald-300 shadow-sm' : 'bg-white/80 border-slate-200'
+        }`;
 
-        let topicOptionsHtml = `<option value="">-- Konu Seçiniz --</option>`;
-        let matchFound = false;
-        Object.entries(groups).forEach(([unitName, topics]) => {
-          topicOptionsHtml += `<optgroup label="${unitName}">`;
-          topics.forEach(tName => {
-            const isSelected = (top.name === tName);
-            if (isSelected) matchFound = true;
-            topicOptionsHtml += `<option value="${tName.replace(/"/g, '&quot;')}" ${isSelected ? 'selected' : ''}>${tName}</option>`;
-          });
-          topicOptionsHtml += `</optgroup>`;
-        });
-
-        if (top.name && !matchFound) {
-          topicOptionsHtml += `<optgroup label="Seçili Konu">`;
-          topicOptionsHtml += `<option value="${top.name.replace(/"/g, '&quot;')}" selected>${top.name}</option>`;
-          topicOptionsHtml += `</optgroup>`;
-        }
+        let subOptions = GRADE7_SUBJECTS.map(s => `<option value="${s}" ${s === top.subject ? 'selected' : ''}>${s}</option>`).join('');
 
         div.innerHTML = `
-          <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1 w-full sm:w-auto">
+          <div class="flex items-center gap-2 flex-1">
             <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center shrink-0">${idx + 1}</span>
-            
-            <!-- Ders Seçimi -->
-            <select onchange="updateDailyTopicSubject(${idx}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 rounded-xl px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <select onchange="updateDailyTopicSubject(${idx}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 rounded-xl px-2 py-1.5 focus:outline-none">
               ${subOptions}
             </select>
-
-            <!-- Doğrudan 7. Sınıf Konu Seçim Açılır Menüsü -->
-            <select onchange="updateDailyTopicName(${idx}, this.value)" class="flex-1 min-w-[170px] text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-blue-50/60 border border-blue-200 text-slate-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
-              ${topicOptionsHtml}
-            </select>
-
-            <!-- Açılır Pencere (Modal) ile İnceleme & Arama Butonu -->
-            <button onclick="openTopicPickerModal(${idx}, '${top.subject}')" class="px-2.5 py-1.5 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-800 border border-blue-300 text-xs font-bold flex items-center gap-1 shrink-0" title="Tüm 7. sınıf konularını pencereli aç ve ara">
-              <i class="fa-solid fa-list-ul"></i>
-              <span class="hidden md:inline">Tüm Konular</span>
-            </button>
+            <input type="text" value="${top.name || ''}" placeholder="Konu başlığı (Örn: Tam Sayılar)..." onchange="updateDailyTopicName(${idx}, this.value)" class="flex-1 text-xs px-2.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 focus:bg-white focus:outline-none">
           </div>
 
-          <button onclick="toggleDailyTopicDone(${idx})" class="w-full sm:w-auto px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+          <button onclick="toggleDailyTopicDone(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
             top.done ? 'bg-emerald-600 text-white shadow' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }">
             <i class="fa-solid ${top.done ? 'fa-check' : 'fa-circle'} text-[10px]"></i>
