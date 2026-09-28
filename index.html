@@ -309,7 +309,7 @@
               </span>
               <div>
                 <h4 class="font-fun text-base font-bold text-slate-800">1. Günlük 3 Ders Konu Çalışması</h4>
-                <p class="text-[11px] text-slate-500">Çalıştığın 3 dersi seç ve tamamlandığında işaretle</p>
+                <p class="text-[11px] text-slate-500">Her dersin yanındaki listeden 7. sınıf konusunu seç ve tamamla</p>
               </div>
             </div>
             <span class="text-xs font-bold px-2.5 py-1 rounded-xl bg-white border border-blue-200 text-blue-700 shadow-sm" id="dailyTopicsProgressBadge">
@@ -323,7 +323,7 @@
 
           <div class="text-[11px] text-blue-900 bg-white/80 p-2.5 rounded-2xl border border-blue-200/60 flex items-center gap-2">
             <i class="fa-solid fa-circle-info text-blue-600"></i>
-            <span>Ders adını ve çalıştığın konu başlığını özgürce değiştirebilirsin.</span>
+            <span>Ders seçtiğinde o derse ait 7. sınıf üniteleri ve konuları otomatik olarak listelenir.</span>
           </div>
         </div>
 
@@ -1485,7 +1485,7 @@
       const wData = getOrCreateWeekData(state.selectedWeek);
       const dayRecord = wData.days[state.selectedDayIndex];
 
-      // 1. 3 DERS KONU ÇALIŞMASI (AÇILIR PENCERE BUTONLU)
+      // 1. 3 DERS KONU ÇALIŞMASI (HER DERS YANINDA KONU SEÇİMİ)
       const topicsList = document.getElementById("dailyTopicsList");
       topicsList.innerHTML = "";
       let completedTopicsCount = 0;
@@ -1500,16 +1500,45 @@
 
         let subOptions = GRADE7_SUBJECTS.map(s => `<option value="${s}" ${s === top.subject ? 'selected' : ''}>${s}</option>`).join('');
 
+        const curSubjectTopics = GRADE7_CURRICULUM[top.subject] || [];
+        const groups = {};
+        curSubjectTopics.forEach(it => {
+          if (!groups[it.unit]) groups[it.unit] = [];
+          groups[it.unit].push(it.topic);
+        });
+
+        let topicOptionsHtml = `<option value="">-- 7. Sınıf Konusu Seçiniz --</option>`;
+        let matchFound = false;
+        Object.entries(groups).forEach(([unitName, topics]) => {
+          topicOptionsHtml += `<optgroup label="${unitName}">`;
+          topics.forEach(tName => {
+            const isSelected = (top.name === tName);
+            if (isSelected) matchFound = true;
+            topicOptionsHtml += `<option value="${tName.replace(/"/g, '&quot;')}" ${isSelected ? 'selected' : ''}>${tName}</option>`;
+          });
+          topicOptionsHtml += `</optgroup>`;
+        });
+
+        if (top.name && !matchFound) {
+          topicOptionsHtml += `<optgroup label="Seçili / Özel Konu">`;
+          topicOptionsHtml += `<option value="${top.name.replace(/"/g, '&quot;')}" selected>${top.name}</option>`;
+          topicOptionsHtml += `</optgroup>`;
+        }
+
+        topicOptionsHtml += `<option value="__custom__">✍️ Farklı / Özel Konu Yaz...</option>`;
+
         div.innerHTML = `
-          <div class="flex items-center gap-2 flex-1">
+          <div class="flex items-center gap-2 flex-1 min-w-0">
             <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center shrink-0">${idx + 1}</span>
-            <select onchange="updateDailyTopicSubject(${idx}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 rounded-xl px-2 py-1.5 focus:outline-none">
+            <select onchange="updateDailyTopicSubject(${idx}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 rounded-xl px-2.5 py-1.5 shrink-0 focus:outline-none focus:ring-1 focus:ring-blue-500">
               ${subOptions}
             </select>
-            <input type="text" value="${top.name || ''}" placeholder="Konu başlığı (Örn: Tam Sayılar)..." onchange="updateDailyTopicName(${idx}, this.value)" class="flex-1 text-xs px-2.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 focus:bg-white focus:outline-none">
+            <select onchange="handleDailyTopicSelectChange(${idx}, this.value)" class="flex-1 min-w-0 bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 rounded-xl px-2.5 py-1.5 truncate focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500" title="7. Sınıf Konusu Seçiniz">
+              ${topicOptionsHtml}
+            </select>
           </div>
 
-          <button onclick="toggleDailyTopicDone(${idx})" class="px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+          <button onclick="toggleDailyTopicDone(${idx})" class="px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all ${
             top.done ? 'bg-emerald-600 text-white shadow' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }">
             <i class="fa-solid ${top.done ? 'fa-check' : 'fa-circle'} text-[10px]"></i>
@@ -1577,6 +1606,18 @@
       }
       saveState();
       renderDayTasks();
+    }
+
+    function handleDailyTopicSelectChange(idx, val) {
+      if (val === '__custom__') {
+        const custom = prompt("Çalışmak istediğiniz özel konu başlığını yazınız:");
+        if (custom && custom.trim()) {
+          updateDailyTopicName(idx, custom.trim());
+        }
+        renderDayTasks();
+      } else {
+        updateDailyTopicName(idx, val);
+      }
     }
 
     function updateDailyTopicName(idx, val) {
