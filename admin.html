@@ -202,7 +202,7 @@
             <span class="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-xl" id="adminActiveAvatar">🌟</span>
             <div>
               <div class="text-[10px] text-sky-200 font-bold uppercase tracking-wider">İncelenen Öğrenci Profili</div>
-              <h3 class="font-fun text-lg font-bold text-white" id="adminActiveStudentName">Arif Said İlkbahar</h3>
+              <h3 class="font-fun text-lg font-bold text-white" id="adminActiveStudentName">Seçili Öğrenci</h3>
             </div>
           </div>
           <div class="flex items-center gap-2">
@@ -258,7 +258,7 @@
               <i class="fa-solid fa-robot"></i> Pedagojik Yapay Zeka Koçluk & LGS 2027 Projeksiyonu
             </div>
             <h3 class="font-fun text-xl font-bold text-white">
-              <span id="aiCoachActiveStudent">Arif Said İlkbahar</span> İçin Gelişim & Gelecek Tahmini
+              <span id="aiCoachActiveStudent">Öğrenci</span> İçin Gelişim & Gelecek Tahmini
             </h3>
             <p class="text-xs text-purple-100 leading-relaxed max-w-2xl">
               Haftalık soru sayıları ve deneme netleri pedagojik olarak taranarak dönem sonu ve LGS 2027 başarı projeksiyonu hesaplanmaktadır.
@@ -538,7 +538,7 @@
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 inline-block mx-auto" id="adminQrDisplayContainer"></div>
 
           <div class="text-xs text-slate-600 font-mono bg-indigo-50/50 p-2.5 rounded-xl border border-indigo-100" id="adminQrTargetStudentText">
-            Arif Said İlkbahar
+            Öğrenci Giriş Bağlantısı
           </div>
 
           <button onclick="window.print()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm flex items-center justify-center gap-2 cursor-pointer">
@@ -568,9 +568,7 @@
     const REGISTERED_STUDENTS_KEY = "fen_deneme_registered_students_v5";
     const CURRENT_STUDENT_KEY = "fen_deneme_current_student_v5";
 
-    const DEFAULT_STUDENTS_LIST = [
-      { name: "Arif Said İlkbahar", avatar: "🌟", title: "7. Sınıf Öğrencisi" }
-    ];
+    const DEFAULT_STUDENTS_LIST = [];
 
     const GRADE7_CURRICULUM = {
       "Matematik": [
@@ -734,7 +732,7 @@
     })();
 
     let adminActiveWeek = 1;
-    let inspectedStudentName = "Arif Said İlkbahar";
+    let inspectedStudentName = "";
     let aiNetForecastChartInstance = null;
     let aiSubjectRadarChartInstance = null;
 
@@ -795,7 +793,7 @@
        3. ÇOKLU ÖĞRENCİ VERİ ERİŞİMİ & HESAPLAMALARI
        ========================================================================= */
     function getUserDataStorageKey(studentName) {
-      const name = (studentName || "Arif Said İlkbahar").trim();
+      const name = (studentName || inspectedStudentName || "ogrenci").trim();
       const norm = name.toLocaleLowerCase('tr-TR');
       if (norm === "arif said ilkbahar" || norm === "arif said i̇lkbahar") {
         return "fen_haftalik_data_arif_said_ilkbahar";
@@ -814,14 +812,10 @@
         const raw = localStorage.getItem(REGISTERED_STUDENTS_KEY);
         if (raw) {
           const list = JSON.parse(raw);
-          if (Array.isArray(list) && list.length > 0) {
-            const hasArif = list.some(s => (s.name || '').toLocaleLowerCase('tr-TR').includes('arif said'));
-            if (!hasArif) list.unshift(DEFAULT_STUDENTS_LIST[0]);
-            return list;
-          }
+          if (Array.isArray(list)) return list;
         }
       } catch (e) {}
-      return [...DEFAULT_STUDENTS_LIST];
+      return [];
     }
 
     function saveRegisteredStudents(list) {
@@ -868,9 +862,16 @@
       }
 
       // Aktif öğrenciyi belirle
+      const students = getRegisteredStudents();
       let saved = null;
       try { saved = JSON.parse(localStorage.getItem(CURRENT_STUDENT_KEY)); } catch(e) {}
-      if (saved && saved.name) inspectedStudentName = saved.name;
+      if (saved && saved.name && students.some(s => s.name.toLocaleLowerCase('tr-TR') === saved.name.toLocaleLowerCase('tr-TR'))) {
+        inspectedStudentName = saved.name;
+      } else if (students.length > 0) {
+        inspectedStudentName = students[0].name;
+      } else {
+        inspectedStudentName = "";
+      }
 
       updateStudentSelectorDropdown();
       renderDashboardOverview();
@@ -973,11 +974,31 @@
       // Öğrenci tablosu
       const tbody = document.getElementById("adminStudentsTableBody");
       tbody.innerHTML = "";
+
+      if (students.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="p-8 text-center text-slate-500">
+              <div class="max-w-md mx-auto space-y-2">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg mx-auto">
+                  <i class="fa-solid fa-users-slash"></i>
+                </div>
+                <div class="font-fun text-sm font-bold text-slate-800">Henüz Kayıtlı Öğrenci Bulunmuyor</div>
+                <p class="text-xs text-slate-400">Yeni bir öğrenci kaydı oluşturmak için portala geçebilirsiniz.</p>
+                <a href="index.html" class="inline-block mt-2 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs">
+                  Öğrenci Kayıt Portalını Aç 📝
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
       students.forEach(st => {
         const summ = calculateStudentWeekSummary(st.name, adminActiveWeek);
         const pct = Math.min(100, Math.round((summ.denemeNet / 90) * 100));
         const isCurrent = st.name.toLocaleLowerCase('tr-TR') === inspectedStudentName.toLocaleLowerCase('tr-TR');
-        const isMainArif = st.name.toLocaleLowerCase('tr-TR').includes("arif said");
 
         const tr = document.createElement("tr");
         tr.className = `hover:bg-slate-50 transition-colors ${isCurrent ? 'bg-blue-50/50 font-bold' : ''}`;
@@ -1008,11 +1029,9 @@
               <button onclick="selectStudentToInspect('${st.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs cursor-pointer" title="Karnesini İncele">
                 İncele 📋
               </button>
-              ${!isMainArif ? `
-                <button onclick="deleteStudentFromAdmin('${st.name.replace(/'/g, "\\'")}')" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold border border-rose-200 shadow-xs cursor-pointer" title="Öğrenciyi Sil">
-                  <i class="fa-solid fa-trash-can"></i>
-                </button>
-              ` : ''}
+              <button onclick="deleteStudentFromAdmin('${st.name.replace(/'/g, "\\'")}')" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold border border-rose-200 shadow-xs cursor-pointer" title="Öğrenciyi Sil">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
             </div>
           </td>
         `;
@@ -1048,10 +1067,6 @@
     }
 
     function deleteStudentFromAdmin(name) {
-      if (name.toLocaleLowerCase('tr-TR').includes("arif said")) {
-        alert("Arif Said İlkbahar ana profil olduğu için silinemez.");
-        return;
-      }
       if (!confirm(`"${name}" adlı öğrenciyi ve tüm kayıtlarını silmek istediğinize emin misiniz?`)) return;
 
       let list = getRegisteredStudents();
@@ -1060,7 +1075,7 @@
       localStorage.removeItem(getUserDataStorageKey(name));
 
       if (inspectedStudentName.toLocaleLowerCase('tr-TR') === name.toLocaleLowerCase('tr-TR')) {
-        inspectedStudentName = list[0]?.name || "Arif Said İlkbahar";
+        inspectedStudentName = list[0]?.name || "";
       }
 
       updateStudentSelectorDropdown();

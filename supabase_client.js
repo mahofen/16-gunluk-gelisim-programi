@@ -1,17 +1,17 @@
 /**
  * ============================================================================
  * SUPABASE BULUT SENKRONİZASYON MOTORU
- * Arif Said İlkbahar - 7. Sınıf Haftalık Gelişim & Takip Portalı
+ * 7. Sınıf Haftalık Gelişim & Takip Portalı
  * ============================================================================
- * Bu dosya hem masaüstü (index.html) hem mobil (mobile_app.html) için
+ * Bu dosya masaüstü ve mobil takip arayüzleri için
  * Supabase PostgreSQL veritabanı bağlantısını, gerçek zamanlı (realtime)
- * veri senkronizasyonunu ve yerel yedeklemeyi yönetir.
+ * veri senkronizasyonunu ve bulut yedeklemeyi yönetir.
  */
 
-const SUPABASE_STORAGE_URL_KEY = "arif_said_supabase_url";
-const SUPABASE_STORAGE_KEY_KEY = "arif_said_supabase_anon_key";
+const SUPABASE_STORAGE_URL_KEY = "gelisim_supabase_url";
+const SUPABASE_STORAGE_KEY_KEY = "gelisim_supabase_anon_key";
 
-// Varsayılan Supabase proje bilgileri (Arif Said İlkbahar Veritabanı)
+// Varsayılan Supabase proje bilgileri (Gelişim Takip Sistemi Veritabanı)
 const DEFAULT_SUPABASE_CONFIG = {
   url: "https://gkkgtihqfihkeooiqoja.supabase.co",
   anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdra2d0aWhxZmloa2Vvb2lxb2phIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NTY0MjEsImV4cCI6MjEwNjEzMjQyMX0.WS6LwCf2FsEqpndvgtBmg6kVZ6LKfCiof4v6x_KjCrI"
@@ -25,8 +25,8 @@ let _isRealtimeSubscribed = false;
  * Mevcut kayıtlı Supabase yapılandırmasını döndürür.
  */
 function getSupabaseConfig() {
-  const storedUrl = localStorage.getItem(SUPABASE_STORAGE_URL_KEY);
-  const storedKey = localStorage.getItem(SUPABASE_STORAGE_KEY_KEY);
+  const storedUrl = localStorage.getItem(SUPABASE_STORAGE_URL_KEY) || localStorage.getItem("arif_said_supabase_url");
+  const storedKey = localStorage.getItem(SUPABASE_STORAGE_KEY_KEY) || localStorage.getItem("arif_said_supabase_anon_key");
   return {
     url: (storedUrl && storedUrl.trim()) ? storedUrl.trim() : DEFAULT_SUPABASE_CONFIG.url,
     anonKey: (storedKey && storedKey.trim()) ? storedKey.trim() : DEFAULT_SUPABASE_CONFIG.anonKey

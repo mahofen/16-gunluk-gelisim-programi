@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Arif Said İlkbahar • 7. Sınıf Mobil Gelişim Portalı</title>
+  <title>7. Sınıf Mobil Gelişim Portalı</title>
   
   <!-- PWA Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -99,7 +99,7 @@
           <span class="w-7 h-7 rounded-xl bg-white text-slate-800 flex items-center justify-center text-sm shadow-sm" id="mobileUserAvatar">🌟</span>
           <div class="text-left leading-tight">
             <div class="text-[9px] text-sky-200 font-bold uppercase tracking-wider" id="mobileUserRoleBadge">7. Sınıf</div>
-            <div class="text-xs font-bold text-white max-w-[100px] truncate" id="mobileUserName">Arif Said İlkbahar</div>
+            <div class="text-xs font-bold text-white max-w-[100px] truncate" id="mobileUserName">Öğrenci</div>
           </div>
           <i class="fa-solid fa-arrows-rotate text-[10px] text-sky-200 ml-0.5"></i>
         </div>
@@ -266,7 +266,7 @@
             <span class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-sm" id="mSettingsAvatar">🌟</span>
             <div>
               <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="mSettingsRole">7. Sınıf Öğrencisi</div>
-              <h3 class="font-fun text-base font-bold text-slate-800" id="mSettingsName">Arif Said İlkbahar</h3>
+              <h3 class="font-fun text-base font-bold text-slate-800" id="mSettingsName">Öğrenci</h3>
             </div>
           </div>
           <button onclick="openMobileStudentEntryModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold border border-blue-200 flex items-center gap-1 tap-bounce cursor-pointer">
@@ -388,7 +388,7 @@
         <form onsubmit="event.preventDefault(); handleMobileStudentEntrySubmit();" class="space-y-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">👤 Öğrenci Adı ve Soyadı:</label>
-            <input type="text" id="mStudentEntryNameInput" required placeholder="Örn: Arif Said İlkbahar, Elif Kaya..." class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none">
+            <input type="text" id="mStudentEntryNameInput" required placeholder="Örn: Elif Kaya, Kerem Demir, Zeynep Aksoy..." class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none">
           </div>
 
           <div>
@@ -465,7 +465,7 @@
             </span>
             <div>
               <h3 class="font-fun text-sm font-bold text-slate-800">Yönetici & Kontrol Menüsü</h3>
-              <p class="text-[10px] text-indigo-700 font-bold" id="mAdminActiveStudentBadge">Arif Said İlkbahar • 7. Sınıf</p>
+              <p class="text-[10px] text-indigo-700 font-bold" id="mAdminActiveStudentBadge">Aktif Öğrenci • 7. Sınıf</p>
             </div>
           </div>
           <div class="flex items-center gap-1.5">
@@ -511,7 +511,7 @@
                 <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-lg">🤖</div>
                 <div>
                   <div class="font-fun text-xs font-bold">Yapay Zeka Dijital Koç</div>
-                  <div class="text-[10px] text-purple-200">Arif Said İçin 7. Sınıf Gelecek Projeksiyonu</div>
+                  <div class="text-[10px] text-purple-200" id="mAiCoachSubtitle">7. Sınıf Gelecek Projeksiyonu</div>
                 </div>
               </div>
               <button onclick="renderMobileAiCoach(state.selectedWeek)" class="px-2 py-1 rounded-lg bg-white/20 hover:bg-white/30 text-white font-bold text-[10px] tap-bounce flex items-center gap-1">
@@ -847,12 +847,10 @@
     const CURRENT_STUDENT_KEY = "fen_deneme_current_student_v5";
     const AVATAR_OPTIONS = ['🌟', '🚀', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
 
-    const DEFAULT_STUDENTS_LIST = [
-      { name: "Arif Said İlkbahar", avatar: "🌟", title: "7. Sınıf Öğrencisi" }
-    ];
+    const DEFAULT_STUDENTS_LIST = [];
 
     let currentStudent = {
-      name: "Arif Said İlkbahar",
+      name: "Öğrenci",
       avatar: "🌟",
       title: "7. Sınıf Öğrencisi"
     };
@@ -886,7 +884,7 @@
     };
 
     function getUserStorageKey(studentName) {
-      const name = (studentName || currentStudent.name || "Arif Said İlkbahar").trim();
+      const name = (studentName || currentStudent.name || "ogrenci").trim();
       const norm = name.toLocaleLowerCase('tr-TR');
       if (norm === "arif said ilkbahar" || norm === "arif said i̇lkbahar") {
         return "fen_haftalik_data_arif_said_ilkbahar";
@@ -905,14 +903,10 @@
         const raw = localStorage.getItem(REGISTERED_STUDENTS_KEY);
         if (raw) {
           const list = JSON.parse(raw);
-          if (Array.isArray(list) && list.length > 0) {
-            const hasArif = list.some(s => (s.name || '').toLocaleLowerCase('tr-TR').includes('arif said'));
-            if (!hasArif) list.unshift(DEFAULT_STUDENTS_LIST[0]);
-            return list;
-          }
+          if (Array.isArray(list)) return list;
         }
       } catch (e) {}
-      return [...DEFAULT_STUDENTS_LIST];
+      return [];
     }
 
     function saveRegisteredStudents(list) {
@@ -920,20 +914,21 @@
     }
 
     function initMobile() {
-      const students = getRegisteredStudents();
-      saveRegisteredStudents(students);
-
       let savedStudent = null;
       try {
         const raw = localStorage.getItem(CURRENT_STUDENT_KEY);
         if (raw) savedStudent = JSON.parse(raw);
       } catch (e) {}
 
-      if (savedStudent && savedStudent.name) {
+      if (savedStudent && savedStudent.name && savedStudent.name.trim()) {
         loginMobileStudent(savedStudent.name, savedStudent.avatar || '🌟', false);
       } else {
-        loginMobileStudent("Arif Said İlkbahar", "🌟", false);
-        openMobileStudentEntryModal();
+        const registered = getRegisteredStudents();
+        if (registered.length > 0) {
+          loginMobileStudent(registered[0].name, registered[0].avatar || '🌟', false);
+        } else {
+          openMobileStudentEntryModal();
+        }
       }
     }
 
@@ -2007,7 +2002,7 @@
               <span>Dijital Koç'un Tavsiyesi</span>
             </div>
             <p class="text-[11px] text-purple-900 italic bg-white p-2.5 rounded-xl border border-purple-100 leading-relaxed">
-              "Sevgili Arif Said, 7. sınıf LGS maratonunun altın zeminidir! Şimdi kazandığın soru disiplini, 8. sınıfta en büyük avantajın olacak. Yanlış yapmaktan korkma; gerçek başarı çözemediğini öğrenmektir!"
+              "Sevgili ${targetStudent.name || 'Öğrenci'}, 7. sınıf LGS maratonunun altın zeminidir! Şimdi kazandığın soru disiplini, 8. sınıfta en büyük avantajın olacak. Yanlış yapmaktan korkma; gerçek başarı çözemediğini öğrenmektir!"
             </p>
           </div>
         `;
@@ -2216,7 +2211,7 @@
             labels: radarLabels,
             datasets: [
               {
-                label: 'Arif Said',
+                label: `${targetStudent.name || 'Öğrenci'}`,
                 data: studentScores,
                 backgroundColor: 'rgba(99, 102, 241, 0.25)',
                 borderColor: '#6366f1',
@@ -2402,7 +2397,8 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Arif_Said_Ilkbahar_Mobil_Yedek_${new Date().toISOString().slice(0,10)}.json`;
+      const safeName = (STUDENT_NAME || 'Ogrenci').replace(/[^a-zA-Z0-9]/g, '_');
+      a.download = `${safeName}_Mobil_Yedek_${new Date().toISOString().slice(0,10)}.json`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -2498,7 +2494,6 @@
       allStudents.forEach(st => {
         const summ = calculateStudentWeekSummary(st.name, state.selectedWeek);
         const isCurrent = st.name.toLocaleLowerCase('tr-TR') === currentStudent.name.toLocaleLowerCase('tr-TR');
-        const isMainArif = st.name.toLocaleLowerCase('tr-TR').includes("arif said");
 
         const div = document.createElement("div");
         div.className = `p-2.5 rounded-xl border flex items-center justify-between text-xs gap-2 ${
@@ -2519,11 +2514,9 @@
             <button onclick="mobileInspect('${st.name.replace(/'/g, "\\'")}')" class="px-2 py-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold tap-bounce">
               Karne
             </button>
-            ${!isMainArif ? `
-              <button onclick="deleteRegisteredStudentMobile('${st.name.replace(/'/g, "\\'")}')" class="px-1.5 py-1 rounded-lg bg-rose-50 text-rose-600 text-[10px] font-bold border border-rose-200">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            ` : ''}
+            <button onclick="deleteRegisteredStudentMobile('${st.name.replace(/'/g, "\\'")}')" class="px-1.5 py-1 rounded-lg bg-rose-50 text-rose-600 text-[10px] font-bold border border-rose-200">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
           </div>
         `;
         list.appendChild(div);
@@ -2532,10 +2525,6 @@
 
     function deleteRegisteredStudentMobile(studentName) {
       if (!studentName) return;
-      if (studentName.toLocaleLowerCase('tr-TR').includes("arif said")) {
-        alert("Arif Said İlkbahar ana profil olduğu için silinemez.");
-        return;
-      }
 
       if (!confirm(`"${studentName}" adlı öğrenciyi silmek istediğinize emin misiniz?`)) return;
 
@@ -2546,8 +2535,14 @@
       localStorage.removeItem(getUserStorageKey(studentName));
 
       if (currentStudent.name.toLocaleLowerCase('tr-TR') === studentName.toLocaleLowerCase('tr-TR')) {
-        const fallback = list[0] || DEFAULT_STUDENTS_LIST[0];
-        loginMobileStudent(fallback.name, fallback.avatar, false);
+        if (list.length > 0) {
+          loginMobileStudent(list[0].name, list[0].avatar, false);
+        } else {
+          localStorage.removeItem(CURRENT_STUDENT_KEY);
+          alert("Kayıtlı öğrenci kalmadı.");
+          openMobileStudentEntryModal();
+          return;
+        }
       }
 
       renderMobileAdmin();
@@ -2621,7 +2616,7 @@
       if (res.success) {
         playChime('done');
         confetti({ particleCount: 50, spread: 60 });
-        alert("Arif Said İlkbahar'ın tüm verileri Supabase buluta aktarıldı! ☁️✓");
+        alert(`${STUDENT_NAME} adlı öğrencinin tüm verileri Supabase buluta aktarıldı! ☁️✓`);
       } else {
         alert("Yükleme başarısız: " + (res.error || "Bilinmeyen hata"));
       }

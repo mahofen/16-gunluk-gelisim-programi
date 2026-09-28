@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>7. Sınıf Gelişim Takip Sistemi - Giriş & Kayıt Portalı</title>
+  <title>7. Sınıf Gelişim Takip Sistemi - Öğrenci Kayıt ve Giriş Portalı</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -24,6 +24,7 @@
     .font-fun { font-family: 'Fredoka', cursive; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .tap-bounce:active { transform: scale(0.97); }
   </style>
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
@@ -31,7 +32,7 @@
   <!-- ================= HEADER ================= -->
   <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-blue-500/30">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500 via-indigo-500 to-sky-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-blue-500/30">
         <i class="fa-solid fa-graduation-cap"></i>
       </div>
       <div>
@@ -55,7 +56,7 @@
         <i class="fa-solid fa-shield-halved text-amber-300"></i>
         <span>Yönetici Girişi</span>
       </a>
-      <a href="mobile_app.html" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 transition-all shadow-sm" title="Mobil Uygulama">
+      <a href="mobile_app.html" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 transition-all shadow-sm" title="Mobil Uygulama Portalı">
         <i class="fa-solid fa-mobile-screen-button text-sm"></i>
       </a>
     </div>
@@ -71,74 +72,142 @@
         <span>LGS 2027 Başarı Yolculuğuna Hoş Geldiniz!</span>
       </div>
       <h1 class="font-fun text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
-        7. Sınıf Konularını Tamamla,<br class="hidden sm:block">
-        <span class="bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">Kişisel Başarını Takip Et!</span>
+        Önce Öğrenci Kaydını Oluştur,<br class="hidden sm:block">
+        <span class="bg-gradient-to-r from-sky-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">Kişisel Başarı Takvimini Başlat!</span>
       </h1>
       <p class="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl mx-auto">
-        İsminizi yazarak giriş yapın; 40 haftalık çalışma planınıza, 7. sınıf ders konularınıza, çözdüğünüz sorulara ve hafta sonu deneme sınavı netlerinize hemen ulaşın.
+        Her öğrenci önce sisteme kaydedilir. Kayıt tamamlandıktan sonra öğrencinin adına özel 40 haftalık çalışma planı, MEB 7. sınıf konu havuzu, günlük soru sayaçları ve 90 soruluk LGS deneme karnesi anında aktif olur.
       </p>
     </div>
 
-    <!-- Giriş Kartları Izgarası (2 Sütun) -->
+    <!-- Giriş ve Kayıt Bölümü Izgarası -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
       
-      <!-- SOL: Öğrenci Kayıt & Giriş Formu (7 Sütun) -->
+      <!-- SOL: Öğrenci Kayıt ve Giriş Paneli (7 Sütun) -->
       <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100/90 space-y-6">
         
-        <div class="flex items-center justify-between border-b pb-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-              <i class="fa-solid fa-user-graduate"></i>
-            </div>
-            <div>
-              <h2 class="font-fun text-xl font-bold text-slate-900">Öğrenci Girişi & Yeni Kayıt</h2>
-              <p class="text-xs text-slate-500">Adınızı ve avatarınızı seçerek hemen başlayın</p>
-            </div>
+        <!-- Sekme Başlıkları: Yeni Öğrenci Kaydı / Kayıtlı Öğrenci Girişi -->
+        <div class="flex items-center justify-between border-b pb-3">
+          <div class="flex items-center gap-2">
+            <button id="tabBtnRegister" onclick="switchPortalTab('register')" type="button" class="px-4 py-2 rounded-xl text-xs font-fun font-bold transition-all flex items-center gap-1.5 cursor-pointer bg-blue-600 text-white shadow-md">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>1. Yeni Öğrenci Kaydı</span>
+            </button>
+            <button id="tabBtnLogin" onclick="switchPortalTab('login')" type="button" class="px-4 py-2 rounded-xl text-xs font-fun font-bold transition-all flex items-center gap-1.5 cursor-pointer bg-slate-100 text-slate-600 hover:bg-slate-200">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              <span>2. Kayıtlı Öğrenci Girişi (<span id="tabRegisteredCount">0</span>)</span>
+            </button>
           </div>
-          <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-            Kişiye Özel Alan
+          <span class="hidden sm:inline-block text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+            Adım Adım Başarı
           </span>
         </div>
 
-        <!-- Öğrenci Giriş Formu -->
-        <form id="studentEntryForm" onsubmit="event.preventDefault(); handleStudentLoginSubmit();" class="space-y-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
-              <span>👤 Öğrenci Adı ve Soyadı:</span>
-              <span class="text-[11px] text-blue-600 font-semibold">* Her isim için bağımsız sayfa açılır</span>
-            </label>
-            <div class="relative">
-              <i class="fa-solid fa-user-pen absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-              <input type="text" id="studentNameInput" required placeholder="Örn: Arif Said İlkbahar, Elif Kaya, Mehmet Demir..." class="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all">
+        <!-- ================= SEKME 1: YENİ ÖĞRENCİ KAYIT FORMU ================= -->
+        <div id="tabContentRegister" class="space-y-4">
+          <div class="bg-blue-50/70 p-3.5 rounded-2xl border border-blue-200 text-xs text-blue-900 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shrink-0">
+              <i class="fa-solid fa-id-card"></i>
+            </div>
+            <div>
+              <strong class="font-bold">Kayıt Sistemi:</strong> Öğrenci adınızı girip avatarınızı seçtiğinizde, tüm çalışma verileriniz ve karneniz adınıza özel olarak oluşturulup saklanır.
             </div>
           </div>
 
-          <!-- Avatar Seçici -->
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1.5">
-              🎭 Profil Avatarı Seç:
-            </label>
-            <div class="flex flex-wrap gap-2 p-2.5 bg-slate-50 rounded-2xl border border-slate-200" id="avatarPickerContainer"></div>
-          </div>
+          <form id="studentRegistrationForm" onsubmit="event.preventDefault(); handleStudentRegisterSubmit();" class="space-y-4">
+            
+            <!-- Öğrenci Adı Soyadı -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                <span>👤 Öğrenci Adı ve Soyadı:</span>
+                <span class="text-[11px] text-rose-500 font-semibold">* Zorunlu Alan</span>
+              </label>
+              <div class="relative">
+                <i class="fa-solid fa-user-graduate absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                <input type="text" id="regStudentName" required placeholder="Örn: Elif Kaya, Kerem Demir, Zeynep Aksoy..." class="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all">
+              </div>
+            </div>
 
-          <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-fun font-bold text-sm shadow-xl shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer tap-bounce">
-            <i class="fa-solid fa-rocket"></i>
-            <span>Takip Sayfama Başla (Giriş Yap)</span>
-          </button>
-        </form>
+            <!-- Sınıf / Şube & Hedef Lise -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                  🏫 Sınıf / Şube:
+                </label>
+                <div class="relative">
+                  <i class="fa-solid fa-chalkboard absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                  <select id="regStudentBranch" class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none cursor-pointer">
+                    <option value="7-A">7-A Sınıfı</option>
+                    <option value="7-B">7-B Sınıfı</option>
+                    <option value="7-C">7-C Sınıfı</option>
+                    <option value="7-D">7-D Sınıfı</option>
+                    <option value="7-E">7-E Sınıfı</option>
+                    <option value="7-F">7-F Sınıfı</option>
+                    <option value="7. Sınıf">7. Sınıf Genel</option>
+                  </select>
+                </div>
+              </div>
 
-        <!-- Kayıtlı Öğrenci Profilleri (Hızlı Giriş) -->
-        <div class="pt-5 border-t border-slate-100 space-y-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                  🎯 Hedef Lise / Puan:
+                </label>
+                <div class="relative">
+                  <i class="fa-solid fa-bullseye absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                  <input type="text" id="regStudentTarget" placeholder="Örn: Fen Lisesi (480+ Puan)" class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none">
+                </div>
+              </div>
+            </div>
+
+            <!-- Avatar Seçici -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                <span>🎭 Profil Maskotu / Avatarı Seç:</span>
+                <span class="text-[11px] text-blue-600 font-semibold" id="selectedAvatarLabel">Seçili: 🌟</span>
+              </label>
+              <div class="flex flex-wrap gap-2 p-2.5 bg-slate-50 rounded-2xl border border-slate-200" id="regAvatarContainer"></div>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white font-fun font-bold text-sm shadow-xl shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer tap-bounce">
+              <i class="fa-solid fa-sparkles text-amber-300"></i>
+              <span>Kaydı Tamamla ve Kişisel Takip Sayfamı Başlat 🚀</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- ================= SEKME 2: KAYITLI ÖĞRENCİ GİRİŞİ ================= -->
+        <div id="tabContentLogin" class="hidden space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-              <i class="fa-solid fa-users text-blue-600"></i>
-              <span>Kayıtlı Öğrenci Profilleri</span>
-            </h3>
-            <span class="text-[10px] text-slate-400">Tek tıkla sayfana geç</span>
+            <div>
+              <h3 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-users text-blue-600"></i>
+                <span>Sistemde Kayıtlı Öğrenciler</span>
+              </h3>
+              <p class="text-xs text-slate-500">Profilinize tıklayarak doğrudan kendi takip sayfanıza geçiş yapın</p>
+            </div>
+            <button onclick="switchPortalTab('register')" class="text-xs text-blue-600 font-bold hover:underline flex items-center gap-1 cursor-pointer">
+              <i class="fa-solid fa-user-plus"></i> Yeni Kayıt Yap
+            </button>
           </div>
 
-          <div id="registeredStudentsListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-48 overflow-y-auto pr-1">
-            <!-- JS ile doldurulacak -->
+          <div id="registeredCardsList" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-72 overflow-y-auto pr-1">
+            <!-- JS ile doldurulur -->
+          </div>
+
+          <!-- Boş Durum (Eğer hiç kayıt yoksa) -->
+          <div id="noRegisteredStudentsNotice" class="hidden text-center p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mx-auto">
+              <i class="fa-solid fa-user-slash"></i>
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-fun text-sm font-bold text-slate-800">Henüz Kayıtlı Öğrenci Bulunmuyor</h4>
+              <p class="text-xs text-slate-500 max-w-sm mx-auto">
+                İlk öğrencimizi kaydetmek için lütfen <strong>"1. Yeni Öğrenci Kaydı"</strong> sekmesine geçin.
+              </p>
+            </div>
+            <button onclick="switchPortalTab('register')" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-fun font-bold text-xs shadow-sm hover:bg-blue-700 cursor-pointer">
+              Şimdi Öğrenci Kaydet 📝
+            </button>
           </div>
         </div>
 
@@ -154,17 +223,17 @@
               <i class="fa-solid fa-shield-halved"></i>
             </div>
             <span class="text-[10px] uppercase font-bold text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/20">
-              Şifreli Erişim
+              Şifreli Yönetici Paneli
             </span>
           </div>
           <div>
             <h3 class="font-fun text-lg font-bold text-white">Yönetici Kontrol Merkezi</h3>
             <p class="text-xs text-indigo-200 mt-1 leading-relaxed">
-              Tüm öğrencilerin 40 haftalık karnelerini, yapay zeka gelecek tahminlerini, toplu sıfırlama sihirbazını ve Supabase bulut ayarlarını ayrı sayfada yönetin.
+              Tüm kayıtlı öğrencilerin 40 haftalık karnelerini, yapay zeka başarı analizlerini, toplu sıfırlama sihirbazını ve Supabase bulut veritabanı ayarlarını bağımsız yönetici sayfasında yönetin.
             </p>
           </div>
           <a href="admin.html" class="inline-flex items-center justify-between w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-fun font-bold text-xs shadow-md transition-all">
-            <span>Yönetici Sayfasına Git</span>
+            <span>Yönetici Sayfasına Git (admin / admin123)</span>
             <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
@@ -188,7 +257,7 @@
         <!-- Sistem Özellikleri Şerit Kartı -->
         <div class="bg-white/5 backdrop-blur-md rounded-3xl p-5 border border-white/10 text-white space-y-2.5">
           <h4 class="font-fun text-xs font-bold text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-star text-amber-300"></i> Sistem Avantajları
+            <i class="fa-solid fa-star text-amber-300"></i> Sistemde Aktif Olan Özellikler
           </h4>
           <ul class="text-xs text-slate-300 space-y-2">
             <li class="flex items-center gap-2">
@@ -201,11 +270,15 @@
             </li>
             <li class="flex items-center gap-2">
               <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]"></i>
-              <span><strong>90 Soruluk Denemeler:</strong> 20'şer ve 10'ar soruluk tam LGS provası.</span>
+              <span><strong>90 Soruluk Denemeler:</strong> Türkçe 20, Mat 20, Fen 20, Sosyal 10, Din 10, İng 10.</span>
             </li>
             <li class="flex items-center gap-2">
               <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]"></i>
-              <span><strong>Yapay Zeka Koç:</strong> Net projeksiyonu ve pedagojik gelecek tahmini.</span>
+              <span><strong>Yapay Zeka Koç:</strong> Öğrenciye özel pedagojik gelecek tahmini ve LGS termometresi.</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-400 text-[11px]"></i>
+              <span><strong>Kişisel İzolasyon:</strong> Her öğrencinin verisi birbirinden tamamen ayrı saklanır.</span>
             </li>
           </ul>
         </div>
@@ -228,57 +301,65 @@
   <script>
     const REGISTERED_STUDENTS_KEY = "fen_deneme_registered_students_v5";
     const CURRENT_STUDENT_KEY = "fen_deneme_current_student_v5";
-    const AVATAR_OPTIONS = ['🌟', '🚀', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
-
-    const DEFAULT_STUDENTS_LIST = [
-      { name: "Arif Said İlkbahar", avatar: "🌟", title: "7. Sınıf Öğrencisi" }
-    ];
+    const AVATAR_OPTIONS = ['🌟', '🚀', '🦁', '🦉', '🎯', '🏆', '💡', '⚡', '🎓', '🦊', '🐯', '🦅', '🐬', '⚽', '🌿'];
 
     let selectedAvatar = '🌟';
+    let currentPortalTab = 'register';
 
     function getRegisteredStudents() {
       try {
         const raw = localStorage.getItem(REGISTERED_STUDENTS_KEY);
         if (raw) {
           const list = JSON.parse(raw);
-          if (Array.isArray(list) && list.length > 0) {
-            const hasArif = list.some(s => (s.name || '').toLocaleLowerCase('tr-TR').includes('arif said'));
-            if (!hasArif) list.unshift(DEFAULT_STUDENTS_LIST[0]);
-            return list;
-          }
+          if (Array.isArray(list)) return list;
         }
       } catch (e) {}
-      return [...DEFAULT_STUDENTS_LIST];
+      return [];
     }
 
     function saveRegisteredStudents(list) {
       localStorage.setItem(REGISTERED_STUDENTS_KEY, JSON.stringify(list));
     }
 
-    function initLandingPage() {
-      // 1. Kayıtlı öğrencileri başlat
-      const students = getRegisteredStudents();
-      saveRegisteredStudents(students);
+    function slugify(text) {
+      return (text || '')
+        .toLocaleLowerCase('tr-TR')
+        .replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ı/g, 'i').replace(/i̇/g, 'i')
+        .replace(/ö/g, 'o').replace(/ş/g, 's').replace(/ü/g, 'u')
+        .replace(/[^a-z0-9]/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_|_$/g, '');
+    }
 
-      // 2. Avatar seçiciyi doldur
-      renderAvatarPicker();
+    function getUserDataStorageKey(studentName) {
+      const slug = slugify(studentName);
+      return `fen_haftalik_data_${slug || 'ogrenci'}`;
+    }
 
-      // 3. Kayıtlı öğrencileri listele
-      renderQuickStudents();
+    function switchPortalTab(tab) {
+      currentPortalTab = tab;
+      const tabBtnReg = document.getElementById("tabBtnRegister");
+      const tabBtnLog = document.getElementById("tabBtnLogin");
+      const contentReg = document.getElementById("tabContentRegister");
+      const contentLog = document.getElementById("tabContentLogin");
 
-      // 4. Input alanını odakla
-      const input = document.getElementById("studentNameInput");
-      if (input) {
-        // Eğer önceden girilmiş bir öğrenci varsa ismiyle pre-fill yapalım
-        let saved = null;
-        try { saved = JSON.parse(localStorage.getItem(CURRENT_STUDENT_KEY)); } catch(e) {}
-        if (saved && saved.name) input.value = saved.name;
-        input.focus();
+      if (tab === 'register') {
+        tabBtnReg.className = "px-4 py-2 rounded-xl text-xs font-fun font-bold transition-all flex items-center gap-1.5 cursor-pointer bg-blue-600 text-white shadow-md";
+        tabBtnLog.className = "px-4 py-2 rounded-xl text-xs font-fun font-bold transition-all flex items-center gap-1.5 cursor-pointer bg-slate-100 text-slate-600 hover:bg-slate-200";
+        contentReg.classList.remove("hidden");
+        contentLog.classList.add("hidden");
+        document.getElementById("regStudentName")?.focus();
+      } else {
+        tabBtnLog.className = "px-4 py-2 rounded-xl text-xs font-fun font-bold transition-all flex items-center gap-1.5 cursor-pointer bg-blue-600 text-white shadow-md";
+        tabBtnReg.className = "px-4 py-2 rounded-xl text-xs font-fun font-bold transition-all flex items-center gap-1.5 cursor-pointer bg-slate-100 text-slate-600 hover:bg-slate-200";
+        contentLog.classList.remove("hidden");
+        contentReg.classList.add("hidden");
+        renderRegisteredCards();
       }
     }
 
     function renderAvatarPicker() {
-      const container = document.getElementById("avatarPickerContainer");
+      const container = document.getElementById("regAvatarContainer");
       if (!container) return;
       container.innerHTML = "";
 
@@ -287,10 +368,12 @@
         btn.type = "button";
         btn.onclick = () => {
           selectedAvatar = em;
+          const lbl = document.getElementById("selectedAvatarLabel");
+          if (lbl) lbl.textContent = `Seçili: ${em}`;
           renderAvatarPicker();
         };
         const isSel = selectedAvatar === em;
-        btn.className = `w-8 h-8 rounded-xl text-base flex items-center justify-center transition-all cursor-pointer ${
+        btn.className = `w-9 h-9 rounded-xl text-base flex items-center justify-center transition-all cursor-pointer ${
           isSel ? 'bg-blue-600 text-white scale-110 shadow-md ring-2 ring-blue-300' : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
         }`;
         btn.textContent = em;
@@ -298,80 +381,119 @@
       });
     }
 
-    function renderQuickStudents() {
-      const container = document.getElementById("registeredStudentsListContainer");
+    function renderRegisteredCards() {
+      const container = document.getElementById("registeredCardsList");
+      const notice = document.getElementById("noRegisteredStudentsNotice");
+      const countEl = document.getElementById("tabRegisteredCount");
       if (!container) return;
-      container.innerHTML = "";
 
       const students = getRegisteredStudents();
+      if (countEl) countEl.textContent = students.length;
+
+      if (students.length === 0) {
+        container.innerHTML = "";
+        notice?.classList.remove("hidden");
+        return;
+      }
+
+      notice?.classList.add("hidden");
+      container.innerHTML = "";
+
       students.forEach(st => {
         const card = document.createElement("div");
-        card.className = "p-2.5 rounded-2xl bg-slate-50 hover:bg-blue-50/80 border border-slate-200 hover:border-blue-300 flex items-center justify-between gap-2 transition-all cursor-pointer group";
+        card.className = "p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/80 border border-slate-200 hover:border-blue-300 flex items-center justify-between gap-3 transition-all cursor-pointer group shadow-xs";
         card.onclick = () => {
-          proceedToStudentPage(st.name, st.avatar);
+          selectAndProceedStudent(st);
         };
         card.innerHTML = `
-          <div class="flex items-center gap-2.5 min-w-0">
-            <span class="w-8 h-8 rounded-xl bg-white border border-slate-200 group-hover:border-blue-300 flex items-center justify-center text-sm shrink-0 shadow-xs">${st.avatar}</span>
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="w-10 h-10 rounded-2xl bg-white border border-slate-200 group-hover:border-blue-300 flex items-center justify-center text-lg shrink-0 shadow-xs">${st.avatar || '🌟'}</span>
             <div class="truncate">
-              <div class="text-xs font-bold text-slate-800 group-hover:text-blue-700 truncate">${st.name}</div>
-              <div class="text-[10px] text-slate-400 font-semibold">${st.title || '7. Sınıf Öğrencisi'}</div>
+              <div class="text-xs font-fun font-bold text-slate-900 group-hover:text-blue-700 truncate">${st.name}</div>
+              <div class="text-[10px] text-slate-500 font-semibold flex items-center gap-1.5 mt-0.5">
+                <span class="px-1.5 py-0.2 rounded bg-blue-100 text-blue-700 font-bold">${st.sube || '7. Sınıf'}</span>
+                ${st.target ? `<span class="truncate text-slate-400 max-w-[110px]">${st.target}</span>` : ''}
+              </div>
             </div>
           </div>
-          <span class="text-[10px] px-2.5 py-1 rounded-lg bg-white group-hover:bg-blue-600 group-hover:text-white text-slate-600 font-bold border border-slate-200 group-hover:border-blue-600 shadow-xs transition-colors shrink-0">
-            Giriş Yap 🚀
-          </span>
+          <button type="button" class="text-[11px] px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold shadow-xs transition-colors shrink-0 flex items-center gap-1">
+            <span>Giriş</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
         `;
         container.appendChild(card);
       });
     }
 
-    function handleStudentLoginSubmit() {
-      const input = document.getElementById("studentNameInput");
-      const name = input ? input.value.trim() : "";
+    function handleStudentRegisterSubmit() {
+      const nameInput = document.getElementById("regStudentName");
+      const branchInput = document.getElementById("regStudentBranch");
+      const targetInput = document.getElementById("regStudentTarget");
+
+      const name = (nameInput?.value || "").trim();
       if (!name) {
         alert("Lütfen öğrenci adı ve soyadı giriniz.");
+        nameInput?.focus();
         return;
       }
-      proceedToStudentPage(name, selectedAvatar);
+
+      const sube = branchInput?.value || "7-A";
+      const target = (targetInput?.value || "").trim();
+
+      const students = getRegisteredStudents();
+      const existing = students.find(s => s.name.toLocaleLowerCase('tr-TR') === name.toLocaleLowerCase('tr-TR'));
+
+      let studentObj;
+      if (existing) {
+        existing.avatar = selectedAvatar;
+        existing.sube = sube;
+        if (target) existing.target = target;
+        existing.title = `${sube} Öğrencisi`;
+        studentObj = existing;
+      } else {
+        studentObj = {
+          id: "std_" + Date.now(),
+          name: name,
+          avatar: selectedAvatar,
+          sube: sube,
+          target: target,
+          title: `${sube} Öğrencisi`,
+          registeredAt: new Date().toLocaleDateString('tr-TR')
+        };
+        students.push(studentObj);
+      }
+
+      saveRegisteredStudents(students);
+      selectAndProceedStudent(studentObj, true);
     }
 
-    function proceedToStudentPage(name, avatar) {
-      const cleanName = (name || "").trim() || "Öğrenci";
-      const cleanAvatar = avatar || selectedAvatar || "🌟";
-
-      // Öğrenciyi listeye kaydet/güncelle
-      const list = getRegisteredStudents();
-      const existing = list.find(s => s.name.toLocaleLowerCase('tr-TR') === cleanName.toLocaleLowerCase('tr-TR'));
-      if (existing) {
-        existing.avatar = cleanAvatar;
-      } else {
-        list.push({
-          name: cleanName,
-          avatar: cleanAvatar,
-          title: "7. Sınıf Öğrencisi"
-        });
-      }
-      saveRegisteredStudents(list);
-
-      // Aktif öğrenci oturumunu ayarla
-      const studentObj = {
-        name: cleanName,
-        avatar: cleanAvatar,
-        title: "7. Sınıf Öğrencisi"
-      };
+    function selectAndProceedStudent(studentObj, isNew = false) {
+      // Aktif öğrenci oturumunu kaydet
       localStorage.setItem(CURRENT_STUDENT_KEY, JSON.stringify(studentObj));
 
-      // Konfeti patlat ve ogrenci.html sayfasına yönlendir
-      confetti({ particleCount: 70, spread: 80 });
+      // Konfeti patlat
+      confetti({ particleCount: 75, spread: 80 });
+
+      // ogrenci.html sayfasına yönlendir
       setTimeout(() => {
         window.location.href = "ogrenci.html";
-      }, 400);
+      }, 450);
     }
 
     // Sayfa Başlatma
     document.addEventListener("DOMContentLoaded", () => {
-      initLandingPage();
+      renderAvatarPicker();
+      const students = getRegisteredStudents();
+      const countEl = document.getElementById("tabRegisteredCount");
+      if (countEl) countEl.textContent = students.length;
+
+      // Eğer hiç öğrenci yoksa kayıt sekmesinde kal; eğer öğrenci varsa ve daha önce giriş yapılmışsa giriş sekmesini aç
+      const savedCur = localStorage.getItem(CURRENT_STUDENT_KEY);
+      if (students.length > 0 && savedCur) {
+        switchPortalTab('login');
+      } else {
+        switchPortalTab('register');
+      }
     });
   </script>
 </body>
