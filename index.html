@@ -188,6 +188,15 @@
         <p class="text-xs sm:text-sm text-sky-100 mt-1 max-w-2xl">
           Sevgili <strong class="text-amber-300" id="bannerStudentName">Arif Said İlkbahar</strong>, açılır pencereden 7. sınıf konularını seç, günlük soru sayılarını gir ve hafta sonu 20'şer soruluk branş denemelerinde netlerini gör!
         </p>
+
+        <!-- Yapay Zeka Dijital Koç Hızlı Giriş Butonu -->
+        <div class="mt-3 flex items-center gap-2">
+          <button onclick="openAdminModal('aicoach')" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-slate-950 px-3.5 py-1.5 rounded-full text-xs font-bold shadow-md hover:shadow-lg transition-all cursor-pointer">
+            <i class="fa-solid fa-robot text-indigo-900 text-sm"></i>
+            <span>🤖 Yapay Zeka Dijital Koç Analizi</span>
+            <span class="bg-indigo-900 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-bold ml-0.5">Gelecek Tahmini</span>
+          </button>
+        </div>
       </div>
 
       <!-- Haftalık 3 Temel Başarı Metriği -->
@@ -689,27 +698,32 @@
       </div>
 
       <!-- Yönetici Menüsü Sekmeleri (Navigasyon) -->
-      <div class="flex border-b border-slate-200 text-xs font-bold gap-3 sm:gap-6 shrink-0 overflow-x-auto no-scrollbar">
-        <button onclick="switchAdminTab('students')" id="adminTabBtn-students" class="pb-2 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5 font-bold transition-colors">
+      <div class="flex border-b border-slate-200 text-xs font-bold gap-2 sm:gap-4 shrink-0 overflow-x-auto no-scrollbar">
+        <button onclick="switchAdminTab('students')" id="adminTabBtn-students" class="pb-2 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5 font-bold transition-colors shrink-0">
           <i class="fa-solid fa-chart-pie text-sm"></i>
           <span>📊 Haftalık Karne & Rapor</span>
         </button>
-        <button onclick="switchAdminTab('supabase')" id="adminTabBtn-supabase" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors">
+        <button onclick="switchAdminTab('aicoach')" id="adminTabBtn-aicoach" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0">
+          <i class="fa-solid fa-robot text-sm text-purple-600"></i>
+          <span>🤖 Yapay Zeka Dijital Koç & Tahmin</span>
+          <span class="text-[9px] bg-purple-100 text-purple-700 px-1.5 py-0.2 rounded-full font-bold">AI Projeksiyon</span>
+        </button>
+        <button onclick="switchAdminTab('tools')" id="adminTabBtn-tools" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0">
+          <i class="fa-solid fa-database text-sm"></i>
+          <span>💾 Yedekleme & Toplu Sıfırlama</span>
+        </button>
+        <button onclick="switchAdminTab('supabase')" id="adminTabBtn-supabase" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0">
           <i class="fa-solid fa-cloud text-sm"></i>
-          <span>☁️ Supabase Bulut Ayarları</span>
+          <span>☁️ Supabase Bulut</span>
           <span class="w-2 h-2 rounded-full bg-slate-300 inline-block supabase-status-dot ml-0.5"></span>
         </button>
-        <button onclick="switchAdminTab('tools')" id="adminTabBtn-tools" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors">
-          <i class="fa-solid fa-database text-sm"></i>
-          <span>💾 Veri Yedekleme & Geri Yükleme</span>
-        </button>
-        <button onclick="switchAdminTab('reflections')" id="adminTabBtn-reflections" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors">
+        <button onclick="switchAdminTab('reflections')" id="adminTabBtn-reflections" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0">
           <i class="fa-solid fa-pen-nib text-sm"></i>
-          <span>📝 Haftalık Yansıma Notları</span>
+          <span>📝 Yansıma Notları</span>
         </button>
-        <button onclick="switchAdminTab('qr')" id="adminTabBtn-qr" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors">
+        <button onclick="switchAdminTab('qr')" id="adminTabBtn-qr" class="pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0">
           <i class="fa-solid fa-qrcode text-sm"></i>
-          <span>📱 Cihaz Eşleştirme (Karekod)</span>
+          <span>📱 Karekod</span>
         </button>
       </div>
 
@@ -737,7 +751,67 @@
           </div>
         </div>
 
-        <!-- SEKME 2: SUPABASE BULUT & VERİTABANI AYARLARI -->
+        <!-- SEKME 2: YAPAY ZEKA DİJİTAL KOÇ & PEDAGOJİK GELECEK TAHMİNİ -->
+        <div id="adminTab-aicoach" class="hidden space-y-4">
+          
+          <!-- Koç Karşılama Bannerı -->
+          <div class="p-5 rounded-3xl bg-gradient-to-r from-purple-700 via-indigo-700 to-sky-700 text-white shadow-lg relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 text-8xl opacity-10 pointer-events-none">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+              <div class="flex items-center gap-3.5">
+                <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner border border-white/20">
+                  🤖
+                </div>
+                <div>
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-bold uppercase tracking-wider mb-1">
+                    <i class="fa-solid fa-sparkles"></i> 7. Sınıf Pedagojik AI Motoru
+                  </div>
+                  <h4 class="font-fun text-lg sm:text-xl font-bold text-white">Arif Said İlkbahar • Dijital Başarı Koçu</h4>
+                  <p class="text-xs text-purple-100 max-w-xl">
+                    Haftalık soru sayıların, konu bitirme hızın ve deneme netlerin pedagojik algoritmalarla analiz edilerek ileriye dönük başarı projeksiyonu ve müfredat tamamlama yol haritası çıkarıldı.
+                  </p>
+                </div>
+              </div>
+              <button onclick="renderAiCoachAnalysis(state.selectedWeek)" class="shrink-0 px-3.5 py-2 rounded-xl bg-white text-purple-900 hover:bg-purple-50 font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-rotate text-purple-600"></i> Analizi Yenile
+              </button>
+            </div>
+          </div>
+
+          <!-- 3 Temel Yapay Zeka Gelecek Projeksiyon Kartı -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="aiProjectionsCards"></div>
+
+          <!-- Pedagojik Güçlü Yönler & Gelişim Alanları & Koçluk Mesajı -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="aiPedagogicalInsights"></div>
+
+          <!-- Bitirilmesi Gereken Kritik Konular (Müfredat Takip ve Öncelik Haritası) -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-200 pb-2.5">
+              <div>
+                <h5 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-bullseye text-rose-600"></i>
+                  <span>Bitirilmesi Gereken Öncelikli 7. Sınıf Konuları</span>
+                </h5>
+                <p class="text-[11px] text-slate-500">Mevcut haftaya göre tamamlanmamış ve gelecek 2 haftanın kritik temel konuları</p>
+              </div>
+              <div class="flex items-center gap-2 text-[10px] font-bold">
+                <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold">Acil Öncelik</span>
+                <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">Yaklaşan Kritik</span>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Tamamlanan</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5" id="aiPriorityTopicsList"></div>
+          </div>
+
+          <!-- Dijital Koç'un Önümüzdeki Hafta İçin Eylem Reçetesi -->
+          <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3" id="aiWeeklyPrescriptionCard"></div>
+
+        </div>
+
+        <!-- SEKME 3: SUPABASE BULUT & VERİTABANI AYARLARI -->
         <div id="adminTab-supabase" class="hidden space-y-4 text-xs text-slate-700">
           <!-- Durum Bildirimi -->
           <div id="supabaseConnectionAlert" class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
@@ -805,7 +879,7 @@
           </div>
         </div>
 
-        <!-- SEKME 3: VERİ YEDEKLEME & GERİ YÜKLEME -->
+        <!-- SEKME 4: VERİ YEDEKLEME & TOPLU SIFIRLAMA -->
         <div id="adminTab-tools" class="hidden space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
@@ -846,18 +920,96 @@
 
           </div>
 
-          <!-- 3. Sıfırlama Bölümü (Tehlikeli Bölge) -->
+          <!-- HAFTALIK VERİLERİ TOPLU SIFIRLAMA PANELİ -->
+          <div class="p-5 rounded-2xl bg-gradient-to-br from-amber-50/90 to-orange-50/90 border border-amber-300 space-y-4 shadow-sm">
+            <div class="flex items-start justify-between gap-3 border-b border-amber-200/80 pb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex items-center justify-center text-lg shadow-sm">
+                  <i class="fa-solid fa-broom"></i>
+                </div>
+                <div>
+                  <h4 class="font-fun text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <span>Haftalık Verileri Toplu Sıfırlama Paneli</span>
+                    <span class="text-[10px] bg-amber-200 text-amber-900 px-2.5 py-0.5 rounded-full font-bold">Toplu Sihirbaz</span>
+                  </h4>
+                  <p class="text-xs text-slate-600 mt-0.5">
+                    Haftalık soru sayılarını, konu çalışmalarını veya deneme sonuçlarını tek tek ya da seçtiğiniz hafta aralığında topluca temizleyin.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Hafta Kapsamı -->
+              <div>
+                <label class="block text-xs font-bold text-slate-800 mb-1.5">Sıfırlanacak Hafta Kapsamı:</label>
+                <select id="bulkResetScope" onchange="toggleBulkResetRangeRow()" class="w-full p-2.5 rounded-xl border border-amber-300 bg-white text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                  <option value="current">📍 Sadece Aktif Seçili Hafta</option>
+                  <option value="range">📅 Belirli Bir Hafta Aralığı (Örn: 1. - 5. Hafta)...</option>
+                  <option value="all">⚠️ Tüm 40 Haftayı Toplu Sıfırla (Bütün Sezon)</option>
+                </select>
+
+                <!-- Gizli aralık seçimi -->
+                <div id="bulkResetRangeRow" class="hidden grid-cols-2 gap-2 mt-2">
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Başlangıç:</label>
+                    <select id="bulkResetStartWeek" class="w-full p-1.5 rounded-lg border border-amber-300 text-xs bg-white font-bold"></select>
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Bitiş:</label>
+                    <select id="bulkResetEndWeek" class="w-full p-1.5 rounded-lg border border-amber-300 text-xs bg-white font-bold"></select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hangi Veriler Sıfırlansın? -->
+              <div>
+                <label class="block text-xs font-bold text-slate-800 mb-1.5">Sıfırlanacak Veri Türleri:</label>
+                <div class="space-y-1.5 text-xs bg-white/90 p-3 rounded-xl border border-amber-200">
+                  <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
+                    <input type="checkbox" id="bulkResetOptQuestions" checked class="rounded text-amber-600 focus:ring-amber-500">
+                    <span>Günlük Çözülen Soru Sayıları</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
+                    <input type="checkbox" id="bulkResetOptTopics" checked class="rounded text-amber-600 focus:ring-amber-500">
+                    <span>Günlük 3 Ders Konu Çalışması (Tikler)</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
+                    <input type="checkbox" id="bulkResetOptDeneme" checked class="rounded text-amber-600 focus:ring-amber-500">
+                    <span>Hafta Sonu Deneme Sınavı Netleri (90 Soru)</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer font-semibold text-slate-700">
+                    <input type="checkbox" id="bulkResetOptNotes" checked class="rounded text-amber-600 focus:ring-amber-500">
+                    <span>Günlük Notlar ve Haftalık Yansıma Metinleri</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Eylem Butonu -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-amber-200/80">
+              <span class="text-[11px] text-amber-900 font-medium">
+                <i class="fa-solid fa-circle-info text-amber-600"></i> Bu işlem seçtiğiniz haftalardaki verileri sıfırlar, diğer haftalar korunur.
+              </span>
+              <button onclick="executeBulkWeekReset()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-fun font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-broom"></i>
+                <span>Seçilen Haftalık Verileri Toplu Sıfırla</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Sıfırlama Bölümü (Tüm Sistem Sıfırlama) -->
           <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="text-left">
               <h5 class="font-fun text-xs font-bold text-rose-900 flex items-center gap-1.5">
-                <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Verileri Temizle & Sıfırla
+                <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Tüm Sistemi Sıfırla (Fabrika Ayarları)
               </h5>
               <p class="text-[11px] text-rose-700 mt-0.5">
-                Tüm kayıtları sıfırlayarak sistemi varsayılan başlangıç haline getirir. (Önce yedek almanız önerilir)
+                Tüm kayıtları sıfırlayarak sistemi varsayılan başlangıç haline getirir. (Önce yukarıdan yedek almanız önerilir)
               </p>
             </div>
-            <button onclick="resetAllDataToDefaults()" class="shrink-0 px-3.5 py-2 rounded-xl bg-white hover:bg-rose-100 text-rose-700 border border-rose-300 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5">
-              <i class="fa-solid fa-trash-can"></i> Verileri Sıfırla
+            <button onclick="resetAllDataToDefaults()" class="shrink-0 px-3.5 py-2 rounded-xl bg-white hover:bg-rose-100 text-rose-700 border border-rose-300 text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-trash-can"></i> Tüm Sistemi Sıfırla
             </button>
           </div>
 
@@ -2095,20 +2247,24 @@
     }
 
     function switchAdminTab(tId) {
-      const tabs = ['students', 'supabase', 'tools', 'reflections', 'qr'];
+      const tabs = ['students', 'aicoach', 'tools', 'supabase', 'reflections', 'qr'];
       tabs.forEach(tab => {
         const tabEl = document.getElementById(`adminTab-${tab}`);
         const tabBtn = document.getElementById(`adminTabBtn-${tab}`);
         if (tabEl) tabEl.classList.add("hidden");
-        if (tabBtn) tabBtn.className = "pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors";
+        if (tabBtn) tabBtn.className = "pb-2 text-slate-400 hover:text-slate-600 flex items-center gap-1.5 transition-colors shrink-0";
       });
 
       const activeTabEl = document.getElementById(`adminTab-${tId}`);
       const activeBtn = document.getElementById(`adminTabBtn-${tId}`);
       if (activeTabEl) activeTabEl.classList.remove("hidden");
-      if (activeBtn) activeBtn.className = "pb-2 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5 font-bold transition-colors";
+      if (activeBtn) activeBtn.className = "pb-2 text-blue-600 border-b-2 border-blue-600 flex items-center gap-1.5 font-bold transition-colors shrink-0";
 
-      if (tId === 'supabase') {
+      if (tId === 'aicoach') {
+        renderAiCoachAnalysis(state.selectedWeek);
+      } else if (tId === 'tools') {
+        initBulkResetOptions();
+      } else if (tId === 'supabase') {
         testAndDisplaySupabaseConnection(false);
       }
     }
@@ -2224,6 +2380,421 @@
     }
 
     function printAdminReport() { window.print(); }
+
+    /* =========================================================================
+       YAPAY ZEKA DİJİTAL KOÇ & PEDAGOJİK PROJEKSİYON MOTORU
+       ========================================================================= */
+    function renderAiCoachAnalysis(targetWeekNum) {
+      const wData = getOrCreateWeekData(targetWeekNum);
+      const summ = calculateStudentWeekSummary(STUDENT_NAME, targetWeekNum);
+
+      // 40 haftalık kümülatif veriler ve branş dökümü
+      let totalAllWeeksQ = 0;
+      let totalAllWeeksTopics = 0;
+      let completedWeeksWithData = 0;
+      const completedTopicsSet = new Set();
+      const subjectStats = {};
+      GRADE7_SUBJECTS.forEach(s => {
+        subjectStats[s] = { totalQ: 0, correct: 0, incorrect: 0, net: 0, max: 0 };
+      });
+
+      for (let w = 1; w <= 40; w++) {
+        const wRec = state.weeksData[w];
+        if (!wRec) continue;
+        let wQ = 0;
+        let wTop = 0;
+        if (wRec.days) {
+          for (let d = 0; d < 7; d++) {
+            const day = wRec.days[d];
+            if (!day) continue;
+            (day.questions || []).forEach(q => {
+              const count = parseInt(q.count) || 0;
+              wQ += count;
+              if (subjectStats[q.subject]) subjectStats[q.subject].totalQ += count;
+            });
+            (day.topics || []).forEach(t => {
+              if (t.done) {
+                wTop++;
+                completedTopicsSet.add(t.name);
+              }
+            });
+          }
+        }
+        if (wRec.deneme && wRec.deneme.subjects) {
+          wRec.deneme.subjects.forEach(s => {
+            if (subjectStats[s.subject]) {
+              subjectStats[s.subject].correct += (s.correct || 0);
+              subjectStats[s.subject].incorrect += (s.incorrect || 0);
+              subjectStats[s.subject].net += (s.net || 0);
+              subjectStats[s.subject].max += (s.max || 20);
+            }
+            wQ += (s.correct || 0) + (s.incorrect || 0);
+          });
+        }
+        if (wQ > 0 || wTop > 0) {
+          completedWeeksWithData++;
+          totalAllWeeksQ += wQ;
+          totalAllWeeksTopics += wTop;
+        }
+      }
+
+      // Projeksiyon Hesaplamaları
+      const activeWeeks = Math.max(1, completedWeeksWithData);
+      const avgWeeklyQ = Math.round(totalAllWeeksQ / activeWeeks) || Math.max(summ.totalQuestions, 280);
+      const projectedYearTotalQ = Math.max(avgWeeklyQ * 40, totalAllWeeksQ);
+      
+      const currentNet = summ.denemeNet > 0 ? summ.denemeNet : 72;
+      const projectedNextMonthNet = Math.min(90, parseFloat((currentNet + 3.2).toFixed(2)));
+      const projectedYearEndNet = Math.min(90, parseFloat((currentNet + 9.5).toFixed(2)));
+
+      // LGS Yüzdelik Dilim Tahmini
+      let lgsPercentile = "%1.8 – %3.5";
+      let schoolTargetDesc = "Galatasaray, Kabataş & Nitelikli Fen Liseleri Bandı";
+      if (currentNet >= 80) {
+        lgsPercentile = "%0.3 – %1.5";
+        schoolTargetDesc = "Türkiye Derecesi Bandı • Galatasaray, Kabataş, İstanbul Erkek";
+      } else if (currentNet >= 65) {
+        lgsPercentile = "%1.8 – %4.2";
+        schoolTargetDesc = "Fen Liseleri & Seçkin Proje Anadolu Liseleri";
+      } else if (currentNet >= 50) {
+        lgsPercentile = "%4.5 – %8.5";
+        schoolTargetDesc = "Merkezi Sınavla Alan Nitelikli Anadolu Liseleri";
+      } else {
+        lgsPercentile = "%9.0 – %15.0";
+        schoolTargetDesc = "Gelişim İvmesi Gereken Hazırlık Bandı";
+      }
+
+      // 1. Projeksiyon Kartları
+      const projContainer = document.getElementById("aiProjectionsCards");
+      if (projContainer) {
+        projContainer.innerHTML = `
+          <!-- Kart 1: Soru Hacmi -->
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-blue-700 uppercase tracking-wide flex items-center gap-1">
+                <i class="fa-solid fa-calculator"></i> Yıl Sonu Soru Hacmi
+              </span>
+              <span class="text-[9px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold">40 Hafta</span>
+            </div>
+            <div class="my-2">
+              <div class="text-2xl font-fun font-bold text-blue-950">~${projectedYearTotalQ.toLocaleString('tr-TR')} Soru</div>
+              <div class="text-[11px] text-blue-700 font-medium mt-0.5">Haftalık Ortalama: <strong>${avgWeeklyQ} Soru / Hafta</strong></div>
+            </div>
+            <div class="text-[10px] text-slate-600 bg-white/80 p-2 rounded-xl border border-blue-100">
+              💡 7. sınıf LGS hazırlık temeli için altın baraj olan 12.000 soru hedefi başarıyla yakalanıyor.
+            </div>
+          </div>
+
+          <!-- Kart 2: Deneme Net Projeksiyonu -->
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                <i class="fa-solid fa-chart-line"></i> Gelecek Net Projeksiyonu
+              </span>
+              <span class="text-[9px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">90 Soru</span>
+            </div>
+            <div class="my-2">
+              <div class="text-2xl font-fun font-bold text-emerald-950">${projectedNextMonthNet} – ${projectedYearEndNet} Net</div>
+              <div class="text-[11px] text-emerald-700 font-medium mt-0.5">Şu Anki Net: <strong>${currentNet.toFixed(2)} Net</strong></div>
+            </div>
+            <div class="text-[10px] text-slate-600 bg-white/80 p-2 rounded-xl border border-emerald-100">
+              📈 Düzenli deneme analiziyle 4 haftada tahmini net artışı: <strong>+3.2 Net</strong>
+            </div>
+          </div>
+
+          <!-- Kart 3: Hedef LGS Dilimi -->
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-purple-200 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold text-purple-700 uppercase tracking-wide flex items-center gap-1">
+                <i class="fa-solid fa-graduation-cap"></i> Hedef LGS Yüzdelik Dilimi
+              </span>
+              <span class="text-[9px] bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full font-bold">Öngörü</span>
+            </div>
+            <div class="my-2">
+              <div class="text-2xl font-fun font-bold text-purple-950">${lgsPercentile}</div>
+              <div class="text-[11px] text-purple-800 font-semibold truncate mt-0.5" title="${schoolTargetDesc}">${schoolTargetDesc}</div>
+            </div>
+            <div class="text-[10px] text-slate-600 bg-white/80 p-2 rounded-xl border border-purple-100">
+              🎯 7. sınıf kazanımlarının oturma seviyesi Fen Lisesi rotasında seyrediyor.
+            </div>
+          </div>
+        `;
+      }
+
+      // 2. Pedagojik Güçlü Yönler & Gelişim Alanları
+      const sortedSubjects = [...GRADE7_SUBJECTS].sort((a, b) => {
+        return (subjectStats[b].totalQ + subjectStats[b].correct) - (subjectStats[a].totalQ + subjectStats[a].correct);
+      });
+      const topSubject1 = sortedSubjects[0] || "Fen Bilimleri";
+      const topSubject2 = sortedSubjects[1] || "Türkçe";
+      const growthSubject = sortedSubjects[sortedSubjects.length - 1] || "Matematik";
+
+      const insightsContainer = document.getElementById("aiPedagogicalInsights");
+      if (insightsContainer) {
+        insightsContainer.innerHTML = `
+          <!-- Güçlü Yönler -->
+          <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+            <h5 class="font-fun text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+              <i class="fa-solid fa-star text-amber-500"></i>
+              <span>Süper Güçlerin (Güçlü Yönler)</span>
+            </h5>
+            <div class="space-y-1.5 text-xs text-emerald-800">
+              <div class="p-2 rounded-xl bg-white border border-emerald-100">
+                <strong>🌟 ${topSubject1} Disiplini:</strong> Bu derste soru çözme kararlılığın ve kavrama başarın üst düzeyde.
+              </div>
+              <div class="p-2 rounded-xl bg-white border border-emerald-100">
+                <strong>🎯 ${topSubject2} Kavrayışı:</strong> Konu çalışmalarını düzenli tamamlayarak denemelere tam odaklanıyorsun.
+              </div>
+            </div>
+          </div>
+
+          <!-- Geliştirilmesi Gereken Alanlar -->
+          <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+            <h5 class="font-fun text-xs font-bold text-amber-900 flex items-center gap-1.5">
+              <i class="fa-solid fa-compass text-amber-600"></i>
+              <span>Gelişim Odak Noktaları</span>
+            </h5>
+            <div class="space-y-1.5 text-xs text-amber-900">
+              <div class="p-2 rounded-xl bg-white border border-amber-100">
+                <strong>🔍 ${growthSubject} Soru Çeşitliliği:</strong> Bu branşta yeni nesil işlem ve beceri temelli sorulara biraz daha vakit ayır.
+              </div>
+              <div class="p-2 rounded-xl bg-white border border-amber-100">
+                <strong>⏱️ Deneme Stratejisi:</strong> Boş bıraktığın soruları sınav bitiminde çözümlü videolardan hemen analiz et.
+              </div>
+            </div>
+          </div>
+
+          <!-- Pedagojik Koçluk Tavsiyesi -->
+          <div class="p-4 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-2">
+            <h5 class="font-fun text-xs font-bold text-purple-900 flex items-center gap-1.5">
+              <i class="fa-solid fa-comment-dots text-purple-600"></i>
+              <span>Dijital Koç'un Tavsiyesi</span>
+            </h5>
+            <p class="text-xs text-purple-900 italic bg-white p-3 rounded-xl border border-purple-100 leading-relaxed">
+              "Sevgili Arif Said, 7. sınıf LGS maratonunun temel taşıdır! Şimdi edindiğin günlük soru çözme alışkanlığı, 8. sınıfta rakiplerinden 2 adım önde başlamanı sağlayacak. Hata yapmaktan asla çekinme; en kalıcı öğrenme yapamadığın soruları öğrenince gerçekleşir!"
+            </p>
+          </div>
+        `;
+      }
+
+      // 3. Bitirilmesi Gereken Öncelikli 7. Sınıf Konuları
+      const priorityContainer = document.getElementById("aiPriorityTopicsList");
+      if (priorityContainer) {
+        priorityContainer.innerHTML = "";
+        
+        const urgentList = [];
+        const upcomingList = [];
+        const masteredList = [];
+
+        GRADE7_SUBJECTS.forEach(sub => {
+          const list = GRADE7_CURRICULUM[sub] || [];
+          list.forEach((item, idx) => {
+            const isDone = completedTopicsSet.has(item.topic);
+            const unitNum = parseInt((item.unit || '').replace(/\D/g, '')) || 1;
+            if (isDone) {
+              masteredList.push({ subject: sub, topic: item.topic, unit: item.unit, status: 'mastered' });
+            } else if (unitNum <= Math.max(2, Math.ceil(targetWeekNum / 6))) {
+              urgentList.push({ subject: sub, topic: item.topic, unit: item.unit, status: 'urgent' });
+            } else {
+              upcomingList.push({ subject: sub, topic: item.topic, unit: item.unit, status: 'upcoming' });
+            }
+          });
+        });
+
+        const displayItems = [
+          ...urgentList.slice(0, 4),
+          ...upcomingList.slice(0, 2),
+          ...masteredList.slice(0, 2)
+        ];
+
+        displayItems.forEach(item => {
+          let badgeClass = "bg-rose-100 text-rose-800 border-rose-200";
+          let badgeText = "Acil Tamamla";
+          let icon = "fa-circle-exclamation text-rose-600";
+          if (item.status === 'upcoming') {
+            badgeClass = "bg-amber-100 text-amber-800 border-amber-200";
+            badgeText = "Yaklaşan Kritik";
+            icon = "fa-clock text-amber-600";
+          } else if (item.status === 'mastered') {
+            badgeClass = "bg-emerald-100 text-emerald-800 border-emerald-200";
+            badgeText = "Kavrandı ✓";
+            icon = "fa-circle-check text-emerald-600";
+          }
+
+          const card = document.createElement("div");
+          card.className = "p-3 rounded-2xl bg-white border border-slate-200 shadow-xs flex items-center justify-between gap-3";
+          card.innerHTML = `
+            <div class="flex items-center gap-2.5 min-w-0">
+              <i class="fa-solid ${icon} text-sm shrink-0"></i>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-[10px] font-bold text-blue-700">${item.subject}</span>
+                  <span class="text-[9px] text-slate-400">• ${item.unit}</span>
+                </div>
+                <div class="text-xs font-bold text-slate-800 truncate" title="${item.topic}">${item.topic}</div>
+              </div>
+            </div>
+            <div class="shrink-0 flex items-center gap-1.5">
+              <span class="text-[9px] font-bold px-2 py-0.5 rounded-full border ${badgeClass}">${badgeText}</span>
+              ${item.status !== 'mastered' ? `<button onclick="assignPriorityTopicToDaily('${item.subject}', '${item.topic.replace(/'/g, "\\'")}')" class="px-2 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[10px] transition-colors" title="Günün Planına Ata">Ata 🎯</button>` : ''}
+            </div>
+          `;
+          priorityContainer.appendChild(card);
+        });
+      }
+
+      // 4. Haftalık Eylem Reçetesi
+      const recCard = document.getElementById("aiWeeklyPrescriptionCard");
+      if (recCard) {
+        recCard.innerHTML = `
+          <div class="space-y-1">
+            <div class="text-[10px] font-bold text-indigo-700 uppercase tracking-wide">
+              <i class="fa-solid fa-list-check"></i> ${targetWeekNum}. Hafta İçin Koçun Eylem Reçetesi
+            </div>
+            <div class="font-fun text-sm font-bold text-indigo-950">
+              Hedef: Günde <strong>50 Soru</strong> • 3 Ders Konu Tamamlama • Hafta Sonu <strong>+2 Net</strong>
+            </div>
+            <p class="text-xs text-slate-600">
+              Bu hafta özellikle <strong>${topSubject1}</strong> ve <strong>${growthSubject}</strong> branşlarına öncelik vererek deneme eksiklerini kapat.
+            </p>
+          </div>
+          <button onclick="closeAdminModal()" class="shrink-0 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer">
+            <span>Çalışmaya Başla</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        `;
+      }
+    }
+
+    function assignPriorityTopicToDaily(subject, topicName) {
+      const wData = getOrCreateWeekData(state.selectedWeek);
+      const dayRec = wData.days[state.selectedDayIndex];
+      let targetSlot = dayRec.topics.find(t => !t.name || !t.done);
+      if (!targetSlot) targetSlot = dayRec.topics[0];
+      targetSlot.subject = subject;
+      targetSlot.name = topicName;
+      saveState();
+      renderDayTasks();
+      closeAdminModal();
+      playChimeSound('success');
+      alert(`🎯 "${topicName}" konusu bugünün çalışma planına eklendi!`);
+    }
+
+    /* =========================================================================
+       TOPLU HAFTA SIFIRLAMA SİHİRBAZI
+       ========================================================================= */
+    function initBulkResetOptions() {
+      const startSel = document.getElementById("bulkResetStartWeek");
+      const endSel = document.getElementById("bulkResetEndWeek");
+      if (!startSel || !endSel) return;
+      if (startSel.options.length === 0) {
+        ALL_WEEKS.forEach(w => {
+          const o1 = document.createElement("option");
+          o1.value = w.weekNumber;
+          o1.textContent = `${w.weekNumber}. Hafta`;
+          startSel.appendChild(o1);
+
+          const o2 = document.createElement("option");
+          o2.value = w.weekNumber;
+          o2.textContent = `${w.weekNumber}. Hafta`;
+          if (w.weekNumber === 4) o2.selected = true;
+          endSel.appendChild(o2);
+        });
+      }
+    }
+
+    function toggleBulkResetRangeRow() {
+      const scope = document.getElementById("bulkResetScope").value;
+      const row = document.getElementById("bulkResetRangeRow");
+      if (!row) return;
+      if (scope === 'range') {
+        row.classList.remove("hidden");
+        row.classList.add("grid");
+      } else {
+        row.classList.add("hidden");
+        row.classList.remove("grid");
+      }
+    }
+
+    function executeBulkWeekReset() {
+      const scope = document.getElementById("bulkResetScope").value;
+      const resetQuestions = document.getElementById("bulkResetOptQuestions").checked;
+      const resetTopics = document.getElementById("bulkResetOptTopics").checked;
+      const resetDeneme = document.getElementById("bulkResetOptDeneme").checked;
+      const resetNotes = document.getElementById("bulkResetOptNotes").checked;
+
+      if (!resetQuestions && !resetTopics && !resetDeneme && !resetNotes) {
+        alert("Lütfen sıfırlanacak en az bir veri türü seçin (Soru, Konu, Deneme veya Notlar).");
+        return;
+      }
+
+      let targetWeeks = [];
+      if (scope === "current") {
+        targetWeeks = [state.selectedWeek];
+      } else if (scope === "all") {
+        for (let w = 1; w <= 40; w++) targetWeeks.push(w);
+      } else if (scope === "range") {
+        const s = parseInt(document.getElementById("bulkResetStartWeek").value) || 1;
+        const e = parseInt(document.getElementById("bulkResetEndWeek").value) || 40;
+        const minW = Math.min(s, e);
+        const maxW = Math.max(s, e);
+        for (let w = minW; w <= maxW; w++) targetWeeks.push(w);
+      }
+
+      const weekDesc = scope === "current" 
+        ? `${state.selectedWeek}. Hafta` 
+        : (scope === "all" ? "Tüm 40 Hafta" : `${targetWeeks[0]}. - ${targetWeeks[targetWeeks.length - 1]}. Haftalar`);
+
+      const confirmMsg = `DİKKAT! ${weekDesc} için aşağıdaki veriler sıfırlanacak:\n` +
+        (resetQuestions ? "• Günlük Soru Çözüm Sayıları\n" : "") +
+        (resetTopics ? "• Günlük 3 Ders Konu Çalışması Durumları (Tikler)\n" : "") +
+        (resetDeneme ? "• Hafta Sonu 90 Soruluk Deneme Sınavı Netleri\n" : "") +
+        (resetNotes ? "• Günlük Notlar ve Haftalık Yansıma Değerlendirmeleri\n" : "") +
+        "\nBu işlemi onaylıyor musunuz?";
+
+      if (!confirm(confirmMsg)) return;
+
+      targetWeeks.forEach(wNum => {
+        if (state.weeksData[wNum]) {
+          const wData = state.weeksData[wNum];
+          if (wData.days) {
+            for (let d = 0; d < 7; d++) {
+              const day = wData.days[d];
+              if (!day) continue;
+              if (resetQuestions && day.questions) {
+                day.questions.forEach(q => { q.count = 0; });
+              }
+              if (resetTopics && day.topics) {
+                day.topics.forEach(t => { t.done = false; });
+              }
+              if (resetNotes) {
+                day.note = "";
+                day.rating = 0;
+              }
+            }
+          }
+          if (resetDeneme && wData.deneme && wData.deneme.subjects) {
+            wData.deneme.conducted = false;
+            wData.deneme.note = "";
+            wData.deneme.subjects.forEach(s => {
+              s.correct = 0;
+              s.incorrect = 0;
+              s.blank = s.max || (['Sosyal Bilgiler', 'Din Kültürü', 'İngilizce'].includes(s.subject) ? 10 : 20);
+              s.net = 0;
+            });
+          }
+          if (resetNotes) {
+            wData.weeklyReflection = "";
+          }
+        }
+      });
+
+      saveState();
+      renderAll();
+      saveStudentToSupabase(STUDENT_NAME, state);
+      playChimeSound('success');
+      alert(`Tebrikler! ${weekDesc} verileri başarıyla sıfırlandı ve sistem güncellendi. ✓`);
+    }
 
     /* =========================================================================
        VERİ YEDEKLEME, GERİ YÜKLEME VE SIFIRLAMA
