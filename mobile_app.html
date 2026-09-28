@@ -95,12 +95,13 @@
     <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white px-4 py-2.5 shrink-0 shadow-md">
       <div class="flex items-center justify-between">
         
-        <div class="flex items-center gap-2 bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-2xl border border-white/20">
+        <div onclick="openMobileStudentEntryModal()" class="flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-2xl border border-white/20 cursor-pointer tap-bounce" title="Öğrenci Değiştir / Yeni Öğrenci Girişi">
           <span class="w-7 h-7 rounded-xl bg-white text-slate-800 flex items-center justify-center text-sm shadow-sm" id="mobileUserAvatar">🌟</span>
           <div class="text-left leading-tight">
             <div class="text-[9px] text-sky-200 font-bold uppercase tracking-wider" id="mobileUserRoleBadge">7. Sınıf</div>
-            <div class="text-xs font-bold text-white max-w-[120px] truncate" id="mobileUserName">Arif Said İlkbahar</div>
+            <div class="text-xs font-bold text-white max-w-[100px] truncate" id="mobileUserName">Arif Said İlkbahar</div>
           </div>
+          <i class="fa-solid fa-arrows-rotate text-[10px] text-sky-200 ml-0.5"></i>
         </div>
 
         <div class="flex items-center gap-1.5">
@@ -268,9 +269,9 @@
               <h3 class="font-fun text-base font-bold text-slate-800" id="mSettingsName">Arif Said İlkbahar</h3>
             </div>
           </div>
-          <span class="px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
-            ✓ Aktif
-          </span>
+          <button onclick="openMobileStudentEntryModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 text-xs font-bold border border-blue-200 flex items-center gap-1 tap-bounce cursor-pointer">
+            <i class="fa-solid fa-arrows-rotate text-[10px]"></i> Değiştir
+          </button>
         </div>
 
         <div class="bg-gradient-to-r from-indigo-900 to-purple-900 rounded-2xl p-4 text-white shadow flex items-center justify-between">
@@ -359,42 +360,88 @@
       </div>
     </div>
 
-    <!-- ================= MOBİL GİRİŞ MODALI (GÜVENLİK KALDIRILDI) ================= -->
-    <div id="mobileAuthModal" class="hidden" style="display:none !important;">
+    <!-- ================= MOBİL ÖĞRENCİ GİRİŞ & PROFİL SEÇİM MODALI ================= -->
+    <div id="mStudentEntryModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
       <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[92%] overflow-y-auto">
-        <div class="flex items-center gap-2 border-b pb-2">
-          <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow">
-            <i class="fa-solid fa-graduation-cap"></i>
+        
+        <div class="flex items-center justify-between border-b pb-2.5">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-base shadow">
+              🎒
+            </div>
+            <div>
+              <h3 class="font-fun text-sm font-bold text-slate-800">Öğrenci Giriş Portalı</h3>
+              <p class="text-[10px] text-slate-500">Kişisel takip sayfana bağlan 🚀</p>
+            </div>
           </div>
+          <button onclick="closeMobileStudentEntryModal()" id="mStudentEntryCloseBtn" class="text-slate-400 hover:text-slate-600 text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form onsubmit="event.preventDefault(); handleMobileStudentEntrySubmit();" class="space-y-3">
           <div>
-            <h3 class="font-fun text-base font-bold text-slate-800">7. Sınıf Gelişim Portalı</h3>
-            <p class="text-[10px] text-slate-500">Haftalık soru & deneme takip sistemi</p>
+            <label class="block text-xs font-bold text-slate-700 mb-1">👤 Öğrenci Adı ve Soyadı:</label>
+            <input type="text" id="mStudentEntryNameInput" required placeholder="Örn: Arif Said İlkbahar, Elif Kaya..." class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none">
           </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">🎭 Profil Avatarı Seç:</label>
+            <div class="flex flex-wrap gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-200" id="mStudentEntryAvatarPicker"></div>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-fun font-bold text-xs shadow tap-bounce">
+            Takip Sayfama Başla 🚀
+          </button>
+        </form>
+
+        <!-- Kayıtlı Öğrenci Profilleri -->
+        <div class="pt-3 border-t">
+          <div class="text-[11px] font-bold text-slate-700 mb-2 flex items-center justify-between">
+            <span>📌 Kayıtlı Öğrenci Profilleri:</span>
+            <span class="text-[10px] text-slate-400">Tek tıkla geç</span>
+          </div>
+          <div id="mQuickStudentsListContainer" class="space-y-1.5 max-h-36 overflow-y-auto"></div>
         </div>
 
-        <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-bold">
-          <button onclick="switchMobileAuthTab('login')" id="mAuthTab-login" class="flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm">Giriş Yap</button>
-          <button onclick="switchMobileAuthTab('register')" id="mAuthTab-register" class="flex-1 py-1.5 rounded-lg text-slate-500">Yeni Kayıt</button>
-        </div>
-
-        <div id="mobileAuthAlert" class="hidden p-2 rounded-xl text-xs font-semibold"></div>
-
-        <div class="space-y-2.5">
-          <input type="text" id="mAuthUsername" placeholder="Kullanıcı Adı..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:outline-none">
-          <input type="password" id="mAuthPassword" placeholder="Şifre..." class="w-full p-2.5 rounded-xl bg-slate-50 border text-xs font-semibold focus:outline-none">
-          <button onclick="handleMobileAuthSubmit()" class="w-full py-2.5 rounded-xl bg-blue-600 text-white font-fun font-bold text-xs shadow tap-bounce">
-            Giriş Yap ve Başla
+        <!-- Yönetici Giriş Linki -->
+        <div class="pt-2 border-t flex items-center justify-between text-xs">
+          <span class="text-slate-500 text-[10px]">Öğretmen / Yönetici misiniz?</span>
+          <button onclick="closeMobileStudentEntryModal(); openMobileAdminAuthModal();" class="text-indigo-600 font-bold text-xs flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved text-amber-500"></i>
+            <span>Yönetici Girişi (Şifreli)</span>
           </button>
         </div>
 
-        <div class="pt-2 border-t space-y-1 text-[10px]">
-          <div class="font-bold text-slate-600">Örnek Girişler:</div>
-          <div class="grid grid-cols-3 gap-1">
-            <button onclick="fillMobileSample('admin', 'admin123')" class="p-1 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-900 font-bold">🛡️ admin</button>
-            <button onclick="fillMobileSample('Ahmet', '1234')" class="p-1 rounded-lg bg-sky-50 border border-sky-200 text-sky-900 font-bold">🚀 Ahmet</button>
-            <button onclick="fillMobileSample('Zeynep', '1234')" class="p-1 rounded-lg bg-purple-50 border border-purple-200 text-purple-900 font-bold">🌟 Zeynep</button>
+      </div>
+    </div>
+
+    <!-- ================= MOBİL YÖNETİCİ ŞİFRELİ GİRİŞ MODALI ================= -->
+    <div id="mAdminAuthModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
+      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-3.5 max-h-[92%] overflow-y-auto">
+        
+        <div class="text-center space-y-1">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white flex items-center justify-center text-xl mx-auto shadow-md">
+            <i class="fa-solid fa-lock text-amber-300"></i>
           </div>
+          <h3 class="font-fun text-sm font-bold text-slate-800">Yönetici Giriş Kapısı</h3>
+          <p class="text-[10px] text-slate-500">Yönetici menüsüne erişmek için şifrenizi giriniz.</p>
         </div>
+
+        <div id="mAdminAuthAlert" class="hidden p-2 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700"></div>
+
+        <form onsubmit="event.preventDefault(); handleMobileAdminAuthSubmit();" class="space-y-2.5">
+          <input type="text" id="mAdminAuthUsername" value="admin" placeholder="Kullanıcı Adı..." required class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:outline-none">
+          <input type="password" id="mAdminAuthPassword" placeholder="Yönetici Şifresi..." required class="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:outline-none">
+          
+          <div class="text-[10px] text-slate-400 bg-slate-50 p-1.5 rounded-xl border border-slate-100 text-center font-mono">
+            Varsayılan: <strong>admin</strong> / <strong>admin123</strong>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <button type="button" onclick="closeMobileAdminAuthModal()" class="flex-1 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs">Vazgeç</button>
+            <button type="submit" class="flex-1 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow tap-bounce">Giriş Yap 🔐</button>
+          </div>
+        </form>
+
       </div>
     </div>
 
@@ -410,10 +457,15 @@
             </span>
             <div>
               <h3 class="font-fun text-sm font-bold text-slate-800">Yönetici & Kontrol Menüsü</h3>
-              <p class="text-[10px] text-slate-500">Arif Said İlkbahar • 7. Sınıf</p>
+              <p class="text-[10px] text-indigo-700 font-bold" id="mAdminActiveStudentBadge">Arif Said İlkbahar • 7. Sınıf</p>
             </div>
           </div>
-          <button onclick="closeMobileAdminModal()" class="text-slate-400 hover:text-slate-600 text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+          <div class="flex items-center gap-1.5">
+            <button onclick="handleMobileAdminLogout()" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-[10px] font-bold border border-rose-200" title="Yönetici Oturumunu Kapat">
+              <i class="fa-solid fa-lock"></i> Çıkış
+            </button>
+            <button onclick="closeMobileAdminModal()" class="text-slate-400 hover:text-slate-600 text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+          </div>
         </div>
 
         <!-- Mobil Yönetici Sekmeleri (Segmented Control) -->
@@ -783,22 +835,38 @@
       }
     })();
 
-    const AUTH_USERS_KEY = "fen_deneme_auth_users_v4";
-    const CURRENT_SESSION_KEY = "fen_deneme_current_session_v4";
+    const REGISTERED_STUDENTS_KEY = "fen_deneme_registered_students_v5";
+    const CURRENT_STUDENT_KEY = "fen_deneme_current_student_v5";
+    const AVATAR_OPTIONS = ['🌟', '🚀', '🦁', '🐯', '🦅', '📚', '🎨', '🏃', '💡', '⚡', '🏆', '🌿', '🎯', '⚽', '🐬'];
 
-    const STUDENT_NAME = "Arif Said İlkbahar";
-    const STUDENT_AVATAR = "🌟";
-    const STUDENT_TITLE = "7. Sınıf Öğrencisi";
+    const DEFAULT_STUDENTS_LIST = [
+      { name: "Arif Said İlkbahar", avatar: "🌟", title: "7. Sınıf Öğrencisi" }
+    ];
 
-    const DEFAULT_STUDENT = {
-      username: STUDENT_NAME,
-      role: "student",
-      avatar: STUDENT_AVATAR,
-      title: STUDENT_TITLE
+    let currentStudent = {
+      name: "Arif Said İlkbahar",
+      avatar: "🌟",
+      title: "7. Sınıf Öğrencisi"
     };
 
-    let authUsers = [ DEFAULT_STUDENT ];
-    let currentSession = DEFAULT_STUDENT;
+    Object.defineProperty(window, 'STUDENT_NAME', {
+      get: () => currentStudent.name,
+      set: (v) => { currentStudent.name = v; },
+      configurable: true
+    });
+    Object.defineProperty(window, 'STUDENT_AVATAR', {
+      get: () => currentStudent.avatar,
+      set: (v) => { currentStudent.avatar = v; },
+      configurable: true
+    });
+    Object.defineProperty(window, 'STUDENT_TITLE', {
+      get: () => currentStudent.title,
+      set: (v) => { currentStudent.title = v; },
+      configurable: true
+    });
+
+    let selectedEntryAvatar = '🌟';
+    let mAdminTargetTab = 'karne';
     let mPickingSlot = { slotIndex: 0 };
     let mSelectedPickerSubject = "Matematik";
 
@@ -809,43 +877,282 @@
       weeksData: {}
     };
 
-    function getUserStorageKey(u) { return "fen_haftalik_data_arif_said_ilkbahar"; }
+    function getUserStorageKey(studentName) {
+      const name = (studentName || currentStudent.name || "Arif Said İlkbahar").trim();
+      const norm = name.toLocaleLowerCase('tr-TR');
+      if (norm === "arif said ilkbahar" || norm === "arif said i̇lkbahar") {
+        return "fen_haftalik_data_arif_said_ilkbahar";
+      }
+      const slug = norm
+        .replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ı/g, 'i').replace(/i̇/g, 'i')
+        .replace(/ö/g, 'o').replace(/ş/g, 's').replace(/ü/g, 'u')
+        .replace(/[^a-z0-9]/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_|_$/g, '');
+      return `fen_haftalik_data_${slug || 'ogrenci'}`;
+    }
+
+    function getRegisteredStudents() {
+      try {
+        const raw = localStorage.getItem(REGISTERED_STUDENTS_KEY);
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list) && list.length > 0) {
+            const hasArif = list.some(s => (s.name || '').toLocaleLowerCase('tr-TR').includes('arif said'));
+            if (!hasArif) list.unshift(DEFAULT_STUDENTS_LIST[0]);
+            return list;
+          }
+        }
+      } catch (e) {}
+      return [...DEFAULT_STUDENTS_LIST];
+    }
+
+    function saveRegisteredStudents(list) {
+      localStorage.setItem(REGISTERED_STUDENTS_KEY, JSON.stringify(list));
+    }
 
     function initMobile() {
-      // Güvenlik ve parola zorunluluğu kaldırıldı: Doğrudan Arif Said İlkbahar olarak açılır
-      currentSession = DEFAULT_STUDENT;
-      authUsers = [ DEFAULT_STUDENT ];
-      localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(DEFAULT_STUDENT));
-      localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(authUsers));
+      const students = getRegisteredStudents();
+      saveRegisteredStudents(students);
 
-      applySession(DEFAULT_STUDENT);
-      const m = document.getElementById("mobileAuthModal");
-      if (m) m.classList.add("hidden");
-    }
+      let savedStudent = null;
+      try {
+        const raw = localStorage.getItem(CURRENT_STUDENT_KEY);
+        if (raw) savedStudent = JSON.parse(raw);
+      } catch (e) {}
 
-    function switchMobileAuthTab(mode) {}
-
-    function fillMobileSample(u, p) {}
-
-    function handleMobileAuthSubmit() {}
-
-    function applySession(user) {
-      document.getElementById("mobileUserName").textContent = STUDENT_NAME;
-      document.getElementById("mobileUserAvatar").textContent = STUDENT_AVATAR;
-      document.getElementById("mSettingsName").textContent = STUDENT_NAME;
-      document.getElementById("mSettingsAvatar").textContent = STUDENT_AVATAR;
-      document.getElementById("mobileAdminHeaderBtn").classList.remove("hidden");
-      loadUserData(STUDENT_NAME);
-    }
-
-    function handleMobileLogout() {
-      if (confirm("Arif Said İlkbahar verilerini sıfırlamak istiyor musunuz?")) {
-        localStorage.removeItem(getUserStorageKey(STUDENT_NAME));
-        state = { selectedWeek: 1, selectedDayIndex: 0, activeTab: 'today', weeksData: {} };
-        loadUserData(STUDENT_NAME);
-        playChime('click');
-        alert("Arif Said İlkbahar verileri sıfırlandı.");
+      if (savedStudent && savedStudent.name) {
+        loginMobileStudent(savedStudent.name, savedStudent.avatar || '🌟', false);
+      } else {
+        loginMobileStudent("Arif Said İlkbahar", "🌟", false);
+        openMobileStudentEntryModal();
       }
+    }
+
+    function loginMobileStudent(name, avatar, showCelebration = true) {
+      const cleanName = (name || "").trim() || "Öğrenci";
+      const cleanAvatar = avatar || selectedEntryAvatar || "🌟";
+
+      currentStudent = {
+        name: cleanName,
+        avatar: cleanAvatar,
+        title: "7. Sınıf Öğrencisi"
+      };
+
+      const list = getRegisteredStudents();
+      const existing = list.find(s => s.name.toLocaleLowerCase('tr-TR') === cleanName.toLocaleLowerCase('tr-TR'));
+      if (existing) {
+        existing.avatar = cleanAvatar;
+      } else {
+        list.push({
+          name: cleanName,
+          avatar: cleanAvatar,
+          title: "7. Sınıf Öğrencisi"
+        });
+      }
+      saveRegisteredStudents(list);
+      localStorage.setItem(CURRENT_STUDENT_KEY, JSON.stringify(currentStudent));
+
+      applySession(currentStudent);
+      seedDefaultMobileDataIfEmpty(cleanName);
+      loadUserData(cleanName);
+      closeMobileStudentEntryModal();
+
+      if (showCelebration) {
+        playChime('done');
+        confetti({ particleCount: 50, spread: 60 });
+      }
+
+      if (typeof initSupabaseOnLoad === "function") {
+        initSupabaseOnLoad();
+      }
+    }
+
+    function applySession(student) {
+      const stName = student?.name || currentStudent.name;
+      const stAvatar = student?.avatar || currentStudent.avatar;
+      const stTitle = student?.title || currentStudent.title;
+
+      const mUserNameEl = document.getElementById("mobileUserName");
+      const mUserAvatarEl = document.getElementById("mobileUserAvatar");
+      const mSettingsNameEl = document.getElementById("mSettingsName");
+      const mSettingsAvatarEl = document.getElementById("mSettingsAvatar");
+      const mRoleEl = document.getElementById("mobileUserRoleBadge");
+      const mAdminBadgeEl = document.getElementById("mAdminActiveStudentBadge");
+
+      if (mUserNameEl) mUserNameEl.textContent = stName;
+      if (mUserAvatarEl) mUserAvatarEl.textContent = stAvatar;
+      if (mSettingsNameEl) mSettingsNameEl.textContent = stName;
+      if (mSettingsAvatarEl) mSettingsAvatarEl.textContent = stAvatar;
+      if (mRoleEl) mRoleEl.textContent = "7. Sınıf";
+      if (mAdminBadgeEl) mAdminBadgeEl.textContent = `${stName} • ${stTitle}`;
+
+      document.title = `${stAvatar} ${stName} - 7. Sınıf Mobil Takip`;
+    }
+
+    function seedDefaultMobileDataIfEmpty(studentName) {
+      const targetName = studentName || currentStudent.name;
+      const studentKey = getUserStorageKey(targetName);
+      if (!localStorage.getItem(studentKey)) {
+        const d = {
+          selectedWeek: 1,
+          selectedDayIndex: 0,
+          weeksData: {}
+        };
+        const week1 = getOrCreateWeekData(1);
+        d.weeksData[1] = week1;
+        localStorage.setItem(studentKey, JSON.stringify(d));
+      }
+    }
+
+    function openMobileStudentEntryModal() {
+      const modal = document.getElementById("mStudentEntryModal");
+      if (!modal) return;
+
+      const picker = document.getElementById("mStudentEntryAvatarPicker");
+      if (picker) {
+        picker.innerHTML = "";
+        AVATAR_OPTIONS.forEach(em => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.onclick = () => {
+            selectedEntryAvatar = em;
+            renderMobileEntryAvatarPicker();
+          };
+          btn.className = `w-8 h-8 rounded-xl text-sm flex items-center justify-center transition-all ${
+            selectedEntryAvatar === em ? 'bg-blue-600 text-white scale-110 shadow ring-2 ring-blue-300' : 'bg-white text-slate-700 border border-slate-200'
+          }`;
+          btn.textContent = em;
+          picker.appendChild(btn);
+        });
+      }
+
+      const input = document.getElementById("mStudentEntryNameInput");
+      if (input) {
+        input.value = currentStudent.name || "";
+      }
+
+      renderMobileQuickStudentsList();
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function renderMobileEntryAvatarPicker() {
+      const picker = document.getElementById("mStudentEntryAvatarPicker");
+      if (!picker) return;
+      Array.from(picker.children).forEach(btn => {
+        const isSel = btn.textContent === selectedEntryAvatar;
+        btn.className = `w-8 h-8 rounded-xl text-sm flex items-center justify-center transition-all ${
+          isSel ? 'bg-blue-600 text-white scale-110 shadow ring-2 ring-blue-300' : 'bg-white text-slate-700 border border-slate-200'
+        }`;
+      });
+    }
+
+    function closeMobileStudentEntryModal() {
+      const modal = document.getElementById("mStudentEntryModal");
+      if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+    }
+
+    function renderMobileQuickStudentsList() {
+      const container = document.getElementById("mQuickStudentsListContainer");
+      if (!container) return;
+      container.innerHTML = "";
+
+      const students = getRegisteredStudents();
+      students.forEach(st => {
+        const isCurrent = st.name.toLocaleLowerCase('tr-TR') === currentStudent.name.toLocaleLowerCase('tr-TR');
+        const div = document.createElement("div");
+        div.className = `p-2 rounded-xl border flex items-center justify-between gap-2 cursor-pointer tap-bounce ${
+          isCurrent ? 'bg-blue-50 border-blue-300' : 'bg-slate-50 border-slate-200'
+        }`;
+        div.onclick = () => {
+          loginMobileStudent(st.name, st.avatar);
+        };
+        div.innerHTML = `
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-6 h-6 rounded-lg bg-white border flex items-center justify-center text-xs shrink-0">${st.avatar}</span>
+            <div class="truncate">
+              <span class="text-xs font-bold text-slate-800 block truncate">${st.name}</span>
+            </div>
+          </div>
+          <span class="text-[9px] px-2 py-0.5 rounded font-bold shrink-0 ${
+            isCurrent ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'
+          }">${isCurrent ? 'Aktif' : 'Seç'}</span>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function handleMobileStudentEntrySubmit() {
+      const input = document.getElementById("mStudentEntryNameInput");
+      const name = input ? input.value.trim() : "";
+      if (!name) {
+        alert("Lütfen öğrenci adını giriniz.");
+        return;
+      }
+      loginMobileStudent(name, selectedEntryAvatar);
+    }
+
+    /* MOBİL YÖNETİCİ GİRİŞİ (ŞİFRELİ) */
+    const ADMIN_CREDENTIALS = {
+      username: "admin",
+      password: "admin123"
+    };
+
+    function openMobileAdminAuthModal(targetTab = 'karne') {
+      mAdminTargetTab = targetTab;
+      const modal = document.getElementById("mAdminAuthModal");
+      const alertBox = document.getElementById("mAdminAuthAlert");
+      const userInp = document.getElementById("mAdminAuthUsername");
+      const passInp = document.getElementById("mAdminAuthPassword");
+
+      if (alertBox) alertBox.classList.add("hidden");
+      if (userInp) userInp.value = "admin";
+      if (passInp) passInp.value = "";
+
+      if (modal) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+    }
+
+    function closeMobileAdminAuthModal() {
+      const modal = document.getElementById("mAdminAuthModal");
+      if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+    }
+
+    function handleMobileAdminAuthSubmit() {
+      const u = (document.getElementById("mAdminAuthUsername")?.value || "").trim();
+      const p = (document.getElementById("mAdminAuthPassword")?.value || "").trim();
+      const alertBox = document.getElementById("mAdminAuthAlert");
+
+      if (u === ADMIN_CREDENTIALS.username && p === ADMIN_CREDENTIALS.password) {
+        sessionStorage.setItem("admin_authenticated", "true");
+        closeMobileAdminAuthModal();
+        playChime('done');
+        openMobileAdminModalDirect(mAdminTargetTab);
+      } else {
+        if (alertBox) {
+          alertBox.textContent = "Hatalı kullanıcı adı veya şifre! (Varsayılan: admin / admin123)";
+          alertBox.classList.remove("hidden");
+        } else {
+          alert("Hatalı kullanıcı adı veya şifre!");
+        }
+      }
+    }
+
+    function handleMobileAdminLogout() {
+      sessionStorage.removeItem("admin_authenticated");
+      closeMobileAdminModal();
+      playChime('click');
+      alert("Yönetici oturumu kapatıldı.");
     }
 
     function getOrCreateWeekData(wNum) {
@@ -1307,6 +1614,15 @@
     }
 
     function openMobileAdminModal(initialTab = 'karne') {
+      const isAuth = sessionStorage.getItem("admin_authenticated") === "true";
+      if (!isAuth) {
+        openMobileAdminAuthModal(initialTab);
+        return;
+      }
+      openMobileAdminModalDirect(initialTab);
+    }
+
+    function openMobileAdminModalDirect(initialTab = 'karne') {
       renderMobileAdmin();
       
       const cfg = getSupabaseConfig();
@@ -2146,67 +2462,95 @@
     }
 
     function renderMobileAdmin() {
-      const studentUsers = authUsers.filter(u => u.role === 'student');
-      let classQ = 0;
-      let classDeneme = 0;
+      const allStudents = getRegisteredStudents();
+      let totalQ = 0;
+      let totalNet = 0;
 
-      studentUsers.forEach(p => {
-        let uData = null;
-        try { uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username))); } catch(e) {}
-        if (uData && uData.weeksData && uData.weeksData[state.selectedWeek]) {
-          const w = uData.weeksData[state.selectedWeek];
-          for (let d = 0; d < 7; d++) {
-            classQ += (w.days[d].questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
-          }
-          (w.deneme.subjects || []).forEach(s => { classDeneme += (s.net || 0); classQ += (s.correct || 0) + (s.incorrect || 0); });
-        }
+      allStudents.forEach(st => {
+        const sSumm = calculateStudentWeekSummary(st.name, state.selectedWeek);
+        totalQ += sSumm.totalQuestions;
+        totalNet += sSumm.denemeNet;
       });
+
+      const avgNet = allStudents.length > 0 ? (totalNet / allStudents.length).toFixed(1) : 0;
 
       document.getElementById("mAdminMetrics").innerHTML = `
         <div class="p-2.5 rounded-xl bg-blue-50 border border-blue-200">
-          <span class="text-[9px] font-bold text-blue-600 block uppercase">Haftalık Soru</span>
-          <strong class="font-fun text-sm text-blue-950">${classQ} Soru</strong>
+          <span class="text-[9px] font-bold text-blue-600 block uppercase">Haftalık Toplam Soru</span>
+          <strong class="font-fun text-sm text-blue-950">${totalQ} Soru</strong>
         </div>
         <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200">
           <span class="text-[9px] font-bold text-purple-600 block uppercase">7. Sınıf Deneme Ort.</span>
-          <strong class="font-fun text-sm text-purple-950">${studentUsers.length > 0 ? (classDeneme/studentUsers.length).toFixed(1) : 0} Net</strong>
+          <strong class="font-fun text-sm text-purple-950">${avgNet} Net</strong>
         </div>
       `;
 
       const list = document.getElementById("mAdminStudentList");
       list.innerHTML = "";
-      studentUsers.forEach(p => {
-        let uData = null;
-        let pQ = 0;
-        let pNet = 0;
-        try { uData = JSON.parse(localStorage.getItem(getUserStorageKey(p.username))); } catch(e) {}
-        if (uData && uData.weeksData && uData.weeksData[state.selectedWeek]) {
-          const w = uData.weeksData[state.selectedWeek];
-          for (let d = 0; d < 7; d++) {
-            pQ += (w.days[d].questions || []).reduce((acc, q) => acc + (parseInt(q.count) || 0), 0);
-          }
-          (w.deneme.subjects || []).forEach(s => { pNet += (s.net || 0); pQ += (s.correct || 0) + (s.incorrect || 0); });
-        }
+      allStudents.forEach(st => {
+        const summ = calculateStudentWeekSummary(st.name, state.selectedWeek);
+        const isCurrent = st.name.toLocaleLowerCase('tr-TR') === currentStudent.name.toLocaleLowerCase('tr-TR');
+        const isMainArif = st.name.toLocaleLowerCase('tr-TR').includes("arif said");
 
         const div = document.createElement("div");
-        div.className = "p-2.5 rounded-xl bg-slate-50 border flex items-center justify-between text-xs";
+        div.className = `p-2.5 rounded-xl border flex items-center justify-between text-xs gap-2 ${
+          isCurrent ? 'bg-blue-50/80 border-blue-300' : 'bg-slate-50 border-slate-200'
+        }`;
         div.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-white border flex items-center justify-center">${p.avatar}</span>
-            <div>
-              <strong class="block">${p.username}</strong>
-              <span class="text-[10px] text-slate-500">${pQ} Soru • ${pNet.toFixed(1)} Net</span>
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-7 h-7 rounded-lg bg-white border flex items-center justify-center shrink-0">${st.avatar}</span>
+            <div class="truncate">
+              <strong class="block truncate">${st.name} ${isCurrent ? '<span class="text-[9px] text-blue-600 font-bold">(Aktif)</span>' : ''}</strong>
+              <span class="text-[10px] text-slate-500">${summ.totalQuestions} Soru • ${summ.denemeNet} Net</span>
             </div>
           </div>
-          <button onclick="mobileInspect('${p.username}')" class="px-2 py-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold">İncele</button>
+          <div class="flex items-center gap-1 shrink-0">
+            <button onclick="loginMobileStudent('${st.name.replace(/'/g, "\\'")}', '${st.avatar}', false); closeMobileAdminModal();" class="px-2 py-1 rounded-lg ${isCurrent ? 'bg-slate-200 text-slate-600' : 'bg-emerald-600 text-white'} text-[10px] font-bold tap-bounce">
+              ${isCurrent ? 'Seçili' : 'Seç'}
+            </button>
+            <button onclick="mobileInspect('${st.name.replace(/'/g, "\\'")}')" class="px-2 py-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold tap-bounce">
+              Karne
+            </button>
+            ${!isMainArif ? `
+              <button onclick="deleteRegisteredStudentMobile('${st.name.replace(/'/g, "\\'")}')" class="px-1.5 py-1 rounded-lg bg-rose-50 text-rose-600 text-[10px] font-bold border border-rose-200">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            ` : ''}
+          </div>
         `;
         list.appendChild(div);
       });
     }
 
+    function deleteRegisteredStudentMobile(studentName) {
+      if (!studentName) return;
+      if (studentName.toLocaleLowerCase('tr-TR').includes("arif said")) {
+        alert("Arif Said İlkbahar ana profil olduğu için silinemez.");
+        return;
+      }
+
+      if (!confirm(`"${studentName}" adlı öğrenciyi silmek istediğinize emin misiniz?`)) return;
+
+      let list = getRegisteredStudents();
+      list = list.filter(s => s.name.toLocaleLowerCase('tr-TR') !== studentName.toLocaleLowerCase('tr-TR'));
+      saveRegisteredStudents(list);
+
+      localStorage.removeItem(getUserStorageKey(studentName));
+
+      if (currentStudent.name.toLocaleLowerCase('tr-TR') === studentName.toLocaleLowerCase('tr-TR')) {
+        const fallback = list[0] || DEFAULT_STUDENTS_LIST[0];
+        loginMobileStudent(fallback.name, fallback.avatar, false);
+      }
+
+      renderMobileAdmin();
+      renderMobileQuickStudentsList();
+      playChime('done');
+      alert(`"${studentName}" adlı öğrenci silindi.`);
+    }
+
     function mobileInspect(u) {
-      state.viewingUser = u;
-      loadUserData(u);
+      const student = getRegisteredStudents().find(s => s.name.toLocaleLowerCase('tr-TR') === u.toLocaleLowerCase('tr-TR'));
+      loginMobileStudent(u, student ? student.avatar : '🌟', false);
       closeMobileAdminModal();
     }
 
