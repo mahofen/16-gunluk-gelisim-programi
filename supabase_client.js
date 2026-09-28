@@ -11,10 +11,10 @@
 const SUPABASE_STORAGE_URL_KEY = "arif_said_supabase_url";
 const SUPABASE_STORAGE_KEY_KEY = "arif_said_supabase_anon_key";
 
-// Varsayılan boş veya ön tanımlı proje anahtarları
+// Varsayılan Supabase proje bilgileri (Arif Said İlkbahar Veritabanı)
 const DEFAULT_SUPABASE_CONFIG = {
-  url: localStorage.getItem(SUPABASE_STORAGE_URL_KEY) || "",
-  anonKey: localStorage.getItem(SUPABASE_STORAGE_KEY_KEY) || ""
+  url: "https://gkkgtihqfihkeooiqoja.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdra2d0aWhxZmloa2Vvb2lxb2phIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NTY0MjEsImV4cCI6MjEwNjEzMjQyMX0.WS6LwCf2FsEqpndvgtBmg6kVZ6LKfCiof4v6x_KjCrI"
 };
 
 let _supabaseClientInstance = null;
@@ -25,9 +25,11 @@ let _isRealtimeSubscribed = false;
  * Mevcut kayıtlı Supabase yapılandırmasını döndürür.
  */
 function getSupabaseConfig() {
+  const storedUrl = localStorage.getItem(SUPABASE_STORAGE_URL_KEY);
+  const storedKey = localStorage.getItem(SUPABASE_STORAGE_KEY_KEY);
   return {
-    url: (localStorage.getItem(SUPABASE_STORAGE_URL_KEY) || DEFAULT_SUPABASE_CONFIG.url || "").trim(),
-    anonKey: (localStorage.getItem(SUPABASE_STORAGE_KEY_KEY) || DEFAULT_SUPABASE_CONFIG.anonKey || "").trim()
+    url: (storedUrl && storedUrl.trim()) ? storedUrl.trim() : DEFAULT_SUPABASE_CONFIG.url,
+    anonKey: (storedKey && storedKey.trim()) ? storedKey.trim() : DEFAULT_SUPABASE_CONFIG.anonKey
   };
 }
 

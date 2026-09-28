@@ -56,16 +56,15 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.student_records;
 
 ---
 
-## 📌 3. Adım: API Anahtarlarını Uygulamaya Girme
+## 📌 3. Adım: API Anahtarları (Aktif Proje Bilgileri Tanımlandı)
 
-1. Supabase Dashboard'da sol alttaki **Project Settings** (<i class="fa-solid fa-gear"></i>) -> **API** sayfasına gidin.
-2. Burada yer alan 2 bilgiyi kopyalayın:
-   - **Project URL:** `https://xxxxxxxxxxxx.supabase.co`
-   - **Project API keys (anon / public):** `eyJhbGciOi...`
-3. Web sitemize (`index.html`) veya mobil uygulamaya (`mobile_app.html`) girin.
-4. Üst menüdeki **"Supabase Bulut"** (<i class="fa-solid fa-cloud"></i>) butonuna tıklayın.
-5. Açılan pencereye kopyaladığınız **Project URL** ve **Anon Key** bilgilerini yapıştırın.
-6. **"Ayarları Kaydet & Bağlan"** butonuna basın.
+Aşağıdaki aktif Supabase bilgileri doğrudan projenize (`supabase_client.js`) ön tanımlı olarak işlenmiştir:
+
+- **Project ID:** `gkkgtihqfihkeooiqoja`
+- **Project URL:** `https://gkkgtihqfihkeooiqoja.supabase.co`
+- **Anon Public Key:** `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
+
+Uygulamanız açıldığı anda bu bilgileri otomatik tanır ve doğrudan canlı bulut veritabanına bağlanır. Dilerseniz üst menüdeki **"Supabase Bulut"** (<i class="fa-solid fa-cloud"></i>) butonundan bağlantı durumunu kontrol edebilirsiniz.
 
 ---
 
