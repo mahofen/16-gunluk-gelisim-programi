@@ -104,23 +104,18 @@
         </div>
 
         <div class="flex items-center gap-1.5">
-          <button onclick="openSupabaseModal()" id="mobileSupabaseBtn" class="bg-emerald-600/80 hover:bg-emerald-700 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-emerald-300/40 shadow-sm tap-bounce" title="Supabase Bulut">
-            <span class="w-2 h-2 rounded-full bg-slate-300 inline-block supabase-status-dot"></span>
-            <i class="fa-solid fa-cloud"></i>
+          <!-- TEK YÖNETİCİ MENÜSÜ BUTONU -->
+          <button onclick="openMobileAdminModal()" id="mobileAdminHeaderBtn" class="bg-indigo-900/80 hover:bg-indigo-950 text-white px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-white/20 shadow-sm tap-bounce" title="Yönetici Menüsü">
+            <i class="fa-solid fa-shield-halved text-amber-300"></i>
+            <span>🛡️ Yönetici</span>
+            <span class="w-2 h-2 rounded-full bg-slate-300 inline-block supabase-status-dot ml-0.5"></span>
           </button>
 
-          <button onclick="openMobileAdminModal()" id="mobileAdminHeaderBtn" class="bg-indigo-900/60 hover:bg-indigo-900 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 border border-white/20 shadow-sm tap-bounce">
-            <i class="fa-solid fa-chart-pie text-sky-300"></i>
-            <span>Karne</span>
-          </button>
+          <span id="mobileWeekQuestionBadge" class="hidden">0 Soru</span>
 
-          <div class="bg-white/15 backdrop-blur-md px-2 py-1 rounded-xl text-[11px] font-bold text-amber-300 flex items-center gap-1 border border-white/10">
-            <i class="fa-solid fa-pen-nib"></i>
-            <span id="mobileWeekQuestionBadge">0 Soru</span>
-          </div>
-
-          <a href="index.html" class="bg-white/20 hover:bg-white/30 text-white px-2 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1 shadow-sm tap-bounce" title="Web Portalı">
-            <i class="fa-solid fa-laptop"></i>
+          <!-- Web Portalı Linki -->
+          <a href="index.html" class="bg-white/20 hover:bg-white/30 text-white p-1.5 rounded-xl text-xs font-bold flex items-center justify-center shadow-sm tap-bounce" title="Masaüstü Portalı">
+            <i class="fa-solid fa-laptop text-sm"></i>
           </a>
         </div>
       </div>
@@ -393,99 +388,149 @@
       </div>
     </div>
 
-    <!-- ================= MOBİL YÖNETİCİ MODALI ================= -->
+    <!-- ================= MOBİL YÖNETİCİ MENÜSÜ & SİSTEM KONTROL PANELİ ================= -->
     <div id="mobileAdminModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
-      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-3.5 max-h-[90%] overflow-y-auto">
-        <div class="flex items-center justify-between border-b pb-2">
+      <div class="bg-white rounded-t-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 max-h-[92%] overflow-y-auto">
+        
+        <!-- Üst Başlık & Kapat Butonu -->
+        <div class="flex items-center justify-between border-b pb-2.5">
           <div class="flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-chart-pie"></i></span>
-            <h3 class="font-fun text-sm font-bold text-slate-800">7. Sınıf Haftalık Karnesi</h3>
-          </div>
-          <button onclick="closeMobileAdminModal()" class="text-slate-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="grid grid-cols-2 gap-2" id="mAdminMetrics"></div>
-        <div class="space-y-1.5">
-          <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Soru & Deneme Dökümü:</label>
-          <div id="mAdminStudentList" class="space-y-2 max-h-56 overflow-y-auto"></div>
-        </div>
-        <button onclick="closeMobileAdminModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">Kapat</button>
-      </div>
-    </div>
-
-    <!-- ================= SUPABASE BULUT BAĞLANTISI MODALI (MOBİL) ================= -->
-    <div id="supabaseModal" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex-col justify-end p-0">
-      <div class="bg-white rounded-t-3xl p-5 shadow-2xl space-y-4 max-h-[92%] overflow-y-auto">
-        <div class="flex items-center justify-between border-b pb-2">
-          <div class="flex items-center gap-2">
-            <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow">
-              <i class="fa-solid fa-cloud"></i>
+            <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-600 text-white flex items-center justify-center text-sm shadow">
+              <i class="fa-solid fa-shield-halved text-amber-300"></i>
             </span>
             <div>
-              <h3 class="font-fun text-sm font-bold text-slate-800">Supabase Bulut Bağlantısı</h3>
-              <p class="text-[10px] text-slate-500">Cihazlar arası otomatik veri senkronizasyonu</p>
+              <h3 class="font-fun text-sm font-bold text-slate-800">Yönetici & Kontrol Menüsü</h3>
+              <p class="text-[10px] text-slate-500">Arif Said İlkbahar • 7. Sınıf</p>
             </div>
           </div>
-          <button onclick="closeSupabaseModal()" class="text-slate-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
+          <button onclick="closeMobileAdminModal()" class="text-slate-400 hover:text-slate-600 text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
-        <!-- Durum Rozeti -->
-        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block supabase-status-dot"></span>
-            <span class="font-bold text-xs text-slate-800 supabase-status-text">Bulut: Ayarlanmadı</span>
-          </div>
-          <button onclick="testAndDisplaySupabaseConnection()" class="px-2.5 py-1 rounded-lg bg-slate-200 font-bold text-[10px] text-slate-700 tap-bounce">
-            Test Et ⚡
+        <!-- Mobil Yönetici Sekmeleri (Segmented Control) -->
+        <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-bold gap-1">
+          <button onclick="switchMobileAdminTab('karne')" id="mAdminTabBtn-karne" class="flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm transition-all text-center">
+            📊 Karne
+          </button>
+          <button onclick="switchMobileAdminTab('bulut')" id="mAdminTabBtn-bulut" class="flex-1 py-1.5 rounded-lg text-slate-600 hover:text-slate-800 transition-all text-center flex items-center justify-center gap-1">
+            <span>☁️ Bulut</span>
+            <span class="w-2 h-2 rounded-full bg-slate-300 inline-block supabase-status-dot"></span>
+          </button>
+          <button onclick="switchMobileAdminTab('yedek')" id="mAdminTabBtn-yedek" class="flex-1 py-1.5 rounded-lg text-slate-600 hover:text-slate-800 transition-all text-center">
+            💾 Yedek
           </button>
         </div>
 
-        <!-- Form Alanları -->
-        <div class="space-y-2.5 text-xs">
-          <div>
-            <label class="block font-bold text-slate-700 mb-0.5 text-[11px]">Supabase Proje URL:</label>
-            <input type="text" id="supabaseUrlInput" placeholder="https://xxxx.supabase.co" class="w-full p-2 rounded-xl bg-slate-50 border text-xs font-mono focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-0.5 text-[11px]">Supabase Anon Key:</label>
-            <textarea id="supabaseKeyInput" rows="2" placeholder="eyJhbGciOi..." class="w-full p-2 rounded-xl bg-slate-50 border text-xs font-mono focus:outline-none resize-none"></textarea>
-          </div>
-          <button onclick="handleSaveSupabaseConfig()" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-fun font-bold text-xs shadow tap-bounce">
-            Ayarları Kaydet & Bağlan
-          </button>
-        </div>
-
-        <!-- Manuel Eşitleme -->
-        <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2">
-          <div class="text-[11px] font-bold text-emerald-900">Manuel Eşitleme:</div>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="handleManualUploadToSupabase()" class="py-1.5 px-2 rounded-lg bg-white border border-emerald-300 font-bold text-[10px] text-emerald-800 tap-bounce flex items-center justify-center gap-1">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Buluta Yükle
-            </button>
-            <button onclick="handleManualDownloadFromSupabase()" class="py-1.5 px-2 rounded-lg bg-white border border-emerald-300 font-bold text-[10px] text-emerald-800 tap-bounce flex items-center justify-center gap-1">
-              <i class="fa-solid fa-cloud-arrow-down"></i> Buluttan İndir
-            </button>
+        <!-- SEKME 1: HAFTALIK KARNE -->
+        <div id="mAdminTab-karne" class="space-y-3">
+          <div class="grid grid-cols-2 gap-2" id="mAdminMetrics"></div>
+          <div class="space-y-1.5">
+            <label class="text-[11px] font-bold text-slate-700 uppercase">Öğrenci Soru & Deneme Dökümü:</label>
+            <div id="mAdminStudentList" class="space-y-2 max-h-52 overflow-y-auto"></div>
           </div>
         </div>
 
-        <!-- SQL Gösterimi -->
-        <div class="border rounded-xl overflow-hidden text-xs">
-          <button onclick="toggleSupabaseSqlAccordion()" class="w-full p-2.5 bg-slate-50 font-bold text-[11px] text-slate-700 flex items-center justify-between">
-            <span><i class="fa-solid fa-database text-blue-600 mr-1"></i> Supabase SQL Kodu</span>
-            <i class="fa-solid fa-chevron-down text-slate-400" id="supabaseSqlAccordionIcon"></i>
-          </button>
-          <div id="supabaseSqlAccordionContent" class="hidden p-2.5 bg-slate-900 text-slate-200 space-y-1.5">
-            <pre class="text-[9px] font-mono p-2 rounded bg-black/40 text-emerald-400 max-h-24 overflow-x-auto" id="supabaseSqlSnippet"></pre>
-            <button onclick="copySupabaseSql()" class="w-full py-1 rounded bg-emerald-600 text-white font-bold text-[10px] tap-bounce">
-              SQL Kodunu Kopyala
+        <!-- SEKME 2: SUPABASE BULUT AYARLARI -->
+        <div id="mAdminTab-bulut" class="hidden space-y-3 text-xs">
+          <!-- Durum Rozeti -->
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block supabase-status-dot"></span>
+              <span class="font-bold text-[11px] text-slate-800 supabase-status-text">Bulut: Ayarlanmadı</span>
+            </div>
+            <button onclick="testAndDisplaySupabaseConnection()" class="px-2.5 py-1 rounded-lg bg-slate-200 font-bold text-[10px] text-slate-700 tap-bounce">
+              Test Et ⚡
+            </button>
+          </div>
+
+          <!-- Form Alanları -->
+          <div class="space-y-2">
+            <div>
+              <label class="block font-bold text-slate-700 mb-0.5 text-[10px]">Supabase Proje URL:</label>
+              <input type="text" id="supabaseUrlInput" placeholder="https://xxxx.supabase.co" class="w-full p-2 rounded-xl bg-slate-50 border text-xs font-mono focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-0.5 text-[10px]">Supabase Anon Key:</label>
+              <textarea id="supabaseKeyInput" rows="2" placeholder="eyJhbGciOi..." class="w-full p-2 rounded-xl bg-slate-50 border text-xs font-mono focus:outline-none resize-none"></textarea>
+            </div>
+            <button onclick="handleSaveSupabaseConfig()" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-fun font-bold text-xs shadow tap-bounce">
+              Ayarları Kaydet & Bağlan
+            </button>
+          </div>
+
+          <!-- Manuel Eşitleme -->
+          <div class="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+            <div class="text-[10px] font-bold text-emerald-900">Manuel Veri Eşitleme:</div>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="handleManualUploadToSupabase()" class="py-1.5 px-2 rounded-lg bg-white border border-emerald-300 font-bold text-[10px] text-emerald-800 tap-bounce flex items-center justify-center gap-1">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Buluta Yükle
+              </button>
+              <button onclick="handleManualDownloadFromSupabase()" class="py-1.5 px-2 rounded-lg bg-white border border-emerald-300 font-bold text-[10px] text-emerald-800 tap-bounce flex items-center justify-center gap-1">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Buluttan İndir
+              </button>
+            </div>
+          </div>
+
+          <!-- SQL Gösterimi -->
+          <div class="border rounded-xl overflow-hidden text-xs">
+            <button onclick="toggleSupabaseSqlAccordion()" class="w-full p-2 bg-slate-50 font-bold text-[10px] text-slate-700 flex items-center justify-between">
+              <span><i class="fa-solid fa-database text-blue-600 mr-1"></i> Supabase SQL Kodu</span>
+              <i class="fa-solid fa-chevron-down text-slate-400" id="supabaseSqlAccordionIcon"></i>
+            </button>
+            <div id="supabaseSqlAccordionContent" class="hidden p-2 bg-slate-900 text-slate-200 space-y-1.5">
+              <pre class="text-[9px] font-mono p-2 rounded bg-black/40 text-emerald-400 max-h-24 overflow-x-auto" id="supabaseSqlSnippet"></pre>
+              <button onclick="copySupabaseSql()" class="w-full py-1 rounded bg-emerald-600 text-white font-bold text-[10px] tap-bounce">
+                SQL Kodunu Kopyala
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEKME 3: VERİ YEDEKLEME & GERİ YÜKLEME -->
+        <div id="mAdminTab-yedek" class="hidden space-y-2.5 text-xs">
+          <!-- İndir -->
+          <div class="p-3 rounded-2xl bg-blue-50 border border-blue-200 space-y-2">
+            <div class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-file-arrow-down text-blue-600"></i> Verileri Yedekle (JSON İndir)
+            </div>
+            <p class="text-[10px] text-slate-600 leading-snug">40 haftalık tüm çalışma ve soru sayılarınızı telefonunuza JSON dosyası olarak indirin.</p>
+            <button onclick="exportMobileData()" class="w-full py-2 rounded-xl bg-blue-600 text-white font-bold text-[11px] tap-bounce">
+              Yedek Dosyasını İndir (.json)
+            </button>
+          </div>
+
+          <!-- Geri Yükle -->
+          <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2">
+            <div class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-file-arrow-up text-emerald-600"></i> Yedekten Geri Yükle
+            </div>
+            <p class="text-[10px] text-slate-600 leading-snug">Daha önce indirdiğiniz .json dosyasını seçerek verilerinizi geri yükleyin.</p>
+            <input type="file" id="mobileJsonBackupInput" accept=".json" onchange="importMobileDataFromFile(event)" class="hidden">
+            <button onclick="document.getElementById('mobileJsonBackupInput').click()" class="w-full py-2 rounded-xl bg-emerald-600 text-white font-bold text-[11px] tap-bounce">
+              Yedek Dosyası Seç (.json)
+            </button>
+          </div>
+
+          <!-- Sıfırla -->
+          <div class="p-2.5 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between">
+            <div>
+              <div class="font-bold text-rose-900 text-[11px]">Verileri Sıfırla</div>
+              <div class="text-[9px] text-rose-600">Temiz başlangıç yapar</div>
+            </div>
+            <button onclick="resetMobileDataToDefaults()" class="px-2.5 py-1.5 rounded-xl bg-white border border-rose-300 text-rose-700 font-bold text-[10px] tap-bounce">
+              Sıfırla
             </button>
           </div>
         </div>
 
-        <button onclick="closeSupabaseModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">
+        <button onclick="closeMobileAdminModal()" class="w-full py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tap-bounce">
           Kapat
         </button>
+
       </div>
     </div>
+
+    <!-- Gizli Yedek Container (Geriye Dönük Uyumluluk) -->
+    <div id="supabaseModal" class="hidden"></div>
 
   </div>
 
@@ -653,6 +698,7 @@
         loadUserData(STUDENT_NAME);
         playChime('click');
         alert("Arif Said İlkbahar verileri sıfırlandı.");
+      }
     }
 
     function getOrCreateWeekData(wNum) {
@@ -1111,15 +1157,132 @@
       if (tId === 'report') updateMetrics();
     }
 
-    function openMobileAdminModal() {
+    function openMobileAdminModal(initialTab = 'karne') {
       renderMobileAdmin();
-      document.getElementById("mobileAdminModal").classList.remove("hidden");
-      document.getElementById("mobileAdminModal").classList.add("flex");
+      
+      const cfg = getSupabaseConfig();
+      const uInp = document.getElementById("supabaseUrlInput");
+      const kInp = document.getElementById("supabaseKeyInput");
+      const sSnip = document.getElementById("supabaseSqlSnippet");
+      if (uInp) uInp.value = cfg.url || "";
+      if (kInp) kInp.value = cfg.anonKey || "";
+      if (sSnip) sSnip.textContent = SUPABASE_SETUP_SQL;
+
+      switchMobileAdminTab(initialTab);
+
+      const modal = document.getElementById("mobileAdminModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
     }
 
     function closeMobileAdminModal() {
-      document.getElementById("mobileAdminModal").classList.add("hidden");
-      document.getElementById("mobileAdminModal").classList.remove("flex");
+      const modal = document.getElementById("mobileAdminModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function switchMobileAdminTab(tId) {
+      const tabs = ['karne', 'bulut', 'yedek'];
+      tabs.forEach(tab => {
+        const tabEl = document.getElementById(`mAdminTab-${tab}`);
+        const tabBtn = document.getElementById(`mAdminTabBtn-${tab}`);
+        if (tabEl) tabEl.classList.add("hidden");
+        if (tabBtn) {
+          tabBtn.className = "flex-1 py-1.5 rounded-lg text-slate-600 hover:text-slate-800 transition-all text-center flex items-center justify-center gap-1";
+        }
+      });
+
+      const activeEl = document.getElementById(`mAdminTab-${tId}`);
+      const activeBtn = document.getElementById(`mAdminTabBtn-${tId}`);
+      if (activeEl) activeEl.classList.remove("hidden");
+      if (activeBtn) {
+        activeBtn.className = "flex-1 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm transition-all text-center flex items-center justify-center gap-1 font-bold";
+      }
+
+      if (tId === 'bulut') {
+        testAndDisplaySupabaseConnection(false);
+      }
+    }
+
+    function exportMobileData() {
+      const backupData = {
+        app: "7. Sınıf Gelişim Portalı (Mobil)",
+        studentName: STUDENT_NAME,
+        version: "v4",
+        exportedAt: new Date().toISOString(),
+        state: state,
+        authUsers: authUsers
+      };
+      const jsonStr = JSON.stringify(backupData, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Arif_Said_Ilkbahar_Mobil_Yedek_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      playChime('done');
+    }
+
+    function importMobileDataFromFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          let targetState = null;
+
+          if (parsed.state && parsed.state.weeksData) {
+            targetState = parsed.state;
+          } else if (parsed.weeksData) {
+            targetState = parsed;
+          } else if (parsed.studentsData && parsed.studentsData[STUDENT_NAME]) {
+            targetState = parsed.studentsData[STUDENT_NAME];
+          } else if (parsed.studentsData && Object.keys(parsed.studentsData).length > 0) {
+            const firstKey = Object.keys(parsed.studentsData)[0];
+            targetState = parsed.studentsData[firstKey];
+          }
+
+          if (!targetState || !targetState.weeksData) {
+            alert("Geçersiz yedek dosyası! 7. sınıf haftalık verisi bulunamadı.");
+            return;
+          }
+
+          if (confirm("Yedek veriler yüklenecek ve mevcut verilerin üzerine yazılacak. Onaylıyor musunuz?")) {
+            state = targetState;
+            localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
+            renderAll();
+            saveStudentToSupabase(STUDENT_NAME, state);
+            playChime('done');
+            confetti({ particleCount: 60, spread: 70 });
+            alert("Yedek başarıyla geri yüklendi! 🎉");
+          }
+        } catch (err) {
+          alert("Dosya okunurken hata: " + err.message);
+        }
+        event.target.value = "";
+      };
+      reader.readAsText(file);
+    }
+
+    function resetMobileDataToDefaults() {
+      if (!confirm("Tüm verileriniz sıfırlanacak! Onaylıyor musunuz?")) return;
+      const promptText = prompt("Sıfırlamak için 'SIFIRLA' yazınız:");
+      if (promptText !== "SIFIRLA") {
+        alert("İptal edildi.");
+        return;
+      }
+      const cleanState = createDefaultWeekState();
+      state = cleanState;
+      localStorage.setItem(getUserStorageKey(STUDENT_NAME), JSON.stringify(state));
+      renderAll();
+      saveStudentToSupabase(STUDENT_NAME, state);
+      playChime('done');
+      alert("Tüm veriler sıfırlandı.");
     }
 
     function renderMobileAdmin() {
@@ -1209,21 +1372,11 @@
 
     /* ================= SUPABASE BULUT FONKSİYONLARI ================= */
     function openSupabaseModal() {
-      const cfg = getSupabaseConfig();
-      document.getElementById("supabaseUrlInput").value = cfg.url || "";
-      document.getElementById("supabaseKeyInput").value = cfg.anonKey || "";
-      document.getElementById("supabaseSqlSnippet").textContent = SUPABASE_SETUP_SQL;
-      
-      const modal = document.getElementById("supabaseModal");
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-      testAndDisplaySupabaseConnection(false);
+      openMobileAdminModal('bulut');
     }
 
     function closeSupabaseModal() {
-      const modal = document.getElementById("supabaseModal");
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
+      closeMobileAdminModal();
     }
 
     async function handleSaveSupabaseConfig() {
